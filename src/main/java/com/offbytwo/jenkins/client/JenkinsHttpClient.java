@@ -31,6 +31,7 @@ public class JenkinsHttpClient {
     private BasicHttpContext localContext;
 
     private ObjectMapper mapper;
+    private String context;
 
     /**
      * Create an unauthenticated Jenkins HTTP client
@@ -38,6 +39,10 @@ public class JenkinsHttpClient {
      * @param uri Location of the jenkins server (ex. http://localhost:8080)
      */
     public JenkinsHttpClient(URI uri) {
+        this.context = uri.getPath();
+        if (!context.endsWith("/")) {
+            context += "/";
+        }
         this.uri = uri;
         this.mapper = getDefaultMapper();
         this.client = new DefaultHttpClient();
@@ -83,8 +88,21 @@ public class JenkinsHttpClient {
         return objectFromResponse(cls, response);
     }
 
+    private String urlJoin(String path1, String path2) {
+        if (!path1.endsWith("/")) {
+            path1 += "/";
+        }
+        if (path2.startsWith("/")) {
+            path2 = path2.substring(1);
+        }
+        return path1 + path2;
+    }
+
     private URI api(String path) {
-        return uri.resolve(path).resolve("api/json");
+        String fullPath = urlJoin(this.context, path);
+        String apiPath = urlJoin(fullPath, "api/json");
+        URI requestUri = uri.resolve("/").resolve(apiPath);
+        return requestUri;
     }
 
     private <T extends BaseModel> T objectFromResponse(Class<T> cls, HttpResponse response) throws IOException {
