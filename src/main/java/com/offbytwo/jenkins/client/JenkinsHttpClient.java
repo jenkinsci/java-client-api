@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 public class JenkinsHttpClient {
     private URI uri;
     private DefaultHttpClient client;
@@ -57,14 +59,16 @@ public class JenkinsHttpClient {
      */
     public JenkinsHttpClient(URI uri, String username, String password) {
         this(uri);
-        CredentialsProvider provider = client.getCredentialsProvider();
-        AuthScope scope = new AuthScope(uri.getHost(), uri.getPort(), "realm");
-        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(username, password);
-        provider.setCredentials(scope, credentials);
+        if (isNotBlank(username)) {
+            CredentialsProvider provider = client.getCredentialsProvider();
+            AuthScope scope = new AuthScope(uri.getHost(), uri.getPort(), "realm");
+            UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(username, password);
+            provider.setCredentials(scope, credentials);
 
-        localContext = new BasicHttpContext();
-        localContext.setAttribute("preemptive-auth", new BasicScheme());
-        client.addRequestInterceptor(new PreemptiveAuth(), 0);
+            localContext = new BasicHttpContext();
+            localContext.setAttribute("preemptive-auth", new BasicScheme());
+            client.addRequestInterceptor(new PreemptiveAuth(), 0);
+        }
     }
 
     /**
