@@ -12,12 +12,9 @@ import org.apache.http.auth.*;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.ExecutionContext;
-import org.apache.http.protocol.HttpContext;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -114,27 +111,6 @@ public class JenkinsHttpClient {
         T result = mapper.readValue(content, cls);
         result.setClient(this);
         return result;
-    }
-
-    private class PreemptiveAuth implements HttpRequestInterceptor {
-        @Override
-        public void process(HttpRequest request, HttpContext context) throws HttpException, IOException {
-            AuthState authState = (AuthState) context.getAttribute(ClientContext.TARGET_AUTH_STATE);
-
-            if (authState.getAuthScheme() == null) {
-                AuthScheme authScheme = (AuthScheme) context.getAttribute("preemptive-auth");
-                CredentialsProvider credsProvider = (CredentialsProvider) context.getAttribute(ClientContext.CREDS_PROVIDER);
-                HttpHost targetHost = (HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
-                if (authScheme != null) {
-                    Credentials creds = credsProvider.getCredentials(
-                            new AuthScope(targetHost.getHostName(), targetHost.getPort()));
-                    if (creds == null) {
-                        throw new HttpException("No credentials for preemptive authentication");
-                    }
-                    authState.update(authScheme, creds);
-                }
-            }
-        }
     }
 
     private ObjectMapper getDefaultMapper() {
