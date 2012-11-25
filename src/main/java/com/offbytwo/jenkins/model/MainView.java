@@ -6,10 +6,13 @@
 
 package com.offbytwo.jenkins.model;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class MainView extends BaseModel {
     private List<Job> jobs;

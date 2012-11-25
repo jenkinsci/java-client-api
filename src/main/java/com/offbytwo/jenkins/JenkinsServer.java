@@ -6,6 +6,9 @@
 
 package com.offbytwo.jenkins;
 
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.MainView;
@@ -13,6 +16,7 @@ import com.offbytwo.jenkins.model.MainView;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The main starting point for interacting with a Jenkins server.
@@ -55,8 +59,14 @@ public class JenkinsServer {
      * @return list of defined jobs (summary level, for details @see Job#details
      * @throws IOException
      */
-    public List<Job> getJobs() throws IOException {
-        return client.get("/", MainView.class).getJobs();
+    public Map<String, Job> getJobs() throws IOException {
+        List<Job> jobs = client.get("/", MainView.class).getJobs();
+        return Maps.uniqueIndex(jobs, new Function<Job, String>() {
+            @Override
+            public String apply(Job job) {
+                return job.getName();
+            }
+        });
     }
 
 
