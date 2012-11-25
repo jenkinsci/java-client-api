@@ -11,8 +11,6 @@ import com.google.common.collect.Lists;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 public class MainView extends BaseModel {
     private List<Job> jobs;
 
