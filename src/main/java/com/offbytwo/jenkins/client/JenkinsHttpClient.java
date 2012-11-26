@@ -142,8 +142,13 @@ public class JenkinsHttpClient {
         if (!path.toLowerCase().matches("https?://.*")) {
             path = urlJoin(this.context, path);
         }
-        String apiPath = urlJoin(path, "api/json");
-        URI requestUri = uri.resolve("/").resolve(apiPath);
+        if (!path.contains("?")) {
+            path = urlJoin(path, "api/json");
+        } else {
+            String[] components = path.split("\\?", 2);
+            path = urlJoin(components[0], "api/json") + "?" + components[1];
+        }
+        URI requestUri = uri.resolve("/").resolve(path);
         return requestUri;
     }
 

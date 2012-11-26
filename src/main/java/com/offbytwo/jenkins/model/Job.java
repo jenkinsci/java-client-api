@@ -52,7 +52,7 @@ public class Job extends BaseModel {
      * Trigger a build without parameters
      */
     public void build() throws IOException {
-        client.post(url + "build", null, null);
+        client.post(url + "build");
     }
 
     /**
