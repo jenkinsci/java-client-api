@@ -7,7 +7,6 @@
 package com.offbytwo.jenkins.model;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
 
 import java.util.Collection;
 import java.util.HashMap;

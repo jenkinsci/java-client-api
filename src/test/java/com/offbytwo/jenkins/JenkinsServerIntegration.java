@@ -42,8 +42,9 @@ public class JenkinsServerIntegration {
 
     @Test
     public void shouldReturnBuildStatusForBuild() throws Exception {
-        JobWithDetails job = server.getJobs().get("Trunk").details();
+        JobWithDetails job = server.getJobs().get("pr").details();
         BuildWithDetails build = job.getBuilds().get(0).details();
         assertEquals(BuildResult.SUCCESS, build.getResult());
+        assertEquals("foobar", build.getParameters().get("REVISION"));
     }
 }
