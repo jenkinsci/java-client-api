@@ -10,7 +10,7 @@ To get started add the following dependency to your project
 <dependency>
   <groupId>com.offbytwo.jenkins</groupId>
   <artifactId>jenkins-client</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.1.2-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -24,16 +24,17 @@ given its location and (optionally) a username and password/token.
 JenkinsServer jenkins = new JenkinsServer(new URI("http://localhost:8080/jenkins"), "admin", "password")
 ```
 
-At the top level you can access all of the currently defined jobs
+At the top level you can access all of the currently defined
+jobs. This returns a map of job names (in lower case) to jobs.
 
 ```java
-List<Job> jobs = jenkins.getJobs()
+Map<String, Job> jobs = jenkins.getJobs()
 ```
 
 The Job class provides only summary information (name and url). You can retrieve details as follows
 
 ```java
-JobWithDetails job = jobs.get(0).details()
+JobWithDetails job = jobs.get("My Job").details()
 ```
 
 The `JobWithDetails` class provides you with access to the list of
