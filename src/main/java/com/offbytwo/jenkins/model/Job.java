@@ -63,7 +63,7 @@ public class Job extends BaseModel {
      */
     public void build(Map<String, String> params) throws IOException {
         String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "/");
-        client.post(url + "buildWithParameters?" + qs, params, null);
+        client.post(url + "buildWithParameters?" + qs, null, null);
     }
 
     private static class MapEntryToQueryStringPair implements Function<Map.Entry<String, String>, String> {
