@@ -64,7 +64,7 @@ public class JenkinsServer {
             @Override
             public String apply(Job job) {
                 job.setClient(client);
-                return job.getName();
+                return job.getName().toLowerCase();
             }
         });
     }

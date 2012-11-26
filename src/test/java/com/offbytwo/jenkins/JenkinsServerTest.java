@@ -29,6 +29,6 @@ public class JenkinsServerTest {
 
     @Test
     public void shouldReturnListOfJobs() throws Exception {
-        assertTrue(server.getJobs().containsKey("Hello"));
+        assertTrue(server.getJobs().containsKey("hello"));
     }
 }
