@@ -16,6 +16,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -51,7 +52,7 @@ public class JenkinsHttpClient {
     /**
      * Create an authenticated Jenkins HTTP client
      *
-     * @param uri Location of the jenkins server (ex. http://localhost:8080)
+     * @param uri      Location of the jenkins server (ex. http://localhost:8080)
      * @param username Username to use when connecting
      * @param password Password or auth token to use when connecting
      */
@@ -73,14 +74,18 @@ public class JenkinsHttpClient {
      * Perform a GET request and parse the response to the given class
      *
      * @param path path to request, can be relative or absolute
-     * @param cls class of the response
-     * @param <T> type of the response
+     * @param cls  class of the response
+     * @param <T>  type of the response
      * @return an instance of the supplied class
      * @throws IOException
      */
     public <T extends BaseModel> T get(String path, Class<T> cls) throws IOException {
         HttpResponse response = client.execute(new HttpGet(api(path)), localContext);
-        return objectFromResponse(cls, response);
+        try {
+            return objectFromResponse(cls, response);
+        } finally {
+            EntityUtils.consume(response.getEntity());
+        }
     }
 
     /**
@@ -88,9 +93,9 @@ public class JenkinsHttpClient {
      *
      * @param path path to request, can be relative or absolute
      * @param data data to post
-     * @param cls class of the response
-     * @param <R> type of the response
-     * @param <D> type of the data
+     * @param cls  class of the response
+     * @param <R>  type of the response
+     * @param <D>  type of the data
      * @return an instance of the supplied class
      * @throws IOException
      */
@@ -101,15 +106,20 @@ public class JenkinsHttpClient {
             request.setEntity(stringEntity);
         }
         HttpResponse response = client.execute(request, localContext);
-        if (cls != null) {
-            return objectFromResponse(cls, response);
-        } else {
-            return null;
+        try {
+            if (cls != null) {
+                return objectFromResponse(cls, response);
+            } else {
+                return null;
+            }
+        } finally {
+            EntityUtils.consume(response.getEntity());
         }
     }
 
     /**
      * Perform POST request that takes no parameters and returns no response
+     *
      * @param path path to request
      * @throws IOException
      */
