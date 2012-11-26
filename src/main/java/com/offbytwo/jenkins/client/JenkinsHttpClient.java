@@ -12,6 +12,7 @@ import org.apache.http.auth.*;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
@@ -82,11 +83,38 @@ public class JenkinsHttpClient {
         return objectFromResponse(cls, response);
     }
 
-    public <T extends BaseModel> T post(String path, HttpEntity data, Class<T> cls) throws IOException {
+    /**
+     * Perform a POST request and parse the response to the given class
+     *
+     * @param path path to request, can be relative or absolute
+     * @param data data to post
+     * @param cls class of the response
+     * @param <R> type of the response
+     * @param <D> type of the data
+     * @return an instance of the supplied class
+     * @throws IOException
+     */
+    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException {
         HttpPost request = new HttpPost(api(path));
-        request.setEntity(data);
+        if (data != null) {
+            StringEntity stringEntity = new StringEntity(mapper.writeValueAsString(data), "application/json");
+            request.setEntity(stringEntity);
+        }
         HttpResponse response = client.execute(request, localContext);
-        return objectFromResponse(cls, response);
+        if (cls != null) {
+            return objectFromResponse(cls, response);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Perform POST request that takes no parameters and returns no response
+     * @param path path to request
+     * @throws IOException
+     */
+    public void post(String path) throws IOException {
+        post(path, null, null);
     }
 
     private String urlJoin(String path1, String path2) {
@@ -100,8 +128,10 @@ public class JenkinsHttpClient {
     }
 
     private URI api(String path) {
-        String fullPath = urlJoin(this.context, path);
-        String apiPath = urlJoin(fullPath, "api/json");
+        if (!path.toLowerCase().matches("https?://.*")) {
+            path = urlJoin(this.context, path);
+        }
+        String apiPath = urlJoin(path, "api/json");
         URI requestUri = uri.resolve("/").resolve(apiPath);
         return requestUri;
     }

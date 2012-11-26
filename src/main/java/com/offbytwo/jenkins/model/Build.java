@@ -15,6 +15,10 @@ public class Build extends BaseModel {
     public Build() {
     }
 
+    public Build(Build from) {
+        this(from.getNumber(), from.getUrl());
+    }
+
     public Build(int number, String url) {
         this.number = number;
         this.url = url;
@@ -24,16 +28,8 @@ public class Build extends BaseModel {
         return number;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
     public String getUrl() {
         return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public BuildWithDetails details() throws IOException {

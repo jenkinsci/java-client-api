@@ -64,6 +64,7 @@ public class JenkinsServer {
         return Maps.uniqueIndex(jobs, new Function<Job, String>() {
             @Override
             public String apply(Job job) {
+                job.setClient(client);
                 return job.getName();
             }
         });

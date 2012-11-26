@@ -16,6 +16,7 @@ import org.junit.Test;
 import java.net.URI;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public class JenkinsServerIntegration {
@@ -30,18 +31,18 @@ public class JenkinsServerIntegration {
 
     @Test
     public void shouldReturnListOfJobs() throws Exception {
-        assertEquals("Hello", server.getJobs().get(0).getName());
+        assertTrue(server.getJobs().containsKey("Trunk"));
     }
 
     @Test
     public void shouldReturnBuildsForJob() throws Exception {
-        JobWithDetails job = server.getJobs().get(0).details();
-        assertEquals(1, job.getBuilds().get(0).getNumber());
+        JobWithDetails job = server.getJobs().get("Trunk").details();
+        assertEquals(5, job.getBuilds().get(0).getNumber());
     }
 
     @Test
     public void shouldReturnBuildStatusForBuild() throws Exception {
-        JobWithDetails job = server.getJobs().get(0).details();
+        JobWithDetails job = server.getJobs().get("Trunk").details();
         BuildWithDetails build = job.getBuilds().get(0).details();
         assertEquals(BuildResult.SUCCESS, build.getResult());
     }

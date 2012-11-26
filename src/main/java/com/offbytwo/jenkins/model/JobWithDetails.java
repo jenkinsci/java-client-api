@@ -6,6 +6,9 @@
 
 package com.offbytwo.jenkins.model;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+
 import java.util.List;
 
 public class JobWithDetails extends Job {
@@ -26,95 +29,66 @@ public class JobWithDetails extends Job {
         return displayName;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
     public List<Build> getBuilds() {
-        return builds;
+        return Lists.transform(builds, new Function<Build, Build>() {
+            @Override
+            public Build apply(Build from) {
+                return buildWithClient(from);
+            }
+        });
     }
 
-    public void setBuilds(List<Build> builds) {
-        this.builds = builds;
+    private Build buildWithClient(Build from) {
+        Build ret = new Build(from);
+        ret.setClient(client);
+        return ret;
     }
 
     public Build getLastBuild() {
-        return lastBuild;
-    }
-
-    public void setLastBuild(Build lastBuild) {
-        this.lastBuild = lastBuild;
+        return buildWithClient(lastBuild);
     }
 
     public Build getLastCompletedBuild() {
-        return lastCompletedBuild;
-    }
-
-    public void setLastCompletedBuild(Build lastCompletedBuild) {
-        this.lastCompletedBuild = lastCompletedBuild;
+        return buildWithClient(lastCompletedBuild);
     }
 
     public Build getLastFailedBuild() {
-        return lastFailedBuild;
-    }
-
-    public void setLastFailedBuild(Build lastFailedBuild) {
-        this.lastFailedBuild = lastFailedBuild;
+        return buildWithClient(lastFailedBuild);
     }
 
     public Build getLastStableBuild() {
-        return lastStableBuild;
-    }
-
-    public void setLastStableBuild(Build lastStableBuild) {
-        this.lastStableBuild = lastStableBuild;
+        return buildWithClient(lastStableBuild);
     }
 
     public Build getLastSuccessfulBuild() {
-        return lastSuccessfulBuild;
-    }
-
-    public void setLastSuccessfulBuild(Build lastSuccessfulBuild) {
-        this.lastSuccessfulBuild = lastSuccessfulBuild;
+        return buildWithClient(lastSuccessfulBuild);
     }
 
     public Build getLastUnstableBuild() {
-        return lastUnstableBuild;
-    }
-
-    public void setLastUnstableBuild(Build lastUnstableBuild) {
-        this.lastUnstableBuild = lastUnstableBuild;
+        return buildWithClient(lastUnstableBuild);
     }
 
     public Build getLastUnsuccessfulBuild() {
-        return lastUnsuccessfulBuild;
-    }
-
-    public void setLastUnsuccessfulBuild(Build lastUnsuccessfulBuild) {
-        this.lastUnsuccessfulBuild = lastUnsuccessfulBuild;
+        return buildWithClient(lastUnsuccessfulBuild);
     }
 
     public int getNextBuildNumber() {
         return nextBuildNumber;
     }
 
-    public void setNextBuildNumber(int nextBuildNumber) {
-        this.nextBuildNumber = nextBuildNumber;
-    }
-
     public List<Job> getDownstreamProjects() {
-        return downstreamProjects;
-    }
-
-    public void setDownstreamProjects(List<Job> downstreamProjects) {
-        this.downstreamProjects = downstreamProjects;
+        return Lists.transform(downstreamProjects, new JobWithClient());
     }
 
     public List<Job> getUpstreamProjects() {
-        return upstreamProjects;
+        return Lists.transform(upstreamProjects, new JobWithClient());
     }
 
-    public void setUpstreamProjects(List<Job> upstreamProjects) {
-        this.upstreamProjects = upstreamProjects;
+    private class JobWithClient implements Function<Job, Job> {
+        @Override
+        public Job apply(Job job) {
+            job.setClient(client);
+            return job;
+        }
     }
 }
