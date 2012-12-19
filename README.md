@@ -10,7 +10,7 @@ To get started add the following dependency to your project
 <dependency>
   <groupId>com.offbytwo.jenkins</groupId>
   <artifactId>jenkins-client</artifactId>
-  <version>0.1.2-SNAPSHOT</version>
+  <version>0.1.4-SNAPSHOT</version>
 </dependency>
 ```
 
