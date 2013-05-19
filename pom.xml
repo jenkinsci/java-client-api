@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <name>Jenkins Client</name>
-    <url>http://github.com/cosmin/jenkins-client</url>
+    <url>http://github.com/RisingOak/jenkins-client</url>
     <description>A Jenkins API client for Java</description>
 
     <groupId>com.offbytwo.jenkins</groupId>
@@ -24,6 +24,12 @@
         <artifactId>oss-parent</artifactId>
         <version>7</version>
     </parent>
+
+    <scm>
+        <connection>scm:git:git@github.com:RisingOak/jenkins-client.git</connection>
+        <developerConnection>scm:git:git@github.com:RisingOak/jenkins-client.git</developerConnection>
+        <url>https://github.com/RisingOak/jenkins-client</url>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
