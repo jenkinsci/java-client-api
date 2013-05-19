@@ -10,7 +10,7 @@ To get started add the following dependency to your project
 <dependency>
   <groupId>com.offbytwo.jenkins</groupId>
   <artifactId>jenkins-client</artifactId>
-  <version>0.1.4-SNAPSHOT</version>
+  <version>0.1.4</version>
 </dependency>
 ```
 
@@ -43,6 +43,6 @@ etc) and upstream and downstream projects.
 
 ## License
 
-Copyright (C) 2012, Cosmin Stejerean.
+Copyright (C) 2013, Rising Oak LLC.
 
 Distributed under the MIT license: http://opensource.org/licenses/MIT
