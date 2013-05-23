@@ -31,12 +31,12 @@ public class JenkinsServerIntegration {
 
     @Test
     public void shouldReturnListOfJobs() throws Exception {
-        assertTrue(server.getJobs().containsKey("Trunk"));
+        assertTrue(server.getJobs().containsKey("trunk"));
     }
 
     @Test
     public void shouldReturnBuildsForJob() throws Exception {
-        JobWithDetails job = server.getJobs().get("Trunk").details();
+        JobWithDetails job = server.getJobs().get("trunk").details();
         assertEquals(5, job.getBuilds().get(0).getNumber());
     }
 
