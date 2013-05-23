@@ -11,6 +11,7 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.Scanner;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
@@ -19,6 +20,7 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -96,6 +98,28 @@ public class JenkinsHttpClient {
     }
 
     /**
+     * Perform a GET request and parse the response and return a simple string of the content
+     *
+     * @param path path to request, can be relative or absolute
+     * @return the entity text
+     * @throws IOException, HttpResponseException
+     */
+    public String get(String path) throws IOException, HttpResponseException {
+        HttpResponse response = client.execute(new HttpGet(api(path)), localContext);
+        int status = response.getStatusLine().getStatusCode();
+        if (status < 200 || status >= 300) {
+            throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
+        }
+        Scanner s = new Scanner(response.getEntity().getContent());
+        s.useDelimiter("\\z");
+        StringBuffer sb = new StringBuffer();
+        while (s.hasNext()) {
+            sb.append(s.next());
+        }
+        return sb.toString();
+    }
+
+    /**
      * Perform a POST request and parse the response to the given class
      *
      * @param path path to request, can be relative or absolute
@@ -123,6 +147,37 @@ public class JenkinsHttpClient {
             } else {
                 return null;
             }
+        } finally {
+            EntityUtils.consume(response.getEntity());
+        }
+    }
+
+    /**
+     * Perform a POST request of XML (instead of using json mapper) and return a string rendering of the response entity.
+     *
+     * @param path path to request, can be relative or absolute
+     * @param XML data data to post
+     * @return A string containing the xml response (if present)
+     * @throws IOException, HttpResponseException
+     */
+    public String post_xml(String path, String xml_data) throws IOException, HttpResponseException {
+        HttpPost request = new HttpPost(api(path));
+        if (xml_data != null) {
+            request.setEntity(new StringEntity(xml_data, ContentType.APPLICATION_XML));
+        }
+        HttpResponse response = client.execute(request, localContext);
+        int status = response.getStatusLine().getStatusCode();
+        if (status < 200 || status >= 300) {
+            throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
+        }
+        try {
+            InputStream content = response.getEntity().getContent();
+            Scanner s = new Scanner(content);
+            StringBuffer sb = new StringBuffer();
+            while(s.hasNext()) {
+                sb.append(s.next());
+            }
+            return sb.toString();
         } finally {
             EntityUtils.consume(response.getEntity());
         }

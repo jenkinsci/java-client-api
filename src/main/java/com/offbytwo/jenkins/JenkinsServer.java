@@ -6,22 +6,23 @@
 
 package com.offbytwo.jenkins;
 
+import java.io.IOException;
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.MainView;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
-
 /**
  * The main starting point for interacting with a Jenkins server.
  */
 public class JenkinsServer {
-    JenkinsHttpClient client;
+    private final JenkinsHttpClient client;
+
 
     /**
      * Create a new Jenkins server reference given only the server address
@@ -69,5 +70,33 @@ public class JenkinsServer {
         });
     }
 
+    /**
+     * Create a job on the server using the provided xml
+     *
+     * @return the new job object
+     * @throws IOException
+     */
+    public void createJob(String jobName, String jobXml) throws IOException {
+        client.post_xml("/createItem?name=" + jobName, jobXml);
+    }
 
+    /**
+     * Get the xml description of an existing job
+     *
+     * @return the new job object
+     * @throws IOException
+     */
+    public String getJobXml(String jobName) throws IOException {
+        return client.get("/job/" + jobName + "/config.xml");
+    }
+
+    /**
+     * Update the xml description of an existing job
+     *
+     * @return the new job object
+     * @throws IOException
+     */
+    public void updateJob(String jobName, String jobXml) throws IOException {
+        client.post_xml("/job/" + jobName + "/config.xml", jobXml);
+    }
 }
