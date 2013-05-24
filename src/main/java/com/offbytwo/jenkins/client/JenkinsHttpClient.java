@@ -6,11 +6,17 @@
 
 package com.offbytwo.jenkins.client;
 
-import com.offbytwo.jenkins.model.BaseModel;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -21,11 +27,7 @@ import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+import com.offbytwo.jenkins.model.BaseModel;
 
 public class JenkinsHttpClient {
     private URI uri;
@@ -78,10 +80,14 @@ public class JenkinsHttpClient {
      * @param cls  class of the response
      * @param <T>  type of the response
      * @return an instance of the supplied class
-     * @throws IOException
+     * @throws IOException, HttpResponseException
      */
-    public <T extends BaseModel> T get(String path, Class<T> cls) throws IOException {
+    public <T extends BaseModel> T get(String path, Class<T> cls) throws IOException, HttpResponseException {
         HttpResponse response = client.execute(new HttpGet(api(path)), localContext);
+        int status = response.getStatusLine().getStatusCode();
+        if (status < 200 || status >= 300) {
+            throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
+        }
         try {
             return objectFromResponse(cls, response);
         } finally {
@@ -98,15 +104,19 @@ public class JenkinsHttpClient {
      * @param <R>  type of the response
      * @param <D>  type of the data
      * @return an instance of the supplied class
-     * @throws IOException
+     * @throws IOException, HttpResponseException
      */
-    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException {
+    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException, HttpResponseException {
         HttpPost request = new HttpPost(api(path));
         if (data != null) {
             StringEntity stringEntity = new StringEntity(mapper.writeValueAsString(data), "application/json");
             request.setEntity(stringEntity);
         }
         HttpResponse response = client.execute(request, localContext);
+        int status = response.getStatusLine().getStatusCode();
+        if (status < 200 || status >= 300) {
+            throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
+        }
         try {
             if (cls != null) {
                 return objectFromResponse(cls, response);
@@ -122,9 +132,9 @@ public class JenkinsHttpClient {
      * Perform POST request that takes no parameters and returns no response
      *
      * @param path path to request
-     * @throws IOException
+     * @throws IOException, HttpResponseException
      */
-    public void post(String path) throws IOException {
+    public void post(String path) throws IOException, HttpResponseException {
         post(path, null, null);
     }
 
