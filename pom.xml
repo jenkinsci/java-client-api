@@ -14,7 +14,7 @@
 
     <groupId>com.offbytwo.jenkins</groupId>
     <artifactId>jenkins-client</artifactId>
-    <version>0.1.5-SNAPSHOT</version>
+    <version>0.1.5</version>
     <packaging>jar</packaging>
 
     <parent>
