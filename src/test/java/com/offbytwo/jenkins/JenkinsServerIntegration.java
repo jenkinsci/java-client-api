@@ -20,16 +20,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import com.offbytwo.jenkins.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableMap;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
-import com.offbytwo.jenkins.model.Build;
-import com.offbytwo.jenkins.model.BuildResult;
-import com.offbytwo.jenkins.model.BuildWithDetails;
-import com.offbytwo.jenkins.model.Job;
-import com.offbytwo.jenkins.model.JobWithDetails;
 
 public class JenkinsServerIntegration {
 
@@ -61,6 +57,22 @@ public class JenkinsServerIntegration {
         BuildWithDetails build = job.getBuilds().get(0).details();
         assertEquals(BuildResult.SUCCESS, build.getResult());
         assertEquals("foobar", build.getParameters().get("REVISION"));
+    }
+
+    @Test
+    public void shouldReturnListOfComputers() throws Exception {
+        assertTrue(server.getComputers().containsKey("master"));
+    }
+
+    @Test
+    public void shouldReturnDetailOfComputer() throws Exception {
+        Map<String, Computer> computers =  server.getComputers();
+        assertTrue(computers.get("master").details().getDisplayName().equals("master"));
+    }
+
+    @Test
+    public void shouldReturnDetailOfLablel() throws Exception {
+        assertTrue(server.getLabel("master").getName().equals("master"));
     }
 
     // Note this test depends upon the xml in job-template.xml being a valid job

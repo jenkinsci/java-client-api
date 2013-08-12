@@ -14,7 +14,9 @@ import java.util.Map;
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
+import com.offbytwo.jenkins.model.Computer;
 import com.offbytwo.jenkins.model.Job;
+import com.offbytwo.jenkins.model.LabelWithDetails;
 import com.offbytwo.jenkins.model.MainView;
 
 /**
@@ -88,6 +90,34 @@ public class JenkinsServer {
      */
     public String getJobXml(String jobName) throws IOException {
         return client.get("/job/" + jobName + "/config.xml");
+    }
+
+    /**
+     * Get the description of an existing Label
+     *
+     * @return label object
+     * @throws IOException
+     */
+    public LabelWithDetails getLabel(String labelName) throws IOException {
+        return client.get("/label/" + labelName, LabelWithDetails.class);
+    }
+
+
+    /**
+     * Get a list of all the computers on the server (at the summary level)
+     *
+     * @return list of defined computers (summary level, for details @see Computer#details
+     * @throws IOException
+     */
+    public Map<String, Computer> getComputers() throws IOException {
+        List<Computer> computers = client.get("computer/", Computer.class).getComputers();
+        return Maps.uniqueIndex(computers, new Function<Computer, String>() {
+            @Override
+            public String apply(Computer computer) {
+                computer.setClient(client);
+                return computer.getDisplayName().toLowerCase();
+            }
+        });
     }
 
     /**
