@@ -18,6 +18,7 @@ import static com.google.common.collect.Collections2.filter;
 public class BuildWithDetails extends Build {
     List actions;
     boolean building;
+    String description;
     int duration;
     String fullDisplayName;
     String id;
@@ -26,6 +27,10 @@ public class BuildWithDetails extends Build {
 
     public boolean isBuilding() {
         return building;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public int getDuration() {
