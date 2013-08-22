@@ -20,7 +20,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import com.offbytwo.jenkins.model.*;
+import com.offbytwo.jenkins.model.Build;
+import com.offbytwo.jenkins.model.BuildResult;
+import com.offbytwo.jenkins.model.BuildWithDetails;
+import com.offbytwo.jenkins.model.Computer;
+import com.offbytwo.jenkins.model.Job;
+import com.offbytwo.jenkins.model.JobWithDetails;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -84,6 +89,25 @@ public class JenkinsServerIntegration {
         String xmlReturned = server.getJobXml(jobName);
 
         assertTrue(xmlReturned.length() > 0);
+    }
+
+    @Test
+    public void testGetJobByName() throws Exception {
+        final String jobName = "trunk";
+
+        JobWithDetails job = server.getJob(jobName);
+
+        assertEquals("trunk",job.getName());
+        assertEquals("trunk",job.getDisplayName());
+    }
+
+    @Test
+    public void testGetJobByNameDoesntExist() throws Exception {
+        final String jobName = "imprettysurethereisnojobwiththisname";
+
+        JobWithDetails job = server.getJob(jobName);
+
+        assertEquals(null, job);
     }
 
     // Note this test depends upon the "pr" job existing and successfully building
