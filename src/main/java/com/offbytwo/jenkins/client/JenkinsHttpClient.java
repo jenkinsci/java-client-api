@@ -138,10 +138,12 @@ public class JenkinsHttpClient {
         }
         HttpResponse response = client.execute(request, localContext);
         int status = response.getStatusLine().getStatusCode();
-        if (status < 200 || status >= 300) {
-            throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
-        }
+       
         try {
+			if (status < 200 || status >= 300) {
+				throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
+			}
+			
             if (cls != null) {
                 return objectFromResponse(cls, response);
             } else {
