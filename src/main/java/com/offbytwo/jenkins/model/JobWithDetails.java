@@ -13,6 +13,7 @@ import java.util.List;
 
 public class JobWithDetails extends Job {
     String displayName;
+    boolean buildable;
     List<Build> builds;
     Build lastBuild;
     Build lastCompletedBuild;
@@ -27,6 +28,10 @@ public class JobWithDetails extends Job {
 
     public String getDisplayName() {
         return displayName;
+    }
+    
+    public boolean isBuildable() {
+    	return buildable;
     }
 
     public List<Build> getBuilds() {
