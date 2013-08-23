@@ -53,7 +53,11 @@ public class BuildWithDetails extends Build {
         return result;
     }
 
-    public void setActions(List actions) {
+    public List getActions() {
+		return actions;
+	}
+
+	public void setActions(List actions) {
         this.actions = actions;
     }
 
