@@ -8,16 +8,16 @@ package com.offbytwo.jenkins;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
-import com.offbytwo.jenkins.model.Computer;
-import com.offbytwo.jenkins.model.Job;
-import com.offbytwo.jenkins.model.LabelWithDetails;
-import com.offbytwo.jenkins.model.MainView;
+import com.offbytwo.jenkins.model.*;
+import org.apache.http.client.HttpResponseException;
 
 /**
  * The main starting point for interacting with a Jenkins server.
@@ -73,13 +73,34 @@ public class JenkinsServer {
     }
 
     /**
+     * Get a single Job from the server.
+     *
+     * @return A single Job, null if not present
+     * @throws IOException
+     */
+    public JobWithDetails getJob(String jobName) throws  IOException {
+        try {
+            JobWithDetails job = client.get("/job/"+encode(jobName),JobWithDetails.class);
+            job.setClient(client);
+
+            return job;
+        } catch (HttpResponseException e) {
+            if(e.getStatusCode() == 404) {
+                return null;
+            }
+            throw e;
+        }
+
+    }
+
+    /**
      * Create a job on the server using the provided xml
      *
      * @return the new job object
      * @throws IOException
      */
     public void createJob(String jobName, String jobXml) throws IOException {
-        client.post_xml("/createItem?name=" + jobName, jobXml);
+        client.post_xml("/createItem?name=" + encode(jobName), jobXml);
     }
 
     /**
@@ -89,7 +110,7 @@ public class JenkinsServer {
      * @throws IOException
      */
     public String getJobXml(String jobName) throws IOException {
-        return client.get("/job/" + jobName + "/config.xml");
+        return client.get("/job/" + encode(jobName) + "/config.xml");
     }
 
     /**
@@ -99,7 +120,7 @@ public class JenkinsServer {
      * @throws IOException
      */
     public LabelWithDetails getLabel(String labelName) throws IOException {
-        return client.get("/label/" + labelName, LabelWithDetails.class);
+        return client.get("/label/" + encode(labelName), LabelWithDetails.class);
     }
 
 
@@ -127,6 +148,11 @@ public class JenkinsServer {
      * @throws IOException
      */
     public void updateJob(String jobName, String jobXml) throws IOException {
-        client.post_xml("/job/" + jobName + "/config.xml", jobXml);
+        client.post_xml("/job/" + encode(jobName) + "/config.xml", jobXml);
+    }
+
+    private String encode(String pathPart) {
+        // jenkins doesn't like the + for space, use %20 instead
+        return URLEncoder.encode(pathPart).replaceAll("\\+","%20");
     }
 }
