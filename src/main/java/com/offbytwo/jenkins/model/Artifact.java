@@ -2,7 +2,7 @@ package com.offbytwo.jenkins.model;
 
 public class Artifact extends BaseModel {
 	String displayPath;
-	String filename;
+	String fileName;
 	String relativePath;
 	public String getDisplayPath() {
 		return displayPath;
@@ -10,11 +10,11 @@ public class Artifact extends BaseModel {
 	public void setDisplayPath(String displayPath) {
 		this.displayPath = displayPath;
 	}
-	public String getFilename() {
-		return filename;
+	public String getFileName() {
+		return fileName;
 	}
-	public void setFilename(String filename) {
-		this.filename = filename;
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 	public String getRelativePath() {
 		return relativePath;
