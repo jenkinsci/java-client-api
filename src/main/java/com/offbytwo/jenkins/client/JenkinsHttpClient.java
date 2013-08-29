@@ -118,6 +118,22 @@ public class JenkinsHttpClient {
         }
         return sb.toString();
     }
+    
+    /**
+     * Perform a GET request and return the response as InputStream
+     *
+     * @param path path to request, can be relative or absolute
+     * @return the response stream
+     * @throws IOException, HttpResponseException
+     */
+    public InputStream getFile(URI path) throws IOException, HttpResponseException {
+        HttpResponse response = client.execute(new HttpGet(path), localContext);
+        int status = response.getStatusLine().getStatusCode();
+        if (status < 200 || status >= 300) {
+            throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
+        }
+        return response.getEntity().getContent();
+    }
 
     /**
      * Perform a POST request and parse the response to the given class
