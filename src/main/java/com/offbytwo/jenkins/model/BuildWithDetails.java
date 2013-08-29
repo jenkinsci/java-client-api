@@ -8,10 +8,14 @@ package com.offbytwo.jenkins.model;
 
 import com.google.common.base.Predicate;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.http.client.HttpResponseException;
 
 import static com.google.common.collect.Collections2.filter;
 
@@ -89,5 +93,10 @@ public class BuildWithDetails extends Build {
         }
 
         return params;
+    }
+    
+    public InputStream downloadArtifact(Artifact a) throws HttpResponseException, IOException {
+    	String artifactUrl = getUrl()+"artifact/"+a.getRelativePath();
+    	return client.getFile(artifactUrl);
     }
 }
