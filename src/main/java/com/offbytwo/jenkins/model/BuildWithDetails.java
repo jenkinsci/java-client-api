@@ -24,8 +24,17 @@ public class BuildWithDetails extends Build {
     String id;
     long timestamp;
     BuildResult result;
+    List<Artifact> artifacts;
 
-    public boolean isBuilding() {
+    public List<Artifact> getArtifacts() {
+		return artifacts;
+	}
+
+	public void setArtifacts(List<Artifact> artifacts) {
+		this.artifacts = artifacts;
+	}
+
+	public boolean isBuilding() {
         return building;
     }
 
