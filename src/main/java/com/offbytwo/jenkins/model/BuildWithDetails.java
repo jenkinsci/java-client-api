@@ -6,10 +6,12 @@
 
 package com.offbytwo.jenkins.model;
 
-import com.google.common.base.Predicate;
+import static com.google.common.collect.Collections2.filter;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.Map;
 
 import org.apache.http.client.HttpResponseException;
 
-import static com.google.common.collect.Collections2.filter;
+import com.google.common.base.Predicate;
 
 public class BuildWithDetails extends Build {
     List actions;
@@ -95,8 +97,12 @@ public class BuildWithDetails extends Build {
         return params;
     }
     
-    public InputStream downloadArtifact(Artifact a) throws HttpResponseException, IOException {
-    	String artifactUrl = getUrl()+"artifact/"+a.getRelativePath();
-    	return client.getFile(artifactUrl);
+    public InputStream downloadArtifact(Artifact a) throws HttpResponseException, IOException, URISyntaxException {
+    	//We can't just put the artifact's relative path at the end of the url string,
+    	//as there could be characters that need to be escaped.
+    	URI uri = new URI(getUrl());
+    	String artifactPath = uri.getPath()+"artifact/"+a.getRelativePath();
+    	URI artifactUri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),uri.getPort(),artifactPath,"", "");
+    	return client.getFile(artifactUri);
     }
 }

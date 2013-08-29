@@ -126,7 +126,7 @@ public class JenkinsHttpClient {
      * @return the response stream
      * @throws IOException, HttpResponseException
      */
-    public InputStream getFile(String path) throws IOException, HttpResponseException {
+    public InputStream getFile(URI path) throws IOException, HttpResponseException {
         HttpResponse response = client.execute(new HttpGet(path), localContext);
         int status = response.getStatusLine().getStatusCode();
         if (status < 200 || status >= 300) {
