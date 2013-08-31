@@ -6,7 +6,7 @@
 
 package com.offbytwo.jenkins.model;
 
-import static com.google.common.collect.Collections2.filter;
+import com.google.common.base.Predicate;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,9 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.http.client.HttpResponseException;
-
-import com.google.common.base.Predicate;
+import static com.google.common.collect.Collections2.filter;
 
 public class BuildWithDetails extends Build {
     List actions;
@@ -33,14 +31,10 @@ public class BuildWithDetails extends Build {
     List<Artifact> artifacts;
 
     public List<Artifact> getArtifacts() {
-		return artifacts;
-	}
+        return artifacts;
+    }
 
-	public void setArtifacts(List<Artifact> artifacts) {
-		this.artifacts = artifacts;
-	}
-
-	public boolean isBuilding() {
+    public boolean isBuilding() {
         return building;
     }
 
@@ -69,11 +63,7 @@ public class BuildWithDetails extends Build {
     }
 
     public List getActions() {
-		return actions;
-	}
-
-	public void setActions(List actions) {
-        this.actions = actions;
+        return actions;
     }
 
     public Map<String, String> getParameters() {
@@ -87,7 +77,7 @@ public class BuildWithDetails extends Build {
         Map<String, String> params = new HashMap<String, String>();
 
         if (parameters != null && !parameters.isEmpty()) {
-            for(Map<String, String> param : ((Map<String, List<Map<String, String>>>) parameters.toArray()[0]).get("parameters")) {
+            for (Map<String, String> param : ((Map<String, List<Map<String, String>>>) parameters.toArray()[0]).get("parameters")) {
                 String key = param.get("name");
                 String value = param.get("value");
                 params.put(key, value);
@@ -96,13 +86,13 @@ public class BuildWithDetails extends Build {
 
         return params;
     }
-    
-    public InputStream downloadArtifact(Artifact a) throws HttpResponseException, IOException, URISyntaxException {
-    	//We can't just put the artifact's relative path at the end of the url string,
-    	//as there could be characters that need to be escaped.
-    	URI uri = new URI(getUrl());
-    	String artifactPath = uri.getPath()+"artifact/"+a.getRelativePath();
-    	URI artifactUri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),uri.getPort(),artifactPath,"", "");
-    	return client.getFile(artifactUri);
+
+    public InputStream downloadArtifact(Artifact a) throws IOException, URISyntaxException {
+        //We can't just put the artifact's relative path at the end of the url string,
+        //as there could be characters that need to be escaped.
+        URI uri = new URI(getUrl());
+        String artifactPath = uri.getPath() + "artifact/" + a.getRelativePath();
+        URI artifactUri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), artifactPath, "", "");
+        return client.getFile(artifactUri);
     }
 }
