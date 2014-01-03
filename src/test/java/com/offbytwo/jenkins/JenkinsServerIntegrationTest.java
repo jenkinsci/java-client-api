@@ -12,6 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
@@ -20,6 +21,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import com.offbytwo.jenkins.auth.CASAuth;
+import com.offbytwo.jenkins.client.Auth;
 import com.offbytwo.jenkins.model.Build;
 import com.offbytwo.jenkins.model.BuildResult;
 import com.offbytwo.jenkins.model.BuildWithDetails;
@@ -27,12 +30,14 @@ import com.offbytwo.jenkins.model.Computer;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.JobWithDetails;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableMap;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
 
-public class JenkinsServerIntegration {
+@Ignore
+public class JenkinsServerIntegrationTest {
 
     private JenkinsHttpClient client;
     private JenkinsServer server;
@@ -40,7 +45,9 @@ public class JenkinsServerIntegration {
 
     @Before
     public void setUp() throws Exception {
-        client = new JenkinsHttpClient(new URI("http://localhost:8080"));
+        URL jenkinsUrl = new URL("http", "localhost", 8080, "/jenkins");
+        Auth auth = new CASAuth(new URL("http", "localhost", 8080, "/cas/v1/tickets/"), jenkinsUrl, "admin", "admin");
+        client = new JenkinsHttpClient(jenkinsUrl, auth);
         server = new JenkinsServer(client);
         executor = Executors.newCachedThreadPool();
     }
@@ -71,7 +78,7 @@ public class JenkinsServerIntegration {
 
     @Test
     public void shouldReturnDetailOfComputer() throws Exception {
-        Map<String, Computer> computers =  server.getComputers();
+        Map<String, Computer> computers = server.getComputers();
         assertTrue(computers.get("master").details().getDisplayName().equals("master"));
     }
 
@@ -96,9 +103,8 @@ public class JenkinsServerIntegration {
         final String jobName = "trunk";
 
         JobWithDetails job = server.getJob(jobName);
-
-        assertEquals("trunk",job.getName());
-        assertEquals("trunk",job.getDisplayName());
+        assertEquals("trunk", job.getName());
+        assertEquals("trunk", job.getDisplayName());
     }
 
     @Test
@@ -156,12 +162,14 @@ public class JenkinsServerIntegration {
     private class PerformPollingTest implements Callable<Void> {
         private final JenkinsServer server;
         private final String jobName;
+
         public PerformPollingTest(JenkinsServer server, String jobName) {
             this.server = server;
             this.jobName = jobName;
         }
+
         public Void call() throws InterruptedException, IOException {
-            while(true) {
+            while (true) {
                 Thread.sleep(500);
                 JobWithDetails jwd = server.getJobs().get(jobName).details();
 

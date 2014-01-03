@@ -4,7 +4,7 @@
  * Distributed under the MIT license: http://opensource.org/licenses/MIT
  */
 
-package com.offbytwo.jenkins.client;
+package com.offbytwo.jenkins.auth;
 
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
@@ -21,7 +21,7 @@ import org.apache.http.protocol.HttpContext;
 
 import java.io.IOException;
 
-class PreemptiveAuth implements HttpRequestInterceptor {
+class PreemptiveInterceptor implements HttpRequestInterceptor {
     @Override
     public void process(HttpRequest request, HttpContext context) throws HttpException, IOException {
         AuthState authState = (AuthState) context.getAttribute(ClientContext.TARGET_AUTH_STATE);
