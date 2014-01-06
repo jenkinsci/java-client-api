@@ -83,7 +83,7 @@ public class JenkinsServerIntegrationTest {
     }
 
     @Test
-    public void shouldReturnDetailOfLablel() throws Exception {
+    public void shouldReturnDetailOfLabel() throws Exception {
         assertTrue(server.getLabel("master").getName().equals("master"));
     }
 
