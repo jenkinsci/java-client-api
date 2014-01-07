@@ -11,8 +11,15 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import com.offbytwo.jenkins.auth.CASAuth;
+import com.offbytwo.jenkins.client.Auth;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -40,6 +47,7 @@ public class JenkinsServerTest {
     public void shouldReturnListOfJobs() throws Exception {
         assertTrue(server.getJobs().containsKey("hello"));
     }
+
 
     @Test
     public void testGetJobXml() throws Exception {

@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import static java.net.URLEncoder.encode;
-import static org.apache.commons.lang.StringUtils.join;
 
 public class Computer extends BaseModel {
     private String displayName;

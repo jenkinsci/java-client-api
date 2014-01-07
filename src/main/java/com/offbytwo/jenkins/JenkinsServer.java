@@ -7,8 +7,6 @@
 package com.offbytwo.jenkins;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
@@ -23,37 +21,25 @@ import org.apache.http.client.HttpResponseException;
  * The main starting point for interacting with a Jenkins server.
  */
 public class JenkinsServer {
-    private final JenkinsHttpClient client;
+    private JenkinsHttpClient client;
 
 
     /**
      * Create a new Jenkins server reference given only the server address
-     *
-     * @param serverUri address of jenkins server (ex. http://localhost:8080/jenkins)
      */
-    public JenkinsServer(URI serverUri) {
-        this(new JenkinsHttpClient(serverUri));
+    private JenkinsServer() {
+
     }
 
     /**
-     * Create a new Jenkins server reference given the address and credentials
+     * Create a new Jenkins server reference given only the server address
      *
-     * @param serverUri address of jenkins server (ex. http://localhost:8080/jenkins)
-     * @param username username to use when connecting
-     * @param passwordOrToken password (not recommended) or token (recommended)
-     */
-    public JenkinsServer(URI serverUri, String username, String passwordOrToken) {
-        this(new JenkinsHttpClient(serverUri, username, passwordOrToken));
-    }
-
-    /**
-     * Create a new Jenkins server directly from an HTTP client (ADVANCED)
-     *
-     * @param client Specialized client to use.
+     * @param client address of jenkins server (ex. http://localhost:8080/jenkins)
      */
     public JenkinsServer(JenkinsHttpClient client) {
         this.client = client;
     }
+
 
     /**
      * Get a list of all the defined jobs on the server (at the summary level)
@@ -78,14 +64,15 @@ public class JenkinsServer {
      * @return A single Job, null if not present
      * @throws IOException
      */
-    public JobWithDetails getJob(String jobName) throws  IOException {
+    public JobWithDetails getJob(String jobName) throws IOException {
         try {
-            JobWithDetails job = client.get("/job/"+encode(jobName),JobWithDetails.class);
+            JobWithDetails job = client.get("/job/" + encode(jobName), JobWithDetails.class);
+            System.out.println("/job/" + encode(jobName));
             job.setClient(client);
 
             return job;
         } catch (HttpResponseException e) {
-            if(e.getStatusCode() == 404) {
+            if (e.getStatusCode() == 404) {
                 return null;
             }
             throw e;
@@ -153,6 +140,6 @@ public class JenkinsServer {
 
     private String encode(String pathPart) {
         // jenkins doesn't like the + for space, use %20 instead
-        return URLEncoder.encode(pathPart).replaceAll("\\+","%20");
+        return URLEncoder.encode(pathPart).replaceAll("\\+", "%20");
     }
 }

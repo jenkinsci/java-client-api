@@ -6,25 +6,23 @@
 
 package com.offbytwo.jenkins.client;
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Scanner;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -32,46 +30,37 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.offbytwo.jenkins.model.BaseModel;
 
 public class JenkinsHttpClient {
-    private URI uri;
-    private DefaultHttpClient client;
-    private BasicHttpContext localContext;
+
+    private Auth auth;
+
+    private URL jenkinsUrl;
+
+    private HttpContext localContext;
 
     private ObjectMapper mapper;
+
     private String context;
 
     /**
      * Create an unauthenticated Jenkins HTTP client
-     *
-     * @param uri Location of the jenkins server (ex. http://localhost:8080)
      */
-    public JenkinsHttpClient(URI uri) {
-        this.context = uri.getPath();
-        if (!context.endsWith("/")) {
-            context += "/";
+    public JenkinsHttpClient(URL jenkinsUrl, Auth auth) {
+        try {
+            this.context = jenkinsUrl.toURI().getPath();
+            if (!context.endsWith("/")) {
+                context += "/";
+            }
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
         }
-        this.uri = uri;
+
         this.mapper = getDefaultMapper();
-        this.client = new DefaultHttpClient();
-    }
-
-    /**
-     * Create an authenticated Jenkins HTTP client
-     *
-     * @param uri      Location of the jenkins server (ex. http://localhost:8080)
-     * @param username Username to use when connecting
-     * @param password Password or auth token to use when connecting
-     */
-    public JenkinsHttpClient(URI uri, String username, String password) {
-        this(uri);
-        if (isNotBlank(username)) {
-            CredentialsProvider provider = client.getCredentialsProvider();
-            AuthScope scope = new AuthScope(uri.getHost(), uri.getPort(), "realm");
-            UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(username, password);
-            provider.setCredentials(scope, credentials);
-
-            localContext = new BasicHttpContext();
-            localContext.setAttribute("preemptive-auth", new BasicScheme());
-            client.addRequestInterceptor(new PreemptiveAuth(), 0);
+        this.auth = auth;
+        this.jenkinsUrl = jenkinsUrl;
+        if (auth.authentication()) {
+            localContext = auth.getContext();
+        } else {
+            throw new RuntimeException("authentication fails");
         }
     }
 
@@ -85,6 +74,7 @@ public class JenkinsHttpClient {
      * @throws IOException, HttpResponseException
      */
     public <T extends BaseModel> T get(String path, Class<T> cls) throws IOException, HttpResponseException {
+        HttpClient client = HttpClients.createDefault();
         HttpResponse response = client.execute(new HttpGet(api(path)), localContext);
         int status = response.getStatusLine().getStatusCode();
         if (status < 200 || status >= 300) {
@@ -104,7 +94,8 @@ public class JenkinsHttpClient {
      * @return the entity text
      * @throws IOException, HttpResponseException
      */
-    public String get(String path) throws IOException, HttpResponseException {
+    public String get(String path) throws IOException {
+        HttpClient client = HttpClients.createDefault();
         HttpResponse response = client.execute(new HttpGet(api(path)), localContext);
         int status = response.getStatusLine().getStatusCode();
         if (status < 200 || status >= 300) {
@@ -118,7 +109,7 @@ public class JenkinsHttpClient {
         }
         return sb.toString();
     }
-    
+
     /**
      * Perform a GET request and return the response as InputStream
      *
@@ -126,7 +117,8 @@ public class JenkinsHttpClient {
      * @return the response stream
      * @throws IOException, HttpResponseException
      */
-    public InputStream getFile(URI path) throws IOException, HttpResponseException {
+    public InputStream getFile(URI path) throws IOException {
+        HttpClient client = HttpClients.createDefault();
         HttpResponse response = client.execute(new HttpGet(path), localContext);
         int status = response.getStatusLine().getStatusCode();
         if (status < 200 || status >= 300) {
@@ -147,6 +139,7 @@ public class JenkinsHttpClient {
      * @throws IOException, HttpResponseException
      */
     public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException, HttpResponseException {
+        HttpClient client = HttpClients.createDefault();
         HttpPost request = new HttpPost(api(path));
         if (data != null) {
             StringEntity stringEntity = new StringEntity(mapper.writeValueAsString(data), "application/json");
@@ -154,12 +147,12 @@ public class JenkinsHttpClient {
         }
         HttpResponse response = client.execute(request, localContext);
         int status = response.getStatusLine().getStatusCode();
-       
+
         try {
-			if (status < 200 || status >= 300) {
-				throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
-			}
-			
+            if (status < 200 || status >= 300) {
+                throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
+            }
+
             if (cls != null) {
                 return objectFromResponse(cls, response);
             } else {
@@ -173,12 +166,13 @@ public class JenkinsHttpClient {
     /**
      * Perform a POST request of XML (instead of using json mapper) and return a string rendering of the response entity.
      *
-     * @param path path to request, can be relative or absolute
-     * @param XML data data to post
+     * @param path     path to request, can be relative or absolute
+     * @param xml_data data data to post
      * @return A string containing the xml response (if present)
      * @throws IOException, HttpResponseException
      */
     public String post_xml(String path, String xml_data) throws IOException, HttpResponseException {
+        HttpClient client = HttpClients.createDefault();
         HttpPost request = new HttpPost(api(path));
         if (xml_data != null) {
             request.setEntity(new StringEntity(xml_data, ContentType.APPLICATION_XML));
@@ -192,7 +186,7 @@ public class JenkinsHttpClient {
             InputStream content = response.getEntity().getContent();
             Scanner s = new Scanner(content);
             StringBuffer sb = new StringBuffer();
-            while(s.hasNext()) {
+            while (s.hasNext()) {
                 sb.append(s.next());
             }
             return sb.toString();
@@ -231,7 +225,12 @@ public class JenkinsHttpClient {
             String[] components = path.split("\\?", 2);
             path = urlJoin(components[0], "api/json") + "?" + components[1];
         }
-        URI requestUri = uri.resolve("/").resolve(path);
+        URI requestUri = null;
+        try {
+            requestUri = jenkinsUrl.toURI().resolve("/").resolve(path);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         return requestUri;
     }
 
@@ -248,4 +247,6 @@ public class JenkinsHttpClient {
         mapper.setDeserializationConfig(deserializationConfig.without(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES));
         return mapper;
     }
+
+
 }

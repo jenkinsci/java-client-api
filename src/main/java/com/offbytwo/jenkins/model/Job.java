@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import static java.net.URLEncoder.encode;
-import static org.apache.commons.lang.StringUtils.join;
+import static org.apache.commons.lang3.StringUtils.join;
 
 public class Job extends BaseModel {
     private String name;
