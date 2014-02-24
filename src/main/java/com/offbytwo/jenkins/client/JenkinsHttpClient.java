@@ -45,13 +45,23 @@ public class JenkinsHttpClient {
      * @param uri Location of the jenkins server (ex. http://localhost:8080)
      */
     public JenkinsHttpClient(URI uri) {
+        this(uri, new DefaultHttpClient());
+    }
+
+    /**
+     * Create an unauthenticated Jenkins HTTP client
+     *
+     * @param uri Location of the jenkins server (ex. http://localhost:8080)
+     * @param client An Apache HTTP client to use for making connections
+     */
+    public JenkinsHttpClient(URI uri, DefaultHttpClient client) {
         this.context = uri.getPath();
         if (!context.endsWith("/")) {
             context += "/";
         }
         this.uri = uri;
         this.mapper = getDefaultMapper();
-        this.client = new DefaultHttpClient();
+        this.client = client;
     }
 
     /**
@@ -62,7 +72,19 @@ public class JenkinsHttpClient {
      * @param password Password or auth token to use when connecting
      */
     public JenkinsHttpClient(URI uri, String username, String password) {
-        this(uri);
+        this(uri, username, password, new DefaultHttpClient());
+    }
+
+    /**
+     * Create an authenticated Jenkins HTTP client
+     *
+     * @param uri      Location of the jenkins server (ex. http://localhost:8080)
+     * @param username Username to use when connecting
+     * @param password Password or auth token to use when connecting
+		 * @param client An Apache HTTP client to use for making connections
+     */
+    public JenkinsHttpClient(URI uri, String username, String password, DefaultHttpClient client) {
+        this(uri, client);
         if (isNotBlank(username)) {
             CredentialsProvider provider = client.getCredentialsProvider();
             AuthScope scope = new AuthScope(uri.getHost(), uri.getPort(), "realm");
