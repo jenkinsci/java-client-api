@@ -17,6 +17,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -24,6 +25,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -45,13 +47,23 @@ public class JenkinsHttpClient {
      * @param uri Location of the jenkins server (ex. http://localhost:8080)
      */
     public JenkinsHttpClient(URI uri) {
+        this(uri, new DefaultHttpClient());
+    }
+
+    /**
+     * Create an unauthenticated Jenkins HTTP client
+     *
+     * @param uri Location of the jenkins server (ex. http://localhost:8080)
+     * @param defaultHttpClient Configured DefaultHttpClient to be used 
+     */
+    public JenkinsHttpClient(URI uri, DefaultHttpClient defaultHttpClient) {
         this.context = uri.getPath();
         if (!context.endsWith("/")) {
             context += "/";
         }
         this.uri = uri;
         this.mapper = getDefaultMapper();
-        this.client = new DefaultHttpClient();
+        this.client = defaultHttpClient;
     }
 
     /**
