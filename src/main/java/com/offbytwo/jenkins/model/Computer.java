@@ -6,15 +6,12 @@
 
 package com.offbytwo.jenkins.model;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
+import static java.net.URLEncoder.encode;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import static java.net.URLEncoder.encode;
-import static org.apache.commons.lang.StringUtils.join;
+import com.google.common.base.Function;
 
 public class Computer extends BaseModel {
     private String displayName;
@@ -41,7 +38,7 @@ public class Computer extends BaseModel {
         return this.displayName;
     }
 
-    public ComputerWithDetails details() throws IOException {
+    public ComputerWithDetails details() {
         return client.get("/computer/" + displayName.replaceAll("master", "(master)"), ComputerWithDetails.class);
     }
 

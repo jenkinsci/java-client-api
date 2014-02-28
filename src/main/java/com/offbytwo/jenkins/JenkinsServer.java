@@ -15,7 +15,9 @@ import java.util.Map;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
+import com.offbytwo.jenkins.client.JenkinsClientException;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
+import com.offbytwo.jenkins.client.JobNotFoundException;
 import com.offbytwo.jenkins.model.*;
 import org.apache.http.client.HttpResponseException;
 
@@ -25,11 +27,11 @@ import org.apache.http.client.HttpResponseException;
 public class JenkinsServer {
     private final JenkinsHttpClient client;
 
-
     /**
      * Create a new Jenkins server reference given only the server address
-     *
-     * @param serverUri address of jenkins server (ex. http://localhost:8080/jenkins)
+     * 
+     * @param serverUri
+     *            address of jenkins server (ex. http://localhost:8080/jenkins)
      */
     public JenkinsServer(URI serverUri) {
         this(new JenkinsHttpClient(serverUri));
@@ -37,10 +39,13 @@ public class JenkinsServer {
 
     /**
      * Create a new Jenkins server reference given the address and credentials
-     *
-     * @param serverUri address of jenkins server (ex. http://localhost:8080/jenkins)
-     * @param username username to use when connecting
-     * @param passwordOrToken password (not recommended) or token (recommended)
+     * 
+     * @param serverUri
+     *            address of jenkins server (ex. http://localhost:8080/jenkins)
+     * @param username
+     *            username to use when connecting
+     * @param passwordOrToken
+     *            password (not recommended) or token (recommended)
      */
     public JenkinsServer(URI serverUri, String username, String passwordOrToken) {
         this(new JenkinsHttpClient(serverUri, username, passwordOrToken));
@@ -48,8 +53,9 @@ public class JenkinsServer {
 
     /**
      * Create a new Jenkins server directly from an HTTP client (ADVANCED)
-     *
-     * @param client Specialized client to use.
+     * 
+     * @param client
+     *            Specialized client to use.
      */
     public JenkinsServer(JenkinsHttpClient client) {
         this.client = client;
@@ -57,13 +63,14 @@ public class JenkinsServer {
 
     /**
      * Get a list of all the defined jobs on the server (at the summary level)
-     *
+     * 
      * @return list of defined jobs (summary level, for details @see Job#details
      * @throws IOException
      */
-    public Map<String, Job> getJobs() throws IOException {
+    public Map<String, Job> getJobs() {
         List<Job> jobs = client.get("/", MainView.class).getJobs();
         return Maps.uniqueIndex(jobs, new Function<Job, String>() {
+
             @Override
             public String apply(Job job) {
                 job.setClient(client);
@@ -74,19 +81,19 @@ public class JenkinsServer {
 
     /**
      * Get a single Job from the server.
-     *
+     * 
      * @return A single Job, null if not present
      * @throws IOException
      */
-    public JobWithDetails getJob(String jobName) throws  IOException {
+    public JobWithDetails getJob(String jobName) {
         try {
-            JobWithDetails job = client.get("/job/"+encode(jobName),JobWithDetails.class);
+            JobWithDetails job = client.get("/job/" + encode(jobName), JobWithDetails.class);
             job.setClient(client);
 
             return job;
-        } catch (HttpResponseException e) {
-            if(e.getStatusCode() == 404) {
-                return null;
+        } catch (JenkinsClientException e) {
+            if (e.getStatusCode() == 404) {
+                throw new JobNotFoundException(jobName);
             }
             throw e;
         }
@@ -95,44 +102,52 @@ public class JenkinsServer {
 
     /**
      * Create a job on the server using the provided xml
-     *
+     * 
      * @return the new job object
      * @throws IOException
      */
-    public void createJob(String jobName, String jobXml) throws IOException {
+    public void createJob(String jobName, String jobXml) {
         client.post_xml("/createItem?name=" + encode(jobName), jobXml);
     }
 
     /**
      * Get the xml description of an existing job
-     *
+     * 
      * @return the new job object
      * @throws IOException
      */
-    public String getJobXml(String jobName) throws IOException {
-        return client.get("/job/" + encode(jobName) + "/config.xml");
+    public String getJobXml(String jobName) {
+        try {
+            return client.get("/job/" + encode(jobName) + "/config.xml");
+        } catch (JenkinsClientException e) {
+            if (e.getStatusCode() == 404) {
+                throw new JobNotFoundException(jobName);
+            } else {
+                throw e;
+            }
+        }
     }
 
     /**
      * Get the description of an existing Label
-     *
+     * 
      * @return label object
      * @throws IOException
      */
-    public LabelWithDetails getLabel(String labelName) throws IOException {
+    public LabelWithDetails getLabel(String labelName) {
         return client.get("/label/" + encode(labelName), LabelWithDetails.class);
     }
 
-
     /**
      * Get a list of all the computers on the server (at the summary level)
-     *
+     * 
      * @return list of defined computers (summary level, for details @see Computer#details
      * @throws IOException
      */
-    public Map<String, Computer> getComputers() throws IOException {
+    public Map<String, Computer> getComputers() {
         List<Computer> computers = client.get("computer/", Computer.class).getComputers();
         return Maps.uniqueIndex(computers, new Function<Computer, String>() {
+
             @Override
             public String apply(Computer computer) {
                 computer.setClient(client);
@@ -143,16 +158,24 @@ public class JenkinsServer {
 
     /**
      * Update the xml description of an existing job
-     *
+     * 
      * @return the new job object
      * @throws IOException
      */
-    public void updateJob(String jobName, String jobXml) throws IOException {
-        client.post_xml("/job/" + encode(jobName) + "/config.xml", jobXml);
+    public void updateJob(String jobName, String jobXml) {
+        try {
+            client.post_xml("/job/" + encode(jobName) + "/config.xml", jobXml);
+        } catch (JenkinsClientException e) {
+            if (e.getStatusCode() == 404) {
+                throw new JobNotFoundException(jobName);
+            } else {
+                throw e;
+            }
+        }
     }
 
     private String encode(String pathPart) {
         // jenkins doesn't like the + for space, use %20 instead
-        return URLEncoder.encode(pathPart).replaceAll("\\+","%20");
+        return URLEncoder.encode(pathPart).replaceAll("\\+", "%20");
     }
 }

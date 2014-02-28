@@ -22,14 +22,12 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.PoolingClientConnectionManager;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.offbytwo.jenkins.client.JenkinsClientException;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
+import com.offbytwo.jenkins.client.JobNotFoundException;
 import com.offbytwo.jenkins.model.Build;
 import com.offbytwo.jenkins.model.BuildResult;
 import com.offbytwo.jenkins.model.Computer;
@@ -39,33 +37,30 @@ import com.offbytwo.jenkins.model.JobWithDetails;
 public class JenkinsServerIntegration {
 
     private static final String JENKINS_MASTER = "master";
+    
+    private static final String NON_EXISTING_JOB = "imprettysurethereisnojobwiththisname";
     private static final String JENKINS_TEST_JOB = "jenkins-client-test";
+
     private static final String SAMPLE_JOB_FILE = "sample-job.xml";
     
     private JenkinsHttpClient client;
     private JenkinsServer server;
-    private PoolingClientConnectionManager poolingConnectionManager = new PoolingClientConnectionManager();
     private ExecutorService executor;
     private String sampleJobXml = "";
     
     @Before
     public void setUp() throws Exception {
-        client = new JenkinsHttpClient(new URI("http://localhost:8080"), new DefaultHttpClient(poolingConnectionManager));
+        client = new JenkinsHttpClient(new URI("http://localhost:8080"));
         server = new JenkinsServer(client);
         executor = Executors.newCachedThreadPool();
         sampleJobXml = loadSampleJob();
         setupTestJob();
     }
 
-    @After
-    public void tearDown() throws Exception {
-        poolingConnectionManager.shutdown();
-    }
-
     private void setupTestJob() throws IOException {
         try {
             server.createJob(JENKINS_TEST_JOB, sampleJobXml);
-        } catch (HttpResponseException e) {
+        } catch (JenkinsClientException e) {
             if (e.getStatusCode() == 400) {
                 server.updateJob(JENKINS_TEST_JOB, sampleJobXml);
             } else {
@@ -80,54 +75,54 @@ public class JenkinsServerIntegration {
     }
 
     @Test
-    public void shouldReturnListOfJobs() throws Exception {
+    public void shouldReturnListOfJobs() {
         assertTrue(server.getJobs().containsKey(JENKINS_TEST_JOB));
     }
 
     @Test
-    public void shouldReturnListOfComputers() throws Exception {
+    public void shouldReturnListOfComputers() {
         assertTrue(server.getComputers().containsKey(JENKINS_MASTER));
     }
 
     @Test
-    public void shouldReturnDetailOfComputer() throws Exception {
+    public void shouldReturnDetailOfComputer() {
         Map<String, Computer> computers = server.getComputers();
         assertTrue(computers.get(JENKINS_MASTER).details().getDisplayName().equals(JENKINS_MASTER));
     }
 
     @Test
-    public void shouldReturnDetailOfLablel() throws Exception {
+    public void shouldReturnDetailOfLablel() {
         assertTrue(server.getLabel(JENKINS_MASTER).getName().equals(JENKINS_MASTER));
     }
 
-    // Note this test depends upon the xml in job-template.xml being a valid job
-    // description for the instance of jenkins you are running.
     @Test
-    public void testGetJobXml() throws Exception {
+    public void testGetJobXml() {
         String xmlReturned = server.getJobXml(JENKINS_TEST_JOB);
         assertTrue(xmlReturned.length() > 0);
     }
 
+    @Test(expected = JobNotFoundException.class)
+    public void getJobXmlForNonExistingJobShouldThrowException() {
+        server.getJobXml(NON_EXISTING_JOB);
+    }
+
     @Test
-    public void testGetJobByName() throws Exception {
+    public void testGetJobByName() {
         JobWithDetails job = server.getJob(JENKINS_TEST_JOB);
 
         assertEquals(JENKINS_TEST_JOB, job.getName());
         assertEquals(JENKINS_TEST_JOB, job.getDisplayName());
     }
 
-    @Test
-    public void testGetJobByNameDoesntExist() throws Exception {
-        final String jobName = "imprettysurethereisnojobwiththisname";
+    @Test(expected = JobNotFoundException.class)
+    public void testGetJobByNameDoesntExist() {
+        final String jobName = NON_EXISTING_JOB;
 
-        JobWithDetails job = server.getJob(jobName);
-
-        assertEquals(null, job);
+        server.getJob(jobName);
     }
 
     @Test
-    public void testCreateJob() throws Exception {
-
+    public void testCreateJob() {
         final String jobName = "test-job-" + UUID.randomUUID().toString();
 
         server.createJob(jobName, sampleJobXml);
@@ -164,7 +159,7 @@ public class JenkinsServerIntegration {
     }
 
     @Test
-    public void testUpdateJob() throws Exception {
+    public void testUpdateJob() {
         final String description = "test-" + UUID.randomUUID().toString();
 
         String sourceXml = server.getJobXml(JENKINS_TEST_JOB);
@@ -174,6 +169,12 @@ public class JenkinsServerIntegration {
 
         String confirmXml = server.getJobXml(JENKINS_TEST_JOB);
         assertTrue(confirmXml.contains(description));
+
+    }
+
+    @Test(expected = JobNotFoundException.class)
+    public void updateNonExistingJobShouldThrowException() {
+        server.updateJob(NON_EXISTING_JOB, sampleJobXml);
 
     }
 
