@@ -6,14 +6,14 @@
 
 package com.offbytwo.jenkins.model;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
+import static java.net.URLEncoder.encode;
+import static org.apache.commons.lang.StringUtils.join;
 
 import java.io.IOException;
 import java.util.Map;
 
-import static java.net.URLEncoder.encode;
-import static org.apache.commons.lang.StringUtils.join;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 
 public class Job extends BaseModel {
     private String name;
@@ -36,14 +36,14 @@ public class Job extends BaseModel {
         return url;
     }
 
-    public JobWithDetails details() throws IOException {
+    public JobWithDetails details() {
         return client.get(url, JobWithDetails.class);
     }
 
     /**
      * Trigger a build without parameters
      */
-    public void build() throws IOException {
+    public void build() {
         client.post(url + "build");
     }
 

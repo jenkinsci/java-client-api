@@ -6,7 +6,6 @@
 
 package com.offbytwo.jenkins.model;
 
-import java.io.IOException;
 
 public class Build extends BaseModel {
     int number;
@@ -32,7 +31,7 @@ public class Build extends BaseModel {
         return url;
     }
 
-    public BuildWithDetails details() throws IOException {
+    public BuildWithDetails details() {
         return client.get(url, BuildWithDetails.class);
     }
 }
