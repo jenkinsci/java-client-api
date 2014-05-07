@@ -8,10 +8,7 @@ package com.offbytwo.jenkins.client;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.Scanner;
+import com.offbytwo.jenkins.model.BaseModel;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
@@ -20,6 +17,7 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
@@ -29,7 +27,10 @@ import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.offbytwo.jenkins.model.BaseModel;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Scanner;
 
 public class JenkinsHttpClient {
     private URI uri;
@@ -84,16 +85,18 @@ public class JenkinsHttpClient {
      * @return an instance of the supplied class
      * @throws IOException, HttpResponseException
      */
-    public <T extends BaseModel> T get(String path, Class<T> cls) throws IOException, HttpResponseException {
-        HttpResponse response = client.execute(new HttpGet(api(path)), localContext);
-        int status = response.getStatusLine().getStatusCode();
-        if (status < 200 || status >= 300) {
-            throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
-        }
+    public <T extends BaseModel> T get(String path, Class<T> cls) throws IOException {
+        HttpGet getMethod = new HttpGet(api(path));
+        HttpResponse response = client.execute(getMethod, localContext);
         try {
+            int status = response.getStatusLine().getStatusCode();
+            if (status < 200 || status >= 300) {
+                throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
+            }
             return objectFromResponse(cls, response);
         } finally {
             EntityUtils.consume(response.getEntity());
+            releaseConnection(getMethod);
         }
     }
 
@@ -104,19 +107,24 @@ public class JenkinsHttpClient {
      * @return the entity text
      * @throws IOException, HttpResponseException
      */
-    public String get(String path) throws IOException, HttpResponseException {
-        HttpResponse response = client.execute(new HttpGet(api(path)), localContext);
-        int status = response.getStatusLine().getStatusCode();
-        if (status < 200 || status >= 300) {
-            throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
+    public String get(String path) throws IOException {
+        HttpGet getMethod = new HttpGet(api(path));
+        HttpResponse response = client.execute(getMethod, localContext);
+        try {
+            int status = response.getStatusLine().getStatusCode();
+            if (status < 200 || status >= 300) {
+                throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
+            }
+            Scanner s = new Scanner(response.getEntity().getContent());
+            s.useDelimiter("\\z");
+            StringBuffer sb = new StringBuffer();
+            while (s.hasNext()) {
+                sb.append(s.next());
+            }
+            return sb.toString();
+        } finally {
+            releaseConnection(getMethod);
         }
-        Scanner s = new Scanner(response.getEntity().getContent());
-        s.useDelimiter("\\z");
-        StringBuffer sb = new StringBuffer();
-        while (s.hasNext()) {
-            sb.append(s.next());
-        }
-        return sb.toString();
     }
     
     /**
@@ -126,13 +134,18 @@ public class JenkinsHttpClient {
      * @return the response stream
      * @throws IOException, HttpResponseException
      */
-    public InputStream getFile(URI path) throws IOException, HttpResponseException {
-        HttpResponse response = client.execute(new HttpGet(path), localContext);
-        int status = response.getStatusLine().getStatusCode();
-        if (status < 200 || status >= 300) {
-            throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
+    public InputStream getFile(URI path) throws IOException {
+        HttpGet getMethod = new HttpGet(path);
+        try {
+            HttpResponse response = client.execute(getMethod, localContext);
+            int status = response.getStatusLine().getStatusCode();
+            if (status < 200 || status >= 300) {
+                throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
+            }
+            return response.getEntity().getContent();
+        } finally {
+            releaseConnection(getMethod);
         }
-        return response.getEntity().getContent();
     }
 
     /**
@@ -146,7 +159,7 @@ public class JenkinsHttpClient {
      * @return an instance of the supplied class
      * @throws IOException, HttpResponseException
      */
-    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException, HttpResponseException {
+    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException {
         HttpPost request = new HttpPost(api(path));
         if (data != null) {
             StringEntity stringEntity = new StringEntity(mapper.writeValueAsString(data), "application/json");
@@ -167,6 +180,7 @@ public class JenkinsHttpClient {
             }
         } finally {
             EntityUtils.consume(response.getEntity());
+            releaseConnection(request);
         }
     }
 
@@ -174,11 +188,11 @@ public class JenkinsHttpClient {
      * Perform a POST request of XML (instead of using json mapper) and return a string rendering of the response entity.
      *
      * @param path path to request, can be relative or absolute
-     * @param XML data data to post
+     * @param xml_data data data to post
      * @return A string containing the xml response (if present)
      * @throws IOException, HttpResponseException
      */
-    public String post_xml(String path, String xml_data) throws IOException, HttpResponseException {
+    public String post_xml(String path, String xml_data) throws IOException {
         HttpPost request = new HttpPost(api(path));
         if (xml_data != null) {
             request.setEntity(new StringEntity(xml_data, ContentType.APPLICATION_XML));
@@ -198,6 +212,7 @@ public class JenkinsHttpClient {
             return sb.toString();
         } finally {
             EntityUtils.consume(response.getEntity());
+            releaseConnection(request);
         }
     }
 
@@ -207,7 +222,7 @@ public class JenkinsHttpClient {
      * @param path path to request
      * @throws IOException, HttpResponseException
      */
-    public void post(String path) throws IOException, HttpResponseException {
+    public void post(String path) throws IOException {
         post(path, null, null);
     }
 
@@ -231,8 +246,7 @@ public class JenkinsHttpClient {
             String[] components = path.split("\\?", 2);
             path = urlJoin(components[0], "api/json") + "?" + components[1];
         }
-        URI requestUri = uri.resolve("/").resolve(path);
-        return requestUri;
+        return uri.resolve("/").resolve(path);
     }
 
     private <T extends BaseModel> T objectFromResponse(Class<T> cls, HttpResponse response) throws IOException {
@@ -248,4 +262,9 @@ public class JenkinsHttpClient {
         mapper.setDeserializationConfig(deserializationConfig.without(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES));
         return mapper;
     }
+
+    private void releaseConnection(HttpRequestBase httpRequestBase) {
+        httpRequestBase.releaseConnection();
+    }
+
 }
