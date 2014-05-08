@@ -56,6 +56,20 @@ public class JenkinsServer {
     }
 
     /**
+     * Get the current status of the Jenkins end-point by pinging it.
+     *
+     * @return true if Jenkins is up and running, false otherwise
+     */
+    public boolean isRunning() {
+        try {
+            client.get("/");
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
      * Get a list of all the defined jobs on the server (at the summary level)
      *
      * @return list of defined jobs (summary level, for details @see Job#details
