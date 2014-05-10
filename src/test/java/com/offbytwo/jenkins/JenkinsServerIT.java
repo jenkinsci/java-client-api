@@ -11,6 +11,17 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotEquals;
 
+import com.google.common.collect.ImmutableMap;
+import com.offbytwo.jenkins.client.JenkinsHttpClient;
+import com.offbytwo.jenkins.model.Build;
+import com.offbytwo.jenkins.model.BuildResult;
+import com.offbytwo.jenkins.model.BuildWithDetails;
+import com.offbytwo.jenkins.model.Computer;
+import com.offbytwo.jenkins.model.Job;
+import com.offbytwo.jenkins.model.JobWithDetails;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -37,12 +48,12 @@ import com.offbytwo.jenkins.model.Computer;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.JobWithDetails;
 
-public class JenkinsServerIntegration {
+public class JenkinsServerIT {
 
     private static final String JENKINS_MASTER = "master";
     private static final String JENKINS_TEST_JOB = "jenkins-client-test";
     private static final String SAMPLE_JOB_FILE = "sample-job.xml";
-    
+
     private JenkinsHttpClient client;
     private JenkinsServer server;
     private PoolingClientConnectionManager poolingConnectionManager = new PoolingClientConnectionManager();
@@ -83,6 +94,20 @@ public class JenkinsServerIntegration {
     @Test
     public void shouldReturnListOfJobs() throws Exception {
         assertTrue(server.getJobs().containsKey(JENKINS_TEST_JOB));
+    }
+
+    @Test
+    public void shouldReturnBuildsForJob() throws Exception {
+        JobWithDetails job = server.getJobs().get("trunk").details();
+        assertEquals(5, job.getBuilds().get(0).getNumber());
+    }
+
+    @Test
+    public void shouldReturnBuildStatusForBuild() throws Exception {
+        JobWithDetails job = server.getJobs().get("pr").details();
+        BuildWithDetails build = job.getBuilds().get(0).details();
+        assertEquals(BuildResult.SUCCESS, build.getResult());
+        assertEquals("foobar", build.getParameters().get("REVISION"));
     }
 
     @Test
@@ -184,12 +209,10 @@ public class JenkinsServerIntegration {
     private class PerformPollingTest implements Callable<Void> {
         private final JenkinsServer server;
         private final String jobName;
-
         public PerformPollingTest(JenkinsServer server, String jobName) {
             this.server = server;
             this.jobName = jobName;
         }
-
         public Void call() throws InterruptedException, IOException {
             while (true) {
                 Thread.sleep(500);
