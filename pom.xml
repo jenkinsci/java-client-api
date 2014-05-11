@@ -151,6 +151,7 @@
                 <version>2.17</version>
                 <executions>
                     <execution>
+                        <id>default</id>
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
