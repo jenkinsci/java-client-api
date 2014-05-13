@@ -68,6 +68,8 @@ public class JenkinsServerIT {
         FreeStyleProject pr = jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
         pr.scheduleBuild(0, new Cause.UserCause(), new ParametersAction(new StringParameterValue("REVISION", "foobar")));
 
+        while(pr.isInQueue() || pr.isBuilding()) {}
+
         JobWithDetails job = server.getJobs().get(JENKINS_TEST_JOB).details();
         BuildWithDetails build = job.getBuilds().get(0).details();
         assertEquals(BuildResult.SUCCESS, build.getResult());
