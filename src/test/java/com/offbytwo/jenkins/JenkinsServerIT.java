@@ -6,105 +6,69 @@
 
 package com.offbytwo.jenkins;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotEquals;
-
-import com.google.common.collect.ImmutableMap;
-import com.offbytwo.jenkins.client.JenkinsHttpClient;
-import com.offbytwo.jenkins.model.Build;
 import com.offbytwo.jenkins.model.BuildResult;
 import com.offbytwo.jenkins.model.BuildWithDetails;
 import com.offbytwo.jenkins.model.Computer;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.JobWithDetails;
+import hudson.model.Cause;
+import hudson.model.FreeStyleProject;
+import hudson.model.ParametersAction;
+import hudson.model.StringParameterValue;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.jvnet.hudson.test.JenkinsRule;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.PoolingClientConnectionManager;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.offbytwo.jenkins.client.JenkinsHttpClient;
-import com.offbytwo.jenkins.model.Build;
-import com.offbytwo.jenkins.model.BuildResult;
-import com.offbytwo.jenkins.model.Computer;
-import com.offbytwo.jenkins.model.Job;
-import com.offbytwo.jenkins.model.JobWithDetails;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class JenkinsServerIT {
 
+    @Rule
+    public JenkinsRule jenkinsRule = new JenkinsRule();
+
     private static final String JENKINS_MASTER = "master";
     private static final String JENKINS_TEST_JOB = "jenkins-client-test";
-    private static final String SAMPLE_JOB_FILE = "sample-job.xml";
 
-    private JenkinsHttpClient client;
     private JenkinsServer server;
-    private PoolingClientConnectionManager poolingConnectionManager = new PoolingClientConnectionManager();
-    private ExecutorService executor;
-    private String sampleJobXml = "";
-    
+
     @Before
     public void setUp() throws Exception {
-        client = new JenkinsHttpClient(new URI("http://localhost:8080"), new DefaultHttpClient(poolingConnectionManager));
-        server = new JenkinsServer(client);
-        executor = Executors.newCachedThreadPool();
-        sampleJobXml = loadSampleJob();
-        setupTestJob();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        poolingConnectionManager.shutdown();
-    }
-
-    private void setupTestJob() throws IOException {
-        try {
-            server.createJob(JENKINS_TEST_JOB, sampleJobXml);
-        } catch (HttpResponseException e) {
-            if (e.getStatusCode() == 400) {
-                server.updateJob(JENKINS_TEST_JOB, sampleJobXml);
-            } else {
-                throw e;
-            }
-        }
-    }
-
-    private String loadSampleJob() throws IOException {
-        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(SAMPLE_JOB_FILE);
-        return IOUtils.toString(is);
+        jenkinsRule.getInstance().getCrumbIssuer().getCrumb();
+        jenkinsRule.getInstance().getCrumbIssuer().getCrumbRequestField();
+        server = new JenkinsServer(jenkinsRule.getURL().toURI());
     }
 
     @Test
     public void shouldReturnListOfJobs() throws Exception {
+        jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
         assertTrue(server.getJobs().containsKey(JENKINS_TEST_JOB));
     }
 
     @Test
     public void shouldReturnBuildsForJob() throws Exception {
-        JobWithDetails job = server.getJobs().get("trunk").details();
+        FreeStyleProject trunk = jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
+        for(int i = 0; i<5; i++)
+            trunk.scheduleBuild(0, new Cause.UserCause(),
+                    new ParametersAction(new StringParameterValue("BUILD NUMBER", "" + i)));
+
+        while(trunk.isInQueue()|| trunk.isBuilding()) {}
+
+        JobWithDetails job = server.getJobs().get(JENKINS_TEST_JOB).details();
         assertEquals(5, job.getBuilds().get(0).getNumber());
     }
 
     @Test
     public void shouldReturnBuildStatusForBuild() throws Exception {
-        JobWithDetails job = server.getJobs().get("pr").details();
+        FreeStyleProject pr = jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
+        pr.scheduleBuild(0, new Cause.UserCause(), new ParametersAction(new StringParameterValue("REVISION", "foobar")));
+
+        JobWithDetails job = server.getJobs().get(JENKINS_TEST_JOB).details();
         BuildWithDetails build = job.getBuilds().get(0).details();
         assertEquals(BuildResult.SUCCESS, build.getResult());
         assertEquals("foobar", build.getParameters().get("REVISION"));
@@ -130,12 +94,16 @@ public class JenkinsServerIT {
     // description for the instance of jenkins you are running.
     @Test
     public void testGetJobXml() throws Exception {
+        jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
+
         String xmlReturned = server.getJobXml(JENKINS_TEST_JOB);
         assertTrue(xmlReturned.length() > 0);
     }
 
     @Test
     public void testGetJobByName() throws Exception {
+        jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
+
         JobWithDetails job = server.getJob(JENKINS_TEST_JOB);
 
         assertEquals(JENKINS_TEST_JOB, job.getName());
@@ -145,9 +113,7 @@ public class JenkinsServerIT {
     @Test
     public void testGetJobByNameDoesntExist() throws Exception {
         final String jobName = "imprettysurethereisnojobwiththisname";
-
         JobWithDetails job = server.getJob(jobName);
-
         assertEquals(null, job);
     }
 
@@ -156,7 +122,10 @@ public class JenkinsServerIT {
 
         final String jobName = "test-job-" + UUID.randomUUID().toString();
 
-        server.createJob(jobName, sampleJobXml);
+        jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
+        String sourceXml = server.getJobXml(JENKINS_TEST_JOB);
+
+        server.createJob(jobName, sourceXml);
 
         Map<String, Job> jobs = server.getJobs();
         assertTrue(jobs.containsKey(jobName));
@@ -169,32 +138,22 @@ public class JenkinsServerIT {
     public void shouldBuildAJob() throws Exception {
         final String jobName = "test-job-" + UUID.randomUUID().toString();
 
-        server.createJob(jobName, sampleJobXml);
-        JobWithDetails job = server.getJob(jobName);
+        FreeStyleProject project = jenkinsRule.getInstance().createProject(FreeStyleProject.class, jobName);
+        assertTrue(jenkinsRule.getInstance().getJobNames().contains(jobName));
 
-        assertNotNull(job);
-        assertTrue(job.getBuilds().size() == 0);
+        JobWithDetails job = server.getJob(jobName);
         job.build();
 
-        // wait to see if the job finishes, but with a timeout
-        Future<Void> future = executor.submit(new PerformPollingTest(server, jobName));
-
-        // If this times out, either jenkins is slow or our test failed!
-        // IME, usually takes about 10-15 seconds
-        future.get(30, TimeUnit.SECONDS);
-
-        Build build = server.getJob(jobName).getLastSuccessfulBuild();
-        
-        assertEquals(BuildResult.SUCCESS, build.details().getResult());
-        assertEquals(1, build.getNumber());
-        assertNotEquals(0, build.details().getEstimatedDuration());
-        assertNotEquals(-1, build.details().getConsoleOutputText().indexOf("Finished: SUCCESS"));
-        assertNotEquals(-1, build.details().getConsoleOutputHtml().indexOf("<a href='/user/null' class='model-link'>anonymous</a>"));
+        while(project.isInQueue()|| project.isBuilding()) {}
+        assertTrue(job.getBuilds().size() == 1);
     }
 
     @Test
     public void testUpdateJob() throws Exception {
         final String description = "test-" + UUID.randomUUID().toString();
+
+        FreeStyleProject freeStyleProject = jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
+        freeStyleProject.setDescription(description);
 
         String sourceXml = server.getJobXml(JENKINS_TEST_JOB);
         String newXml = sourceXml.replaceAll("<description>.*</description>", "<description>" + description
@@ -203,30 +162,5 @@ public class JenkinsServerIT {
 
         String confirmXml = server.getJobXml(JENKINS_TEST_JOB);
         assertTrue(confirmXml.contains(description));
-
-    }
-
-    private class PerformPollingTest implements Callable<Void> {
-        private final JenkinsServer server;
-        private final String jobName;
-        public PerformPollingTest(JenkinsServer server, String jobName) {
-            this.server = server;
-            this.jobName = jobName;
-        }
-        public Void call() throws InterruptedException, IOException {
-            while (true) {
-                Thread.sleep(500);
-                JobWithDetails jwd = server.getJob(jobName);
-
-                try {
-                    // Throws NPE until the first build succeeds
-                    jwd.getLastSuccessfulBuild();
-                } catch (NullPointerException e) {
-                    continue;
-                }
-                // build succeeded
-                return null;
-            }
-        }
     }
 }
