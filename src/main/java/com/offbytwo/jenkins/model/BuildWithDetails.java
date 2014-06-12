@@ -30,6 +30,8 @@ public class BuildWithDetails extends Build {
     long timestamp;
     BuildResult result;
     List<Artifact> artifacts;
+    String consoleOutputText;
+    String consoleOutputHtml;
 
     public List<Artifact> getArtifacts() {
         return artifacts;
@@ -90,6 +92,14 @@ public class BuildWithDetails extends Build {
         }
 
         return params;
+    }
+
+    public String getConsoleOutputText() throws IOException {
+        return client.get(url + "/logText/progressiveText");
+    }
+
+    public String getConsoleOutputHtml() throws IOException {
+        return client.get(url + "/logText/progressiveHtml");
     }
 
     public InputStream downloadArtifact(Artifact a) throws IOException, URISyntaxException {
