@@ -24,6 +24,7 @@ public class BuildWithDetails extends Build {
     boolean building;
     String description;
     int duration;
+    int estimatedDuration;
     String fullDisplayName;
     String id;
     long timestamp;
@@ -44,6 +45,10 @@ public class BuildWithDetails extends Build {
 
     public int getDuration() {
         return duration;
+    }
+
+    public int getEstimatedDuration() {
+        return estimatedDuration;
     }
 
     public String getFullDisplayName() {

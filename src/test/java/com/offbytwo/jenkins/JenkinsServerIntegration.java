@@ -9,6 +9,7 @@ package com.offbytwo.jenkins;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotEquals;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -161,6 +162,7 @@ public class JenkinsServerIntegration {
         
         assertEquals(BuildResult.SUCCESS, build.details().getResult());
         assertEquals(1, build.getNumber());
+        assertNotEquals(0, build.details().getEstimatedDuration());
     }
 
     @Test
