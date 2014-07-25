@@ -92,6 +92,20 @@ public class JenkinsServer {
         }
 
     }
+    
+    public MavenJobWithDetails getMavenJob(String jobName) throws IOException {
+        try {
+            MavenJobWithDetails job = client.get("/job/"+encode(jobName), MavenJobWithDetails.class);
+            job.setClient(client);
+
+            return job;
+        } catch (HttpResponseException e) {
+            if(e.getStatusCode() == 404) {
+                return null;
+            }
+            throw e;
+        }
+    }
 
     /**
      * Create a job on the server using the provided xml
