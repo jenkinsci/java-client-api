@@ -106,7 +106,7 @@ public class JenkinsServer {
         }
 
     }
-    
+
     public MavenJobWithDetails getMavenJob(String jobName) throws IOException {
         try {
             MavenJobWithDetails job = client.get("/job/"+encode(jobName), MavenJobWithDetails.class);
