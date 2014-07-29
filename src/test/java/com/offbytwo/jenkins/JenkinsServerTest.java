@@ -11,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import org.junit.Before;
@@ -79,5 +80,17 @@ public class JenkinsServerTest {
         Mockito.verify(client).post_xml(Mockito.eq("/createItem?name=" + jobName), captureString.capture());
         String xmlReturn = captureString.getValue();
         assertEquals(xmlReturn, xmlString);
+    }
+
+    @Test
+    public void testJenkinsConnectivity() throws IOException {
+        Mockito.when(client.get("/")).thenReturn("<xml>not a real response</xml>");
+        assertEquals(server.isRunning(), true);
+    }
+
+    @Test
+    public void testJenkinsConnectivityBroken() throws  IOException {
+        Mockito.when(client.get("/")).thenThrow(IOException.class);
+        assertEquals(server.isRunning(), false);
     }
 }
