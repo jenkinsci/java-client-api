@@ -56,6 +56,20 @@ public class JenkinsServer {
     }
 
     /**
+     * Get the current status of the Jenkins end-point by pinging it.
+     *
+     * @return true if Jenkins is up and running, false otherwise
+     */
+    public boolean isRunning() {
+        try {
+            client.get("/");
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
      * Get a list of all the defined jobs on the server (at the summary level)
      *
      * @return list of defined jobs (summary level, for details @see Job#details
@@ -91,6 +105,20 @@ public class JenkinsServer {
             throw e;
         }
 
+    }
+    
+    public MavenJobWithDetails getMavenJob(String jobName) throws IOException {
+        try {
+            MavenJobWithDetails job = client.get("/job/"+encode(jobName), MavenJobWithDetails.class);
+            job.setClient(client);
+
+            return job;
+        } catch (HttpResponseException e) {
+            if(e.getStatusCode() == 404) {
+                return null;
+            }
+            throw e;
+        }
     }
 
     /**

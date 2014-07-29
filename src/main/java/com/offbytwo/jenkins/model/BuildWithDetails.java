@@ -24,11 +24,14 @@ public class BuildWithDetails extends Build {
     boolean building;
     String description;
     int duration;
+    int estimatedDuration;
     String fullDisplayName;
     String id;
     long timestamp;
     BuildResult result;
     List<Artifact> artifacts;
+    String consoleOutputText;
+    String consoleOutputHtml;
 
     public List<Artifact> getArtifacts() {
         return artifacts;
@@ -44,6 +47,10 @@ public class BuildWithDetails extends Build {
 
     public int getDuration() {
         return duration;
+    }
+
+    public int getEstimatedDuration() {
+        return estimatedDuration;
     }
 
     public String getFullDisplayName() {
@@ -85,6 +92,14 @@ public class BuildWithDetails extends Build {
         }
 
         return params;
+    }
+
+    public String getConsoleOutputText() throws IOException {
+        return client.get(url + "/logText/progressiveText");
+    }
+
+    public String getConsoleOutputHtml() throws IOException {
+        return client.get(url + "/logText/progressiveHtml");
     }
 
     public InputStream downloadArtifact(Artifact a) throws IOException, URISyntaxException {
