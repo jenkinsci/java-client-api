@@ -30,9 +30,9 @@ public class HttpRequestValidatorTest {
     }
 
     @Test
-    public void shouldThrowHttpResponseExceptionWhenStatusIsHigherThan300() {
+    public void shouldThrowHttpResponseExceptionWhenStatusIsHigherThan400() {
         // given
-        httpResponse = givenResponseWithCode(304);
+        httpResponse = givenResponseWithCode(403);
 
         // when
         httpResponseExceptionThrown = validateResponse(httpResponse);
@@ -42,9 +42,9 @@ public class HttpRequestValidatorTest {
     }
 
     @Test
-    public void shouldThrowHttpResponseExceptionWhenStatusIs300() {
+    public void shouldThrowHttpResponseExceptionWhenStatusIs400() {
         // given
-        httpResponse = givenResponseWithCode(300);
+        httpResponse = givenResponseWithCode(400);
 
         // when
         httpResponseExceptionThrown  = validateResponse(httpResponse);
@@ -54,7 +54,7 @@ public class HttpRequestValidatorTest {
     }
 
     @Test
-    public void shouldNotThrowHttpResponseExceptionWhenStatusIsBetween200and300() {
+    public void shouldNotThrowHttpResponseExceptionWhenStatusIsBetween200and400() {
         // given
         httpResponse = givenResponseWithCode(220);
 
