@@ -7,7 +7,7 @@ public class HttpResponseValidator {
 
     public void validateResponse(HttpResponse response) throws HttpResponseException {
         int status = response.getStatusLine().getStatusCode();
-        if (status < 200 || status >= 300) {
+        if (status < 200 || status >= 400) {
             throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
         }
     }

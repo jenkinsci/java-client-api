@@ -11,6 +11,7 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
 import com.offbytwo.jenkins.model.BaseModel;
 
+import com.offbytwo.jenkins.model.Crumb;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -22,6 +23,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -44,7 +46,7 @@ public class JenkinsHttpClient {
 
     /**
      * Create an unauthenticated Jenkins HTTP client
-     * 
+     *
      * @param uri Location of the jenkins server (ex. http://localhost:8080)
      * @param defaultHttpClient Configured DefaultHttpClient to be used
      */
@@ -61,7 +63,7 @@ public class JenkinsHttpClient {
 
     /**
      * Create an unauthenticated Jenkins HTTP client
-     * 
+     *
      * @param uri Location of the jenkins server (ex. http://localhost:8080)
      */
     public JenkinsHttpClient(URI uri) {
@@ -70,7 +72,7 @@ public class JenkinsHttpClient {
 
     /**
      * Create an authenticated Jenkins HTTP client
-     * 
+     *
      * @param uri Location of the jenkins server (ex. http://localhost:8080)
      * @param username Username to use when connecting
      * @param password Password or auth token to use when connecting
@@ -91,7 +93,7 @@ public class JenkinsHttpClient {
 
     /**
      * Perform a GET request and parse the response to the given class
-     * 
+     *
      * @param path path to request, can be relative or absolute
      * @param cls class of the response
      * @param <T> type of the response
@@ -112,7 +114,7 @@ public class JenkinsHttpClient {
 
     /**
      * Perform a GET request and parse the response and return a simple string of the content
-     * 
+     *
      * @param path path to request, can be relative or absolute
      * @return the entity text
      * @throws IOException, HttpResponseException
@@ -136,7 +138,7 @@ public class JenkinsHttpClient {
 
     /**
      * Perform a GET request and return the response as InputStream
-     * 
+     *
      * @param path path to request, can be relative or absolute
      * @return the response stream
      * @throws IOException, HttpResponseException
@@ -154,7 +156,7 @@ public class JenkinsHttpClient {
 
     /**
      * Perform a POST request and parse the response to the given class
-     * 
+     *
      * @param path path to request, can be relative or absolute
      * @param data data to post
      * @param cls class of the response
@@ -165,6 +167,11 @@ public class JenkinsHttpClient {
      */
     public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException {
         HttpPost request = new HttpPost(api(path));
+        Crumb crumb = get("/crumbIssuer", Crumb.class);
+        if (crumb != null) {
+            request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+        }
+
         if (data != null) {
             StringEntity stringEntity = new StringEntity(mapper.writeValueAsString(data), "application/json");
             request.setEntity(stringEntity);
@@ -188,7 +195,7 @@ public class JenkinsHttpClient {
     /**
      * Perform a POST request of XML (instead of using json mapper) and return a string rendering of the response
      * entity.
-     * 
+     *
      * @param path path to request, can be relative or absolute
      * @param xml_data data data to post
      * @return A string containing the xml response (if present)
@@ -196,6 +203,11 @@ public class JenkinsHttpClient {
      */
     public String post_xml(String path, String xml_data) throws IOException {
         HttpPost request = new HttpPost(api(path));
+        Crumb crumb = get("/crumbIssuer", Crumb.class);
+        if (crumb != null) {
+            request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+        }
+
         if (xml_data != null) {
             request.setEntity(new StringEntity(xml_data, ContentType.APPLICATION_XML));
         }
@@ -217,7 +229,7 @@ public class JenkinsHttpClient {
 
     /**
      * Perform POST request that takes no parameters and returns no response
-     * 
+     *
      * @param path path to request
      * @throws IOException, HttpResponseException
      */
