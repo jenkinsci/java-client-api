@@ -179,6 +179,16 @@ public class JenkinsServer {
         client.post_xml("/job/" + encode(jobName) + "/config.xml", jobXml);
     }
 
+    /*
+     * Delete a job from jenkins
+     *
+     * @throws IOException
+     */
+    public void deleteJob(String jobName) throws IOException {
+        client.post("/job/" + encode(jobName) + "/doDelete");
+    }
+
+
     private String encode(String pathPart) {
         // jenkins doesn't like the + for space, use %20 instead
         return URLEncoder.encode(pathPart).replaceAll("\\+","%20");
