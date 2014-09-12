@@ -209,7 +209,7 @@ public class JenkinsHttpClient {
         }
 
         if (xml_data != null) {
-            request.setEntity(new StringEntity(xml_data, ContentType.APPLICATION_XML));
+            request.setEntity(new StringEntity(xml_data, ContentType.create("text/xml","utf-8")));
         }
         HttpResponse response = client.execute(request, localContext);
         httpResponseValidator.validateResponse(response);
