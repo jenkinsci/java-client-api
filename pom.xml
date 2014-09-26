@@ -96,9 +96,14 @@
             <version>${jenkins-version}</version>
             <scope>test</scope>
         </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+	</dependencies>
 
-    <build>
+	<build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -226,4 +231,5 @@
             <url>http://repo.jenkins-ci.org/public/</url>
         </repository>
     </repositories>
+    
 </project>

@@ -7,7 +7,7 @@
 package com.offbytwo.jenkins.client;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
-
+import com.offbytwo.jenkins.client.util.HttpResponseContentExtractor;
 import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
 import com.offbytwo.jenkins.model.BaseModel;
 
@@ -32,7 +32,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.util.Scanner;
 
 public class JenkinsHttpClient {
 
@@ -40,6 +39,7 @@ public class JenkinsHttpClient {
     private DefaultHttpClient client;
     private BasicHttpContext localContext;
     private HttpResponseValidator httpResponseValidator;
+    private HttpResponseContentExtractor contentExtractor;
 
     private ObjectMapper mapper;
     private String context;
@@ -47,7 +47,7 @@ public class JenkinsHttpClient {
     /**
      * Create an unauthenticated Jenkins HTTP client
      *
-     * @param uri Location of the jenkins server (ex. http://localhost:8080)
+     * @param uri               Location of the jenkins server (ex. http://localhost:8080)
      * @param defaultHttpClient Configured DefaultHttpClient to be used
      */
     public JenkinsHttpClient(URI uri, DefaultHttpClient defaultHttpClient) {
@@ -59,6 +59,7 @@ public class JenkinsHttpClient {
         this.mapper = getDefaultMapper();
         this.client = defaultHttpClient;
         this.httpResponseValidator = new HttpResponseValidator();
+        this.contentExtractor = new HttpResponseContentExtractor();
     }
 
     /**
@@ -73,7 +74,7 @@ public class JenkinsHttpClient {
     /**
      * Create an authenticated Jenkins HTTP client
      *
-     * @param uri Location of the jenkins server (ex. http://localhost:8080)
+     * @param uri      Location of the jenkins server (ex. http://localhost:8080)
      * @param username Username to use when connecting
      * @param password Password or auth token to use when connecting
      */
@@ -95,8 +96,8 @@ public class JenkinsHttpClient {
      * Perform a GET request and parse the response to the given class
      *
      * @param path path to request, can be relative or absolute
-     * @param cls class of the response
-     * @param <T> type of the response
+     * @param cls  class of the response
+     * @param <T>  type of the response
      * @return an instance of the supplied class
      * @throws IOException, HttpResponseException
      */
@@ -124,13 +125,7 @@ public class JenkinsHttpClient {
         HttpResponse response = client.execute(getMethod, localContext);
         try {
             httpResponseValidator.validateResponse(response);
-            Scanner s = new Scanner(response.getEntity().getContent());
-            s.useDelimiter("\\z");
-            StringBuffer sb = new StringBuffer();
-            while (s.hasNext()) {
-                sb.append(s.next());
-            }
-            return sb.toString();
+            return contentExtractor.contentAsString(response);
         } finally {
             releaseConnection(getMethod);
         }
@@ -148,7 +143,7 @@ public class JenkinsHttpClient {
         try {
             HttpResponse response = client.execute(getMethod, localContext);
             httpResponseValidator.validateResponse(response);
-            return response.getEntity().getContent();
+            return contentExtractor.contentAsInputStream(response);
         } finally {
             releaseConnection(getMethod);
         }
@@ -159,9 +154,9 @@ public class JenkinsHttpClient {
      *
      * @param path path to request, can be relative or absolute
      * @param data data to post
-     * @param cls class of the response
-     * @param <R> type of the response
-     * @param <D> type of the data
+     * @param cls  class of the response
+     * @param <R>  type of the response
+     * @param <D>  type of the data
      * @return an instance of the supplied class
      * @throws IOException, HttpResponseException
      */
@@ -196,31 +191,31 @@ public class JenkinsHttpClient {
      * Perform a POST request of XML (instead of using json mapper) and return a string rendering of the response
      * entity.
      *
-     * @param path path to request, can be relative or absolute
+     * @param path     path to request, can be relative or absolute
      * @param xml_data data data to post
      * @return A string containing the xml response (if present)
      * @throws IOException, HttpResponseException
      */
     public String post_xml(String path, String xml_data) throws IOException {
+        return post_xml(path, xml_data, true);
+    }
+    
+    public String post_xml(String path, String xml_data, boolean crumbFlag) throws IOException {
         HttpPost request = new HttpPost(api(path));
-        Crumb crumb = get("/crumbIssuer", Crumb.class);
-        if (crumb != null) {
-            request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+        if(crumbFlag == true){
+	        Crumb crumb = get("/crumbIssuer", Crumb.class);
+	        if (crumb != null) {
+	            request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+	        }
         }
 
         if (xml_data != null) {
-            request.setEntity(new StringEntity(xml_data, ContentType.APPLICATION_XML));
+            request.setEntity(new StringEntity(xml_data, ContentType.create("text/xml","utf-8")));
         }
         HttpResponse response = client.execute(request, localContext);
         httpResponseValidator.validateResponse(response);
         try {
-            InputStream content = response.getEntity().getContent();
-            Scanner s = new Scanner(content);
-            StringBuffer sb = new StringBuffer();
-            while (s.hasNext()) {
-                sb.append(s.next());
-            }
-            return sb.toString();
+            return contentExtractor.contentAsString(response);
         } finally {
             EntityUtils.consume(response.getEntity());
             releaseConnection(request);
@@ -261,7 +256,7 @@ public class JenkinsHttpClient {
     }
 
     private <T extends BaseModel> T objectFromResponse(Class<T> cls, HttpResponse response) throws IOException {
-        InputStream content = response.getEntity().getContent();
+        InputStream content = contentExtractor.contentAsInputStream(response);
         T result = mapper.readValue(content, cls);
         result.setClient(this);
         return result;
@@ -271,7 +266,7 @@ public class JenkinsHttpClient {
         ObjectMapper mapper = new ObjectMapper();
         DeserializationConfig deserializationConfig = mapper.getDeserializationConfig();
         mapper.setDeserializationConfig(deserializationConfig
-            .without(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES));
+                .without(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES));
         return mapper;
     }
 

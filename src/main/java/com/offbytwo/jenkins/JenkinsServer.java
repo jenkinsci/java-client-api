@@ -13,11 +13,14 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.JAXBException;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
 import com.offbytwo.jenkins.model.*;
 import org.apache.http.client.HttpResponseException;
+import org.dom4j.DocumentException;
 
 /**
  * The main starting point for interacting with a Jenkins server.
@@ -106,7 +109,7 @@ public class JenkinsServer {
         }
 
     }
-    
+
     public MavenJobWithDetails getMavenJob(String jobName) throws IOException {
         try {
             MavenJobWithDetails job = client.get("/job/"+encode(jobName), MavenJobWithDetails.class);
@@ -176,8 +179,29 @@ public class JenkinsServer {
      * @throws IOException
      */
     public void updateJob(String jobName, String jobXml) throws IOException {
-        client.post_xml("/job/" + encode(jobName) + "/config.xml", jobXml);
+    	this.updateJob(jobName,jobXml,true);
     }
+    
+    public void updateJob(String jobName, String jobXml, boolean crumbFlag) throws IOException{
+    	client.post_xml("/job/" + encode(jobName) + "/config.xml", jobXml, crumbFlag);
+    }
+    
+    public void addStringParam(String jobName, String name, String description, String defaultValue) throws IOException, JAXBException, DocumentException{
+    	String jobXml = this.getJobXml(jobName);
+    	JobConfiguration jobConf = new JobConfiguration(jobXml);
+    	jobXml = jobConf.addStringParam(name, description, defaultValue).asXml();
+    	this.updateJob(jobName, jobXml, false);
+    }
+
+    /*
+     * Delete a job from jenkins
+     *
+     * @throws IOException
+     */
+    public void deleteJob(String jobName) throws IOException {
+        client.post("/job/" + encode(jobName) + "/doDelete");
+    }
+
 
     private String encode(String pathPart) {
         // jenkins doesn't like the + for space, use %20 instead
