@@ -147,6 +147,7 @@ public class JenkinsServerIT {
         job.build();
 
         while(project.isInQueue()|| project.isBuilding()) {}
+        job = server.getJob(jobName);
         assertTrue(job.getBuilds().size() == 1);
     }
 
