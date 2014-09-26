@@ -197,10 +197,16 @@ public class JenkinsHttpClient {
      * @throws IOException, HttpResponseException
      */
     public String post_xml(String path, String xml_data) throws IOException {
+        return post_xml(path, xml_data, true);
+    }
+    
+    public String post_xml(String path, String xml_data, boolean crumbFlag) throws IOException {
         HttpPost request = new HttpPost(api(path));
-        Crumb crumb = get("/crumbIssuer", Crumb.class);
-        if (crumb != null) {
-            request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+        if(crumbFlag == true){
+	        Crumb crumb = get("/crumbIssuer", Crumb.class);
+	        if (crumb != null) {
+	            request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+	        }
         }
 
         if (xml_data != null) {
