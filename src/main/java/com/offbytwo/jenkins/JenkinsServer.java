@@ -89,10 +89,22 @@ public class JenkinsServer {
         });
     }
 
+    /**
+     * Get a single view object from the server
+     * @param name name of the view in Jenkins
+     * @return the view object
+     * @throws IOException
+     */
     public View getView(String name) throws IOException {
     	return client.get("/view/" + encode(name) + "/", View.class);
     }
     
+    /**
+     * Get a list of all the defined jobs on the server (at the specified view level)
+     *
+     * @return list of defined jobs (view level, for details @see Job#details
+     * @throws IOException
+     */
     public Map<String, Job> getJobs(String view) throws IOException {
         List<Job> jobs = client.get("/view/" + encode(view) + "/", View.class).getJobs();
         return Maps.uniqueIndex(jobs, new Function<Job, String>() {
