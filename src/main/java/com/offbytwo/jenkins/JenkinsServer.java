@@ -89,6 +89,21 @@ public class JenkinsServer {
         });
     }
 
+    public View getView(String name) throws IOException {
+    	return client.get("/view/" + encode(name) + "/", View.class);
+    }
+    
+    public Map<String, Job> getJobs(String view) throws IOException {
+        List<Job> jobs = client.get("/view/" + encode(view) + "/", View.class).getJobs();
+        return Maps.uniqueIndex(jobs, new Function<Job, String>() {
+            @Override
+            public String apply(Job job) {
+                job.setClient(client);
+                return job.getName().toLowerCase();
+            }
+        });
+    }
+    
     /**
      * Get a single Job from the server.
      *
