@@ -137,6 +137,25 @@ public class JenkinsHttpClient {
     }
 
     /**
+     * Perform a GET request and parse the response to the given class,
+     * logging any IOException that is thrown rather than propagating it.
+     *
+     * @param path path to request, can be relative or absolute
+     * @param cls class of the response
+     * @param <T> type of the response
+     * @return an instance of the supplied class
+     */
+    public <T extends BaseModel> T getQuietly(String path, Class<T> cls) {
+        T value;
+        try {
+            value = get(path, cls);
+        } catch (IOException e) {
+            throw new AssertionError(e);
+        }
+        return value;
+    }
+
+    /**
      * Perform a GET request and return the response as InputStream
      *
      * @param path path to request, can be relative or absolute
@@ -167,7 +186,7 @@ public class JenkinsHttpClient {
      */
     public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException {
         HttpPost request = new HttpPost(api(path));
-        Crumb crumb = get("/crumbIssuer", Crumb.class);
+        Crumb crumb = getQuietly("/crumbIssuer", Crumb.class);
         if (crumb != null) {
             request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
         }
@@ -203,7 +222,7 @@ public class JenkinsHttpClient {
      */
     public String post_xml(String path, String xml_data) throws IOException {
         HttpPost request = new HttpPost(api(path));
-        Crumb crumb = get("/crumbIssuer", Crumb.class);
+        Crumb crumb = getQuietly("/crumbIssuer", Crumb.class);
         if (crumb != null) {
             request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
         }
