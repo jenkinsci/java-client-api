@@ -11,5 +11,4 @@ public class HttpResponseValidator {
             throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
         }
     }
-
 }

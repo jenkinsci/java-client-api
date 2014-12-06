@@ -9,6 +9,7 @@ package com.offbytwo.jenkins.model;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
 
 public class BaseModel {
+
     JenkinsHttpClient client;
 
     public JenkinsHttpClient getClient() {

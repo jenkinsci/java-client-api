@@ -47,7 +47,7 @@ public class HttpRequestValidatorTest {
         httpResponse = givenResponseWithCode(400);
 
         // when
-        httpResponseExceptionThrown  = validateResponse(httpResponse);
+        httpResponseExceptionThrown = validateResponse(httpResponse);
 
         // then
         assertTrue(httpResponseExceptionThrown);
@@ -59,7 +59,7 @@ public class HttpRequestValidatorTest {
         httpResponse = givenResponseWithCode(220);
 
         // when
-        httpResponseExceptionThrown  = validateResponse(httpResponse);
+        httpResponseExceptionThrown = validateResponse(httpResponse);
 
         // then
         assertFalse(httpResponseExceptionThrown);

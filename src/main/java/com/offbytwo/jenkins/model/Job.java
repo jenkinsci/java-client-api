@@ -16,11 +16,11 @@ import static java.net.URLEncoder.encode;
 import static org.apache.commons.lang.StringUtils.join;
 
 public class Job extends BaseModel {
+
     private String name;
     private String url;
 
-    public Job() {
-    }
+    public Job() {}
 
     public Job(String name, String url) {
         this();

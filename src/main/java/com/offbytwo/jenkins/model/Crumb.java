@@ -4,6 +4,7 @@ package com.offbytwo.jenkins.model;
  * @author Adrien Lecharpentier <adrien.lecharpentier@gmail.com>
  */
 public class Crumb extends BaseModel {
+
     private String crumbRequestField;
     private String crumb;
 
