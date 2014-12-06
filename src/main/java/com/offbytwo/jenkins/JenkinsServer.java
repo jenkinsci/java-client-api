@@ -181,11 +181,11 @@ public class JenkinsServer {
     public void updateJob(String jobName, String jobXml) throws IOException {
     	this.updateJob(jobName,jobXml,true);
     }
-    
+
     public void updateJob(String jobName, String jobXml, boolean crumbFlag) throws IOException{
     	client.post_xml("/job/" + encode(jobName) + "/config.xml", jobXml, crumbFlag);
     }
-    
+
     public void addStringParam(String jobName, String name, String description, String defaultValue) throws IOException, JAXBException, DocumentException{
     	String jobXml = this.getJobXml(jobName);
     	JobConfiguration jobConf = new JobConfiguration(jobXml);

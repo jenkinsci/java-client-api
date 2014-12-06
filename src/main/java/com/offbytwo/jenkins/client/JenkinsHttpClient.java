@@ -199,7 +199,7 @@ public class JenkinsHttpClient {
     public String post_xml(String path, String xml_data) throws IOException {
         return post_xml(path, xml_data, true);
     }
-    
+
     public String post_xml(String path, String xml_data, boolean crumbFlag) throws IOException {
         HttpPost request = new HttpPost(api(path));
         if(crumbFlag == true){

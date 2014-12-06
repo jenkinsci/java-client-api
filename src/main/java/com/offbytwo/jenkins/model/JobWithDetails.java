@@ -29,7 +29,7 @@ public class JobWithDetails extends Job {
     public String getDisplayName() {
         return displayName;
     }
-    
+
     public boolean isBuildable() {
     	return buildable;
     }
