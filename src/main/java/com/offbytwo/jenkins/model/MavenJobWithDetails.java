@@ -21,9 +21,7 @@ public class MavenJobWithDetails extends MavenJob {
     List<Job> downstreamProjects;
     List<Job> upstreamProjects;
 
-    public MavenJobWithDetails() {
-
-    }
+    public MavenJobWithDetails() {}
 
     public String getDisplayName() {
         return displayName;
@@ -95,5 +93,4 @@ public class MavenJobWithDetails extends MavenJob {
             return job;
         }
     }
-
 }

@@ -10,9 +10,7 @@ public class MavenModuleRecord extends BaseModel {
     MavenArtifact pomArtifact;
     String url;
 
-    public MavenModuleRecord() {
-
-    }
+    public MavenModuleRecord() {}
 
     public List<MavenArtifact> getAttachedArtifacts() {
         return attachedArtifacts;
@@ -53,5 +51,4 @@ public class MavenModuleRecord extends BaseModel {
     public void setUrl(String url) {
         this.url = url;
     }
-
 }

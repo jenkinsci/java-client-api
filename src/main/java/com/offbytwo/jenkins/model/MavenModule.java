@@ -9,5 +9,4 @@ public class MavenModule extends BaseModel {
     public List<MavenModuleRecord> getModuleRecords() {
         return moduleRecords;
     }
-
 }

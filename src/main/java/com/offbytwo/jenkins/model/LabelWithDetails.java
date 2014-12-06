@@ -9,6 +9,7 @@ package com.offbytwo.jenkins.model;
 import java.util.List;
 
 public class LabelWithDetails extends Job {
+
     String name;
 
     List actions;

@@ -26,8 +26,8 @@ import org.dom4j.DocumentException;
  * The main starting point for interacting with a Jenkins server.
  */
 public class JenkinsServer {
-    private final JenkinsHttpClient client;
 
+    private final JenkinsHttpClient client;
 
     /**
      * Create a new Jenkins server reference given only the server address
@@ -95,14 +95,14 @@ public class JenkinsServer {
      * @return A single Job, null if not present
      * @throws IOException
      */
-    public JobWithDetails getJob(String jobName) throws  IOException {
+    public JobWithDetails getJob(String jobName) throws IOException {
         try {
-            JobWithDetails job = client.get("/job/"+encode(jobName),JobWithDetails.class);
+            JobWithDetails job = client.get("/job/" + encode(jobName), JobWithDetails.class);
             job.setClient(client);
 
             return job;
         } catch (HttpResponseException e) {
-            if(e.getStatusCode() == 404) {
+            if (e.getStatusCode() == 404) {
                 return null;
             }
             throw e;
@@ -112,12 +112,12 @@ public class JenkinsServer {
 
     public MavenJobWithDetails getMavenJob(String jobName) throws IOException {
         try {
-            MavenJobWithDetails job = client.get("/job/"+encode(jobName), MavenJobWithDetails.class);
+            MavenJobWithDetails job = client.get("/job/" + encode(jobName), MavenJobWithDetails.class);
             job.setClient(client);
 
             return job;
         } catch (HttpResponseException e) {
-            if(e.getStatusCode() == 404) {
+            if (e.getStatusCode() == 404) {
                 return null;
             }
             throw e;
@@ -179,18 +179,18 @@ public class JenkinsServer {
      * @throws IOException
      */
     public void updateJob(String jobName, String jobXml) throws IOException {
-    	this.updateJob(jobName,jobXml,true);
+        this.updateJob(jobName, jobXml, true);
     }
 
-    public void updateJob(String jobName, String jobXml, boolean crumbFlag) throws IOException{
-    	client.post_xml("/job/" + encode(jobName) + "/config.xml", jobXml, crumbFlag);
+    public void updateJob(String jobName, String jobXml, boolean crumbFlag) throws IOException {
+        client.post_xml("/job/" + encode(jobName) + "/config.xml", jobXml, crumbFlag);
     }
 
-    public void addStringParam(String jobName, String name, String description, String defaultValue) throws IOException, JAXBException, DocumentException{
-    	String jobXml = this.getJobXml(jobName);
-    	JobConfiguration jobConf = new JobConfiguration(jobXml);
-    	jobXml = jobConf.addStringParam(name, description, defaultValue).asXml();
-    	this.updateJob(jobName, jobXml, false);
+    public void addStringParam(String jobName, String name, String description, String defaultValue) throws IOException, JAXBException, DocumentException {
+        String jobXml = this.getJobXml(jobName);
+        JobConfiguration jobConf = new JobConfiguration(jobXml);
+        jobXml = jobConf.addStringParam(name, description, defaultValue).asXml();
+        this.updateJob(jobName, jobXml, false);
     }
 
     /*
@@ -205,6 +205,6 @@ public class JenkinsServer {
 
     private String encode(String pathPart) {
         // jenkins doesn't like the + for space, use %20 instead
-        return URLEncoder.encode(pathPart).replaceAll("\\+","%20");
+        return URLEncoder.encode(pathPart).replaceAll("\\+", "%20");
     }
 }

@@ -11,9 +11,7 @@ public class MavenArtifact extends BaseModel {
     String type;
     String version;
 
-    public MavenArtifact() {
-
-    }
+    public MavenArtifact() {}
 
     public String getArtifactId() {
         return artifactId;
@@ -78,5 +76,4 @@ public class MavenArtifact extends BaseModel {
     public void setVersion(String version) {
         this.version = version;
     }
-
 }

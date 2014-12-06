@@ -53,11 +53,11 @@ public class JenkinsServerIT {
     @Test
     public void shouldReturnBuildsForJob() throws Exception {
         FreeStyleProject trunk = jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
-        for(int i = 0; i<5; i++)
+        for (int i = 0; i < 5; i++)
             trunk.scheduleBuild(0, new Cause.UserCause(),
                     new ParametersAction(new StringParameterValue("BUILD NUMBER", "" + i)));
 
-        while(trunk.isInQueue()|| trunk.isBuilding()) {}
+        while (trunk.isInQueue() || trunk.isBuilding()) {}
 
         JobWithDetails job = server.getJobs().get(JENKINS_TEST_JOB).details();
         assertEquals(5, job.getBuilds().get(0).getNumber());
@@ -68,7 +68,7 @@ public class JenkinsServerIT {
         FreeStyleProject pr = jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
         pr.scheduleBuild(0, new Cause.UserCause(), new ParametersAction(new StringParameterValue("REVISION", "foobar")));
 
-        while(pr.isInQueue() || pr.isBuilding()) {}
+        while (pr.isInQueue() || pr.isBuilding()) {}
 
         JobWithDetails job = server.getJobs().get(JENKINS_TEST_JOB).details();
         BuildWithDetails build = job.getBuilds().get(0).details();
@@ -121,7 +121,6 @@ public class JenkinsServerIT {
 
     @Test
     public void testCreateJob() throws Exception {
-
         final String jobName = "test-job-" + UUID.randomUUID().toString();
 
         jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
@@ -146,7 +145,8 @@ public class JenkinsServerIT {
         JobWithDetails job = server.getJob(jobName);
         job.build();
 
-        while(project.isInQueue()|| project.isBuilding()) {}
+        while (project.isInQueue() || project.isBuilding()) {}
+
         job = server.getJob(jobName);
         assertTrue(job.getBuilds().size() == 1);
     }

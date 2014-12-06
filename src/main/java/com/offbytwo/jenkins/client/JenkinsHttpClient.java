@@ -7,6 +7,7 @@
 package com.offbytwo.jenkins.client;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import com.offbytwo.jenkins.client.util.HttpResponseContentExtractor;
 import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
 import com.offbytwo.jenkins.model.BaseModel;
@@ -202,15 +203,15 @@ public class JenkinsHttpClient {
 
     public String post_xml(String path, String xml_data, boolean crumbFlag) throws IOException {
         HttpPost request = new HttpPost(api(path));
-        if(crumbFlag == true){
-	        Crumb crumb = get("/crumbIssuer", Crumb.class);
-	        if (crumb != null) {
-	            request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
-	        }
+        if (crumbFlag == true) {
+            Crumb crumb = get("/crumbIssuer", Crumb.class);
+            if (crumb != null) {
+                request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+            }
         }
 
         if (xml_data != null) {
-            request.setEntity(new StringEntity(xml_data, ContentType.create("text/xml","utf-8")));
+            request.setEntity(new StringEntity(xml_data, ContentType.create("text/xml", "utf-8")));
         }
         HttpResponse response = client.execute(request, localContext);
         httpResponseValidator.validateResponse(response);
@@ -273,5 +274,4 @@ public class JenkinsHttpClient {
     private void releaseConnection(HttpRequestBase httpRequestBase) {
         httpRequestBase.releaseConnection();
     }
-
 }

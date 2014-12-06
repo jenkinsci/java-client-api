@@ -29,8 +29,7 @@ public class JenkinsServerTest {
     private JenkinsServer server = new JenkinsServer(client);
     private MainView mainView = new MainView(new Job("Hello", "http://localhost/job/Hello/"));
 
-    public JenkinsServerTest() throws Exception {
-    }
+    public JenkinsServerTest() throws Exception {}
 
     @Before
     public void setUp() throws Exception {
@@ -89,7 +88,7 @@ public class JenkinsServerTest {
     }
 
     @Test
-    public void testJenkinsConnectivityBroken() throws  IOException {
+    public void testJenkinsConnectivityBroken() throws IOException {
         Mockito.when(client.get("/")).thenThrow(IOException.class);
         assertEquals(server.isRunning(), false);
     }

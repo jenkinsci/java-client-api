@@ -12,6 +12,7 @@ import com.google.common.collect.Lists;
 import java.util.List;
 
 public class JobWithDetails extends Job {
+
     String displayName;
     boolean buildable;
     List<Build> builds;
@@ -31,7 +32,7 @@ public class JobWithDetails extends Job {
     }
 
     public boolean isBuildable() {
-    	return buildable;
+        return buildable;
     }
 
     public List<Build> getBuilds() {

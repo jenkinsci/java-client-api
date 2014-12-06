@@ -17,6 +17,7 @@ import static java.net.URLEncoder.encode;
 import static org.apache.commons.lang.StringUtils.join;
 
 public class Computer extends BaseModel {
+
     private String displayName;
 
     public List<Computer> getComputers() {
@@ -29,8 +30,7 @@ public class Computer extends BaseModel {
 
     List<Computer> computer;
 
-    public Computer() {
-    }
+    public Computer() {}
 
     public Computer(String displayName) {
         this();
