@@ -11,23 +11,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorOrder(XmlAccessOrder.ALPHABETICAL)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ParametersDefinitionProperty {
-	@XmlElement(name = "parameterDefinitions")
-	private ParameterDefinitions pd;
 
-	public ParametersDefinitionProperty() {
+    @XmlElement(name = "parameterDefinitions")
+    private ParameterDefinitions pd;
 
-	}
+    public ParametersDefinitionProperty() {}
 
-	public ParametersDefinitionProperty(ParameterDefinitions pd) {
-		this.pd = pd;
-	}
+    public ParametersDefinitionProperty(ParameterDefinitions pd) {
+        this.pd = pd;
+    }
 
-	public ParameterDefinitions getPd() {
-		return pd;
-	}
+    public ParameterDefinitions getPd() {
+        return pd;
+    }
 
-	public void setPd(ParameterDefinitions pd) {
-		this.pd = pd;
-	}
-
+    public void setPd(ParameterDefinitions pd) {
+        this.pd = pd;
+    }
 }

@@ -14,12 +14,12 @@ import com.offbytwo.jenkins.model.JobConfiguration;
 
 public class TestJobConfiguration {
 
-	@Test
-	public void testAddStringParam() throws URISyntaxException, IOException, DocumentException, JAXBException{
-		JenkinsHttpClient jhc = new JenkinsHttpClient(new URI("http://localhost/jenkins/"), "", "");
-		JenkinsServer js = new JenkinsServer(jhc);
-		String configXml = js.getJobXml("TestCreateJob");
-		JobConfiguration job = new JobConfiguration(configXml);
-		System.out.println(job.addStringParam("testPara", "testDesc", "testDefaultValue").asXml());
-	}
+    @Test
+    public void testAddStringParam() throws URISyntaxException, IOException, DocumentException, JAXBException {
+        JenkinsHttpClient jhc = new JenkinsHttpClient(new URI("http://localhost/jenkins/"), "", "");
+        JenkinsServer js = new JenkinsServer(jhc);
+        String configXml = js.getJobXml("TestCreateJob");
+        JobConfiguration job = new JobConfiguration(configXml);
+        System.out.println(job.addStringParam("testPara", "testDesc", "testDefaultValue").asXml());
+    }
 }

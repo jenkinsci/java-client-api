@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainView extends BaseModel {
+
     private List<Job> jobs;
 
     /* default constructor needed for Jackson */

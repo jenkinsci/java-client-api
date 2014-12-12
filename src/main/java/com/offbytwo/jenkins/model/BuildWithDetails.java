@@ -20,6 +20,7 @@ import java.util.Map;
 import static com.google.common.collect.Collections2.filter;
 
 public class BuildWithDetails extends Build {
+
     List actions;
     boolean building;
     String description;

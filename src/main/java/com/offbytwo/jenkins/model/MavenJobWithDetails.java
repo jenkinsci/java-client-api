@@ -20,10 +20,8 @@ public class MavenJobWithDetails extends MavenJob {
     int nextBuildNumber;
     List<Job> downstreamProjects;
     List<Job> upstreamProjects;
-    
-    public MavenJobWithDetails() {
-        
-    }
+
+    public MavenJobWithDetails() {}
 
     public String getDisplayName() {
         return displayName;
@@ -41,7 +39,7 @@ public class MavenJobWithDetails extends MavenJob {
             }
         });
     }
-    
+
     public MavenBuild getLastBuild() {
         return buildWithClient(lastBuild);
     }
@@ -53,7 +51,7 @@ public class MavenJobWithDetails extends MavenJob {
     public MavenBuild getLastFailedBuild() {
         return buildWithClient(lastFailedBuild);
     }
-    
+
     public MavenBuild getLastStableBuild() {
         return buildWithClient(lastStableBuild);
     }
@@ -81,13 +79,13 @@ public class MavenJobWithDetails extends MavenJob {
     public List<Job> getUpstreamProjects() {
         return Lists.transform(upstreamProjects, new MavenJobWithClient());
     }
-    
+
     private MavenBuild buildWithClient(MavenBuild from) {
         MavenBuild ret = new MavenBuild(from);
         ret.setClient(client);
         return ret;
     }
-    
+
     private class MavenJobWithClient implements Function<Job, Job> {
         @Override
         public Job apply(Job job) {
@@ -95,6 +93,4 @@ public class MavenJobWithDetails extends MavenJob {
             return job;
         }
     }
-    
-    
 }

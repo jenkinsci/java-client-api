@@ -15,13 +15,13 @@ import com.offbytwo.jenkins.model.StringParameterDefinition;
 
 public class TestStringParameterDefinition {
 
-	@Test
-	public void testMarshalling() throws JAXBException{
-		StringWriter sw = new StringWriter();
-		JAXBContext jaxbContext = JAXBContext.newInstance(StringParameterDefinition.class);
-		Marshaller marshaller = jaxbContext.createMarshaller();
-		marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
-		marshaller.marshal(new StringParameterDefinition("aaa","bbb","ccc"), sw);
-		System.out.println(sw.toString());
-	}
+    @Test
+    public void testMarshalling() throws JAXBException {
+        StringWriter sw = new StringWriter();
+        JAXBContext jaxbContext = JAXBContext.newInstance(StringParameterDefinition.class);
+        Marshaller marshaller = jaxbContext.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
+        marshaller.marshal(new StringParameterDefinition("aaa", "bbb", "ccc"), sw);
+        System.out.println(sw.toString());
+    }
 }

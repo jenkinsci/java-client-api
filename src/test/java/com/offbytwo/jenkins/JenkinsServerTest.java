@@ -29,8 +29,7 @@ public class JenkinsServerTest {
     private JenkinsServer server = new JenkinsServer(client);
     private MainView mainView = new MainView(new Job("Hello", "http://localhost/job/Hello/"));
 
-    public JenkinsServerTest() throws Exception {
-    }
+    public JenkinsServerTest() throws Exception {}
 
     @Before
     public void setUp() throws Exception {
@@ -64,7 +63,7 @@ public class JenkinsServerTest {
         server.updateJob(jobName, xmlString);
 
         ArgumentCaptor<String> captureString = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(client).post_xml(Mockito.eq("/job/pr/config.xml"), captureString.capture());
+        Mockito.verify(client).post_xml(Mockito.eq("/job/pr/config.xml"), captureString.capture(), Mockito.eq(true));
 
         assertEquals(xmlString, captureString.getValue());
     }
@@ -89,7 +88,7 @@ public class JenkinsServerTest {
     }
 
     @Test
-    public void testJenkinsConnectivityBroken() throws  IOException {
+    public void testJenkinsConnectivityBroken() throws IOException {
         Mockito.when(client.get("/")).thenThrow(IOException.class);
         assertEquals(server.isRunning(), false);
     }

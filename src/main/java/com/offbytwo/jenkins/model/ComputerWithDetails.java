@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ComputerWithDetails extends Job {
-    String displayName;
 
+    String displayName;
     List actions;
     List executors;
     Boolean idle;
@@ -25,8 +25,8 @@ public class ComputerWithDetails extends Job {
     Map monitorData;
     Integer numExecutors;
     Boolean offline;
-    Object  offlineCause;
-    String  offlineReason;
+    Object offlineCause;
+    String offlineReason;
     List oneOffExecutors;
     Boolean temporarilyOffline;
 
