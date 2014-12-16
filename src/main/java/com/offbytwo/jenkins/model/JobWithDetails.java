@@ -7,9 +7,10 @@
 package com.offbytwo.jenkins.model;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 
 import java.util.List;
+
+import static com.google.common.collect.Lists.transform;
 
 public class JobWithDetails extends Job {
 
@@ -36,7 +37,7 @@ public class JobWithDetails extends Job {
     }
 
     public List<Build> getBuilds() {
-        return Lists.transform(builds, new Function<Build, Build>() {
+        return transform(builds, new Function<Build, Build>() {
             @Override
             public Build apply(Build from) {
                 return buildWithClient(from);
@@ -83,11 +84,11 @@ public class JobWithDetails extends Job {
     }
 
     public List<Job> getDownstreamProjects() {
-        return Lists.transform(downstreamProjects, new JobWithClient());
+        return transform(downstreamProjects, new JobWithClient());
     }
 
     public List<Job> getUpstreamProjects() {
-        return Lists.transform(upstreamProjects, new JobWithClient());
+        return transform(upstreamProjects, new JobWithClient());
     }
 
     private class JobWithClient implements Function<Job, Job> {
