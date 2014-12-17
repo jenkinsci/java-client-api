@@ -8,6 +8,7 @@ package com.offbytwo.jenkins.model;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import com.offbytwo.jenkins.client.JenkinsPostResult;
 
 import java.io.IOException;
 import java.util.Map;
@@ -43,8 +44,8 @@ public class Job extends BaseModel {
     /**
      * Trigger a build without parameters
      */
-    public void build() throws IOException {
-        client.post(url + "build");
+    public JenkinsPostResult build() throws IOException {
+        return client.post(url + "build");
     }
 
     /**
@@ -53,9 +54,9 @@ public class Job extends BaseModel {
      * @param params the job parameters
      * @throws IOException
      */
-    public void build(Map<String, String> params) throws IOException {
+    public JenkinsPostResult build(Map<String, String> params) throws IOException {
         String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
-        client.post(url + "buildWithParameters?" + qs, null, null);
+        return client.post(url + "buildWithParameters?" + qs, null, null);
     }
 
     private static class MapEntryToQueryStringPair implements Function<Map.Entry<String, String>, String> {

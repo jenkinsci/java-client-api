@@ -161,7 +161,7 @@ public class JenkinsHttpClient {
      * @return an instance of the supplied class
      * @throws IOException, HttpResponseException
      */
-    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException {
+    public <R extends BaseModel, D> JenkinsPostResult post(String path, D data, Class<R> cls) throws IOException {
         HttpPost request = new HttpPost(api(path));
         Crumb crumb = get("/crumbIssuer", Crumb.class);
         if (crumb != null) {
@@ -178,9 +178,9 @@ public class JenkinsHttpClient {
             httpResponseValidator.validateResponse(response);
 
             if (cls != null) {
-                return objectFromResponse(cls, response);
+                return new JenkinsPostResult<R>(objectFromResponse(cls, response), response.getAllHeaders());
             } else {
-                return null;
+                return new JenkinsPostResult<R>(null, response.getAllHeaders());
             }
         } finally {
             EntityUtils.consume(response.getEntity());
@@ -229,8 +229,8 @@ public class JenkinsHttpClient {
      * @param path path to request
      * @throws IOException, HttpResponseException
      */
-    public void post(String path) throws IOException {
-        post(path, null, null);
+    public JenkinsPostResult post(String path) throws IOException {
+        return post(path, null, null);
     }
 
     private String urlJoin(String path1, String path2) {
