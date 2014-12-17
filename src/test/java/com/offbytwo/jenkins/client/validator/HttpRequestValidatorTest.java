@@ -15,8 +15,6 @@ public class HttpRequestValidatorTest {
     private boolean httpResponseExceptionThrown = false;
     private HttpResponse httpResponse;
 
-    private HttpResponseValidator validator = new HttpResponseValidator();
-
     @Test
     public void shouldThrowHttpResponseExceptionWhenStatusIsLowerThan200() {
         // given
@@ -28,6 +26,8 @@ public class HttpRequestValidatorTest {
         // then
         assertTrue(httpResponseExceptionThrown);
     }
+
+    private HttpResponseValidator validator = new HttpResponseValidator();
 
     @Test
     public void shouldThrowHttpResponseExceptionWhenStatusIsHigherThan400() {
