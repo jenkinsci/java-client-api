@@ -58,7 +58,9 @@ public class Job extends BaseModel {
         }
 
         // @TODO Isolate queue id from url
-        return new Queue(-1, location.toString());
+        Queue queue = new Queue(-1, location.toString());
+        queue.setClient(client);
+        return queue;
     }
 
     /**
@@ -84,7 +86,9 @@ public class Job extends BaseModel {
         }
 
         // @TODO Isolate queue id from url
-        return new Queue(-1, location.toString());
+        Queue queue = new Queue(-1, location.toString());
+        queue.setClient(client);
+        return queue;
     }
 
     private static class MapEntryToQueryStringPair implements Function<Map.Entry<String, String>, String> {
