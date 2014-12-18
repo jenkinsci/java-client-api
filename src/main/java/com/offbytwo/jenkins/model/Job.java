@@ -68,7 +68,13 @@ public class Job extends BaseModel {
      * @throws IOException
      */
     public Build build(Map<String, String> params, Map<String, File> fileParams) throws IOException {
-        String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
+        // Check that we have not-file params
+        String qs = "";
+        if(params != null) {
+            qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
+        }
+
+        // Launch build
         JenkinsPostResult result = client.post(url + "buildWithParameters?" + qs, null, null, fileParams);
 
         // Construct build from url location
