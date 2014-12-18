@@ -11,8 +11,8 @@ import java.io.IOException;
 public class Queue extends BaseModel {
 
     /** Queue Id */
-    private int id;
-    private String url;
+    int id;
+    String url;
 
     public Queue() {}
 

@@ -22,17 +22,17 @@ import static com.google.common.collect.Collections2.filter;
 public class QueueWithDetails extends Queue {
 
     /** List of parameters and causes */
-    private List actions;
+    List actions;
 
     /** Status */
-    private boolean blocked;
-    private boolean buildable;
-    private boolean stuck;
-    private boolean cancelled;
+    boolean blocked;
+    boolean buildable;
+    boolean stuck;
+    boolean cancelled;
 
     /** Connected entities */
-    private Job task;
-    private Build executable;
+    Job task;
+    Build executable;
 
     public List getActions() {
         return actions;
