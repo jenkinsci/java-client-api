@@ -48,7 +48,7 @@ public class Job extends BaseModel {
     /**
      * Trigger a build without parameters
      */
-    public Build build() throws IOException {
+    public Queue build() throws IOException {
         JenkinsPostResult result = client.post(url + "build");
 
         // Construct build from url location
@@ -57,8 +57,8 @@ public class Job extends BaseModel {
             return null;
         }
 
-        // @TODO Isolate build number from url
-        return new Build(-1, location.toString());
+        // @TODO Isolate queue id from url
+        return new Queue(-1, location.toString());
     }
 
     /**
@@ -67,7 +67,7 @@ public class Job extends BaseModel {
      * @param params the job parameters
      * @throws IOException
      */
-    public Build build(Map<String, String> params, Map<String, File> fileParams) throws IOException {
+    public Queue build(Map<String, String> params, Map<String, File> fileParams) throws IOException {
         // Check that we have not-file params
         String qs = "";
         if(params != null) {
@@ -83,8 +83,8 @@ public class Job extends BaseModel {
             return null;
         }
 
-        // @TODO Isolate build number from url
-        return new Build(-1, location.toString());
+        // @TODO Isolate queue id from url
+        return new Queue(-1, location.toString());
     }
 
     private static class MapEntryToQueryStringPair implements Function<Map.Entry<String, String>, String> {
