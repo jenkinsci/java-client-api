@@ -26,6 +26,18 @@ public class QueueWithDetails extends Queue {
     Job task;
     Build executable;
 
+    private Build buildWithClient(Build from) {
+        Build ret = new Build(from);
+        ret.setClient(client);
+        return ret;
+    }
+
+    private Job jobWithClient(Job from) {
+        Job ret = new Job(from);
+        ret.setClient(client);
+        return ret;
+    }
+
     public List getActions() {
         return actions;
     }
@@ -68,10 +80,10 @@ public class QueueWithDetails extends Queue {
     }
 
     public Job getTask() {
-        return task;
+        return jobWithClient(task);
     }
 
     public Build getExecutable() {
-        return executable;
+        return buildWithClient(executable);
     }
 }

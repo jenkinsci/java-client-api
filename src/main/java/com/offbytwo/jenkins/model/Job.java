@@ -24,6 +24,10 @@ public class Job extends BaseModel {
 
     public Job() {}
 
+    public Job(Job from) {
+        this(from.getName(), from.getUrl());
+    }
+
     public Job(String name, String url) {
         this();
         this.name = name;
