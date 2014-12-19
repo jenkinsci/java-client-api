@@ -27,12 +27,24 @@ public class QueueWithDetails extends Queue {
     Build executable;
 
     private Build buildWithClient(Build from) {
+        // Check for null value first
+        if(from == null) {
+            return null;
+        }
+
+        // Return new value with client being set
         Build ret = new Build(from);
         ret.setClient(client);
         return ret;
     }
 
     private Job jobWithClient(Job from) {
+        // Check for null value first
+        if(from == null) {
+            return null;
+        }
+
+        // Return new value with client being set
         Job ret = new Job(from);
         ret.setClient(client);
         return ret;
