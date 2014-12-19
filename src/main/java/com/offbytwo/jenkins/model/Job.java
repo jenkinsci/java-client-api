@@ -9,8 +9,6 @@ package com.offbytwo.jenkins.model;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.offbytwo.jenkins.client.JenkinsPostResult;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +16,6 @@ import java.util.Map;
 
 import static java.net.URLEncoder.encode;
 import static org.apache.commons.lang.StringUtils.join;
-import static org.apache.commons.lang.StringUtils.remove;
 
 public class Job extends BaseModel {
 

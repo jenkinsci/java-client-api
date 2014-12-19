@@ -1,17 +1,9 @@
-/*
- * Copyright (c) 2013 Rising Oak LLC.
- *
- * Distributed under the MIT license: http://opensource.org/licenses/MIT
- */
+// Copyright 2014 Vladimir Alyamkin. All Rights Reserved.
 
 package com.offbytwo.jenkins.model;
 
 import com.google.common.base.Predicate;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
