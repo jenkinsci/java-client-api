@@ -6,21 +6,26 @@
 
 package com.offbytwo.jenkins;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.bind.JAXBException;
-
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
-import com.offbytwo.jenkins.model.*;
+import com.offbytwo.jenkins.model.Computer;
+import com.offbytwo.jenkins.model.Job;
+import com.offbytwo.jenkins.model.JobConfiguration;
+import com.offbytwo.jenkins.model.JobWithDetails;
+import com.offbytwo.jenkins.model.LabelWithDetails;
+import com.offbytwo.jenkins.model.MainView;
+import com.offbytwo.jenkins.model.MavenJobWithDetails;
+import com.offbytwo.jenkins.model.View;
 import org.apache.http.client.HttpResponseException;
 import org.dom4j.DocumentException;
+
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The main starting point for interacting with a Jenkins server.
@@ -41,8 +46,8 @@ public class JenkinsServer {
     /**
      * Create a new Jenkins server reference given the address and credentials
      *
-     * @param serverUri address of jenkins server (ex. http://localhost:8080/jenkins)
-     * @param username username to use when connecting
+     * @param serverUri       address of jenkins server (ex. http://localhost:8080/jenkins)
+     * @param username        username to use when connecting
      * @param passwordOrToken password (not recommended) or token (recommended)
      */
     public JenkinsServer(URI serverUri, String username, String passwordOrToken) {
@@ -91,14 +96,15 @@ public class JenkinsServer {
 
     /**
      * Get a single view object from the server
+     *
      * @param name name of the view in Jenkins
      * @return the view object
      * @throws IOException
      */
     public View getView(String name) throws IOException {
-    	return client.get("/view/" + encode(name) + "/", View.class);
+        return client.get("/view/" + encode(name) + "/", View.class);
     }
-    
+
     /**
      * Get a list of all the defined jobs on the server (at the specified view level)
      *
@@ -115,7 +121,7 @@ public class JenkinsServer {
             }
         });
     }
-    
+
     /**
      * Get a single Job from the server.
      *
@@ -217,7 +223,7 @@ public class JenkinsServer {
         String jobXml = this.getJobXml(jobName);
         JobConfiguration jobConf = new JobConfiguration(jobXml);
         jobXml = jobConf.addStringParam(name, description, defaultValue).asXml();
-        this.updateJob(jobName, jobXml, false);
+        this.updateJob(jobName, jobXml);
     }
 
     /*

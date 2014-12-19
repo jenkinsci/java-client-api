@@ -4,8 +4,9 @@
  * Distributed under the MIT license: http://opensource.org/licenses/MIT
  */
 
-package com.offbytwo.jenkins;
+package com.offbytwo.jenkins.integration;
 
+import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.BuildResult;
 import com.offbytwo.jenkins.model.BuildWithDetails;
 import com.offbytwo.jenkins.model.Computer;
@@ -27,7 +28,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class JenkinsServerIT {
+public class JenkinsServerIntegrationTest {
 
     @Rule
     public JenkinsRule jenkinsRule = new JenkinsRule();
@@ -57,7 +58,8 @@ public class JenkinsServerIT {
             trunk.scheduleBuild(0, new Cause.UserCause(),
                     new ParametersAction(new StringParameterValue("BUILD NUMBER", "" + i)));
 
-        while (trunk.isInQueue() || trunk.isBuilding()) {}
+        while (trunk.isInQueue() || trunk.isBuilding()) {
+        }
 
         JobWithDetails job = server.getJobs().get(JENKINS_TEST_JOB).details();
         assertEquals(5, job.getBuilds().get(0).getNumber());
@@ -68,7 +70,8 @@ public class JenkinsServerIT {
         FreeStyleProject pr = jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
         pr.scheduleBuild(0, new Cause.UserCause(), new ParametersAction(new StringParameterValue("REVISION", "foobar")));
 
-        while (pr.isInQueue() || pr.isBuilding()) {}
+        while (pr.isInQueue() || pr.isBuilding()) {
+        }
 
         JobWithDetails job = server.getJobs().get(JENKINS_TEST_JOB).details();
         BuildWithDetails build = job.getBuilds().get(0).details();
@@ -145,7 +148,8 @@ public class JenkinsServerIT {
         JobWithDetails job = server.getJob(jobName);
         job.build();
 
-        while (project.isInQueue() || project.isBuilding()) {}
+        while (project.isInQueue() || project.isBuilding()) {
+        }
 
         job = server.getJob(jobName);
         assertTrue(job.getBuilds().size() == 1);

@@ -5,7 +5,8 @@
   ~ Distributed under the MIT license: http://opensource.org/licenses/MIT
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <name>Jenkins Client</name>
@@ -32,8 +33,18 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <targetJdk>1.6</targetJdk>
+
         <!-- Version of Jenkins to use for Integration Tests -->
-        <jenkins-version>1.447.2</jenkins-version>
+        <jenkins-version>1.593</jenkins-version>
+        <junit.version>4.11</junit.version>
+        <mockito-all.version>1.9.5</mockito-all.version>
+        <commons-io.version>2.4</commons-io.version>
+        <xstream.version>1.4.7-jenkins-1</xstream.version>
+        <dom4j.version>1.6.1</dom4j.version>
+        <commons-lang.version>2.6</commons-lang.version>
+        <guava.version>17.0</guava.version>
+        <jackson-mapper-asl.version>1.9.11</jackson-mapper-asl.version>
+        <httpclient.version>4.2.2</httpclient.version>
     </properties>
 
     <licenses>
@@ -65,36 +76,62 @@
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.9.11</version>
+            <version>${jackson-mapper-asl.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>${dom4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jvnet.hudson</groupId>
+            <artifactId>xstream</artifactId>
+            <version>${xstream.version}</version>
+        </dependency>
+
+        <!-- Musties -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>13.0.1</version>
+            <version>${guava.version}</version>
         </dependency>
+
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
+            <version>${commons-lang.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpclient.version}</version>
+        </dependency>
+
+        <!-- Testing -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
-            <version>1.9.5</version>
+            <version>${mockito-all.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-        	<groupId>commons-io</groupId>
-        	<artifactId>commons-io</artifactId>
-        	<version>2.4</version>
-        	<scope>test</scope>
-        </dependency>
+
         <dependency>
             <groupId>org.jenkins-ci.main</groupId>
             <artifactId>jenkins-test-harness</artifactId>
@@ -147,13 +184,34 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/*IntegrationTest.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.17</version>
+                <configuration>
+                    <includes>
+                        <include>**/*IntegrationTest.java</include>
+                    </includes>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>default</id>
+                        <id>integration-test</id>
                         <goals>
                             <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>verify</id>
+                        <goals>
                             <goal>verify</goal>
                         </goals>
                     </execution>
