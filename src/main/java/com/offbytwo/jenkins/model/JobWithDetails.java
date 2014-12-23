@@ -46,11 +46,14 @@ public class JobWithDetails extends Job {
     }
 
     private Build buildWithClient(Build from) {
-        Build ret = from;
-        if (from != null) {
-            ret = new Build(from);
-            ret.setClient(client);
+        // Check for null value first
+        if(from == null) {
+            return null;
         }
+
+        // Return new value with client being set
+        Build ret = new Build(from);
+        ret.setClient(client);
         return ret;
     }
 

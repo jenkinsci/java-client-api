@@ -13,6 +13,7 @@ import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
 import com.offbytwo.jenkins.model.BaseModel;
 
 import com.offbytwo.jenkins.model.Crumb;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -22,6 +23,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
@@ -30,9 +34,11 @@ import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.Map;
 
 public class JenkinsHttpClient {
 
@@ -161,7 +167,7 @@ public class JenkinsHttpClient {
      * @return an instance of the supplied class
      * @throws IOException, HttpResponseException
      */
-    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException {
+    public <R extends BaseModel, D> JenkinsPostResult post(String path, D data, Class<R> cls, Map<String, File> fileParams) throws IOException {
         HttpPost request = new HttpPost(api(path));
         Crumb crumb = get("/crumbIssuer", Crumb.class);
         if (crumb != null) {
@@ -169,18 +175,34 @@ public class JenkinsHttpClient {
         }
 
         if (data != null) {
-            StringEntity stringEntity = new StringEntity(mapper.writeValueAsString(data), "application/json");
+            StringEntity stringEntity = new StringEntity(mapper.writeValueAsString(data), ContentType.APPLICATION_JSON);
             request.setEntity(stringEntity);
         }
+
+        // Prepare file parameters
+        if(fileParams != null) {
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+            for (Map.Entry<String, File> entry : fileParams.entrySet()) {
+                FileBody fileBody = new FileBody(entry.getValue());
+                builder.addPart(entry.getKey(), fileBody);
+            }
+
+            HttpEntity entity = builder.build();
+            request.setEntity(entity);
+        }
+
+        // Execute request
         HttpResponse response = client.execute(request, localContext);
 
         try {
             httpResponseValidator.validateResponse(response);
 
             if (cls != null) {
-                return objectFromResponse(cls, response);
+                return new JenkinsPostResult<R>(objectFromResponse(cls, response), response.getAllHeaders());
             } else {
-                return null;
+                return new JenkinsPostResult<R>(null, response.getAllHeaders());
             }
         } finally {
             EntityUtils.consume(response.getEntity());
@@ -229,8 +251,8 @@ public class JenkinsHttpClient {
      * @param path path to request
      * @throws IOException, HttpResponseException
      */
-    public void post(String path) throws IOException {
-        post(path, null, null);
+    public JenkinsPostResult post(String path) throws IOException {
+        return post(path, null, null, null);
     }
 
     private String urlJoin(String path1, String path2) {

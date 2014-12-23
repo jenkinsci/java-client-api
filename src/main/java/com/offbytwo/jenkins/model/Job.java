@@ -8,7 +8,9 @@ package com.offbytwo.jenkins.model;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import com.offbytwo.jenkins.client.JenkinsPostResult;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -21,6 +23,10 @@ public class Job extends BaseModel {
     private String url;
 
     public Job() {}
+
+    public Job(Job from) {
+        this(from.getName(), from.getUrl());
+    }
 
     public Job(String name, String url) {
         this();
@@ -43,8 +49,19 @@ public class Job extends BaseModel {
     /**
      * Trigger a build without parameters
      */
-    public void build() throws IOException {
-        client.post(url + "build");
+    public Queue build() throws IOException {
+        JenkinsPostResult result = client.post(url + "build");
+
+        // Construct build from url location
+        Object location = result.getFirstHeader("Location");
+        if (location == null || location.toString() == null || location.toString().isEmpty()) {
+            return null;
+        }
+
+        // @TODO Isolate queue id from url
+        Queue queue = new Queue(-1, location.toString());
+        queue.setClient(client);
+        return queue;
     }
 
     /**
@@ -53,9 +70,26 @@ public class Job extends BaseModel {
      * @param params the job parameters
      * @throws IOException
      */
-    public void build(Map<String, String> params) throws IOException {
-        String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
-        client.post(url + "buildWithParameters?" + qs, null, null);
+    public Queue build(Map<String, String> params, Map<String, File> fileParams) throws IOException {
+        // Check that we have not-file params
+        String qs = "";
+        if(params != null) {
+            qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
+        }
+
+        // Launch build
+        JenkinsPostResult result = client.post(url + "buildWithParameters?" + qs, null, null, fileParams);
+
+        // Construct build from url location
+        Object location = result.getFirstHeader("Location");
+        if (location == null || location.toString() == null || location.toString().isEmpty()) {
+            return null;
+        }
+
+        // @TODO Isolate queue id from url
+        Queue queue = new Queue(-1, location.toString());
+        queue.setClient(client);
+        return queue;
     }
 
     private static class MapEntryToQueryStringPair implements Function<Map.Entry<String, String>, String> {

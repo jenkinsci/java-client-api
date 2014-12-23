@@ -44,7 +44,8 @@
         <commons-lang.version>2.6</commons-lang.version>
         <guava.version>17.0</guava.version>
         <jackson-mapper-asl.version>1.9.11</jackson-mapper-asl.version>
-        <httpclient.version>4.2.2</httpclient.version>
+        <httpclient.version>4.3.6</httpclient.version>
+        <httpmime.version>4.3.6</httpmime.version>
     </properties>
 
     <licenses>
@@ -63,7 +64,6 @@
     </developers>
 
     <dependencies>
-        <!-- Marshalling -->
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
@@ -101,6 +101,12 @@
             <version>${httpclient.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>${httpmime.version}</version>
+        </dependency>
+
         <!-- Testing -->
         <dependency>
             <groupId>junit</groupId>
@@ -129,9 +135,9 @@
             <version>${jenkins-version}</version>
             <scope>test</scope>
         </dependency>
-    </dependencies>
+	</dependencies>
 
-    <build>
+	<build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
