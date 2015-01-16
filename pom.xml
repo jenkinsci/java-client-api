@@ -32,6 +32,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <targetJdk>1.6</targetJdk>
 
         <!-- Version of Jenkins to use for Integration Tests -->

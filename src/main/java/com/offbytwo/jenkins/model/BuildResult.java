@@ -13,5 +13,6 @@ public enum BuildResult {
     BUILDING,
     ABORTED,
     SUCCESS,
-    UNKNOWN
+    UNKNOWN,
+    NOT_BUILT
 }
