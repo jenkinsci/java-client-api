@@ -43,8 +43,8 @@
         <dom4j.version>1.6.1</dom4j.version>
         <commons-lang.version>2.6</commons-lang.version>
         <guava.version>17.0</guava.version>
-        <jackson-mapper-asl.version>1.9.11</jackson-mapper-asl.version>
         <httpclient.version>4.2.2</httpclient.version>
+        <jackson-databind.version>2.3.4</jackson-databind.version>
     </properties>
 
     <licenses>
@@ -65,9 +65,19 @@
     <dependencies>
         <!-- Marshalling -->
         <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>${jackson-mapper-asl.version}</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson-databind.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson-databind.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind.version}</version>
         </dependency>
 
         <dependency>

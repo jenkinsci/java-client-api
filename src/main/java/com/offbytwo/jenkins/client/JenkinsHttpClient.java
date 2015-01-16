@@ -6,12 +6,10 @@
 
 package com.offbytwo.jenkins.client;
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.offbytwo.jenkins.client.util.HttpResponseContentExtractor;
 import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
 import com.offbytwo.jenkins.model.BaseModel;
-
 import com.offbytwo.jenkins.model.Crumb;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
@@ -27,12 +25,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 public class JenkinsHttpClient {
 
@@ -265,9 +264,7 @@ public class JenkinsHttpClient {
 
     private ObjectMapper getDefaultMapper() {
         ObjectMapper mapper = new ObjectMapper();
-        DeserializationConfig deserializationConfig = mapper.getDeserializationConfig();
-        mapper.setDeserializationConfig(deserializationConfig
-                .without(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES));
+        mapper.disable(FAIL_ON_UNKNOWN_PROPERTIES);
         return mapper;
     }
 
