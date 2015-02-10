@@ -166,6 +166,10 @@ public class JenkinsServer {
     public void createJob(String jobName, String jobXml) throws IOException {
         client.post_xml("/createItem?name=" + encode(jobName), jobXml);
     }
+    
+    public void createJob(String jobName, String jobXml, Boolean crumbFlag) throws IOException {
+        client.post_xml("/createItem?name=" + encode(jobName), jobXml, crumbFlag);
+    }
 
     /**
      * Get the xml description of an existing job
