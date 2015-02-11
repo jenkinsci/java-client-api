@@ -12,10 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.google.common.collect.Collections2.filter;
 
@@ -33,6 +30,11 @@ public class BuildWithDetails extends Build {
     List<Artifact> artifacts;
     String consoleOutputText;
     String consoleOutputHtml;
+    List<BuildCause> causes;
+
+    public BuildWithDetails() {
+        causes = new ArrayList<BuildCause>();
+    }
 
     public List<Artifact> getArtifacts() {
         return artifacts;
@@ -111,4 +113,6 @@ public class BuildWithDetails extends Build {
         URI artifactUri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), artifactPath, "", "");
         return client.getFile(artifactUri);
     }
+
+    public List<BuildCause> getCauses() { return causes; }
 }
