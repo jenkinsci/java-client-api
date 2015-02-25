@@ -4,7 +4,7 @@ public class BuildCause {
    String shortDescription;
 
    // For upstreams
-   String upstreamBuild;
+   Integer upstreamBuild;
    String upstreamProject;
    String upstreamUrl;
 
@@ -15,8 +15,8 @@ public class BuildCause {
    public String getShortDescription() { return shortDescription; }
    public void setShortDescription(String shortDescription) { this.shortDescription = shortDescription; }
 
-   public int getUpstreamBuild() { return Integer.parseInt(upstreamBuild); }
-   public void setUpstreamBuild(String upstreamBuild) { this.upstreamBuild = upstreamBuild; }
+   public int getUpstreamBuild() { return upstreamBuild; }
+   public void setUpstreamBuild(Integer upstreamBuild) { this.upstreamBuild = upstreamBuild; }
 
    public String getUpstreamProject() { return upstreamProject; }
    public void setUpstreamProject(String upstreamProject) { this.upstreamProject = upstreamProject; }

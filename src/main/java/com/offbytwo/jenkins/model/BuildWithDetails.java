@@ -50,17 +50,18 @@ public class BuildWithDetails extends Build {
         List<BuildCause> result = new ArrayList<BuildCause>();
 
         if (causes != null && ! causes.isEmpty()) {
-            List<Map<String, String>> causes_blob =
-                    ((Map<String, List<Map<String, String>>>) causes.toArray()[0]).get("causes");
-            for( Map<String, String> cause : causes_blob) {
-                BuildCause cause_object = new BuildCause();
-                cause_object.setShortDescription(cause.get("shortDescription"));
+            // The underlying key-value can be either a <String, Integer> or a <String, String>.
+            List<Map<String, Object>> causes_blob =
+                    ((Map<String, List<Map<String, Object>>>) causes.toArray()[0]).get("causes");
+            for( Map<String, Object> cause : causes_blob) {
 
-                cause_object.setUpstreamBuild(cause.get("upstreamBuild"));
-                cause_object.setUpstreamProject(cause.get("upstreamProject"));
-                cause_object.setUpstreamUrl(cause.get("upstreamUrl"));
-                cause_object.setUserId(cause.get("userId"));
-                cause_object.setUserName(cause.get("userName"));
+                BuildCause cause_object = new BuildCause();
+                cause_object.setShortDescription((String)cause.get("shortDescription"));
+                cause_object.setUpstreamBuild((Integer)cause.get("upstreamBuild"));
+                cause_object.setUpstreamProject((String)cause.get("upstreamProject"));
+                cause_object.setUpstreamUrl((String)cause.get("upstreamUrl"));
+                cause_object.setUserId((String)cause.get("userId"));
+                cause_object.setUserName((String)cause.get("userName"));
 
                 result.add(cause_object);
             }
