@@ -58,6 +58,27 @@ public class Job extends BaseModel {
         client.post(url + "buildWithParameters?" + qs, null, null);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Job job = (Job) o;
+
+        if (name != null ? !name.equals(job.name) : job.name != null)
+            return false;
+        if (url != null ? !url.equals(job.url) : job.url != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (url != null ? url.hashCode() : 0);
+        return result;
+    }
+
     private static class MapEntryToQueryStringPair implements Function<Map.Entry<String, String>, String> {
         @Override
         public String apply(Map.Entry<String, String> entry) {

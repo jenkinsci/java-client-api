@@ -90,6 +90,69 @@ public class ComputerWithDetails extends Job {
         return temporarilyOffline;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ComputerWithDetails that = (ComputerWithDetails) o;
+
+        if (actions != null ? !actions.equals(that.actions) : that.actions != null)
+            return false;
+        if (displayName != null ? !displayName.equals(that.displayName) : that.displayName != null)
+            return false;
+        if (executors != null ? !executors.equals(that.executors) : that.executors != null)
+            return false;
+        if (idle != null ? !idle.equals(that.idle) : that.idle != null)
+            return false;
+        if (jnlp != null ? !jnlp.equals(that.jnlp) : that.jnlp != null)
+            return false;
+        if (launchSupported != null ? !launchSupported.equals(that.launchSupported) : that.launchSupported != null)
+            return false;
+        if (loadStatistics != null ? !loadStatistics.equals(that.loadStatistics) : that.loadStatistics != null)
+            return false;
+        if (manualLaunchAllowed != null ? !manualLaunchAllowed.equals(that.manualLaunchAllowed) : that.manualLaunchAllowed != null)
+            return false;
+        if (monitorData != null ? !monitorData.equals(that.monitorData) : that.monitorData != null)
+            return false;
+        if (numExecutors != null ? !numExecutors.equals(that.numExecutors) : that.numExecutors != null)
+            return false;
+        if (offline != null ? !offline.equals(that.offline) : that.offline != null)
+            return false;
+        if (offlineCause != null ? !offlineCause.equals(that.offlineCause) : that.offlineCause != null)
+            return false;
+        if (offlineReason != null ? !offlineReason.equals(that.offlineReason) : that.offlineReason != null)
+            return false;
+        if (oneOffExecutors != null ? !oneOffExecutors.equals(that.oneOffExecutors) : that.oneOffExecutors != null)
+            return false;
+        if (temporarilyOffline != null ? !temporarilyOffline.equals(that.temporarilyOffline) : that.temporarilyOffline != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (displayName != null ? displayName.hashCode() : 0);
+        result = 31 * result + (actions != null ? actions.hashCode() : 0);
+        result = 31 * result + (executors != null ? executors.hashCode() : 0);
+        result = 31 * result + (idle != null ? idle.hashCode() : 0);
+        result = 31 * result + (jnlp != null ? jnlp.hashCode() : 0);
+        result = 31 * result + (launchSupported != null ? launchSupported.hashCode() : 0);
+        result = 31 * result + (loadStatistics != null ? loadStatistics.hashCode() : 0);
+        result = 31 * result + (manualLaunchAllowed != null ? manualLaunchAllowed.hashCode() : 0);
+        result = 31 * result + (monitorData != null ? monitorData.hashCode() : 0);
+        result = 31 * result + (numExecutors != null ? numExecutors.hashCode() : 0);
+        result = 31 * result + (offline != null ? offline.hashCode() : 0);
+        result = 31 * result + (offlineCause != null ? offlineCause.hashCode() : 0);
+        result = 31 * result + (offlineReason != null ? offlineReason.hashCode() : 0);
+        result = 31 * result + (oneOffExecutors != null ? oneOffExecutors.hashCode() : 0);
+        result = 31 * result + (temporarilyOffline != null ? temporarilyOffline.hashCode() : 0);
+        return result;
+    }
+
     private class ComputerWithClient implements Function<Computer, Computer> {
         @Override
         public Computer apply(Computer computer) {

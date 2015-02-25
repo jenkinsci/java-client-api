@@ -35,4 +35,25 @@ public class Build extends BaseModel {
     public BuildWithDetails details() throws IOException {
         return client.get(url, BuildWithDetails.class);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Build build = (Build) o;
+
+        if (number != build.number) return false;
+        if (url != null ? !url.equals(build.url) : build.url != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = number;
+        result = 31 * result + (url != null ? url.hashCode() : 0);
+        return result;
+    }
 }

@@ -140,4 +140,51 @@ public class BuildWithDetails extends Build {
         return client.getFile(artifactUri);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        BuildWithDetails that = (BuildWithDetails) o;
+
+        if (building != that.building) return false;
+        if (duration != that.duration) return false;
+        if (estimatedDuration != that.estimatedDuration) return false;
+        if (timestamp != that.timestamp) return false;
+        if (actions != null ? !actions.equals(that.actions) : that.actions != null)
+            return false;
+        if (artifacts != null ? !artifacts.equals(that.artifacts) : that.artifacts != null)
+            return false;
+        if (consoleOutputHtml != null ? !consoleOutputHtml.equals(that.consoleOutputHtml) : that.consoleOutputHtml != null)
+            return false;
+        if (consoleOutputText != null ? !consoleOutputText.equals(that.consoleOutputText) : that.consoleOutputText != null)
+            return false;
+        if (description != null ? !description.equals(that.description) : that.description != null)
+            return false;
+        if (fullDisplayName != null ? !fullDisplayName.equals(that.fullDisplayName) : that.fullDisplayName != null)
+            return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (result != that.result) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result1 = super.hashCode();
+        result1 = 31 * result1 + (actions != null ? actions.hashCode() : 0);
+        result1 = 31 * result1 + (building ? 1 : 0);
+        result1 = 31 * result1 + (description != null ? description.hashCode() : 0);
+        result1 = 31 * result1 + duration;
+        result1 = 31 * result1 + estimatedDuration;
+        result1 = 31 * result1 + (fullDisplayName != null ? fullDisplayName.hashCode() : 0);
+        result1 = 31 * result1 + (id != null ? id.hashCode() : 0);
+        result1 = 31 * result1 + (int) (timestamp ^ (timestamp >>> 32));
+        result1 = 31 * result1 + (result != null ? result.hashCode() : 0);
+        result1 = 31 * result1 + (artifacts != null ? artifacts.hashCode() : 0);
+        result1 = 31 * result1 + (consoleOutputText != null ? consoleOutputText.hashCode() : 0);
+        result1 = 31 * result1 + (consoleOutputHtml != null ? consoleOutputHtml.hashCode() : 0);
+        return result1;
+    }
 }
