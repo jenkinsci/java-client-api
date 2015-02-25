@@ -30,18 +30,43 @@ public class BuildWithDetails extends Build {
     List<Artifact> artifacts;
     String consoleOutputText;
     String consoleOutputHtml;
-    List<BuildCause> causes;
-
-    public BuildWithDetails() {
-        causes = new ArrayList<BuildCause>();
-    }
 
     public List<Artifact> getArtifacts() {
         return artifacts;
     }
 
-    public boolean isBuilding() {
-        return building;
+    public boolean isBuilding() { return building; }
+
+    public List<BuildCause> getCauses() {
+        // actions is a List<Map<String, List<Map<String, String ..
+        // we have a List[i]["causes"] -> List[BuildCause]
+        Collection causes = filter(actions, new Predicate<Map<String, Object>>() {
+            @Override
+            public boolean apply(Map<String, Object> action) {
+                return action.containsKey("causes");
+            }
+        });
+
+        List<BuildCause> result = new ArrayList<BuildCause>();
+
+        if (causes != null && ! causes.isEmpty()) {
+            List<Map<String, String>> causes_blob =
+                    ((Map<String, List<Map<String, String>>>) causes.toArray()[0]).get("causes");
+            for( Map<String, String> cause : causes_blob) {
+                BuildCause cause_object = new BuildCause();
+                cause_object.setShortDescription(cause.get("shortDescription"));
+
+                cause_object.setUpstreamBuild(cause.get("upstreamBuild"));
+                cause_object.setUpstreamProject(cause.get("upstreamProject"));
+                cause_object.setUpstreamUrl(cause.get("upstreamUrl"));
+                cause_object.setUserId(cause.get("userId"));
+                cause_object.setUserName(cause.get("userName"));
+
+                result.add(cause_object);
+            }
+        }
+
+        return result;
     }
 
     public String getDescription() {
@@ -114,5 +139,4 @@ public class BuildWithDetails extends Build {
         return client.getFile(artifactUri);
     }
 
-    public List<BuildCause> getCauses() { return causes; }
 }
