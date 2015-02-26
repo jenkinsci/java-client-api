@@ -12,10 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.google.common.collect.Collections2.filter;
 
@@ -38,8 +35,39 @@ public class BuildWithDetails extends Build {
         return artifacts;
     }
 
-    public boolean isBuilding() {
-        return building;
+    public boolean isBuilding() { return building; }
+
+    public List<BuildCause> getCauses() {
+        // actions is a List<Map<String, List<Map<String, String ..
+        // we have a List[i]["causes"] -> List[BuildCause]
+        Collection causes = filter(actions, new Predicate<Map<String, Object>>() {
+            @Override
+            public boolean apply(Map<String, Object> action) {
+                return action.containsKey("causes");
+            }
+        });
+
+        List<BuildCause> result = new ArrayList<BuildCause>();
+
+        if (causes != null && ! causes.isEmpty()) {
+            // The underlying key-value can be either a <String, Integer> or a <String, String>.
+            List<Map<String, Object>> causes_blob =
+                    ((Map<String, List<Map<String, Object>>>) causes.toArray()[0]).get("causes");
+            for( Map<String, Object> cause : causes_blob) {
+
+                BuildCause cause_object = new BuildCause();
+                cause_object.setShortDescription((String)cause.get("shortDescription"));
+                cause_object.setUpstreamBuild((Integer)cause.get("upstreamBuild"));
+                cause_object.setUpstreamProject((String)cause.get("upstreamProject"));
+                cause_object.setUpstreamUrl((String)cause.get("upstreamUrl"));
+                cause_object.setUserId((String)cause.get("userId"));
+                cause_object.setUserName((String)cause.get("userName"));
+
+                result.add(cause_object);
+            }
+        }
+
+        return result;
     }
 
     public String getDescription() {
@@ -111,4 +139,5 @@ public class BuildWithDetails extends Build {
         URI artifactUri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), artifactPath, "", "");
         return client.getFile(artifactUri);
     }
+
 }
