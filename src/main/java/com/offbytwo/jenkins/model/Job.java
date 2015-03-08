@@ -44,7 +44,11 @@ public class Job extends BaseModel {
      * Trigger a build without parameters
      */
     public void build() throws IOException {
-        client.post(url + "build");
+        client.post(url + "build", true);
+    }
+
+    public void build(boolean crumbFlag) throws IOException {
+        client.post(url + "build", crumbFlag);
     }
 
     /**

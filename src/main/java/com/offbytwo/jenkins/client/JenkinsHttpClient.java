@@ -149,6 +149,10 @@ public class JenkinsHttpClient {
         }
     }
 
+    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException {
+        return post(path, data, cls, true);
+    }
+
     /**
      * Perform a POST request and parse the response to the given class
      *
@@ -160,11 +164,13 @@ public class JenkinsHttpClient {
      * @return an instance of the supplied class
      * @throws IOException, HttpResponseException
      */
-    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException {
+    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls, boolean crumbFlag) throws IOException {
         HttpPost request = new HttpPost(api(path));
-        Crumb crumb = get("/crumbIssuer", Crumb.class);
-        if (crumb != null) {
-            request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+        if (crumbFlag == true) {
+            Crumb crumb = get("/crumbIssuer", Crumb.class);
+            if (crumb != null) {
+                request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+            }
         }
 
         if (data != null) {
@@ -229,7 +235,11 @@ public class JenkinsHttpClient {
      * @throws IOException, HttpResponseException
      */
     public void post(String path) throws IOException {
-        post(path, null, null);
+        post(path, null, null, true);
+    }
+
+    public void post(String path, boolean crumbFlag) throws IOException {
+        post(path, null, null, crumbFlag);
     }
 
     private String urlJoin(String path1, String path2) {
