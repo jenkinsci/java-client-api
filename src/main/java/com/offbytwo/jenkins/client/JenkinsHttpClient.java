@@ -23,6 +23,9 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
 
@@ -34,6 +37,9 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKN
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 public class JenkinsHttpClient {
+
+    private static final int SO_TIMEOUT_IN_MILLISECONDS = 3000;
+    private static final int CONNECTION_TIMEOUT_IN_MILLISECONDS = 500;
 
     private URI uri;
     private DefaultHttpClient client;
@@ -68,7 +74,20 @@ public class JenkinsHttpClient {
      * @param uri Location of the jenkins server (ex. http://localhost:8080)
      */
     public JenkinsHttpClient(URI uri) {
-        this(uri, new DefaultHttpClient());
+      this.context = uri.getPath();
+      if (!context.endsWith("/")) {
+          context += "/";
+      }
+      this.uri = uri;
+      this.mapper = getDefaultMapper();
+      
+      HttpParams httpParams = new BasicHttpParams();
+      httpParams.setIntParameter(CoreConnectionPNames.SO_TIMEOUT, SO_TIMEOUT_IN_MILLISECONDS);
+      httpParams.setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_IN_MILLISECONDS);
+      
+      this.client = new DefaultHttpClient(httpParams);
+      this.httpResponseValidator = new HttpResponseValidator();
+      this.contentExtractor = new HttpResponseContentExtractor();
     }
 
     /**
