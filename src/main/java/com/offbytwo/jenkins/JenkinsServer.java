@@ -230,6 +230,33 @@ public class JenkinsServer {
         this.updateJob(jobName, jobXml);
     }
 
+    /**
+     * Sends the Quiet Down (Prepare for shutdown) message
+     * @throws IOException
+     */
+    public void quietDown() throws IOException {
+        try {
+            client.get("/quietDown/");
+        }
+        catch (org.apache.http.client.ClientProtocolException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Cancels the Quiet Down (Prepare for shutdown) message
+     * @throws IOException
+     */
+    public void cancelQuietDown() throws IOException {
+        try {
+            client.post("/cancelQuietDown/");
+        }
+        catch (org.apache.http.client.ClientProtocolException e) {
+            e.printStackTrace();
+        }
+    }
+
     /*
      * Delete a job from jenkins
      *

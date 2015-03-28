@@ -109,4 +109,10 @@ public class JenkinsServerTest extends BaseUnitTest {
         // then
         assertEquals(server.isRunning(), false);
     }
+
+    @Test
+    public void testQuietDown() throws IOException {
+        server.quietDown();
+        server.cancelQuietDown();
+    }
 }
