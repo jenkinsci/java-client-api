@@ -12,7 +12,7 @@ import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.Map;
 
-public class ComputerWithDetails extends Job {
+public class ComputerWithDetails extends Computer {
 
     String displayName;
     List actions;
