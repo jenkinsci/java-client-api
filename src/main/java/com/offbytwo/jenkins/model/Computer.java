@@ -45,6 +45,28 @@ public class Computer extends BaseModel {
         return client.get("/computer/" + displayName.replaceAll("master", "(master)"), ComputerWithDetails.class);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Computer computer1 = (Computer) o;
+
+        if (computer != null ? !computer.equals(computer1.computer) : computer1.computer != null)
+            return false;
+        if (displayName != null ? !displayName.equals(computer1.displayName) : computer1.displayName != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = displayName != null ? displayName.hashCode() : 0;
+        result = 31 * result + (computer != null ? computer.hashCode() : 0);
+        return result;
+    }
+
     private static class MapEntryToQueryStringPair implements Function<Map.Entry<String, String>, String> {
         @Override
         public String apply(Map.Entry<String, String> entry) {
