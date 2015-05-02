@@ -30,6 +30,8 @@ public class BuildWithDetails extends Build {
     List<Artifact> artifacts;
     String consoleOutputText;
     String consoleOutputHtml;
+    BuildChangeSet changeSet;
+    List culprits;
 
     public List<Artifact> getArtifacts() {
         return artifacts;
@@ -129,6 +131,22 @@ public class BuildWithDetails extends Build {
 
     public String getConsoleOutputHtml() throws IOException {
         return client.get(url + "/logText/progressiveHtml");
+    }
+
+    public BuildChangeSet getChangeSet() {
+        return changeSet;
+    }
+
+    public void setChangeSet(BuildChangeSet changeSet) {
+        this.changeSet = changeSet;
+    }
+
+    public List getCulprits() {
+        return culprits;
+    }
+
+    public void setCulprits(List culprits) {
+        this.culprits = culprits;
     }
 
     public InputStream downloadArtifact(Artifact a) throws IOException, URISyntaxException {
