@@ -7,10 +7,11 @@
 package com.offbytwo.jenkins.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.offbytwo.jenkins.client.util.HttpResponseContentExtractor;
+import com.offbytwo.jenkins.client.util.RequestReleasingInputStream;
 import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
 import com.offbytwo.jenkins.model.BaseModel;
 import com.offbytwo.jenkins.model.Crumb;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -45,7 +46,6 @@ public class JenkinsHttpClient {
     private DefaultHttpClient client;
     private BasicHttpContext localContext;
     private HttpResponseValidator httpResponseValidator;
-    private HttpResponseContentExtractor contentExtractor;
 
     private ObjectMapper mapper;
     private String context;
@@ -65,7 +65,6 @@ public class JenkinsHttpClient {
         this.mapper = getDefaultMapper();
         this.client = defaultHttpClient;
         this.httpResponseValidator = new HttpResponseValidator();
-        this.contentExtractor = new HttpResponseContentExtractor();
     }
 
     /**
@@ -87,7 +86,6 @@ public class JenkinsHttpClient {
       
       this.client = new DefaultHttpClient(httpParams);
       this.httpResponseValidator = new HttpResponseValidator();
-      this.contentExtractor = new HttpResponseContentExtractor();
     }
 
     /**
@@ -142,10 +140,12 @@ public class JenkinsHttpClient {
     public String get(String path) throws IOException {
         HttpGet getMethod = new HttpGet(api(path));
         HttpResponse response = client.execute(getMethod, localContext);
+
         try {
             httpResponseValidator.validateResponse(response);
-            return contentExtractor.contentAsString(response);
+            return IOUtils.toString(response.getEntity().getContent());
         } finally {
+            EntityUtils.consume(response.getEntity());
             releaseConnection(getMethod);
         }
     }
@@ -159,13 +159,9 @@ public class JenkinsHttpClient {
      */
     public InputStream getFile(URI path) throws IOException {
         HttpGet getMethod = new HttpGet(path);
-        try {
-            HttpResponse response = client.execute(getMethod, localContext);
-            httpResponseValidator.validateResponse(response);
-            return contentExtractor.contentAsInputStream(response);
-        } finally {
-            releaseConnection(getMethod);
-        }
+        HttpResponse response = client.execute(getMethod, localContext);
+        httpResponseValidator.validateResponse(response);
+        return new RequestReleasingInputStream(response.getEntity().getContent(), getMethod);
     }
 
     public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException {
@@ -240,7 +236,7 @@ public class JenkinsHttpClient {
         HttpResponse response = client.execute(request, localContext);
         httpResponseValidator.validateResponse(response);
         try {
-            return contentExtractor.contentAsString(response);
+            return IOUtils.toString(response.getEntity().getContent());
         } finally {
             EntityUtils.consume(response.getEntity());
             releaseConnection(request);
@@ -285,7 +281,7 @@ public class JenkinsHttpClient {
     }
 
     private <T extends BaseModel> T objectFromResponse(Class<T> cls, HttpResponse response) throws IOException {
-        InputStream content = contentExtractor.contentAsInputStream(response);
+        InputStream content = response.getEntity().getContent();
         T result = mapper.readValue(content, cls);
         result.setClient(this);
         return result;
