@@ -130,6 +130,20 @@ public class JobWithDetails extends Job {
         return true;
     }
 
+	public Build getBuildByNumber(final int buildNumber) {
+        
+    Predicate<Build> isMatchingBuildNumber = new Predicate<Build>() {
+            
+            @Override
+            public boolean apply(Build input) {
+                return input.getNumber() == buildNumber;
+            }
+        };
+        
+        Optional<Build> optionalBuild = Iterables.tryFind(builds, isMatchingBuildNumber);
+        return optionalBuild.orNull() == null ? null : buildWithClient(optionalBuild.orNull());
+    }
+	
     @Override
     public int hashCode() {
         int result = super.hashCode();
