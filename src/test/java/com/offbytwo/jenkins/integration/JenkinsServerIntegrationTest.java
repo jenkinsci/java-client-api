@@ -12,6 +12,7 @@ import com.offbytwo.jenkins.model.BuildWithDetails;
 import com.offbytwo.jenkins.model.Computer;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.JobWithDetails;
+import hudson.model.BooleanParameterValue;
 import hudson.model.Cause;
 import hudson.model.FreeStyleProject;
 import hudson.model.ParametersAction;
@@ -77,6 +78,19 @@ public class JenkinsServerIntegrationTest {
         BuildWithDetails build = job.getBuilds().get(0).details();
         assertEquals(BuildResult.SUCCESS, build.getResult());
         assertEquals("foobar", build.getParameters().get("REVISION"));
+    }
+
+    @Test
+    public void shouldSupportBooleanParameters() throws Exception {
+        FreeStyleProject pr = jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
+        pr.scheduleBuild(0, new Cause.UserCause(), new ParametersAction(new BooleanParameterValue("someValue", true)));
+
+        while (pr.isInQueue() || pr.isBuilding()) {
+        }
+
+        JobWithDetails job = server.getJobs().get(JENKINS_TEST_JOB).details();
+        BuildWithDetails build = job.getBuilds().get(0).details();
+        assertEquals("true", build.getParameters().get("someValue"));
     }
 
     @Test

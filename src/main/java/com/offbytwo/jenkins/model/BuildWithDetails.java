@@ -113,10 +113,10 @@ public class BuildWithDetails extends Build {
         Map<String, String> params = new HashMap<String, String>();
 
         if (parameters != null && !parameters.isEmpty()) {
-            for (Map<String, String> param : ((Map<String, List<Map<String, String>>>) parameters.toArray()[0]).get("parameters")) {
-                String key = param.get("name");
-                String value = param.get("value");
-                params.put(key, value);
+            for (Map<String, Object> param : ((Map<String, List<Map<String, Object>>>) parameters.toArray()[0]).get("parameters")) {
+                String key = (String) param.get("name");
+                Object value = param.get("value");
+                params.put(key, String.valueOf(value));
             }
         }
 
