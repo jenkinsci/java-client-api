@@ -115,4 +115,11 @@ public class JenkinsServerTest extends BaseUnitTest {
         server.quietDown();
         server.cancelQuietDown();
     }
+
+    @Test
+    public void testJenkinsPathEncoding() throws IOException {
+        given(client.get("/job/encoded%2Fproperly%3F/config.xml")).willReturn("<xml>not a real response</xml>");
+
+        assertEquals("<xml>not a real response</xml>", server.getJobXml("encoded/properly?"));
+    }
 }
