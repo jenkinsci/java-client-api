@@ -8,11 +8,12 @@ package com.offbytwo.jenkins.model;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import com.google.common.escape.Escaper;
+import com.google.common.net.UrlEscapers;
 
 import java.io.IOException;
 import java.util.Map;
 
-import static java.net.URLEncoder.encode;
 import static org.apache.commons.lang.StringUtils.join;
 
 public class Job extends BaseModel {
@@ -86,7 +87,8 @@ public class Job extends BaseModel {
     private static class MapEntryToQueryStringPair implements Function<Map.Entry<String, String>, String> {
         @Override
         public String apply(Map.Entry<String, String> entry) {
-            return encode(entry.getKey()) + "=" + encode(entry.getValue());
+            Escaper escaper = UrlEscapers.urlFormParameterEscaper();
+            return escaper.escape(entry.getKey()) + "=" + escaper.escape(entry.getValue());
         }
     }
 }

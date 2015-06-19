@@ -8,6 +8,7 @@ package com.offbytwo.jenkins;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
+import com.google.common.net.UrlEscapers;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
 import com.offbytwo.jenkins.model.Computer;
 import com.offbytwo.jenkins.model.Job;
@@ -23,7 +24,6 @@ import org.dom4j.DocumentException;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -164,11 +164,11 @@ public class JenkinsServer {
      * @throws IOException
      */
     public void createJob(String jobName, String jobXml) throws IOException {
-        client.post_xml("/createItem?name=" + encode(jobName), jobXml);
+        client.post_xml("/createItem?name=" + encodeParam(jobName), jobXml);
     }
     
     public void createJob(String jobName, String jobXml, Boolean crumbFlag) throws IOException {
-        client.post_xml("/createItem?name=" + encode(jobName), jobXml, crumbFlag);
+        client.post_xml("/createItem?name=" + encodeParam(jobName), jobXml, crumbFlag);
     }
 
     /**
@@ -269,6 +269,12 @@ public class JenkinsServer {
 
     private String encode(String pathPart) {
         // jenkins doesn't like the + for space, use %20 instead
-        return URLEncoder.encode(pathPart).replaceAll("\\+", "%20");
+        String escape = UrlEscapers.urlPathSegmentEscaper().escape(pathPart);
+        return escape;
+    }
+
+    private String encodeParam(String pathPart) {
+        // jenkins doesn't like the + for space, use %20 instead
+        return UrlEscapers.urlFormParameterEscaper().escape(pathPart);
     }
 }
