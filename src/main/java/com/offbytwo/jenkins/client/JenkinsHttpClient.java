@@ -244,6 +244,51 @@ public class JenkinsHttpClient {
     }
 
     /**
+     * Post a text entity to the given URL using the default content type
+     *
+     * @param path
+     * @param textData
+     * @param crumbFlag
+     * @return resulting response
+     * @throws IOException
+     */
+    public String post_text(String path, String textData, boolean crumbFlag) throws IOException {
+        return post_text(path, textData, ContentType.DEFAULT_TEXT, crumbFlag);
+    }
+
+    /**
+     * Post a text entity to the given URL with the given content type
+     *
+     * @param path
+     * @param textData
+     * @param crumbFlag
+     * @return resulting response
+     * @throws IOException
+     */
+    public String post_text(String path, String textData, ContentType contentType, boolean crumbFlag)
+        throws IOException {
+        HttpPost request = new HttpPost(api(path));
+        if (crumbFlag == true) {
+            Crumb crumb = get("/crumbIssuer", Crumb.class);
+            if (crumb != null) {
+                request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+            }
+        }
+
+        if (textData != null) {
+            request.setEntity(new StringEntity(textData, contentType));
+        }
+        HttpResponse response = client.execute(request, localContext);
+        httpResponseValidator.validateResponse(response);
+        try {
+            return IOUtils.toString(response.getEntity().getContent());
+        } finally {
+            EntityUtils.consume(response.getEntity());
+            releaseConnection(request);
+        }
+    }
+
+    /**
      * Perform POST request that takes no parameters and returns no response
      *
      * @param path path to request
