@@ -127,4 +127,10 @@ public class JenkinsServerTest extends BaseUnitTest {
         verify(client).post_text("/scriptText", "script=script", ContentType.APPLICATION_FORM_URLENCODED, false);
         assertEquals("result", result);
     }
+
+    public void testJenkinsPathEncoding() throws IOException {
+        given(client.get("/job/encoded%2Fproperly%3F/config.xml")).willReturn("<xml>not a real response</xml>");
+
+        assertEquals("<xml>not a real response</xml>", server.getJobXml("encoded/properly?"));
+    }
 }
