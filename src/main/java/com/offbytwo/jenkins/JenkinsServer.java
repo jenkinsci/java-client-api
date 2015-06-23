@@ -18,10 +18,13 @@ import com.offbytwo.jenkins.model.LabelWithDetails;
 import com.offbytwo.jenkins.model.MainView;
 import com.offbytwo.jenkins.model.MavenJobWithDetails;
 import com.offbytwo.jenkins.model.View;
+
 import org.apache.http.client.HttpResponseException;
+import org.apache.http.entity.ContentType;
 import org.dom4j.DocumentException;
 
 import javax.xml.bind.JAXBException;
+
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
@@ -266,6 +269,22 @@ public class JenkinsServer {
         client.post("/job/" + encode(jobName) + "/doDelete");
     }
 
+    /**
+     * Runs the provided groovy script on the server and returns the result.
+     *
+     * This is similar to running groovy scripts using the script console.
+     *
+     * In the instance where your script causes an exception, the server still returns a 200 status, 
+     * so detecting errors is very challenging.  It is recommended to use heuristics to check your return
+     * string for stack traces by detecting strings like "groovy.lang.(something)Exception".
+     *
+     * @param script
+     * @return results
+     * @throws IOException
+     */
+    public String runScript(String script) throws IOException {
+        return client.post_text("/scriptText", "script=" + script, ContentType.APPLICATION_FORM_URLENCODED, false);
+    }
 
     private String encode(String pathPart) {
         // jenkins doesn't like the + for space, use %20 instead
