@@ -63,6 +63,18 @@ public class Job extends BaseModel {
         client.post(url + "buildWithParameters?" + qs, null, null);
     }
 
+    /**
+     * Trigger a parameterized build
+     *
+     * @param params the job parameters
+     * @param crumbFlag determines whether crumb flag is used
+     * @throws IOException
+     */
+    public void build(Map<String, String> params, boolean crumbFlag) throws IOException {
+        String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
+        client.post(url + "buildWithParameters?" + qs, null, null, crumbFlag);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
