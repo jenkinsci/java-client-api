@@ -269,6 +269,10 @@ public class JenkinsServer {
         client.post("/job/" + encode(jobName) + "/doDelete");
     }
 
+    public void deleteJob(String jobName, boolean crumbFlag) throws IOException {
+        client.post("/job/" + encode(jobName) + "/doDelete", crumbFlag);
+    }
+
     /**
      * Runs the provided groovy script on the server and returns the result.
      *
