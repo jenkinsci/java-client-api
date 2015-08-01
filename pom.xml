@@ -32,7 +32,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <targetJdk>1.6</targetJdk>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
 
         <!-- Version of Jenkins to use for Integration Tests -->
         <jenkins-version>1.593</jenkins-version>
@@ -142,12 +143,22 @@
     </dependencies>
 
     <build>
-        <plugins>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.18.1</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
-                <inherited>true</inherited>
+                <version>2.6</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -157,47 +168,24 @@
                     </archive>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
-                <configuration>
-                    <source>${targetJdk}</source>
-                    <target>${targetJdk}</target>
-                </configuration>
+                <version>3.3</version>
             </plugin>
-
+          </plugins>
+        </pluginManagement>
+        <plugins>
+            <!--
+              ! Bind it to the life cycle.
+            -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <includes>
-                        <include>**/*Test.java</include>
-                    </includes>
-                    <excludes>
-                        <exclude>**/*IntegrationTest.java</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <configuration>
-                    <includes>
-                        <include>**/*IntegrationTest.java</include>
-                    </includes>
-                </configuration>
                 <executions>
                     <execution>
                         <id>integration-test</id>
                         <goals>
                             <goal>integration-test</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>verify</id>
-                        <goals>
                             <goal>verify</goal>
                         </goals>
                     </execution>

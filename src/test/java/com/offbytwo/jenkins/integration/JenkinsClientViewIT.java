@@ -17,7 +17,7 @@ import java.util.Collection;
 
 import static org.junit.Assert.assertNotNull;
 
-public class JenkinsClientViewIntegrationTest extends BaseIntegrationTest {
+public class JenkinsClientViewIT extends BaseForIntegrationTests {
 
     public static final String TEST_VIEW = "testView";
 
