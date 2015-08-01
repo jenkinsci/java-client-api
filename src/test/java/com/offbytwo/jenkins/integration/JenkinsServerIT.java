@@ -29,7 +29,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class JenkinsServerIntegrationTest {
+public class JenkinsServerIT {
 
     @Rule
     public JenkinsRule jenkinsRule = new JenkinsRule();
