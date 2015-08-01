@@ -8,6 +8,8 @@ package com.offbytwo.jenkins.model;
 
 import java.io.IOException;
 
+import org.apache.http.client.HttpResponseException;
+
 public class Build extends BaseModel {
 
     int number;
