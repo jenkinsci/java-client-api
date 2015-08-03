@@ -6,11 +6,10 @@
 
 package com.offbytwo.jenkins.model;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-
 import java.util.List;
 import java.util.Map;
+
+import com.google.common.base.Function;
 
 public class ComputerWithDetails extends Computer {
 

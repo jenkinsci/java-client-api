@@ -56,7 +56,7 @@ public class JenkinsServerIT {
     public void shouldReturnBuildsForJob() throws Exception {
         FreeStyleProject trunk = jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
         for (int i = 0; i < 5; i++)
-            trunk.scheduleBuild(0, new Cause.UserCause(),
+            trunk.scheduleBuild(0, new Cause.UserIdCause(),
                     new ParametersAction(new StringParameterValue("BUILD NUMBER", "" + i)));
 
         while (trunk.isInQueue() || trunk.isBuilding()) {
@@ -69,7 +69,7 @@ public class JenkinsServerIT {
     @Test
     public void shouldReturnBuildStatusForBuild() throws Exception {
         FreeStyleProject pr = jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
-        pr.scheduleBuild(0, new Cause.UserCause(), new ParametersAction(new StringParameterValue("REVISION", "foobar")));
+        pr.scheduleBuild(0, new Cause.UserIdCause(), new ParametersAction(new StringParameterValue("REVISION", "foobar")));
 
         while (pr.isInQueue() || pr.isBuilding()) {
         }
@@ -83,7 +83,7 @@ public class JenkinsServerIT {
     @Test
     public void shouldSupportBooleanParameters() throws Exception {
         FreeStyleProject pr = jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
-        pr.scheduleBuild(0, new Cause.UserCause(), new ParametersAction(new BooleanParameterValue("someValue", true)));
+        pr.scheduleBuild(0, new Cause.UserIdCause(), new ParametersAction(new BooleanParameterValue("someValue", true)));
 
         while (pr.isInQueue() || pr.isBuilding()) {
         }
