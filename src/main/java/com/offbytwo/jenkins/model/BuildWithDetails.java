@@ -30,6 +30,8 @@ public class BuildWithDetails extends Build {
     List<Artifact> artifacts;
     String consoleOutputText;
     String consoleOutputHtml;
+    BuildChangeSet changeSet;
+    List<BuildChangeSetAuthor> culprits;
 
     public List<Artifact> getArtifacts() {
         return artifacts;
@@ -131,6 +133,22 @@ public class BuildWithDetails extends Build {
         return client.get(url + "/logText/progressiveHtml");
     }
 
+    public BuildChangeSet getChangeSet() {
+        return changeSet;
+    }
+
+    public void setChangeSet(BuildChangeSet changeSet) {
+        this.changeSet = changeSet;
+    }
+
+    public List<BuildChangeSetAuthor> getCulprits() {
+        return culprits;
+    }
+
+    public void setCulprits(List<BuildChangeSetAuthor> culprits) {
+        this.culprits = culprits;
+    }
+
     public InputStream downloadArtifact(Artifact a) throws IOException, URISyntaxException {
         //We can't just put the artifact's relative path at the end of the url string,
         //as there could be characters that need to be escaped.
@@ -141,50 +159,90 @@ public class BuildWithDetails extends Build {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        BuildWithDetails that = (BuildWithDetails) o;
-
-        if (building != that.building) return false;
-        if (duration != that.duration) return false;
-        if (estimatedDuration != that.estimatedDuration) return false;
-        if (timestamp != that.timestamp) return false;
-        if (actions != null ? !actions.equals(that.actions) : that.actions != null)
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
             return false;
-        if (artifacts != null ? !artifacts.equals(that.artifacts) : that.artifacts != null)
+        if (getClass() != obj.getClass())
             return false;
-        if (consoleOutputHtml != null ? !consoleOutputHtml.equals(that.consoleOutputHtml) : that.consoleOutputHtml != null)
+        BuildWithDetails other = (BuildWithDetails) obj;
+        if (actions == null) {
+            if (other.actions != null)
+                return false;
+        } else if (!actions.equals(other.actions))
             return false;
-        if (consoleOutputText != null ? !consoleOutputText.equals(that.consoleOutputText) : that.consoleOutputText != null)
+        if (artifacts == null) {
+            if (other.artifacts != null)
+                return false;
+        } else if (!artifacts.equals(other.artifacts))
             return false;
-        if (description != null ? !description.equals(that.description) : that.description != null)
+        if (building != other.building)
             return false;
-        if (fullDisplayName != null ? !fullDisplayName.equals(that.fullDisplayName) : that.fullDisplayName != null)
+        if (changeSet == null) {
+            if (other.changeSet != null)
+                return false;
+        } else if (!changeSet.equals(other.changeSet))
             return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (result != that.result) return false;
-
+        if (consoleOutputHtml == null) {
+            if (other.consoleOutputHtml != null)
+                return false;
+        } else if (!consoleOutputHtml.equals(other.consoleOutputHtml))
+            return false;
+        if (consoleOutputText == null) {
+            if (other.consoleOutputText != null)
+                return false;
+        } else if (!consoleOutputText.equals(other.consoleOutputText))
+            return false;
+        if (culprits == null) {
+            if (other.culprits != null)
+                return false;
+        } else if (!culprits.equals(other.culprits))
+            return false;
+        if (description == null) {
+            if (other.description != null)
+                return false;
+        } else if (!description.equals(other.description))
+            return false;
+        if (duration != other.duration)
+            return false;
+        if (estimatedDuration != other.estimatedDuration)
+            return false;
+        if (fullDisplayName == null) {
+            if (other.fullDisplayName != null)
+                return false;
+        } else if (!fullDisplayName.equals(other.fullDisplayName))
+            return false;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (result != other.result)
+            return false;
+        if (timestamp != other.timestamp)
+            return false;
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result1 = super.hashCode();
-        result1 = 31 * result1 + (actions != null ? actions.hashCode() : 0);
-        result1 = 31 * result1 + (building ? 1 : 0);
-        result1 = 31 * result1 + (description != null ? description.hashCode() : 0);
-        result1 = 31 * result1 + duration;
-        result1 = 31 * result1 + estimatedDuration;
-        result1 = 31 * result1 + (fullDisplayName != null ? fullDisplayName.hashCode() : 0);
-        result1 = 31 * result1 + (id != null ? id.hashCode() : 0);
-        result1 = 31 * result1 + (int) (timestamp ^ (timestamp >>> 32));
-        result1 = 31 * result1 + (result != null ? result.hashCode() : 0);
-        result1 = 31 * result1 + (artifacts != null ? artifacts.hashCode() : 0);
-        result1 = 31 * result1 + (consoleOutputText != null ? consoleOutputText.hashCode() : 0);
-        result1 = 31 * result1 + (consoleOutputHtml != null ? consoleOutputHtml.hashCode() : 0);
-        return result1;
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((actions == null) ? 0 : actions.hashCode());
+        result = prime * result + ((artifacts == null) ? 0 : artifacts.hashCode());
+        result = prime * result + (building ? 1231 : 1237);
+        result = prime * result + ((changeSet == null) ? 0 : changeSet.hashCode());
+        result = prime * result + ((consoleOutputHtml == null) ? 0 : consoleOutputHtml.hashCode());
+        result = prime * result + ((consoleOutputText == null) ? 0 : consoleOutputText.hashCode());
+        result = prime * result + ((culprits == null) ? 0 : culprits.hashCode());
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + duration;
+        result = prime * result + estimatedDuration;
+        result = prime * result + ((fullDisplayName == null) ? 0 : fullDisplayName.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((this.result == null) ? 0 : this.result.hashCode());
+        result = prime * result + (int) (timestamp ^ (timestamp >>> 32));
+        return result;
     }
 }
