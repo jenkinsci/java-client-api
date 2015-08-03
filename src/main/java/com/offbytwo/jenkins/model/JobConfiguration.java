@@ -2,7 +2,6 @@ package com.offbytwo.jenkins.model;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;

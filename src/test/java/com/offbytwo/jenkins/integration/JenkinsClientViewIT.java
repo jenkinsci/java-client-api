@@ -34,6 +34,11 @@ public class JenkinsClientViewIT extends BaseForIntegrationTests {
     }
 
     private static class TestView extends hudson.model.View implements Serializable {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
         public TestView() {
             super(TEST_VIEW);
         }
