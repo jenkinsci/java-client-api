@@ -21,7 +21,7 @@ import hudson.model.FreeStyleProject;
 import hudson.model.ParametersAction;
 import hudson.model.StringParameterValue;
 
-public class BuildWithDetailsTest {
+public class BuildWithDetailsIT  {
 
     private final String JENKINS_WITH_DETAILS_TEST_JOB = "build_with_details";
 
