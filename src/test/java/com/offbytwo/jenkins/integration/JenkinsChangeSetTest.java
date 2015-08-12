@@ -3,6 +3,8 @@ package com.offbytwo.jenkins.integration;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.junit.Test;
 
@@ -13,17 +15,29 @@ import com.offbytwo.jenkins.model.BuildChangeSetAuthor;
 import com.offbytwo.jenkins.model.BuildChangeSetItem;
 import com.offbytwo.jenkins.model.BuildChangeSetPath;
 import com.offbytwo.jenkins.model.BuildWithDetails;
+import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.MavenJobWithDetails;
+import com.offbytwo.jenkins.model.View;
 
 public class JenkinsChangeSetTest {
 
     @Test
     public void shouldAddStringParamToAnExistingJob() throws IOException {
-         JenkinsServer js = new
-         JenkinsServer(URI.create("http://localhost:10090/"));
-//        JenkinsServer js = new JenkinsServer(URI.create("http://ci.soebes.de:8080/"));
-        MavenJobWithDetails mavenJob = js.getMavenJob("javaee");
-//        MavenJobWithDetails mavenJob = js.getMavenJob("appassembler-maven-plugin");
+//         JenkinsServer js = new
+//         JenkinsServer(URI.create("http://localhost:10090/"));
+        JenkinsServer js = new JenkinsServer(URI.create("http://ci.soebes.de:8080/"));
+        Map<String, View> views = js.getViews();
+        for (Entry<String, View> view : views.entrySet()) {
+            System.out.println("view: " +view.getKey() + " " + view.getValue().getName());
+            View selectedView = js.getView(view.getKey());
+            System.out.println(" Selected View: " + selectedView.getName());
+            List<Job> jobs = selectedView.getJobs();
+            for (Job job : jobs) {
+                System.out.println(" Selected View job: " + job.getName());
+            }
+        }
+//        MavenJobWithDetails mavenJob = js.getMavenJob("javaee");
+        MavenJobWithDetails mavenJob = js.getMavenJob("appassembler-maven-plugin");
 
         BuildWithDetails details = mavenJob.getLastBuild().details();
 //        BuildWithDetails details = mavenJob.getBuilds().get(10).details();

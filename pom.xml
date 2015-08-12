@@ -145,6 +145,12 @@
             <version>${jenkins-version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+          <groupId>org.assertj</groupId>
+          <artifactId>assertj-core</artifactId>
+          <version>1.7.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
