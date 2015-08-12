@@ -6,13 +6,10 @@
 
 package com.offbytwo.jenkins.model;
 
-import com.google.common.base.Function;
-import com.google.common.escape.Escaper;
-import com.google.common.net.UrlEscapers;
-
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
+
+import com.google.common.net.UrlEscapers;
 
 
 public class Computer extends BaseModel {
@@ -73,11 +70,4 @@ public class Computer extends BaseModel {
         return result;
     }
 
-    private static class MapEntryToQueryStringPair implements Function<Map.Entry<String, String>, String> {
-        @Override
-        public String apply(Map.Entry<String, String> entry) {
-            Escaper escaper = UrlEscapers.urlFormParameterEscaper();
-            return escaper.escape(entry.getKey()) + "=" + escaper.escape(entry.getValue());
-        }
-    }
 }

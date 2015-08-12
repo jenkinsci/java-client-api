@@ -1,11 +1,10 @@
 package com.offbytwo.jenkins.client.util;
 
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.util.EntityUtils;
-
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import org.apache.http.client.methods.HttpRequestBase;
 
 /**
  * Releases the http request method if it is closed
