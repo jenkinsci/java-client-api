@@ -288,6 +288,12 @@ public class JenkinsServer {
         client.post("/job/" + encode(jobName) + "/doDelete");
     }
 
+    /**
+     * Delete a job from Jenkins.
+     * @param jobName The name of the job to be deleted.
+     * @param crumbFlag The crumFlag.
+     * @throws IOException In case of an failure.
+     */
     public void deleteJob(String jobName, boolean crumbFlag) throws IOException {
         client.post("/job/" + encode(jobName) + "/doDelete", crumbFlag);
     }
