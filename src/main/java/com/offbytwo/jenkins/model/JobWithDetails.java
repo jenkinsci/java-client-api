@@ -6,11 +6,14 @@
 
 package com.offbytwo.jenkins.model;
 
-import com.google.common.base.Function;
+import static com.google.common.collect.Lists.transform;
 
 import java.util.List;
 
-import static com.google.common.collect.Lists.transform;
+import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
 public class JobWithDetails extends Job {
 
@@ -130,6 +133,20 @@ public class JobWithDetails extends Job {
         return true;
     }
 
+	public Build getBuildByNumber(final int buildNumber) {
+        
+    Predicate<Build> isMatchingBuildNumber = new Predicate<Build>() {
+            
+            @Override
+            public boolean apply(Build input) {
+                return input.getNumber() == buildNumber;
+            }
+        };
+        
+        Optional<Build> optionalBuild = Iterables.tryFind(builds, isMatchingBuildNumber);
+        return optionalBuild.orNull() == null ? null : buildWithClient(optionalBuild.orNull());
+    }
+	
     @Override
     public int hashCode() {
         int result = super.hashCode();

@@ -2,7 +2,6 @@ package com.offbytwo.jenkins.model;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -42,7 +41,6 @@ public class JobConfiguration {
             marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(pdp, sw);
-//			System.out.println(sw.toString());
             Document docInterlude = reader.read(new StringReader(sw.toString()));
             List<Node> propertiesNode = doc.selectNodes("//project/properties");
             for (Node node : propertiesNode) {

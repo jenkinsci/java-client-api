@@ -11,7 +11,7 @@ import java.net.URISyntaxException;
 
 import static org.junit.Assert.assertTrue;
 
-public class JobConfigurationIntegrationTest extends BaseIntegrationTest {
+public class JobConfigurationIT extends BaseForIntegrationTests {
 
     public static final String TEST_JOB = "TestCreateJob";
     public static final String TEST_PARA = "testPara";

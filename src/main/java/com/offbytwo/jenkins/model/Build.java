@@ -8,6 +8,8 @@ package com.offbytwo.jenkins.model;
 
 import java.io.IOException;
 
+import org.apache.http.client.HttpResponseException;
+
 public class Build extends BaseModel {
 
     int number;
@@ -35,7 +37,11 @@ public class Build extends BaseModel {
     public BuildWithDetails details() throws IOException {
         return client.get(url, BuildWithDetails.class);
     }
-
+	
+	public String Stop() throws HttpResponseException, IOException {
+        return client.get(url + "stop");
+    }
+	
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

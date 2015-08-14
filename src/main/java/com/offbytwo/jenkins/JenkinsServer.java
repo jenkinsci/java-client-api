@@ -98,6 +98,25 @@ public class JenkinsServer {
     }
 
     /**
+     * Get a list of all the defined views on the server (at the summary level)
+     *
+     * @return list of defined views
+     * @throws IOException
+     */
+    public Map<String, View> getViews() throws IOException {
+        List<View> views = client.get("/", MainView.class).getViews();
+        return Maps.uniqueIndex(views, new Function<View, String>() {
+            @Override
+            public String apply(View view) {
+                view.setClient(client);
+                //return view.getName().toLowerCase();
+                return view.getName();
+            }
+        });
+    }
+
+    
+    /**
      * Get a single view object from the server
      *
      * @param name name of the view in Jenkins
@@ -267,6 +286,16 @@ public class JenkinsServer {
      */
     public void deleteJob(String jobName) throws IOException {
         client.post("/job/" + encode(jobName) + "/doDelete");
+    }
+
+    /**
+     * Delete a job from Jenkins.
+     * @param jobName The name of the job to be deleted.
+     * @param crumbFlag The crumFlag.
+     * @throws IOException In case of an failure.
+     */
+    public void deleteJob(String jobName, boolean crumbFlag) throws IOException {
+        client.post("/job/" + encode(jobName) + "/doDelete", crumbFlag);
     }
 
     /**

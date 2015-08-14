@@ -11,7 +11,7 @@ public abstract class BaseXmlMarshallingTest extends BaseUnitTest {
     JAXBContext jaxbContext;
     Marshaller marshaller;
 
-    protected void configureXmlMarshallerFor(Class clazz) throws JAXBException {
+    protected void configureXmlMarshallerFor(Class<?> clazz) throws JAXBException {
         jaxbContext = JAXBContext.newInstance(clazz);
         marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);

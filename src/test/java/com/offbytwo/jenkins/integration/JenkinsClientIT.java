@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertNotNull;
 
-public class JenkinsClientIntegrationTest extends BaseIntegrationTest {
+public class JenkinsClientIT extends BaseForIntegrationTests {
 
     public static final String TEST_CREATE_JOB = "TestCreateJob";
 
