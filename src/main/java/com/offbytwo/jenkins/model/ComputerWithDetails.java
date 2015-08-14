@@ -15,7 +15,7 @@ public class ComputerWithDetails extends Computer {
 
     String displayName;
     List actions;
-    List executors;
+    List<Executor> executors;
     Boolean idle;
     Boolean jnlp;
     Boolean launchSupported;
@@ -37,7 +37,7 @@ public class ComputerWithDetails extends Computer {
         return actions;
     }
 
-    public List<Map> getExecutors() {
+    public List<Executor> getExecutors() {
         return executors;
     }
 

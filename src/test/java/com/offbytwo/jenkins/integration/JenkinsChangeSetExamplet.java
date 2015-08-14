@@ -19,13 +19,13 @@ import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.MavenJobWithDetails;
 import com.offbytwo.jenkins.model.View;
 
-public class JenkinsChangeSetTest {
+public class JenkinsChangeSetExamplet {
 
     @Test
     public void shouldAddStringParamToAnExistingJob() throws IOException {
-//         JenkinsServer js = new
-//         JenkinsServer(URI.create("http://localhost:10090/"));
-        JenkinsServer js = new JenkinsServer(URI.create("http://ci.soebes.de:8080/"));
+         JenkinsServer js = new
+         JenkinsServer(URI.create("http://localhost:10090/"));
+//        JenkinsServer js = new JenkinsServer(URI.create("http://ci.soebes.de:8080/"));
         Map<String, View> views = js.getViews();
         for (Entry<String, View> view : views.entrySet()) {
             System.out.println("view: " +view.getKey() + " " + view.getValue().getName());

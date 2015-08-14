@@ -11,7 +11,6 @@ import java.util.List;
 
 import com.google.common.net.UrlEscapers;
 
-
 public class Computer extends BaseModel {
 
     private String displayName;
@@ -26,7 +25,8 @@ public class Computer extends BaseModel {
 
     List<Computer> computer;
 
-    public Computer() {}
+    public Computer() {
+    }
 
     public Computer(String displayName) {
         this();
@@ -41,32 +41,40 @@ public class Computer extends BaseModel {
         String name;
         if ("master".equals(displayName)) {
             name = "(master)";
-        }
-        else {
+        } else {
             name = UrlEscapers.urlPathSegmentEscaper().escape(displayName);
         }
         return client.get("/computer/" + name, ComputerWithDetails.class);
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Computer computer1 = (Computer) o;
-
-        if (computer != null ? !computer.equals(computer1.computer) : computer1.computer != null)
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
             return false;
-        if (displayName != null ? !displayName.equals(computer1.displayName) : computer1.displayName != null)
+        if (getClass() != obj.getClass())
             return false;
-
+        Computer other = (Computer) obj;
+        if (computer == null) {
+            if (other.computer != null)
+                return false;
+        } else if (!computer.equals(other.computer))
+            return false;
+        if (displayName == null) {
+            if (other.displayName != null)
+                return false;
+        } else if (!displayName.equals(other.displayName))
+            return false;
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = displayName != null ? displayName.hashCode() : 0;
-        result = 31 * result + (computer != null ? computer.hashCode() : 0);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((computer == null) ? 0 : computer.hashCode());
+        result = prime * result + ((displayName == null) ? 0 : displayName.hashCode());
         return result;
     }
 

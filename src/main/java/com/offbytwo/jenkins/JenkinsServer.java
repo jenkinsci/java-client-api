@@ -11,6 +11,7 @@ import com.google.common.collect.Maps;
 import com.google.common.net.UrlEscapers;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
 import com.offbytwo.jenkins.model.Computer;
+import com.offbytwo.jenkins.model.ComputerSet;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.JobConfiguration;
 import com.offbytwo.jenkins.model.JobWithDetails;
@@ -40,7 +41,8 @@ public class JenkinsServer {
     /**
      * Create a new Jenkins server reference given only the server address
      *
-     * @param serverUri address of jenkins server (ex. http://localhost:8080/jenkins)
+     * @param serverUri
+     *            address of jenkins server (ex. http://localhost:8080/jenkins)
      */
     public JenkinsServer(URI serverUri) {
         this(new JenkinsHttpClient(serverUri));
@@ -49,9 +51,12 @@ public class JenkinsServer {
     /**
      * Create a new Jenkins server reference given the address and credentials
      *
-     * @param serverUri       address of jenkins server (ex. http://localhost:8080/jenkins)
-     * @param username        username to use when connecting
-     * @param passwordOrToken password (not recommended) or token (recommended)
+     * @param serverUri
+     *            address of jenkins server (ex. http://localhost:8080/jenkins)
+     * @param username
+     *            username to use when connecting
+     * @param passwordOrToken
+     *            password (not recommended) or token (recommended)
      */
     public JenkinsServer(URI serverUri, String username, String passwordOrToken) {
         this(new JenkinsHttpClient(serverUri, username, passwordOrToken));
@@ -60,7 +65,8 @@ public class JenkinsServer {
     /**
      * Create a new Jenkins server directly from an HTTP client (ADVANCED)
      *
-     * @param client Specialized client to use.
+     * @param client
+     *            Specialized client to use.
      */
     public JenkinsServer(JenkinsHttpClient client) {
         this.client = client;
@@ -109,17 +115,17 @@ public class JenkinsServer {
             @Override
             public String apply(View view) {
                 view.setClient(client);
-                //return view.getName().toLowerCase();
+                // return view.getName().toLowerCase();
                 return view.getName();
             }
         });
     }
 
-    
     /**
      * Get a single view object from the server
      *
-     * @param name name of the view in Jenkins
+     * @param name
+     *            name of the view in Jenkins
      * @return the view object
      * @throws IOException
      */
@@ -128,7 +134,8 @@ public class JenkinsServer {
     }
 
     /**
-     * Get a list of all the defined jobs on the server (at the specified view level)
+     * Get a list of all the defined jobs on the server (at the specified view
+     * level)
      *
      * @return list of defined jobs (view level, for details @see Job#details
      * @throws IOException
@@ -188,7 +195,7 @@ public class JenkinsServer {
     public void createJob(String jobName, String jobXml) throws IOException {
         client.post_xml("/createItem?name=" + encodeParam(jobName), jobXml);
     }
-    
+
     public void createJob(String jobName, String jobXml, Boolean crumbFlag) throws IOException {
         client.post_xml("/createItem?name=" + encodeParam(jobName), jobXml, crumbFlag);
     }
@@ -213,11 +220,11 @@ public class JenkinsServer {
         return client.get("/label/" + encode(labelName), LabelWithDetails.class);
     }
 
-
     /**
      * Get a list of all the computers on the server (at the summary level)
      *
-     * @return list of defined computers (summary level, for details @see Computer#details
+     * @return list of defined computers (summary level, for details @see
+     *         Computer#details
      * @throws IOException
      */
     public Map<String, Computer> getComputers() throws IOException {
@@ -229,6 +236,18 @@ public class JenkinsServer {
                 return computer.getDisplayName().toLowerCase();
             }
         });
+    }
+
+    /**
+     * The ComputerSet class will give informations
+     * like {@link ComputerSet#getBusyExecutors()} or
+     * the {@link ComputerSet#getTotalExecutors()}.
+     * 
+     * @return {@link ComputerSet}
+     * @throws IOException
+     */
+    public ComputerSet getComputerSet() throws IOException {
+        return client.get("computer/", ComputerSet.class);
     }
 
     /**
@@ -245,7 +264,8 @@ public class JenkinsServer {
         client.post_xml("/job/" + encode(jobName) + "/config.xml", jobXml, crumbFlag);
     }
 
-    public void addStringParam(String jobName, String name, String description, String defaultValue) throws IOException, JAXBException, DocumentException {
+    public void addStringParam(String jobName, String name, String description, String defaultValue)
+            throws IOException, JAXBException, DocumentException {
         String jobXml = this.getJobXml(jobName);
         JobConfiguration jobConf = new JobConfiguration(jobXml);
         jobXml = jobConf.addStringParam(name, description, defaultValue).asXml();
@@ -254,13 +274,13 @@ public class JenkinsServer {
 
     /**
      * Sends the Quiet Down (Prepare for shutdown) message
+     * 
      * @throws IOException
      */
     public void quietDown() throws IOException {
         try {
             client.get("/quietDown/");
-        }
-        catch (org.apache.http.client.ClientProtocolException e) {
+        } catch (org.apache.http.client.ClientProtocolException e) {
             e.printStackTrace();
         }
 
@@ -268,13 +288,13 @@ public class JenkinsServer {
 
     /**
      * Cancels the Quiet Down (Prepare for shutdown) message
+     * 
      * @throws IOException
      */
     public void cancelQuietDown() throws IOException {
         try {
             client.post("/cancelQuietDown/");
-        }
-        catch (org.apache.http.client.ClientProtocolException e) {
+        } catch (org.apache.http.client.ClientProtocolException e) {
             e.printStackTrace();
         }
     }
@@ -290,9 +310,13 @@ public class JenkinsServer {
 
     /**
      * Delete a job from Jenkins.
-     * @param jobName The name of the job to be deleted.
-     * @param crumbFlag The crumFlag.
-     * @throws IOException In case of an failure.
+     * 
+     * @param jobName
+     *            The name of the job to be deleted.
+     * @param crumbFlag
+     *            The crumFlag.
+     * @throws IOException
+     *             In case of an failure.
      */
     public void deleteJob(String jobName, boolean crumbFlag) throws IOException {
         client.post("/job/" + encode(jobName) + "/doDelete", crumbFlag);
@@ -303,9 +327,10 @@ public class JenkinsServer {
      *
      * This is similar to running groovy scripts using the script console.
      *
-     * In the instance where your script causes an exception, the server still returns a 200 status, 
-     * so detecting errors is very challenging.  It is recommended to use heuristics to check your return
-     * string for stack traces by detecting strings like "groovy.lang.(something)Exception".
+     * In the instance where your script causes an exception, the server still
+     * returns a 200 status, so detecting errors is very challenging. It is
+     * recommended to use heuristics to check your return string for stack
+     * traces by detecting strings like "groovy.lang.(something)Exception".
      *
      * @param script
      * @return results
