@@ -10,7 +10,8 @@ package com.offbytwo.jenkins.model;
 public class Executor {
 
     private String currentExecutable;
-    private String currentWorkUnit; // in XSD it's a reference to a class
+    // in XSD it's a reference to a class
+    private String currentWorkUnit;
     private Boolean idle;
     private Boolean likelyStuck;
     private int number;

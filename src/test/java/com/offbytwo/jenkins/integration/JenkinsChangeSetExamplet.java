@@ -23,24 +23,15 @@ public class JenkinsChangeSetExamplet {
 
     @Test
     public void shouldAddStringParamToAnExistingJob() throws IOException {
-         JenkinsServer js = new
-         JenkinsServer(URI.create("http://localhost:10090/"));
-//        JenkinsServer js = new JenkinsServer(URI.create("http://ci.soebes.de:8080/"));
-        Map<String, View> views = js.getViews();
-        for (Entry<String, View> view : views.entrySet()) {
-            System.out.println("view: " +view.getKey() + " " + view.getValue().getName());
-            View selectedView = js.getView(view.getKey());
-            System.out.println(" Selected View: " + selectedView.getName());
-            List<Job> jobs = selectedView.getJobs();
-            for (Job job : jobs) {
-                System.out.println(" Selected View job: " + job.getName());
-            }
-        }
-//        MavenJobWithDetails mavenJob = js.getMavenJob("javaee");
+        // JenkinsServer js = new
+        // JenkinsServer(URI.create("http://localhost:10090/"));
+        JenkinsServer js = new JenkinsServer(URI.create("http://ci.soebes.de:8080/"));
+
+        // MavenJobWithDetails mavenJob = js.getMavenJob("javaee");
         MavenJobWithDetails mavenJob = js.getMavenJob("appassembler-maven-plugin");
 
-        BuildWithDetails details = mavenJob.getLastBuild().details();
-//        BuildWithDetails details = mavenJob.getBuilds().get(10).details();
+//        BuildWithDetails details = mavenJob.getLastBuild().details();
+         BuildWithDetails details = mavenJob.getBuilds().get(10).details();
         System.out.println("Build Number: " + details.getNumber());
 
         List<BuildCause> causes = details.getCauses();
