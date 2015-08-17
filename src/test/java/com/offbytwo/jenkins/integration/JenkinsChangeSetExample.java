@@ -3,8 +3,6 @@ package com.offbytwo.jenkins.integration;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.junit.Test;
 
@@ -15,11 +13,9 @@ import com.offbytwo.jenkins.model.BuildChangeSetAuthor;
 import com.offbytwo.jenkins.model.BuildChangeSetItem;
 import com.offbytwo.jenkins.model.BuildChangeSetPath;
 import com.offbytwo.jenkins.model.BuildWithDetails;
-import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.MavenJobWithDetails;
-import com.offbytwo.jenkins.model.View;
 
-public class JenkinsChangeSetExamplet {
+public class JenkinsChangeSetExample {
 
     @Test
     public void shouldAddStringParamToAnExistingJob() throws IOException {
