@@ -234,6 +234,34 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <!-- oh god, stash requires ancient google guava but everything
+                     that is right and good in this world requires newer guava,
+                     so we have to jarjar this to have a chance at happiness!
+                     -->
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>jarjar-maven-plugin</artifactId>
+                <version>1.9</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jarjar</goal>
+                        </goals>
+                        <configuration>
+                            <includes>
+                                <include>com.google.guava:guava</include>
+                            </includes>
+                            <rules>
+                                <rule>
+                                    <pattern>com.google.common.**</pattern>
+                                    <result>com.google.common.jenkins-client-jarjard.@1</result>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
