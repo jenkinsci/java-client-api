@@ -22,7 +22,7 @@ LoadStatistics getLoadStatistics() throws IOException
  You can see how it works by using the [JenkinsLoadStatisticsExample.java][2].
 
 
-Issue #53
+[Issue #53][issue-53]
 
   This release contains new functionality like support to get the list of existing views.
   This can be accomplished by using the following:
@@ -31,12 +31,12 @@ Issue #53
 Map<String, View> views = jenkins.getViews();
 ```
 
-Issue #67
+[Issue #67][issue-67]
 
   Added ComputerSet and Executor informations.
 
 
-Issue #82
+[Issue #82][issue-82]
 
   ChangeSet and culprits
 
@@ -73,7 +73,7 @@ List<BuildChangeSetItem> items = changeSet.getItems();
   If you like to get a better overview [check the example file in the project][1].
 
 
-Issue #89
+[Issue #89][issue-89]
 
   Extract TestReport from Jenkins
 
@@ -95,3 +95,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [1]: https://github.com/RisingOak/jenkins-client/blob/master/src/test/java/com/offbytwo/jenkins/integration/JenkinsChangeSetExample.java
 [2]: https://github.com/RisingOak/jenkins-client/blob/master/src/test/java/com/offbytwo/jenkins/integration/JenkinsLoadStatisticsExample.java
 [3]: https://github.com/RisingOak/jenkins-client/blob/master/src/test/java/com/offbytwo/jenkins/integration/BuildJobTestReports.java
+[issue-53]: https://github.com/RisingOak/jenkins-client/issues/53
+[issue-67]: https://github.com/RisingOak/jenkins-client/issues/67
+[issue-82]: https://github.com/RisingOak/jenkins-client/issues/82
+[issue-89]: https://github.com/RisingOak/jenkins-client/issues/89
