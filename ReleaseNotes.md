@@ -2,7 +2,7 @@
 
 ## Release 0.3.1
 
-API Changes:
+### API Changes:
 
  Until to Release 0.3.0 the `getLoadStatistics()` method returned a simple `Map` which
  needed to be changed to represent the information which is returned.
@@ -22,7 +22,7 @@ LoadStatistics getLoadStatistics() throws IOException
  You can see how it works by using the [JenkinsLoadStatisticsExample.java][2].
 
 
-[Issue #53][issue-53]
+### [Issue #53][issue-53]
 
   This release contains new functionality like support to get the list of existing views.
   This can be accomplished by using the following:
@@ -31,12 +31,12 @@ LoadStatistics getLoadStatistics() throws IOException
 Map<String, View> views = jenkins.getViews();
 ```
 
-[Issue #67][issue-67]
+### [Issue #67][issue-67]
 
   Added ComputerSet and Executor informations.
 
 
-[Issue #82][issue-82]
+### [Issue #82][issue-82]
 
   ChangeSet and culprits
 
@@ -73,7 +73,7 @@ List<BuildChangeSetItem> items = changeSet.getItems();
   If you like to get a better overview [check the example file in the project][1].
 
 
-[Issue #89][issue-89]
+### [Issue #89][issue-89]
 
   Extract TestReport from Jenkins
 
