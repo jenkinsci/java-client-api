@@ -56,6 +56,10 @@ To run integration tests simply start
 mvn clean install
 ```
 
+## Details about Releases
+
+You can find details about the different releases in the [Release Notes](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md).
+
 ## License
 
 Copyright (C) 2013, Rising Oak LLC.
