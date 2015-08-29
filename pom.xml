@@ -14,7 +14,7 @@
 
     <groupId>com.offbytwo.jenkins</groupId>
     <artifactId>jenkins-client</artifactId>
-    <version>0.3.1</version>
+    <version>0.3.2-SNAPSHOT</version>
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
@@ -26,7 +26,7 @@
         <connection>scm:git:git@github.com:RisingOak/jenkins-client.git</connection>
         <developerConnection>scm:git:git@github.com:RisingOak/jenkins-client.git</developerConnection>
         <url>https://github.com/RisingOak/jenkins-client</url>
-      <tag>jenkins-client-0.3.1</tag>
+      <tag>HEAD</tag>
   </scm>
     <distributionManagement>
       <site>
