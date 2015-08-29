@@ -66,6 +66,10 @@
             <email>cosmin@offbytwo.com</email>
             <url>http://offbytwo.com</url>
         </developer>
+        <developer>
+            <name>Karl Heinz Marbaise</name>
+            <email>khmarbaise@apache.org</email>
+        </developer>
     </developers>
 
     <dependencies>
