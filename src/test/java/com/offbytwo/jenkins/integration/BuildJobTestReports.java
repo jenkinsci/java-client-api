@@ -10,6 +10,7 @@ import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.BuildWithDetails;
 import com.offbytwo.jenkins.model.MavenJobWithDetails;
 import com.offbytwo.jenkins.model.TestCase;
+import com.offbytwo.jenkins.model.TestChild;
 import com.offbytwo.jenkins.model.TestChildReport;
 import com.offbytwo.jenkins.model.TestReport;
 import com.offbytwo.jenkins.model.TestResult;
@@ -25,11 +26,11 @@ public class BuildJobTestReports {
         // MavenJobWithDetails mavenJob = js.getMavenJob("javaee");
         MavenJobWithDetails mavenJob = js.getMavenJob("SupoSE");
 
-        // BuildWithDetails details = mavenJob.getLastBuild().details();
-        BuildWithDetails details = mavenJob.getBuilds().get(8).details();
+        BuildWithDetails details = mavenJob.getLastSuccessfulBuild().details();
+        // BuildWithDetails details = mavenJob.getBuilds().get(8).details();
         System.out.println("Build Number: " + details.getNumber());
 
-        TestReport testReport = mavenJob.getBuilds().get(8).getTestReport();
+        TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
         System.out.println("------ Tests");
         System.out.println("    urlName: " + testReport.getUrlName());
         System.out.println("  failCount: " + testReport.getFailCount());
@@ -38,8 +39,9 @@ public class BuildJobTestReports {
 
         List<TestChildReport> childReports = testReport.getChildReports();
         for (TestChildReport testChildReport : childReports) {
-            System.out.println(" Child number: " + testChildReport.getChild().getNumber());
-            System.out.println(" Child    url: " + testChildReport.getChild().getUrl());
+            TestChild child = testChildReport.getChild();
+            System.out.println(" Child number: " + child.getNumber());
+            System.out.println(" Child    url: " + child.getUrl());
 
             TestResult testResult = testChildReport.getResult();
             System.out.println(" Child   duration: " + testResult.getDuration());
@@ -53,15 +55,18 @@ public class BuildJobTestReports {
                 System.out.println("   TestSuite      name:" + testSuite.getName());
                 System.out.println("   TestSuite timestamp:" + testSuite.getTimestamp());
                 List<TestCase> testCases = testSuite.getCases();
+                double sumTestCases = 0.0;
                 for (TestCase testCase : testCases) {
-                    System.out.println(" ------------------------------------------");
-                    System.out.println(" TestCase:         age: " + testCase.getAge());
-                    System.out.println(" TestCase:   classname: " + testCase.getClassName());
-                    System.out.println(" TestCase:    duration: " + testCase.getDuration());
-                    System.out.println(" TestCase: failedSince: " + testCase.getFailedSince());
-                    System.out.println(" TestCase:        name: " + testCase.getName());
-                    System.out.println(" TestCase:      status: " + testCase.getStatus());
+                    System.out.println("     ------------------------------------------");
+                    System.out.println("     TestCase:         age: " + testCase.getAge());
+                    System.out.println("     TestCase:   classname: " + testCase.getClassName());
+                    System.out.println("     TestCase:    duration: " + testCase.getDuration());
+                    System.out.println("     TestCase: failedSince: " + testCase.getFailedSince());
+                    System.out.println("     TestCase:        name: " + testCase.getName());
+                    System.out.println("     TestCase:      status: " + testCase.getStatus());
+                    sumTestCases += testCase.getDuration();
                 }
+                System.out.println("----> SUM: " + sumTestCases);
             }
         }
 
