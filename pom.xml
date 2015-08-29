@@ -222,6 +222,8 @@
                     ! prevent activating profile sonatype-oss-release
                   -->
                   <arguments combine.self="override"/>
+                  <goals>deploy site site:stage scm-publish:publish-scm</goals>
+                  <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
             </plugin>
             <plugin>
