@@ -205,12 +205,24 @@
                 <version>3.3</version>
             </plugin>
             <!--
-               ! The gpg plugin is already defined in oss-parent
+               ! We define a newer version than in parent.
             -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.5</version>
+                <version>1.6</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.2</version>
+                <configuration>
+                  <!--
+                    ! overwrite arguments of parent pom to
+                    ! prevent activating profile sonatype-oss-release
+                  -->
+                  <arguments combine.self="override"/>
+                </configuration>
             </plugin>
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
@@ -348,20 +360,6 @@
                                 <id>attach-javadocs</id>
                                 <goals>
                                     <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
                                 </goals>
                             </execution>
                         </executions>
