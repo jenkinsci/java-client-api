@@ -4,6 +4,7 @@
 
 ### API Changes:
 
+
  Until to Release 0.3.0 the `getLoadStatistics()` method returned a simple `Map` which
  needed to be changed to represent the information which is returned.
 
@@ -21,6 +22,27 @@ LoadStatistics getLoadStatistics() throws IOException
 
  You can see how it works by using the [JenkinsLoadStatisticsExample.java][2].
 
+ The API for `getExecutors()` has been changed from a simple [`Map` into something
+ more meaningful][issue-67].
+
+ The old one looked like this:
+
+```java
+public List<Map> getExecutors(); 
+```
+
+  where as the new API looks like this:
+
+
+```java
+public List<Executor> getExecutors();
+```
+
+  This will result in a list of [Executor][4] which contain supplemental informations
+  about the appropriate executor.
+
+
+## Issues
 
 ### [Issue #53][issue-53]
 
@@ -33,13 +55,11 @@ Map<String, View> views = jenkins.getViews();
 
 ### [Issue #67][issue-67]
 
-  Added ComputerSet and Executor informations.
-
+  The change for `getExecutors()` which is documented in API changes.
 
 ### [Issue #82][issue-82]
 
-  ChangeSet and culprits
-
+  The information about the `ChangeSet` and the `culprit` has been improved.
 
 ```java
 JenkinsServer jenkins = new JenkinsServer(new URI("http://localhost:8080/jenkins"), "admin", "password");
@@ -95,6 +115,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [1]: https://github.com/RisingOak/jenkins-client/blob/master/src/test/java/com/offbytwo/jenkins/integration/JenkinsChangeSetExample.java
 [2]: https://github.com/RisingOak/jenkins-client/blob/master/src/test/java/com/offbytwo/jenkins/integration/JenkinsLoadStatisticsExample.java
 [3]: https://github.com/RisingOak/jenkins-client/blob/master/src/test/java/com/offbytwo/jenkins/integration/BuildJobTestReports.java
+[4]: https://github.com/RisingOak/jenkins-client/blob/master/src/main/java/com/offbytwo/jenkins/model/Executor.java
 [issue-53]: https://github.com/RisingOak/jenkins-client/issues/53
 [issue-67]: https://github.com/RisingOak/jenkins-client/issues/67
 [issue-82]: https://github.com/RisingOak/jenkins-client/issues/82
