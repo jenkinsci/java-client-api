@@ -234,6 +234,7 @@
                   <arguments combine.self="override"/>
                   <goals>deploy site site:stage scm-publish:publish-scm</goals>
                   <autoVersionSubmodules>true</autoVersionSubmodules>
+                  <useReleaseProfile>true</useReleaseProfile>
                 </configuration>
             </plugin>
             <plugin>
