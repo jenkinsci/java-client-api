@@ -1,0 +1,11 @@
+*.iml
+/.idea
+/target
+/.classpath
+/.project
+/.settings
+/src
+/LICENSE
+/README.md
+/ReleaseNotes.md
+/pom.xml
