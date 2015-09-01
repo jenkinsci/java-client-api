@@ -20,6 +20,7 @@ public class JobWithDetails extends Job {
     String displayName;
     boolean buildable;
     List<Build> builds;
+    Build firstBuild;
     Build lastBuild;
     Build lastCompletedBuild;
     Build lastFailedBuild;
@@ -55,6 +56,10 @@ public class JobWithDetails extends Job {
             ret.setClient(client);
         }
         return ret;
+    }
+
+    public Build getFirstBuild() {
+        return firstBuild;
     }
 
     public Build getLastBuild() {
@@ -173,4 +178,5 @@ public class JobWithDetails extends Job {
             return job;
         }
     }
+
 }
