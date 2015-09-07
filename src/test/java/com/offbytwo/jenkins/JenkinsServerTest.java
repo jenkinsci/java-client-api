@@ -9,11 +9,14 @@ package com.offbytwo.jenkins;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.MainView;
+
+import org.apache.http.entity.ContentType;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -114,5 +117,20 @@ public class JenkinsServerTest extends BaseUnitTest {
     public void testQuietDown() throws IOException {
         server.quietDown();
         server.cancelQuietDown();
+    }
+
+    @Test
+    public void testScriptPosts() throws IOException, URISyntaxException {
+        given(client.post_text("/scriptText", "script=script", ContentType.APPLICATION_FORM_URLENCODED, false))
+            .willReturn("result");
+        String result = server.runScript("script");
+        verify(client).post_text("/scriptText", "script=script", ContentType.APPLICATION_FORM_URLENCODED, false);
+        assertEquals("result", result);
+    }
+
+    public void testJenkinsPathEncoding() throws IOException {
+        given(client.get("/job/encoded%2Fproperly%3F/config.xml")).willReturn("<xml>not a real response</xml>");
+
+        assertEquals("<xml>not a real response</xml>", server.getJobXml("encoded/properly?"));
     }
 }

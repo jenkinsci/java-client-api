@@ -14,8 +14,7 @@
 
     <groupId>com.offbytwo.jenkins</groupId>
     <artifactId>jenkins-client</artifactId>
-    <version>0.3.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <version>0.3.2-SNAPSHOT</version>
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
@@ -27,23 +26,31 @@
         <connection>scm:git:git@github.com:RisingOak/jenkins-client.git</connection>
         <developerConnection>scm:git:git@github.com:RisingOak/jenkins-client.git</developerConnection>
         <url>https://github.com/RisingOak/jenkins-client</url>
-    </scm>
+      <tag>HEAD</tag>
+  </scm>
+    <distributionManagement>
+      <site>
+        <id>github</id>
+        <url>scm:git:git@github.com:RisingOak/jenkins-client.git</url>
+      </site>
+    </distributionManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <targetJdk>1.6</targetJdk>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
 
         <!-- Version of Jenkins to use for Integration Tests -->
         <jenkins-version>1.593</jenkins-version>
         <junit.version>4.11</junit.version>
-        <mockito-all.version>1.9.5</mockito-all.version>
+        <mockito-core.version>1.9.5</mockito-core.version>
         <commons-io.version>2.4</commons-io.version>
         <xstream.version>1.4.7-jenkins-1</xstream.version>
         <dom4j.version>1.6.1</dom4j.version>
         <commons-lang.version>2.6</commons-lang.version>
         <guava.version>17.0</guava.version>
-        <httpclient.version>4.2.2</httpclient.version>
+        <httpclient.version>4.3.6</httpclient.version>
         <jackson-databind.version>2.3.4</jackson-databind.version>
     </properties>
 
@@ -59,6 +66,10 @@
             <name>Cosmin Stejerean</name>
             <email>cosmin@offbytwo.com</email>
             <url>http://offbytwo.com</url>
+        </developer>
+        <developer>
+            <name>Karl Heinz Marbaise</name>
+            <email>khmarbaise@apache.org</email>
         </developer>
     </developers>
 
@@ -128,8 +139,8 @@
 
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>${mockito-all.version}</version>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito-core.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -139,15 +150,52 @@
             <version>${jenkins-version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+          <groupId>org.assertj</groupId>
+          <artifactId>assertj-core</artifactId>
+          <version>1.7.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
-        <plugins>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-source-plugin</artifactId>
+              <version>2.4</version>
+              <executions>
+                <!-- 
+                  ! here we override the super-pom attach-sources execution id which 
+                  ! calls sources:jar goal. That goals forks the lifecycle, 
+                  ! causing the generate-sources phase to be called twice for the install goal.
+                -->
+                <execution>
+                  <id>attach-sources</id>
+                  <phase>DISABLE_FORKED_LIFECYCLE_MSOURCES-13</phase>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.18.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.1</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
-                <inherited>true</inherited>
+                <version>2.6</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -157,71 +205,137 @@
                     </archive>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
-                <configuration>
-                    <source>${targetJdk}</source>
-                    <target>${targetJdk}</target>
-                </configuration>
+                <version>3.3</version>
             </plugin>
-
+            <!--
+               ! We define a newer version than in parent.
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <includes>
-                        <include>**/*Test.java</include>
-                    </includes>
-                    <excludes>
-                        <exclude>**/*IntegrationTest.java</exclude>
-                    </excludes>
-                </configuration>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.2</version>
+                <configuration>
+                  <!--
+                    ! overwrite arguments of parent pom to
+                    ! prevent activating profile sonatype-oss-release
+                  -->
+                  <arguments combine.self="override" />
+                  <goals>deploy site site:stage scm-publish:publish-scm</goals>
+                  <autoVersionSubmodules>true</autoVersionSubmodules>
+                  <useReleaseProfile>true</useReleaseProfile>
+                </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-scm-publish-plugin</artifactId>
+              <version>1.1</version>
+              <configuration>
+                <scmBranch>gh-pages</scmBranch>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+        <plugins>
+            <!--
+              ! Bind it to the life cycle.
+            -->
+            <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <configuration>
-                    <includes>
-                        <include>**/*IntegrationTest.java</include>
-                    </includes>
-                </configuration>
                 <executions>
                     <execution>
                         <id>integration-test</id>
                         <goals>
                             <goal>integration-test</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>verify</id>
-                        <goals>
                             <goal>verify</goal>
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+              </plugin>
+              <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <executions>
+                  <execution>
+                    <phase>package</phase>
+                    <goals>
+                      <goal>shade</goal>
+                    </goals>
+                    <configuration>
+                      <artifactSet>
+                      <includes>
+                          <include>com.google.guava:guava</include>
+                      </includes>
+                      </artifactSet>
+                      <shadedArtifactAttached>true</shadedArtifactAttached>
+                      <shadedClassifierName>stash</shadedClassifierName>
+                      <relocations>
+                        <relocation>
+                          <pattern>com.google.common</pattern>
+                          <shadedPattern>com.google.common.jenkins-client-jarjar</shadedPattern>
+                        </relocation>
+                      </relocations>
+                    </configuration>
+                  </execution>
+                </executions>
+              </plugin>
         </plugins>
     </build>
 
     <reporting>
-        <plugins>
+      <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-report-plugin</artifactId>
+            <version>2.18.1</version>
+            <reportSets>
+              <reportSet>
+                <reports>
+                  <report>failsafe-report-only</report>
+                  <report>report</report>
+                </reports>
+              </reportSet>
+            </reportSets>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-project-info-reports-plugin</artifactId>
+              <version>2.8</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>2.7.1</version>
+                <version>3.5</version>
+                <configuration>
+                  <targetJdk>${maven.compiler.target}</targetJdk>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.5.2</version>
+                <version>2.7</version>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>2.5.2</version>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-jxr-plugin</artifactId>
+              <version>2.5</version>
             </plugin>
         </plugins>
     </reporting>
@@ -238,43 +352,40 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>2.2.1</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
+                      <groupId>org.apache.maven.plugins</groupId>
+                      <artifactId>maven-gpg-plugin</artifactId>
+                      <executions>
+                        <execution>
+                          <id>sign-artifacts</id>
+                          <phase>verify</phase>
+                          <goals>
+                            <goal>sign</goal>
+                          </goals>
+                        </execution>
+                      </executions>
                     </plugin>
-
+                    <!-- MSOURCES-13 related workaround overriding super-pom -->
+                    <plugin>
+                      <inherited>true</inherited>
+                      <artifactId>maven-source-plugin</artifactId>
+                      <executions>
+                        <execution>
+                          <id>attach-sources-no-fork</id>
+                          <goals>
+                            <goal>jar-no-fork</goal>
+                          </goals>
+                        </execution>
+                      </executions>
+                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.9</version>
+                        <version>2.10.3</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
                                 <goals>
                                     <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.4</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
                                 </goals>
                             </execution>
                         </executions>

@@ -6,17 +6,21 @@
 
 package com.offbytwo.jenkins.model;
 
-import com.google.common.base.Function;
+import static com.google.common.collect.Lists.transform;
 
 import java.util.List;
 
-import static com.google.common.collect.Lists.transform;
+import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
 public class JobWithDetails extends Job {
 
     String displayName;
     boolean buildable;
     List<Build> builds;
+    Build firstBuild;
     Build lastBuild;
     Build lastCompletedBuild;
     Build lastFailedBuild;
@@ -52,6 +56,10 @@ public class JobWithDetails extends Job {
             ret.setClient(client);
         }
         return ret;
+    }
+
+    public Build getFirstBuild() {
+        return firstBuild;
     }
 
     public Build getLastBuild() {
@@ -170,4 +178,5 @@ public class JobWithDetails extends Job {
             return job;
         }
     }
+
 }

@@ -6,21 +6,21 @@
 
 package com.offbytwo.jenkins.model;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+import com.google.common.base.Function;
+import com.google.common.net.UrlEscapers;
 
 public class ComputerWithDetails extends Computer {
 
     String displayName;
     List actions;
-    List executors;
+    List<Executor> executors;
     Boolean idle;
     Boolean jnlp;
     Boolean launchSupported;
-    Map loadStatistics;
     Boolean manualLaunchAllowed;
     Map monitorData;
     Integer numExecutors;
@@ -38,7 +38,7 @@ public class ComputerWithDetails extends Computer {
         return actions;
     }
 
-    public List<Map> getExecutors() {
+    public List<Executor> getExecutors() {
         return executors;
     }
 
@@ -54,8 +54,25 @@ public class ComputerWithDetails extends Computer {
         return launchSupported;
     }
 
-    public Map getLoadStatistics() {
-        return loadStatistics;
+    /**
+     * This will explicitly get the whole statistics for the given computer
+     * (node) name.
+     * 
+     * @return {@link LoadStatistics}
+     * @throws IOException
+     */
+    public LoadStatistics getLoadStatistics() throws IOException {
+        // TODO: Think about the following handling, cause that has also being
+        // done in Computer#details().
+        String name;
+        if ("master".equals(displayName)) {
+            name = "(master)";
+        } else {
+            name = UrlEscapers.urlPathSegmentEscaper().escape(displayName);
+        }
+
+        //TODO: ?depth=2 good idea or could this being done better?
+        return client.get("/computer/" + name + "/" + "loadStatistics/?depth=2", LoadStatistics.class);
     }
 
     public Boolean getManualLaunchAllowed() {
@@ -91,65 +108,105 @@ public class ComputerWithDetails extends Computer {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        ComputerWithDetails that = (ComputerWithDetails) o;
-
-        if (actions != null ? !actions.equals(that.actions) : that.actions != null)
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
             return false;
-        if (displayName != null ? !displayName.equals(that.displayName) : that.displayName != null)
+        if (getClass() != obj.getClass())
             return false;
-        if (executors != null ? !executors.equals(that.executors) : that.executors != null)
+        ComputerWithDetails other = (ComputerWithDetails) obj;
+        if (actions == null) {
+            if (other.actions != null)
+                return false;
+        } else if (!actions.equals(other.actions))
             return false;
-        if (idle != null ? !idle.equals(that.idle) : that.idle != null)
+        if (displayName == null) {
+            if (other.displayName != null)
+                return false;
+        } else if (!displayName.equals(other.displayName))
             return false;
-        if (jnlp != null ? !jnlp.equals(that.jnlp) : that.jnlp != null)
+        if (executors == null) {
+            if (other.executors != null)
+                return false;
+        } else if (!executors.equals(other.executors))
             return false;
-        if (launchSupported != null ? !launchSupported.equals(that.launchSupported) : that.launchSupported != null)
+        if (idle == null) {
+            if (other.idle != null)
+                return false;
+        } else if (!idle.equals(other.idle))
             return false;
-        if (loadStatistics != null ? !loadStatistics.equals(that.loadStatistics) : that.loadStatistics != null)
+        if (jnlp == null) {
+            if (other.jnlp != null)
+                return false;
+        } else if (!jnlp.equals(other.jnlp))
             return false;
-        if (manualLaunchAllowed != null ? !manualLaunchAllowed.equals(that.manualLaunchAllowed) : that.manualLaunchAllowed != null)
+        if (launchSupported == null) {
+            if (other.launchSupported != null)
+                return false;
+        } else if (!launchSupported.equals(other.launchSupported))
             return false;
-        if (monitorData != null ? !monitorData.equals(that.monitorData) : that.monitorData != null)
+        if (manualLaunchAllowed == null) {
+            if (other.manualLaunchAllowed != null)
+                return false;
+        } else if (!manualLaunchAllowed.equals(other.manualLaunchAllowed))
             return false;
-        if (numExecutors != null ? !numExecutors.equals(that.numExecutors) : that.numExecutors != null)
+        if (monitorData == null) {
+            if (other.monitorData != null)
+                return false;
+        } else if (!monitorData.equals(other.monitorData))
             return false;
-        if (offline != null ? !offline.equals(that.offline) : that.offline != null)
+        if (numExecutors == null) {
+            if (other.numExecutors != null)
+                return false;
+        } else if (!numExecutors.equals(other.numExecutors))
             return false;
-        if (offlineCause != null ? !offlineCause.equals(that.offlineCause) : that.offlineCause != null)
+        if (offline == null) {
+            if (other.offline != null)
+                return false;
+        } else if (!offline.equals(other.offline))
             return false;
-        if (offlineReason != null ? !offlineReason.equals(that.offlineReason) : that.offlineReason != null)
+        if (offlineCause == null) {
+            if (other.offlineCause != null)
+                return false;
+        } else if (!offlineCause.equals(other.offlineCause))
             return false;
-        if (oneOffExecutors != null ? !oneOffExecutors.equals(that.oneOffExecutors) : that.oneOffExecutors != null)
+        if (offlineReason == null) {
+            if (other.offlineReason != null)
+                return false;
+        } else if (!offlineReason.equals(other.offlineReason))
             return false;
-        if (temporarilyOffline != null ? !temporarilyOffline.equals(that.temporarilyOffline) : that.temporarilyOffline != null)
+        if (oneOffExecutors == null) {
+            if (other.oneOffExecutors != null)
+                return false;
+        } else if (!oneOffExecutors.equals(other.oneOffExecutors))
             return false;
-
+        if (temporarilyOffline == null) {
+            if (other.temporarilyOffline != null)
+                return false;
+        } else if (!temporarilyOffline.equals(other.temporarilyOffline))
+            return false;
         return true;
     }
 
     @Override
     public int hashCode() {
+        final int prime = 31;
         int result = super.hashCode();
-        result = 31 * result + (displayName != null ? displayName.hashCode() : 0);
-        result = 31 * result + (actions != null ? actions.hashCode() : 0);
-        result = 31 * result + (executors != null ? executors.hashCode() : 0);
-        result = 31 * result + (idle != null ? idle.hashCode() : 0);
-        result = 31 * result + (jnlp != null ? jnlp.hashCode() : 0);
-        result = 31 * result + (launchSupported != null ? launchSupported.hashCode() : 0);
-        result = 31 * result + (loadStatistics != null ? loadStatistics.hashCode() : 0);
-        result = 31 * result + (manualLaunchAllowed != null ? manualLaunchAllowed.hashCode() : 0);
-        result = 31 * result + (monitorData != null ? monitorData.hashCode() : 0);
-        result = 31 * result + (numExecutors != null ? numExecutors.hashCode() : 0);
-        result = 31 * result + (offline != null ? offline.hashCode() : 0);
-        result = 31 * result + (offlineCause != null ? offlineCause.hashCode() : 0);
-        result = 31 * result + (offlineReason != null ? offlineReason.hashCode() : 0);
-        result = 31 * result + (oneOffExecutors != null ? oneOffExecutors.hashCode() : 0);
-        result = 31 * result + (temporarilyOffline != null ? temporarilyOffline.hashCode() : 0);
+        result = prime * result + ((actions == null) ? 0 : actions.hashCode());
+        result = prime * result + ((displayName == null) ? 0 : displayName.hashCode());
+        result = prime * result + ((executors == null) ? 0 : executors.hashCode());
+        result = prime * result + ((idle == null) ? 0 : idle.hashCode());
+        result = prime * result + ((jnlp == null) ? 0 : jnlp.hashCode());
+        result = prime * result + ((launchSupported == null) ? 0 : launchSupported.hashCode());
+        result = prime * result + ((manualLaunchAllowed == null) ? 0 : manualLaunchAllowed.hashCode());
+        result = prime * result + ((monitorData == null) ? 0 : monitorData.hashCode());
+        result = prime * result + ((numExecutors == null) ? 0 : numExecutors.hashCode());
+        result = prime * result + ((offline == null) ? 0 : offline.hashCode());
+        result = prime * result + ((offlineCause == null) ? 0 : offlineCause.hashCode());
+        result = prime * result + ((offlineReason == null) ? 0 : offlineReason.hashCode());
+        result = prime * result + ((oneOffExecutors == null) ? 0 : oneOffExecutors.hashCode());
+        result = prime * result + ((temporarilyOffline == null) ? 0 : temporarilyOffline.hashCode());
         return result;
     }
 
