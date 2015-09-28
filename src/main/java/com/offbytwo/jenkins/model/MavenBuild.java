@@ -22,4 +22,12 @@ public class MavenBuild extends Build {
     public TestReport getTestReport() throws IOException {
         return client.get(this.url + "/testReport/", TestReport.class);
     }
+    
+    public TestNGReport getTestNGReport() throws IOException {
+        return client.get(this.url + "/testngreports/", TestNGReport.class);
+    }
+    
+    public JacocoCoverageReport getJacocoCodeCoverageReport() throws IOException {
+        return client.get(this.url + "/jacoco/", JacocoCoverageReport.class);
+    }
 }
