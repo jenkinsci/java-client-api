@@ -7,10 +7,12 @@
 package com.offbytwo.jenkins.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.offbytwo.jenkins.client.util.HttpResponseContentExtractor;
+import com.offbytwo.jenkins.client.util.RequestReleasingInputStream;
+//import com.offbytwo.jenkins.client.util.HttpResponseContentExtractor;
 import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
 import com.offbytwo.jenkins.model.BaseModel;
 import com.offbytwo.jenkins.model.Crumb;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -24,7 +26,11 @@ import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
 
@@ -37,11 +43,14 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 public class JenkinsHttpClient {
 
+    private static final int SO_TIMEOUT_IN_MILLISECONDS = 3000;
+    private static final int CONNECTION_TIMEOUT_IN_MILLISECONDS = 500;
+
     private URI uri;
     private CloseableHttpClient client;
     private BasicHttpContext localContext;
     private HttpResponseValidator httpResponseValidator;
-    private HttpResponseContentExtractor contentExtractor;
+//    private HttpResponseContentExtractor contentExtractor;
 
     private ObjectMapper mapper;
     private String context;
@@ -61,7 +70,7 @@ public class JenkinsHttpClient {
         this.mapper = getDefaultMapper();
         this.client = client;
         this.httpResponseValidator = new HttpResponseValidator();
-        this.contentExtractor = new HttpResponseContentExtractor();
+//        this.contentExtractor = new HttpResponseContentExtractor();
     }
 
     /**
@@ -81,6 +90,20 @@ public class JenkinsHttpClient {
      */
     public JenkinsHttpClient(URI uri) {
         this(uri, HttpClientBuilder.create());
+        this.context = uri.getPath();
+ 
+      if (!context.endsWith("/")) {
+          context += "/";
+      }
+      this.uri = uri;
+      this.mapper = getDefaultMapper();
+      
+      HttpParams httpParams = new BasicHttpParams();
+      httpParams.setIntParameter(CoreConnectionPNames.SO_TIMEOUT, SO_TIMEOUT_IN_MILLISECONDS);
+      httpParams.setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_IN_MILLISECONDS);
+     
+
+      this.httpResponseValidator = new HttpResponseValidator();
     }
 
     /**
@@ -129,10 +152,12 @@ public class JenkinsHttpClient {
     public String get(String path) throws IOException {
         HttpGet getMethod = new HttpGet(api(path));
         HttpResponse response = client.execute(getMethod, localContext);
+
         try {
             httpResponseValidator.validateResponse(response);
-            return contentExtractor.contentAsString(response);
+            return IOUtils.toString(response.getEntity().getContent());
         } finally {
+            EntityUtils.consume(response.getEntity());
             releaseConnection(getMethod);
         }
     }
@@ -146,13 +171,13 @@ public class JenkinsHttpClient {
      */
     public InputStream getFile(URI path) throws IOException {
         HttpGet getMethod = new HttpGet(path);
-        try {
-            HttpResponse response = client.execute(getMethod, localContext);
-            httpResponseValidator.validateResponse(response);
-            return contentExtractor.contentAsInputStream(response);
-        } finally {
-            releaseConnection(getMethod);
-        }
+        HttpResponse response = client.execute(getMethod, localContext);
+        httpResponseValidator.validateResponse(response);
+        return new RequestReleasingInputStream(response.getEntity().getContent(), getMethod);
+    }
+
+    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException {
+        return post(path, data, cls, true);
     }
 
     /**
@@ -166,11 +191,13 @@ public class JenkinsHttpClient {
      * @return an instance of the supplied class
      * @throws IOException, HttpResponseException
      */
-    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException {
+    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls, boolean crumbFlag) throws IOException {
         HttpPost request = new HttpPost(api(path));
-        Crumb crumb = get("/crumbIssuer", Crumb.class);
-        if (crumb != null) {
-            request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+        if (crumbFlag == true) {
+            Crumb crumb = get("/crumbIssuer", Crumb.class);
+            if (crumb != null) {
+                request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+            }
         }
 
         if (data != null) {
@@ -221,7 +248,52 @@ public class JenkinsHttpClient {
         HttpResponse response = client.execute(request, localContext);
         httpResponseValidator.validateResponse(response);
         try {
-            return contentExtractor.contentAsString(response);
+            return IOUtils.toString(response.getEntity().getContent());
+        } finally {
+            EntityUtils.consume(response.getEntity());
+            releaseConnection(request);
+        }
+    }
+
+    /**
+     * Post a text entity to the given URL using the default content type
+     *
+     * @param path
+     * @param textData
+     * @param crumbFlag
+     * @return resulting response
+     * @throws IOException
+     */
+    public String post_text(String path, String textData, boolean crumbFlag) throws IOException {
+        return post_text(path, textData, ContentType.DEFAULT_TEXT, crumbFlag);
+    }
+
+    /**
+     * Post a text entity to the given URL with the given content type
+     *
+     * @param path
+     * @param textData
+     * @param crumbFlag
+     * @return resulting response
+     * @throws IOException
+     */
+    public String post_text(String path, String textData, ContentType contentType, boolean crumbFlag)
+        throws IOException {
+        HttpPost request = new HttpPost(api(path));
+        if (crumbFlag == true) {
+            Crumb crumb = get("/crumbIssuer", Crumb.class);
+            if (crumb != null) {
+                request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+            }
+        }
+
+        if (textData != null) {
+            request.setEntity(new StringEntity(textData, contentType));
+        }
+        HttpResponse response = client.execute(request, localContext);
+        httpResponseValidator.validateResponse(response);
+        try {
+            return IOUtils.toString(response.getEntity().getContent());
         } finally {
             EntityUtils.consume(response.getEntity());
             releaseConnection(request);
@@ -235,7 +307,11 @@ public class JenkinsHttpClient {
      * @throws IOException, HttpResponseException
      */
     public void post(String path) throws IOException {
-        post(path, null, null);
+        post(path, null, null, true);
+    }
+
+    public void post(String path, boolean crumbFlag) throws IOException {
+        post(path, null, null, crumbFlag);
     }
 
     private String urlJoin(String path1, String path2) {
@@ -262,7 +338,7 @@ public class JenkinsHttpClient {
     }
 
     private <T extends BaseModel> T objectFromResponse(Class<T> cls, HttpResponse response) throws IOException {
-        InputStream content = contentExtractor.contentAsInputStream(response);
+        InputStream content = response.getEntity().getContent();
         T result = mapper.readValue(content, cls);
         result.setClient(this);
         return result;

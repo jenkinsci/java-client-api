@@ -12,6 +12,7 @@ import com.offbytwo.jenkins.model.BuildWithDetails;
 import com.offbytwo.jenkins.model.Computer;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.JobWithDetails;
+import hudson.model.BooleanParameterValue;
 import hudson.model.Cause;
 import hudson.model.FreeStyleProject;
 import hudson.model.ParametersAction;
@@ -28,7 +29,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class JenkinsServerIntegrationTest {
+public class JenkinsServerIT {
 
     @Rule
     public JenkinsRule jenkinsRule = new JenkinsRule();
@@ -55,7 +56,7 @@ public class JenkinsServerIntegrationTest {
     public void shouldReturnBuildsForJob() throws Exception {
         FreeStyleProject trunk = jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
         for (int i = 0; i < 5; i++)
-            trunk.scheduleBuild(0, new Cause.UserCause(),
+            trunk.scheduleBuild(0, new Cause.UserIdCause(),
                     new ParametersAction(new StringParameterValue("BUILD NUMBER", "" + i)));
 
         while (trunk.isInQueue() || trunk.isBuilding()) {
@@ -68,15 +69,26 @@ public class JenkinsServerIntegrationTest {
     @Test
     public void shouldReturnBuildStatusForBuild() throws Exception {
         FreeStyleProject pr = jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
-        pr.scheduleBuild(0, new Cause.UserCause(), new ParametersAction(new StringParameterValue("REVISION", "foobar")));
 
-        while (pr.isInQueue() || pr.isBuilding()) {
-        }
+        pr.scheduleBuild2(0, new Cause.UserIdCause(),
+                new ParametersAction(new StringParameterValue("REVISION", "foobar"))).get();
 
         JobWithDetails job = server.getJobs().get(JENKINS_TEST_JOB).details();
         BuildWithDetails build = job.getBuilds().get(0).details();
         assertEquals(BuildResult.SUCCESS, build.getResult());
         assertEquals("foobar", build.getParameters().get("REVISION"));
+    }
+
+    @Test
+    public void shouldSupportBooleanParameters() throws Exception {
+        FreeStyleProject pr = jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
+
+        pr.scheduleBuild2(0, new Cause.UserIdCause(),
+                new ParametersAction(new BooleanParameterValue("someValue", true))).get();
+
+        JobWithDetails job = server.getJobs().get(JENKINS_TEST_JOB).details();
+        BuildWithDetails build = job.getBuilds().get(0).details();
+        assertEquals("true", build.getParameters().get("someValue"));
     }
 
     @Test
@@ -159,12 +171,13 @@ public class JenkinsServerIntegrationTest {
     public void testUpdateJob() throws Exception {
         final String description = "test-" + UUID.randomUUID().toString();
 
-        FreeStyleProject freeStyleProject = jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
+        FreeStyleProject freeStyleProject = jenkinsRule.getInstance().createProject(FreeStyleProject.class,
+                JENKINS_TEST_JOB);
         freeStyleProject.setDescription(description);
 
         String sourceXml = server.getJobXml(JENKINS_TEST_JOB);
-        String newXml = sourceXml.replaceAll("<description>.*</description>", "<description>" + description
-                + "</description>");
+        String newXml = sourceXml.replaceAll("<description>.*</description>",
+                "<description>" + description + "</description>");
         server.updateJob(JENKINS_TEST_JOB, newXml);
 
         String confirmXml = server.getJobXml(JENKINS_TEST_JOB);

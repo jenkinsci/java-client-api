@@ -10,7 +10,7 @@ To get started add the following dependency to your project
 <dependency>
   <groupId>com.offbytwo.jenkins</groupId>
   <artifactId>jenkins-client</artifactId>
-  <version>0.2.0</version>
+  <version>0.3.1</version>
 </dependency>
 ```
 
@@ -55,6 +55,10 @@ To run integration tests simply start
 ```
 mvn clean install
 ```
+
+## Details about Releases
+
+You can find details about the different releases in the [Release Notes](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md).
 
 ## License
 

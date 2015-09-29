@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.jvnet.hudson.test.JenkinsRule;
 
-public class BaseIntegrationTest {
+public class BaseForIntegrationTests {
 
     @Rule
     public JenkinsRule jenkinsRule = new JenkinsRule();

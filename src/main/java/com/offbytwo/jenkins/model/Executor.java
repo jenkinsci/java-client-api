@@ -1,0 +1,117 @@
+package com.offbytwo.jenkins.model;
+
+/**
+ * This class is based on informations which can be extracted from an running
+ * Jenkins instance like this: {@link http://jenkins-server/computer/api/schema}
+ * 
+ * @author Karl Heinz Marbaise
+ * 
+ */
+public class Executor {
+
+    private String currentExecutable;
+    // in XSD it's a reference to a class
+    private String currentWorkUnit;
+    private Boolean idle;
+    private Boolean likelyStuck;
+    private int number;
+    private int progress;
+
+    public String getCurrentExecutable() {
+        return currentExecutable;
+    }
+
+    public void setCurrentExecutable(String currentExecutable) {
+        this.currentExecutable = currentExecutable;
+    }
+
+    public String getCurrentWorkUnit() {
+        return currentWorkUnit;
+    }
+
+    public void setCurrentWorkUnit(String currentWorkUnit) {
+        this.currentWorkUnit = currentWorkUnit;
+    }
+
+    public Boolean getIdle() {
+        return idle;
+    }
+
+    public void setIdle(Boolean idle) {
+        this.idle = idle;
+    }
+
+    public Boolean getLikelyStuck() {
+        return likelyStuck;
+    }
+
+    public void setLikelyStuck(Boolean likelyStuck) {
+        this.likelyStuck = likelyStuck;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((currentExecutable == null) ? 0 : currentExecutable.hashCode());
+        result = prime * result + ((currentWorkUnit == null) ? 0 : currentWorkUnit.hashCode());
+        result = prime * result + ((idle == null) ? 0 : idle.hashCode());
+        result = prime * result + ((likelyStuck == null) ? 0 : likelyStuck.hashCode());
+        result = prime * result + number;
+        result = prime * result + progress;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Executor other = (Executor) obj;
+        if (currentExecutable == null) {
+            if (other.currentExecutable != null)
+                return false;
+        } else if (!currentExecutable.equals(other.currentExecutable))
+            return false;
+        if (currentWorkUnit == null) {
+            if (other.currentWorkUnit != null)
+                return false;
+        } else if (!currentWorkUnit.equals(other.currentWorkUnit))
+            return false;
+        if (idle == null) {
+            if (other.idle != null)
+                return false;
+        } else if (!idle.equals(other.idle))
+            return false;
+        if (likelyStuck == null) {
+            if (other.likelyStuck != null)
+                return false;
+        } else if (!likelyStuck.equals(other.likelyStuck))
+            return false;
+        if (number != other.number)
+            return false;
+        if (progress != other.progress)
+            return false;
+        return true;
+    }
+
+}

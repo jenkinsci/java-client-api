@@ -4,7 +4,8 @@ import java.io.IOException;
 
 public class MavenBuild extends Build {
 
-    public MavenBuild() {}
+    public MavenBuild() {
+    }
 
     public MavenBuild(Build from) {
         this(from.getNumber(), from.getUrl());
@@ -16,5 +17,9 @@ public class MavenBuild extends Build {
 
     public MavenModule getMavenModule() throws IOException {
         return client.get(this.url + "/mavenArtifacts/", MavenModule.class);
+    }
+
+    public TestReport getTestReport() throws IOException {
+        return client.get(this.url + "/testReport/", TestReport.class);
     }
 }
