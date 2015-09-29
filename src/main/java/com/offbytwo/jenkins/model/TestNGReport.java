@@ -5,14 +5,14 @@ import com.offbytwo.jenkins.model.BaseModel;
 import com.offbytwo.jenkins.model.TestPackageResult;
 
 /**
- * @author Jasmeen Kaur
+ * @author Karl Heinz Marbaise
  *
  */
 public class TestNGReport extends BaseModel {
 
     private int failCount;
     private int skipCount;
-    private int totalCount;
+    private int total;
     private String urlName;
     private int duration;
     
@@ -36,12 +36,12 @@ public class TestNGReport extends BaseModel {
         this.skipCount = skipCount;
     }
 
-    public int getTotalCount() {
-        return totalCount;
+    public int getTotal() {
+        return total;
     }
 
-    public void setTotalCount(int totalCount) {
-        this.totalCount = totalCount;
+    public void setTotal(int total) {
+        this.total = total;
     }
 
     public String getUrlName() {
