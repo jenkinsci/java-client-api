@@ -8,6 +8,7 @@ package com.offbytwo.jenkins.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.offbytwo.jenkins.client.util.RequestReleasingInputStream;
+//import com.offbytwo.jenkins.client.util.HttpResponseContentExtractor;
 import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
 import com.offbytwo.jenkins.model.BaseModel;
 import com.offbytwo.jenkins.model.Crumb;
@@ -22,6 +23,9 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.params.BasicHttpParams;
@@ -43,9 +47,10 @@ public class JenkinsHttpClient {
     private static final int CONNECTION_TIMEOUT_IN_MILLISECONDS = 500;
 
     private URI uri;
-    private DefaultHttpClient client;
+    private CloseableHttpClient client;
     private BasicHttpContext localContext;
     private HttpResponseValidator httpResponseValidator;
+//    private HttpResponseContentExtractor contentExtractor;
 
     private ObjectMapper mapper;
     private String context;
@@ -53,18 +58,29 @@ public class JenkinsHttpClient {
     /**
      * Create an unauthenticated Jenkins HTTP client
      *
-     * @param uri               Location of the jenkins server (ex. http://localhost:8080)
-     * @param defaultHttpClient Configured DefaultHttpClient to be used
+     * @param uri    Location of the jenkins server (ex. http://localhost:8080)
+     * @param client Configured CloseableHttpClient to be used
      */
-    public JenkinsHttpClient(URI uri, DefaultHttpClient defaultHttpClient) {
+    public JenkinsHttpClient(URI uri, CloseableHttpClient client) {
         this.context = uri.getPath();
         if (!context.endsWith("/")) {
             context += "/";
         }
         this.uri = uri;
         this.mapper = getDefaultMapper();
-        this.client = defaultHttpClient;
+        this.client = client;
         this.httpResponseValidator = new HttpResponseValidator();
+//        this.contentExtractor = new HttpResponseContentExtractor();
+    }
+
+    /**
+     * Create an unauthenticated Jenkins HTTP client
+     *
+     * @param uri     Location of the jenkins server (ex. http://localhost:8080)
+     * @param builder Configured HttpClientBuilder to be used
+     */
+    public JenkinsHttpClient(URI uri, HttpClientBuilder builder) {
+        this(uri, builder.build());
     }
 
     /**
@@ -73,7 +89,9 @@ public class JenkinsHttpClient {
      * @param uri Location of the jenkins server (ex. http://localhost:8080)
      */
     public JenkinsHttpClient(URI uri) {
-      this.context = uri.getPath();
+        this(uri, HttpClientBuilder.create());
+        this.context = uri.getPath();
+ 
       if (!context.endsWith("/")) {
           context += "/";
       }
@@ -83,8 +101,8 @@ public class JenkinsHttpClient {
       HttpParams httpParams = new BasicHttpParams();
       httpParams.setIntParameter(CoreConnectionPNames.SO_TIMEOUT, SO_TIMEOUT_IN_MILLISECONDS);
       httpParams.setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_IN_MILLISECONDS);
-      
-      this.client = new DefaultHttpClient(httpParams);
+     
+
       this.httpResponseValidator = new HttpResponseValidator();
     }
 
@@ -96,16 +114,10 @@ public class JenkinsHttpClient {
      * @param password Password or auth token to use when connecting
      */
     public JenkinsHttpClient(URI uri, String username, String password) {
-        this(uri);
+        this(uri, addAuthentication(HttpClientBuilder.create(), uri, username, password));
         if (isNotBlank(username)) {
-            CredentialsProvider provider = client.getCredentialsProvider();
-            AuthScope scope = new AuthScope(uri.getHost(), uri.getPort(), "realm");
-            UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(username, password);
-            provider.setCredentials(scope, credentials);
-
             localContext = new BasicHttpContext();
             localContext.setAttribute("preemptive-auth", new BasicScheme());
-            client.addRequestInterceptor(new PreemptiveAuth(), 0);
         }
     }
 
@@ -340,5 +352,19 @@ public class JenkinsHttpClient {
 
     private void releaseConnection(HttpRequestBase httpRequestBase) {
         httpRequestBase.releaseConnection();
+    }
+
+    private static HttpClientBuilder addAuthentication(
+            HttpClientBuilder builder, URI uri, String username, String password) {
+        if (isNotBlank(username)) {
+            CredentialsProvider provider = new BasicCredentialsProvider();
+            AuthScope scope = new AuthScope(uri.getHost(), uri.getPort(), "realm");
+            UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(username, password);
+            provider.setCredentials(scope, credentials);
+            builder.setDefaultCredentialsProvider(provider);
+
+            builder.addInterceptorFirst(new PreemptiveAuth());
+        }
+        return builder;
     }
 }
