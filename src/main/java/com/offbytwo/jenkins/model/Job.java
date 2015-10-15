@@ -70,9 +70,10 @@ public class Job extends BaseModel {
      * @param crumbFlag determines whether crumb flag is used
      * @throws IOException
      */
-    public void build(Map<String, String> params, boolean crumbFlag) throws IOException {
+    public QueueReference build(Map<String, String> params, boolean crumbFlag) throws IOException {
         String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
-        client.post(url + "buildWithParameters?" + qs, null, null, crumbFlag);
+        ExtractHeader location = client.post(url + "buildWithParameters?" + qs, null, ExtractHeader.class, crumbFlag);
+        return new QueueReference(location.getLocation()); 
     }
 
     @Override

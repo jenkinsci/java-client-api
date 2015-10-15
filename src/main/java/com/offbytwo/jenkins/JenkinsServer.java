@@ -10,6 +10,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.common.net.UrlEscapers;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
+import com.offbytwo.jenkins.model.Build;
 import com.offbytwo.jenkins.model.Computer;
 import com.offbytwo.jenkins.model.ComputerSet;
 import com.offbytwo.jenkins.model.Job;
@@ -18,6 +19,8 @@ import com.offbytwo.jenkins.model.JobWithDetails;
 import com.offbytwo.jenkins.model.LabelWithDetails;
 import com.offbytwo.jenkins.model.MainView;
 import com.offbytwo.jenkins.model.MavenJobWithDetails;
+import com.offbytwo.jenkins.model.QueueItem;
+import com.offbytwo.jenkins.model.QueueReference;
 import com.offbytwo.jenkins.model.View;
 
 import org.apache.http.client.HttpResponseException;
@@ -349,5 +352,40 @@ public class JenkinsServer {
     private String encodeParam(String pathPart) {
         // jenkins doesn't like the + for space, use %20 instead
         return UrlEscapers.urlFormParameterEscaper().escape(pathPart);
+    }
+
+    public QueueItem getQueueItem(QueueReference ref) throws IOException 
+    {
+      try {
+        String url = ref.getQueueItemUrlPart();
+        // "/queue/item/" + id
+        QueueItem job = client.get(url , QueueItem.class);
+        job.setClient(client);
+
+        return job;
+      } catch (HttpResponseException e) {
+          if (e.getStatusCode() == 404) {
+              return null;
+          }
+          throw e;
+      }      
+    }
+
+    public Build getBuild(QueueItem q)  throws IOException 
+    {
+      // http://ci.seitenbau.net/job/rainer-ansible-build/51/
+      try {
+        String url = q.getExecutable().getUrl();
+        // "/queue/item/" + id
+        Build job = client.get(url , Build.class);
+        job.setClient(client);
+
+        return job;
+      } catch (HttpResponseException e) {
+          if (e.getStatusCode() == 404) {
+              return null;
+          }
+          throw e;
+      }      
     }
 }
