@@ -12,6 +12,8 @@ import com.offbytwo.jenkins.client.util.RequestReleasingInputStream;
 import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
 import com.offbytwo.jenkins.model.BaseModel;
 import com.offbytwo.jenkins.model.Crumb;
+import com.offbytwo.jenkins.model.ExtractHeader;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
@@ -210,7 +212,15 @@ public class JenkinsHttpClient {
             httpResponseValidator.validateResponse(response);
 
             if (cls != null) {
-                return objectFromResponse(cls, response);
+                R responseObject; 
+                if(cls.equals(ExtractHeader.class) ) {
+                  ExtractHeader location = new ExtractHeader();
+                  location.setLocation(response.getFirstHeader("Location").getValue());
+                  responseObject = (R) location;
+                } else {
+                  responseObject = objectFromResponse(cls, response);
+                }
+                return responseObject;
             } else {
                 return null;
             }
