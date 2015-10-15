@@ -1,5 +1,28 @@
 # Release Notes
 
+## Release 0.3.2
+
+### API Changes:
+
+  [JobWithDetails has been enhanced with information about the
+  first build][issue-91].
+
+```java
+public Build getFirstBuild()
+```
+
+
+The API has been enhanced with information about the Queue.
+
+```java
+public QueueItem getQueueItem(QueueReference ref) throws IOException 
+```
+
+```java
+public Build getBuild(QueueItem q)  throws IOException 
+```
+
+
 ## Release 0.3.1
 
 ### API Changes:
@@ -120,3 +143,4 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-67]: https://github.com/RisingOak/jenkins-client/issues/67
 [issue-82]: https://github.com/RisingOak/jenkins-client/issues/82
 [issue-89]: https://github.com/RisingOak/jenkins-client/issues/89
+[issue-91]: https://github.com/RisingOak/jenkins-client/issues/91
