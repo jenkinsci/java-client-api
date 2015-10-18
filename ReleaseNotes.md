@@ -1,6 +1,6 @@
 # Release Notes
 
-## Release 0.3.2
+## [Release 0.3.2](#0.3.2)
 
 ### API Changes:
 
@@ -8,22 +8,51 @@
   first build][issue-91].
 
 ```java
-public Build getFirstBuild()
+Build getFirstBuild()
 ```
 
-
-The API has been enhanced with information about the Queue.
+  The `JenkinsServer` API has been enhanced to get information about the Queue.
 
 ```java
-public QueueItem getQueueItem(QueueReference ref) throws IOException 
+QueueItem getQueueItem(QueueReference ref) throws IOException 
 ```
 
 ```java
 public Build getBuild(QueueItem q)  throws IOException 
 ```
 
+ The `JenkinsHttpClient` API has been changed from the following:
 
-## Release 0.3.1
+```java
+public JenkinsHttpClient(URI uri, DefaultHttpClient defaultHttpClient);
+```
+ into
+
+```java
+JenkinsHttpClient(URI uri, CloseableHttpClient client);
+```
+
+  Furthermore the `JenkinsHttpClient` API has been enhanced with the following
+  method which allows to create an unauthenticated Jenkins HTTP client.
+
+```java
+JenkinsHttpClient(URI uri, HttpClientBuilder builder);
+```
+
+  The `Build` class `Stop` method needed to be changed internally based on an
+  inconsistencies in Jenkins versions. (This might be change in future). There
+  are versions 1.565 which supports the stop method as a post call, version
+  1.609.1 support it as a get call and 1.609.2 as a post call.
+
+
+  The `Job` class has been enhanced to trigger parameterized builds.
+
+```java
+QueueReference build(Map<String, String> params, boolean crumbFlag) throws IOException;
+```
+
+
+## [Release 0.3.1](#0.3.1)
 
 ### API Changes:
 
