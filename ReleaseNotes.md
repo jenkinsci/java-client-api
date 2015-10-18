@@ -80,14 +80,14 @@ LoadStatistics getLoadStatistics() throws IOException
  The old one looked like this:
 
 ```java
-public List<Map> getExecutors(); 
+List<Map> getExecutors(); 
 ```
 
   where as the new API looks like this:
 
 
 ```java
-public List<Executor> getExecutors();
+List<Executor> getExecutors();
 ```
 
   This will result in a list of [Executor][4] which contain supplemental informations
