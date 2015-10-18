@@ -58,6 +58,9 @@ mvn clean install
 
 ## Details about Releases
 
+You can find details about the different releases in the [Release Notes](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md).
+
+
 ### Release 0.3.1
 
 [Release Notes](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-031).
@@ -65,8 +68,6 @@ mvn clean install
 ### Release 0.3.2
 
 [Release Notes](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-032).
-
-You can find details about the different releases in the [Release Notes](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md).
 
 ## License
 
