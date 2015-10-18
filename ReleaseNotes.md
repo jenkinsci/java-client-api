@@ -1,6 +1,6 @@
 # Release Notes
 
-## [Release 0.3.2](#0.3.2)
+## Release 0.3.2
 
 ### API Changes:
 
@@ -18,13 +18,13 @@ QueueItem getQueueItem(QueueReference ref) throws IOException
 ```
 
 ```java
-public Build getBuild(QueueItem q)  throws IOException 
+Build getBuild(QueueItem q)  throws IOException 
 ```
 
  The `JenkinsHttpClient` API has been changed from the following:
 
 ```java
-public JenkinsHttpClient(URI uri, DefaultHttpClient defaultHttpClient);
+JenkinsHttpClient(URI uri, DefaultHttpClient defaultHttpClient);
 ```
  into
 
@@ -52,7 +52,7 @@ QueueReference build(Map<String, String> params, boolean crumbFlag) throws IOExc
 ```
 
 
-## [Release 0.3.1](#0.3.1)
+## Release 0.3.1
 
 ### API Changes:
 
