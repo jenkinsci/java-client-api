@@ -11,7 +11,7 @@
 Build getFirstBuild()
 ```
 
-  The `JenkinsServer` API has been enhanced to get information about the Queue.
+  [The `JenkinsServer` API has been enhanced to get information about the Queue](issue-104)
 
 ```java
 QueueItem getQueueItem(QueueReference ref) throws IOException 
@@ -173,3 +173,4 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-82]: https://github.com/RisingOak/jenkins-client/issues/82
 [issue-89]: https://github.com/RisingOak/jenkins-client/issues/89
 [issue-91]: https://github.com/RisingOak/jenkins-client/issues/91
+[issue-104]: https://github.com/RisingOak/jenkins-client/issues/104
