@@ -63,6 +63,10 @@ You can find details about the different releases in the [Release Notes](https:/
  * [Release 0.3.2](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-032).
  * [Release 0.3.1](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-031).
 
+## Generated Site
+
+http://risingoak.github.io/jenkins-client/
+
 ## License
 
 Copyright (C) 2013, Rising Oak LLC.
