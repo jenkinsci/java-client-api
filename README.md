@@ -48,12 +48,11 @@ To run only unit tests without invoking the integration tests use the following 
 mvn clean install -DskipITs
 ```
 
-
 ## Running Integration Tests
-To run integration tests simply start 
+To run integration tests simply start
 
 ```
-mvn clean install
+mvn -Prun-its clean verify
 ```
 
 ## Release Notes

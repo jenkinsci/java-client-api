@@ -249,21 +249,6 @@
           </plugins>
         </pluginManagement>
         <plugins>
-            <!--
-              ! Bind it to the life cycle.
-            -->
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>integration-test</id>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-              </plugin>
               <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -341,6 +326,29 @@
     </reporting>
 
     <profiles>
+        <profile>
+          <id>run-its</id>
+          <build>
+            <plugins>
+            <!--
+              ! Bind it to the life cycle.
+            -->
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+              </plugin>
+            </plugins>
+          </build>
+
+        </profile>
         <profile>
             <id>release</id>
             <activation>
