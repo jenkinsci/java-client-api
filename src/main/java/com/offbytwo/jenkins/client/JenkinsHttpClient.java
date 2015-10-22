@@ -203,7 +203,8 @@ public class JenkinsHttpClient {
         }
 
         if (data != null) {
-            StringEntity stringEntity = new StringEntity(mapper.writeValueAsString(data), "application/json");
+            String value = mapper.writeValueAsString(data);
+            StringEntity stringEntity = new StringEntity(value, ContentType.APPLICATION_JSON);
             request.setEntity(stringEntity);
         }
         HttpResponse response = client.execute(request, localContext);
