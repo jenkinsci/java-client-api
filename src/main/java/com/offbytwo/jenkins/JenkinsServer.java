@@ -8,8 +8,8 @@ package com.offbytwo.jenkins;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
-import com.google.common.net.UrlEscapers;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
+import com.offbytwo.jenkins.client.util.EncodingUtils;
 import com.offbytwo.jenkins.model.Build;
 import com.offbytwo.jenkins.model.Computer;
 import com.offbytwo.jenkins.model.ComputerSet;
@@ -133,7 +133,7 @@ public class JenkinsServer {
      * @throws IOException
      */
     public View getView(String name) throws IOException {
-        return client.get("/view/" + encode(name) + "/", View.class);
+        return client.get("/view/" + EncodingUtils.encode(name) + "/", View.class);
     }
 
     /**
@@ -144,7 +144,7 @@ public class JenkinsServer {
      * @throws IOException
      */
     public Map<String, Job> getJobs(String view) throws IOException {
-        List<Job> jobs = client.get("/view/" + encode(view) + "/", View.class).getJobs();
+        List<Job> jobs = client.get("/view/" + EncodingUtils.encode(view) + "/", View.class).getJobs();
         return Maps.uniqueIndex(jobs, new Function<Job, String>() {
             @Override
             public String apply(Job job) {
@@ -162,7 +162,7 @@ public class JenkinsServer {
      */
     public JobWithDetails getJob(String jobName) throws IOException {
         try {
-            JobWithDetails job = client.get("/job/" + encode(jobName), JobWithDetails.class);
+            JobWithDetails job = client.get("/job/" + EncodingUtils.encode(jobName), JobWithDetails.class);
             job.setClient(client);
 
             return job;
@@ -177,7 +177,7 @@ public class JenkinsServer {
 
     public MavenJobWithDetails getMavenJob(String jobName) throws IOException {
         try {
-            MavenJobWithDetails job = client.get("/job/" + encode(jobName), MavenJobWithDetails.class);
+            MavenJobWithDetails job = client.get("/job/" + EncodingUtils.encode(jobName), MavenJobWithDetails.class);
             job.setClient(client);
 
             return job;
@@ -196,11 +196,11 @@ public class JenkinsServer {
      * @throws IOException
      */
     public void createJob(String jobName, String jobXml) throws IOException {
-        client.post_xml("/createItem?name=" + encodeParam(jobName), jobXml);
+        client.post_xml("/createItem?name=" + EncodingUtils.encodeParam(jobName), jobXml);
     }
 
     public void createJob(String jobName, String jobXml, Boolean crumbFlag) throws IOException {
-        client.post_xml("/createItem?name=" + encodeParam(jobName), jobXml, crumbFlag);
+        client.post_xml("/createItem?name=" + EncodingUtils.encodeParam(jobName), jobXml, crumbFlag);
     }
 
     /**
@@ -210,7 +210,7 @@ public class JenkinsServer {
      * @throws IOException
      */
     public String getJobXml(String jobName) throws IOException {
-        return client.get("/job/" + encode(jobName) + "/config.xml");
+        return client.get("/job/" + EncodingUtils.encode(jobName) + "/config.xml");
     }
 
     /**
@@ -220,7 +220,7 @@ public class JenkinsServer {
      * @throws IOException
      */
     public LabelWithDetails getLabel(String labelName) throws IOException {
-        return client.get("/label/" + encode(labelName), LabelWithDetails.class);
+        return client.get("/label/" + EncodingUtils.encode(labelName), LabelWithDetails.class);
     }
 
     /**
@@ -264,7 +264,7 @@ public class JenkinsServer {
     }
 
     public void updateJob(String jobName, String jobXml, boolean crumbFlag) throws IOException {
-        client.post_xml("/job/" + encode(jobName) + "/config.xml", jobXml, crumbFlag);
+        client.post_xml("/job/" + EncodingUtils.encode(jobName) + "/config.xml", jobXml, crumbFlag);
     }
 
     public void addStringParam(String jobName, String name, String description, String defaultValue)
@@ -308,7 +308,7 @@ public class JenkinsServer {
      * @throws IOException
      */
     public void deleteJob(String jobName) throws IOException {
-        client.post("/job/" + encode(jobName) + "/doDelete");
+        client.post("/job/" + EncodingUtils.encode(jobName) + "/doDelete");
     }
 
     /**
@@ -322,7 +322,7 @@ public class JenkinsServer {
      *             In case of an failure.
      */
     public void deleteJob(String jobName, boolean crumbFlag) throws IOException {
-        client.post("/job/" + encode(jobName) + "/doDelete", crumbFlag);
+        client.post("/job/" + EncodingUtils.encode(jobName) + "/doDelete", crumbFlag);
     }
 
     /**
@@ -341,17 +341,6 @@ public class JenkinsServer {
      */
     public String runScript(String script) throws IOException {
         return client.post_text("/scriptText", "script=" + script, ContentType.APPLICATION_FORM_URLENCODED, false);
-    }
-
-    private String encode(String pathPart) {
-        // jenkins doesn't like the + for space, use %20 instead
-        String escape = UrlEscapers.urlPathSegmentEscaper().escape(pathPart);
-        return escape;
-    }
-
-    private String encodeParam(String pathPart) {
-        // jenkins doesn't like the + for space, use %20 instead
-        return UrlEscapers.urlFormParameterEscaper().escape(pathPart);
     }
 
     public QueueItem getQueueItem(QueueReference ref) throws IOException 
