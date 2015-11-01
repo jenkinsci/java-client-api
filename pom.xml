@@ -274,7 +274,7 @@
               <relocations>
                 <relocation>
                   <pattern>com.google.common</pattern>
-                  <shadedPattern>com.google.common.jenkins-client-jarjar</shadedPattern>
+                  <shadedPattern>com.google.common.jenkins_client_jarjar</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>
