@@ -50,6 +50,7 @@
     <dom4j.version>1.6.1</dom4j.version>
     <commons-lang.version>2.6</commons-lang.version>
     <guava.version>17.0</guava.version>
+    <json-lib.version>2.4</json-lib.version>
     <httpclient.version>4.3.6</httpclient.version>
     <jackson-databind.version>2.3.4</jackson-databind.version>
   </properties>
@@ -102,6 +103,13 @@
       <groupId>org.jvnet.hudson</groupId>
       <artifactId>xstream</artifactId>
       <version>${xstream.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>net.sf.json-lib</groupId>
+      <artifactId>json-lib</artifactId>
+      <version>${json-lib.version}</version>
+      <classifier>jdk15</classifier>
     </dependency>
 
     <!-- Musties -->

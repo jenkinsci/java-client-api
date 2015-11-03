@@ -6,26 +6,33 @@
 
 package com.offbytwo.jenkins;
 
-import com.offbytwo.jenkins.client.JenkinsHttpClient;
-import com.offbytwo.jenkins.model.Job;
-import com.offbytwo.jenkins.model.MainView;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Map;
+import java.util.UUID;
 
 import org.apache.http.entity.ContentType;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.UUID;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
+import com.offbytwo.jenkins.client.JenkinsHttpClient;
+import com.offbytwo.jenkins.model.FolderJob;
+import com.offbytwo.jenkins.model.Job;
+import com.offbytwo.jenkins.model.JobWithDetails;
+import com.offbytwo.jenkins.model.MainView;
+import com.offbytwo.jenkins.model.View;
 
 public class JenkinsServerTest extends BaseUnitTest {
 
@@ -63,6 +70,119 @@ public class JenkinsServerTest extends BaseUnitTest {
     }
 
     @Test
+    public void testFolderGetJobs() throws Exception {
+        // given
+        String path = "http://localhost/jobs/someFolder/";
+        Job someJob = new Job("jobname", path + "jobname");
+        FolderJob folderJob = new FolderJob("someFolder", path);
+        MainView mv = new MainView();
+        mv.setJobs(ImmutableList.of(someJob));
+        
+        given(client.get(eq(path), eq(MainView.class))).willReturn(mv);
+        
+        // when
+        Map<String, Job> map = server.getJobs(folderJob);
+        
+        // then
+        verify(client).get(path, MainView.class);
+        assertEquals(someJob, map.get("jobname"));
+    }
+    
+    @Test
+    public void testFolderGetJob() throws Exception {
+        // given
+        String path = "http://localhost/jobs/someFolder/";
+        JobWithDetails someJob = mock(JobWithDetails.class);
+        FolderJob folderJob = new FolderJob("someFolder", path);
+        
+        given(client.get(eq(path + "job/jobname"), eq(JobWithDetails.class))).willReturn(someJob);
+        
+        // when
+        Job jobResult = server.getJob(folderJob, "jobname");
+        
+        // then
+        verify(client).get(path + "job/jobname", JobWithDetails.class);
+        assertEquals(someJob, jobResult);
+    }
+    
+    @Test
+    public void testFolderGetView() throws Exception {
+        // given
+        String path = "http://localhost/jobs/someFolder/";
+        FolderJob folderJob = new FolderJob("someFolder", path);
+        View someView = mock(View.class);
+        
+        given(client.get(eq(path + "view/viewname/"), eq(View.class))).willReturn(someView);
+        
+        // when
+        View viewResult = server.getView(folderJob, "viewname");
+        
+        // then
+        verify(client).get(path + "view/viewname/", View.class);
+        assertEquals(someView, viewResult);
+    }
+    
+    @Test
+    public void testGetFolderJob() throws Exception {
+        // given
+        String path = "http://localhost/jobs/someFolder/";
+        Job someJob = new Job("someFolder", path);
+        FolderJob folderJob = mock(FolderJob.class);
+        
+        given(folderJob.isFolder()).willReturn(true);
+        given(client.get(eq(path), eq(FolderJob.class))).willReturn(folderJob);
+        
+        // when
+        Optional<FolderJob> oj = server.getFolderJob(someJob);
+        
+        // then
+        verify(client).get(path, FolderJob.class);
+        assertEquals(folderJob, oj.get());
+    }
+    
+    @Test
+    public void testGetFolderJobInvalidFolder() throws Exception {
+        // given
+        String path = "http://localhost/jobs/someFolder/";
+        Job someJob = new Job("someFolder", path);
+        FolderJob folderJob = mock(FolderJob.class);
+        
+        given(folderJob.isFolder()).willReturn(false);
+        given(client.get(eq(path), eq(FolderJob.class))).willReturn(folderJob);
+        
+        // when
+        Optional<FolderJob> oj = server.getFolderJob(someJob);
+        
+        // then
+        verify(client).get(path, FolderJob.class);
+        assertEquals(false, oj.isPresent());
+    }
+    
+    @Test
+    public void testCreateFolderJob() throws Exception {
+        // when
+        server.createFolder("someFolder");
+        
+        // then
+        verify(client).post_form(eq("/createItem?"), anyMap(), eq(false));
+    }
+    
+    @Test
+    public void testCreateSubFolderJob() throws Exception {
+        // given
+        String path = "http://localhost/jobs/someFolder/";
+        FolderJob folderJob = mock(FolderJob.class);
+        
+        given(folderJob.getUrl()).willReturn(path);
+        
+        // when
+        server.createFolder(folderJob, "someFolder");
+        
+        // then
+        verify(client).post_form(eq(path + "createItem?"), anyMap(), eq(false));
+    }
+    
+    @Test
     public void testUpdateJobXml() throws Exception {
         // given
         String jobName = "pr";
@@ -90,7 +210,7 @@ public class JenkinsServerTest extends BaseUnitTest {
 
         // then
         ArgumentCaptor<String> captureString = ArgumentCaptor.forClass(String.class);
-        verify(client).post_xml(eq("/createItem?name=" + jobName), captureString.capture());
+        verify(client).post_xml(eq("/createItem?name=" + jobName), captureString.capture(), eq(true));
         String xmlReturn = captureString.getValue();
         assertEquals(xmlReturn, xmlString);
     }

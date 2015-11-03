@@ -6,13 +6,27 @@
 
 package com.offbytwo.jenkins;
 
+import java.io.IOException;
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.bind.JAXBException;
+
+import org.apache.http.client.HttpResponseException;
+import org.apache.http.entity.ContentType;
+import org.dom4j.DocumentException;
+
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
 import com.offbytwo.jenkins.client.util.EncodingUtils;
 import com.offbytwo.jenkins.model.Build;
 import com.offbytwo.jenkins.model.Computer;
 import com.offbytwo.jenkins.model.ComputerSet;
+import com.offbytwo.jenkins.model.FolderJob;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.JobConfiguration;
 import com.offbytwo.jenkins.model.JobWithDetails;
@@ -22,17 +36,6 @@ import com.offbytwo.jenkins.model.MavenJobWithDetails;
 import com.offbytwo.jenkins.model.QueueItem;
 import com.offbytwo.jenkins.model.QueueReference;
 import com.offbytwo.jenkins.model.View;
-
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.entity.ContentType;
-import org.dom4j.DocumentException;
-
-import javax.xml.bind.JAXBException;
-
-import java.io.IOException;
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
 
 /**
  * The main starting point for interacting with a Jenkins server.
@@ -96,7 +99,48 @@ public class JenkinsServer {
      * @throws IOException
      */
     public Map<String, Job> getJobs() throws IOException {
-        List<Job> jobs = client.get("/", MainView.class).getJobs();
+        return getJobs(null, null);
+    }
+
+    /**
+     * Get a list of all the defined jobs on the server (in the given folder)
+     *
+     * @return list of defined jobs (summary level, for details @see Job#details
+     * @throws IOException
+     */
+    public Map<String, Job> getJobs(FolderJob folder) throws IOException {
+        return getJobs(folder, null);
+    }
+    
+    /**
+     * Get a list of all the defined jobs on the server (at the specified view
+     * level)
+     *
+     * @return list of defined jobs (view level, for details @see Job#details
+     * @throws IOException
+     */
+    public Map<String, Job> getJobs(String view) throws IOException {
+        return getJobs(null, view);
+    }
+    
+    /**
+     * Get a list of all the defined jobs on the server (at the specified view
+     * level and in the specified folder)
+     *
+     * @return list of defined jobs (view level, for details @see Job#details
+     * @throws IOException
+     */
+    public Map<String, Job> getJobs(FolderJob folder, String view) throws IOException {
+        String path = "/";
+        if (folder != null) {
+            path = folder.getUrl();
+        }
+        Class<? extends MainView> viewClass = MainView.class;
+        if (view != null) {
+            path = path + "view/" + EncodingUtils.encode(view) + "/";
+            viewClass = View.class;
+        }
+        List<Job> jobs = client.get(path, viewClass).getJobs();
         return Maps.uniqueIndex(jobs, new Function<Job, String>() {
             @Override
             public String apply(Job job) {
@@ -105,7 +149,7 @@ public class JenkinsServer {
             }
         });
     }
-
+    
     /**
      * Get a list of all the defined views on the server (at the summary level)
      *
@@ -113,7 +157,21 @@ public class JenkinsServer {
      * @throws IOException
      */
     public Map<String, View> getViews() throws IOException {
-        List<View> views = client.get("/", MainView.class).getViews();
+        return getViews(null);
+    }
+    
+    /**
+     * Get a list of all the defined views on the server (at the summary level and in the given folder)
+     *
+     * @return list of defined views
+     * @throws IOException
+     */
+    public Map<String, View> getViews(FolderJob folder) throws IOException {
+        String path = "/";
+        if (folder != null) {
+            path = folder.getUrl();
+        }
+        List<View> views = client.get(path, MainView.class).getViews();
         return Maps.uniqueIndex(views, new Function<View, String>() {
             @Override
             public String apply(View view) {
@@ -123,7 +181,7 @@ public class JenkinsServer {
             }
         });
     }
-
+    
     /**
      * Get a single view object from the server
      *
@@ -133,27 +191,25 @@ public class JenkinsServer {
      * @throws IOException
      */
     public View getView(String name) throws IOException {
-        return client.get("/view/" + EncodingUtils.encode(name) + "/", View.class);
+        return getView(null, name);
     }
 
     /**
-     * Get a list of all the defined jobs on the server (at the specified view
-     * level)
+     * Get a single view object from the given folder
      *
-     * @return list of defined jobs (view level, for details @see Job#details
+     * @param name
+     *            name of the view in Jenkins
+     * @return the view object
      * @throws IOException
      */
-    public Map<String, Job> getJobs(String view) throws IOException {
-        List<Job> jobs = client.get("/view/" + EncodingUtils.encode(view) + "/", View.class).getJobs();
-        return Maps.uniqueIndex(jobs, new Function<Job, String>() {
-            @Override
-            public String apply(Job job) {
-                job.setClient(client);
-                return job.getName().toLowerCase();
-            }
-        });
+    public View getView(FolderJob folder, String name) throws IOException {
+        String path = "/";
+        if (folder != null) {
+            path = folder.getUrl();
+        }
+        return client.get(path + "view/" + EncodingUtils.encode(name) + "/", View.class);
     }
-
+    
     /**
      * Get a single Job from the server.
      *
@@ -161,8 +217,22 @@ public class JenkinsServer {
      * @throws IOException
      */
     public JobWithDetails getJob(String jobName) throws IOException {
+        return getJob(null, jobName);
+    }
+
+    /**
+     * Get a single Job from the given folder.
+     *
+     * @return A single Job, null if not present
+     * @throws IOException
+     */
+    public JobWithDetails getJob(FolderJob folder, String jobName) throws IOException {
+        String path = "/";
+        if (folder != null) {
+            path = folder.getUrl();
+        }
         try {
-            JobWithDetails job = client.get("/job/" + EncodingUtils.encode(jobName), JobWithDetails.class);
+            JobWithDetails job = client.get(path + "job/" + EncodingUtils.encode(jobName), JobWithDetails.class);
             job.setClient(client);
 
             return job;
@@ -172,15 +242,39 @@ public class JenkinsServer {
             }
             throw e;
         }
-
     }
 
     public MavenJobWithDetails getMavenJob(String jobName) throws IOException {
+        return getMavenJob(null, jobName);
+    }
+
+    public MavenJobWithDetails getMavenJob(FolderJob folder, String jobName) throws IOException {
+        String path = "/";
+        if (folder != null) {
+            path = folder.getUrl();
+        }
         try {
-            MavenJobWithDetails job = client.get("/job/" + EncodingUtils.encode(jobName), MavenJobWithDetails.class);
+            MavenJobWithDetails job = client.get(path + "job/" + EncodingUtils.encode(jobName), MavenJobWithDetails.class);
             job.setClient(client);
 
             return job;
+        } catch (HttpResponseException e) {
+            if (e.getStatusCode() == 404) {
+                return null;
+            }
+            throw e;
+        }
+    }
+
+    public Optional<FolderJob> getFolderJob(Job job) throws IOException {
+        try {
+            FolderJob folder = client.get(job.getUrl(), FolderJob.class);
+            if (!folder.isFolder()) {
+                return Optional.absent();
+            }
+            folder.setClient(client);
+
+            return Optional.of(folder);
         } catch (HttpResponseException e) {
             if (e.getStatusCode() == 404) {
                 return null;
@@ -196,13 +290,89 @@ public class JenkinsServer {
      * @throws IOException
      */
     public void createJob(String jobName, String jobXml) throws IOException {
-        client.post_xml("/createItem?name=" + EncodingUtils.encodeParam(jobName), jobXml);
+        createJob(null, jobName, jobXml, true);
     }
 
+    /**
+     * Create a job on the server using the provided xml
+     *
+     * @return the new job object
+     * @throws IOException
+     */
     public void createJob(String jobName, String jobXml, Boolean crumbFlag) throws IOException {
-        client.post_xml("/createItem?name=" + EncodingUtils.encodeParam(jobName), jobXml, crumbFlag);
+        createJob(null, jobName, jobXml, crumbFlag);
     }
 
+    /**
+     * Create a job on the server using the provided xml and in the provided folder
+     *
+     * @return the new job object
+     * @throws IOException
+     */
+    public void createJob(FolderJob folder, String jobName, String jobXml) throws IOException {
+        createJob(folder, jobName, jobXml, true);
+    }
+
+    /**
+     * Create a job on the server using the provided xml and in the provided folder
+     *
+     * @return the new job object
+     * @throws IOException
+     */
+    public void createJob(FolderJob folder, String jobName, String jobXml, Boolean crumbFlag) throws IOException {
+        String path = "/";
+        if (folder != null) {
+            path = folder.getUrl();
+        }
+        client.post_xml(path + "createItem?name=" + EncodingUtils.encodeParam(jobName), jobXml, crumbFlag);
+    }
+
+    /**
+     * Create a folder on the server (in the root)
+     *
+     * @throws IOException
+     */
+    public void createFolder(String jobName) throws IOException {
+        createFolder(null, jobName, false);
+    }
+
+    /**
+     * Create a folder on the server (in the root)
+     *
+     * @throws IOException
+     */
+    public void createFolder(String jobName, Boolean crumbFlag) throws IOException {
+        createFolder(null, jobName, crumbFlag);
+    }
+    
+    /**
+     * Create a folder on the server (in the given folder)
+     *
+     * @throws IOException
+     */
+    public void createFolder(FolderJob folder, String jobName) throws IOException {
+        createFolder(folder, jobName, false);
+    }
+
+    /**
+     * Create a folder on the server (in the given folder)
+     *
+     * @throws IOException
+     */
+    public void createFolder(FolderJob folder, String jobName, Boolean crumbFlag) throws IOException {
+        String path = "/";
+        if (folder != null) {
+            path = folder.getUrl();
+        }
+        // https://gist.github.com/stuart-warren/7786892 was slightly helpful here
+        ImmutableMap<String, String> params = ImmutableMap.of(
+            "mode", "com.cloudbees.hudson.plugins.folder.Folder",
+            "name", EncodingUtils.encodeParam(jobName),
+            "from", "",
+            "Submit", "OK");
+        client.post_form(path + "createItem?", params, crumbFlag);
+    }
+    
     /**
      * Get the xml description of an existing job
      *
