@@ -5,7 +5,10 @@
   ~ Distributed under the MIT license: http://opensource.org/licenses/MIT
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -129,6 +132,12 @@
       <version>${httpclient.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>jaxen</groupId>
+      <artifactId>jaxen</artifactId>
+      <version>1.1.6</version>
+    </dependency>
+
     <!-- Testing -->
     <dependency>
       <groupId>junit</groupId>
@@ -237,7 +246,7 @@
               ! overwrite arguments of parent pom to
               ! prevent activating profile sonatype-oss-release
             -->
-            <arguments combine.self="override" />
+            <arguments combine.self="override"/>
             <goals>deploy site site:stage scm-publish:publish-scm</goals>
             <autoVersionSubmodules>true</autoVersionSubmodules>
             <useReleaseProfile>true</useReleaseProfile>
