@@ -6,6 +6,17 @@
 
 package com.offbytwo.jenkins;
 
+import java.io.IOException;
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.bind.JAXBException;
+
+import org.apache.http.client.HttpResponseException;
+import org.apache.http.entity.ContentType;
+import org.dom4j.DocumentException;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.common.net.UrlEscapers;
@@ -19,17 +30,6 @@ import com.offbytwo.jenkins.model.LabelWithDetails;
 import com.offbytwo.jenkins.model.MainView;
 import com.offbytwo.jenkins.model.MavenJobWithDetails;
 import com.offbytwo.jenkins.model.View;
-
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.entity.ContentType;
-import org.dom4j.DocumentException;
-
-import javax.xml.bind.JAXBException;
-
-import java.io.IOException;
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
 
 /**
  * The main starting point for interacting with a Jenkins server.
@@ -59,7 +59,24 @@ public class JenkinsServer {
      *            password (not recommended) or token (recommended)
      */
     public JenkinsServer(URI serverUri, String username, String passwordOrToken) {
-        this(new JenkinsHttpClient(serverUri, username, passwordOrToken));
+        this(serverUri, "", username, passwordOrToken);
+    }
+
+
+    /**
+     * Create a new Jenkins server reference given the address and credentials
+     *
+     * @param serverUri
+     *            address of jenkins server (ex. http://localhost:8080/jenkins)
+     * @param prefix
+     *            A prefix to all other queries/posts/etc. Useful for folders.  (ex. /job/FolderName)
+     * @param username
+     *            username to use when connecting
+     * @param passwordOrToken
+     *            password (not recommended) or token (recommended)
+     */
+    public JenkinsServer(URI serverUri, String prefix, String username, String passwordOrToken) {
+        this (new JenkinsHttpClient(serverUri, prefix, username, passwordOrToken));
     }
 
     /**
@@ -242,7 +259,7 @@ public class JenkinsServer {
      * The ComputerSet class will give informations
      * like {@link ComputerSet#getBusyExecutors()} or
      * the {@link ComputerSet#getTotalExecutors()}.
-     * 
+     *
      * @return {@link ComputerSet}
      * @throws IOException
      */
@@ -274,7 +291,7 @@ public class JenkinsServer {
 
     /**
      * Sends the Quiet Down (Prepare for shutdown) message
-     * 
+     *
      * @throws IOException
      */
     public void quietDown() throws IOException {
@@ -288,7 +305,7 @@ public class JenkinsServer {
 
     /**
      * Cancels the Quiet Down (Prepare for shutdown) message
-     * 
+     *
      * @throws IOException
      */
     public void cancelQuietDown() throws IOException {
@@ -310,7 +327,7 @@ public class JenkinsServer {
 
     /**
      * Delete a job from Jenkins.
-     * 
+     *
      * @param jobName
      *            The name of the job to be deleted.
      * @param crumbFlag
