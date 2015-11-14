@@ -1,5 +1,11 @@
 # Release Notes
 
+## Release 0.3.3
+
+  [Fixed #111 which caused problems, cause missed to add
+  the jaxen dependency in compile scope][issue-111] which
+  caused problems.
+
 ## Release 0.3.2
 
 ### API Changes:
@@ -174,3 +180,4 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-89]: https://github.com/RisingOak/jenkins-client/issues/89
 [issue-91]: https://github.com/RisingOak/jenkins-client/issues/91
 [issue-104]: https://github.com/RisingOak/jenkins-client/issues/104
+[issue-111]: https://github.com/RisingOak/jenkins-client/issues/111
