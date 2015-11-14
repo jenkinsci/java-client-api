@@ -2,9 +2,10 @@
 
 ## Release 0.3.3
 
-  [Fixed #111 which caused problems, cause missed to add
-  the jaxen dependency in compile scope][issue-111] which
-  caused problems.
+  [Fixed #111 A missing dependency to jaxen caused problems][issue-111]
+  The problem was that the dependency has missed from the compile scope
+  which caused problems for users to use. The dependency was there via
+  transitive dependency of a test scoped artifact.
 
 ## Release 0.3.2
 
