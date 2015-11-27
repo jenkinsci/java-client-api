@@ -80,7 +80,7 @@ the [ticket system before](https://github.com/RisingOak/jenkins-client/issues)
 and describe what the problem is or what kind of feauture you would like
 to add. Afterwards you can create an appropriate pull request.
 
-It is required if you want to get a Pull request to be integrated to squash your
+It is required if you want to get a Pull request to be integrated into to squash your
 commits into a single commit which references the issue in the commit message.
 
 A pull request has to fulfil only a single ticket and should never create/add/fix
