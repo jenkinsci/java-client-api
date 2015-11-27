@@ -62,6 +62,25 @@ You can find details about the different releases in the [Release Notes](https:/
  * [Release 0.3.2](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-032).
  * [Release 0.3.1](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-031).
 
+## Contribution
+
+### Creating Issues
+
+If you find a problem please create an 
+[issue in the ticket system](https://github.com/RisingOak/jenkins-client/issues)
+and describe what is going wrong or what you expect to happen.
+If you have a full working example or a log file this is also helpful.
+
+### Creating a Pull Request
+
+Before you create a pull request it is necessary to create an issue in
+the [ticket system before](https://github.com/RisingOak/jenkins-client/issues)
+and describe what the problem is or what kind of feauture you would like
+to add. Afterwards you can create an appropriate pull request.
+
+It is required if you want to get a Pull request to be integrated to squash your
+commits into a single commit which references the issue in the commit message.
+
 ## Generated Site
 
 http://risingoak.github.io/jenkins-client/
