@@ -6,19 +6,24 @@
 
 package com.offbytwo.jenkins.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.offbytwo.jenkins.client.util.RequestReleasingInputStream;
-//import com.offbytwo.jenkins.client.util.HttpResponseContentExtractor;
-import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
-import com.offbytwo.jenkins.model.BaseModel;
-import com.offbytwo.jenkins.model.Crumb;
-import com.offbytwo.jenkins.model.ExtractHeader;
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
+
+import net.sf.json.JSONObject;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -28,7 +33,6 @@ import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreConnectionPNames;
@@ -36,12 +40,16 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-
-import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
+import com.google.common.io.ByteStreams;
+import com.offbytwo.jenkins.client.util.EncodingUtils;
+import com.offbytwo.jenkins.client.util.RequestReleasingInputStream;
+//import com.offbytwo.jenkins.client.util.HttpResponseContentExtractor;
+import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
+import com.offbytwo.jenkins.model.BaseModel;
+import com.offbytwo.jenkins.model.Crumb;
+import com.offbytwo.jenkins.model.ExtractHeader;
 
 public class JenkinsHttpClient {
 
@@ -203,7 +211,8 @@ public class JenkinsHttpClient {
         }
 
         if (data != null) {
-            StringEntity stringEntity = new StringEntity(mapper.writeValueAsString(data), "application/json");
+            String value = mapper.writeValueAsString(data);
+            StringEntity stringEntity = new StringEntity(value, ContentType.APPLICATION_JSON);
             request.setEntity(stringEntity);
         }
         HttpResponse response = client.execute(request, localContext);
@@ -230,6 +239,55 @@ public class JenkinsHttpClient {
         }
     }
 
+    /**
+     * Perform a POST request using form url encoding.
+     * 
+     * This method was added for the purposes of creating folders, but may be useful for other API calls as well.
+     * 
+     * Unlike post and post_xml, the path is *not* modified by adding "/api/json".  Additionally, the params in
+     * data are provided as both request parameters including a json parameter, *and* in the JSON-formatted
+     * StringEntity, because this is what the folder creation call required. It is unclear if any other jenkins
+     * APIs operate in this fashion.
+     *
+     * @param path path to request, can be relative or absolute
+     * @param data data to post
+     * @throws IOException, HttpResponseException
+     */
+    public void post_form(String path, Map<String,String> data, boolean crumbFlag) throws IOException {
+        HttpPost request;
+        if (data != null) {
+	        // https://gist.github.com/stuart-warren/7786892 was slightly helpful here
+		    List<String> queryParams = Lists.newArrayList();
+	        for (String param : data.keySet()) {
+	            queryParams.add(param + "=" + EncodingUtils.encodeParam(data.get(param)));
+	        }
+	        
+	        queryParams.add("json=" + EncodingUtils.encodeParam(JSONObject.fromObject(data).toString()));
+            String value = mapper.writeValueAsString(data);
+            StringEntity stringEntity = new StringEntity(value, ContentType.APPLICATION_FORM_URLENCODED);
+            request = new HttpPost(noapi(path) + StringUtils.join(queryParams, "&"));
+            request.setEntity(stringEntity);
+        } else {
+            request = new HttpPost(noapi(path));
+        }
+        
+        if (crumbFlag == true) {
+            Crumb crumb = get("/crumbIssuer", Crumb.class);
+            if (crumb != null) {
+                request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+            }
+        }
+
+        HttpResponse response = client.execute(request, localContext);
+
+        try {
+            httpResponseValidator.validateResponse(response);
+        } finally {
+            EntityUtils.consume(response.getEntity());
+            releaseConnection(request);
+        }
+    }
+    
     /**
      * Perform a POST request of XML (instead of using json mapper) and return a string rendering of the response
      * entity.
@@ -347,9 +405,20 @@ public class JenkinsHttpClient {
         return uri.resolve("/").resolve(path);
     }
 
+    private URI noapi(String path) {
+        if (!path.toLowerCase().matches("https?://.*")) {
+            path = urlJoin(this.context, path);
+        }
+        return uri.resolve("/").resolve(path);
+    }
+
     private <T extends BaseModel> T objectFromResponse(Class<T> cls, HttpResponse response) throws IOException {
         InputStream content = response.getEntity().getContent();
-        T result = mapper.readValue(content, cls);
+        byte[] bytes = ByteStreams.toByteArray(content);
+        String bytestring = new String(bytes);
+        T result = mapper.readValue(bytes, cls);
+        // TODO: original:
+        //T result = mapper.readValue(content, cls);
         result.setClient(this);
         return result;
     }
