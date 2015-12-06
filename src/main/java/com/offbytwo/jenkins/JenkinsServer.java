@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.entity.ContentType;
 import org.dom4j.DocumentException;
@@ -237,7 +238,7 @@ public class JenkinsServer {
 
             return job;
         } catch (HttpResponseException e) {
-            if (e.getStatusCode() == 404) {
+            if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
                 return null;
             }
             throw e;
@@ -259,7 +260,7 @@ public class JenkinsServer {
 
             return job;
         } catch (HttpResponseException e) {
-            if (e.getStatusCode() == 404) {
+            if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
                 return null;
             }
             throw e;
@@ -276,7 +277,7 @@ public class JenkinsServer {
 
             return Optional.of(folder);
         } catch (HttpResponseException e) {
-            if (e.getStatusCode() == 404) {
+            if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
                 return null;
             }
             throw e;
@@ -523,7 +524,7 @@ public class JenkinsServer {
 
         return job;
       } catch (HttpResponseException e) {
-          if (e.getStatusCode() == 404) {
+          if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
               return null;
           }
           throw e;
@@ -541,7 +542,7 @@ public class JenkinsServer {
 
         return job;
       } catch (HttpResponseException e) {
-          if (e.getStatusCode() == 404) {
+          if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
               return null;
           }
           throw e;
