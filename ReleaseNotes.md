@@ -202,5 +202,5 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-91]: https://github.com/RisingOak/jenkins-client/issues/91
 [issue-104]: https://github.com/RisingOak/jenkins-client/issues/104
 [issue-111]: https://github.com/RisingOak/jenkins-client/issues/111
-[issue-115]: https://github.com/RisingOak/jenkins-client/issues/116
+[issue-116]: https://github.com/RisingOak/jenkins-client/issues/116
 [issue-108]: https://github.com/RisingOak/jenkins-client/issues/108
