@@ -7,6 +7,26 @@
   which caused problems for users to use. The dependency was there via
   transitive dependency of a test scoped artifact.
 
+  [Do not propagate IOException when GET for /CrumbIssuer fails][issue-116]
+
+### API Changes
+
+  [Added Cloudbees Folder support][issue-108]
+  The following methods have been added to support `FolderJob` type.
+
+```java
+void createFolder(String jobName, Boolean crumbFlag);
+Optional<FolderJob> getFolderJob(Job job);
+Map<String, Job> getJobs(FolderJob folder);
+Map<String, Job> getJobs(FolderJob folder, String view);
+Map<String, View> getViews(FolderJob folder);
+View getView(FolderJob folder, String name);
+JobWithDetails getJob(FolderJob folder, String jobName);
+MavenJobWithDetails getMavenJob(FolderJob folder, String jobName);
+void createJob(FolderJob folder, String jobName, String jobXml);
+void createJob(FolderJob folder, String jobName, String jobXml, Boolean crumbFlag);
+```
+
 ## Release 0.3.2
 
 ### API Changes:
@@ -182,3 +202,5 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-91]: https://github.com/RisingOak/jenkins-client/issues/91
 [issue-104]: https://github.com/RisingOak/jenkins-client/issues/104
 [issue-111]: https://github.com/RisingOak/jenkins-client/issues/111
+[issue-115]: https://github.com/RisingOak/jenkins-client/issues/116
+[issue-108]: https://github.com/RisingOak/jenkins-client/issues/108

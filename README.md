@@ -10,7 +10,7 @@ To get started add the following dependency to your project
 <dependency>
   <groupId>com.offbytwo.jenkins</groupId>
   <artifactId>jenkins-client</artifactId>
-  <version>0.3.2</version>
+  <version>0.3.3</version>
 </dependency>
 ```
 
@@ -59,6 +59,7 @@ mvn -Prun-its clean verify
 
 You can find details about the different releases in the [Release Notes](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md).
 
+ * [Release 0.3.3](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-033).
  * [Release 0.3.2](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-032).
  * [Release 0.3.1](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-031).
 
