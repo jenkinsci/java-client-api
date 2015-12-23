@@ -1,5 +1,21 @@
 # Release Notes
 
+## Release 0.3.4
+
+
+### API Changes
+
+  [Added disableJob, enabledJob][pull-123]
+  The following methods have been added to support enabling
+  and disabling jobs.
+
+```java
+void disableJob(String jobName);
+void disableJob(String jobName, boolean crumbFlag);
+void enableJob(String jobName);
+void enableJob(String jobName, boolean crumbFlag);
+```
+
 ## Release 0.3.3
 
   [Fixed #111 A missing dependency to jaxen caused problems][issue-111]
@@ -204,3 +220,5 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-111]: https://github.com/RisingOak/jenkins-client/issues/111
 [issue-116]: https://github.com/RisingOak/jenkins-client/issues/116
 [issue-108]: https://github.com/RisingOak/jenkins-client/issues/108
+[pull-123]: https://github.com/RisingOak/jenkins-client/pull/123
+
