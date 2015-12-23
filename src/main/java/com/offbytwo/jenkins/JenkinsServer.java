@@ -496,6 +496,52 @@ public class JenkinsServer {
         client.post("/job/" + EncodingUtils.encode(jobName) + "/doDelete", crumbFlag);
     }
 
+    /*
+     * Disable a job from jenkins
+     *
+     * @throws IOException
+     */
+    public void disableJob(String jobName) throws IOException {
+        client.post("/job/" + EncodingUtils.encode(jobName) + "/disable");
+    }
+
+    /**
+     * Disable a job from Jenkins.
+     *
+     * @param jobName
+     *            The name of the job to be deleted.
+     * @param crumbFlag
+     *            The crumFlag.
+     * @throws IOException
+     *             In case of an failure.
+     */
+    public void disableJob(String jobName, boolean crumbFlag) throws IOException {
+        client.post("/job/" + EncodingUtils.encode(jobName) + "/disable", crumbFlag);
+    }
+
+    /*
+     * Enable a job from jenkins
+     *
+     * @throws IOException
+     */
+    public void enableJob(String jobName) throws IOException {
+        client.post("/job/" + EncodingUtils.encode(jobName) + "/enable");
+    }
+
+    /**
+     * Enable a job from Jenkins.
+     *
+     * @param jobName
+     *            The name of the job to be deleted.
+     * @param crumbFlag
+     *            The crumFlag.
+     * @throws IOException
+     *             In case of an failure.
+     */
+    public void enableJob(String jobName, boolean crumbFlag) throws IOException {
+        client.post("/job/" + EncodingUtils.encode(jobName) + "/enable", crumbFlag);
+    }
+
     /**
      * Runs the provided groovy script on the server and returns the result.
      *
