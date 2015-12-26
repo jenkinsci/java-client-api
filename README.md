@@ -81,14 +81,14 @@ mixing up several different things into a single issue.
 
 Before you create a pull request it is necessary to create an issue in
 the [ticket system before](https://github.com/RisingOak/jenkins-client/issues)
-and describe what the problem is or what kind of feauture you would like
+and describe what the problem is or what kind of feature you would like
 to add. Afterwards you can create an appropriate pull request.
 
 It is required if you want to get a Pull request to be integrated into to squash your
 commits into a single commit which references the issue in the commit message.
 
-A pull request has to fulfil only a single ticket and should never create/add/fix
-serveral issues in one, cause otherwise the history is hard to read and to understand 
+A pull request has to fulfill only a single ticket and should never create/add/fix
+several issues in one, cause otherwise the history is hard to read and to understand 
 and makes the maintenance of the issues and pull request hard.
 
 ## Generated Site
