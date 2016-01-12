@@ -49,7 +49,7 @@ public class FolderJob extends Job {
             @Override
             public String apply(Job job) {
                 job.setClient(client);
-                return job.getName().toLowerCase();
+                return job.getName();
             }
         });
     }
@@ -65,7 +65,7 @@ public class FolderJob extends Job {
             @Override
             public String apply(Job job) {
                 job.setClient(client);
-                return job.getName().toLowerCase();
+                return job.getName();
             }
         }).get(name);
     }

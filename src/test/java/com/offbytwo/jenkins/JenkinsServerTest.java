@@ -50,7 +50,7 @@ public class JenkinsServerTest extends BaseUnitTest {
 
     @Test
     public void shouldReturnListOfJobs() throws Exception {
-        assertTrue(server.getJobs().containsKey("hello"));
+        assertTrue(server.getJobs().containsKey("Hello"));
     }
 
     @Test
