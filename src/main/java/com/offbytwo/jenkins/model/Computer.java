@@ -44,7 +44,11 @@ public class Computer extends BaseModel {
         } else {
             name = UrlEscapers.urlPathSegmentEscaper().escape(displayName);
         }
-        return client.get("/computer/" + name, ComputerWithDetails.class);
+        //TODO: Check if depth=2 is a good idea or if it could be solved
+        // better.
+        ComputerWithDetails computerWithDetails = client.get("/computer/" + name + "/?depth=2", ComputerWithDetails.class);
+        computerWithDetails.setClient( client );
+        return computerWithDetails;
     }
 
     @Override

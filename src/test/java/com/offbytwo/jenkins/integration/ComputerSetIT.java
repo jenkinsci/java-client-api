@@ -36,5 +36,6 @@ public class ComputerSetIT extends BaseForIntegrationTests {
         ComputerWithDetails computerWithDetails = computerSet.get(0);
         assertThat(computerWithDetails.getExecutors()).isNotNull();
         assertThat(computerWithDetails.getNumExecutors()).isEqualTo(ji.getNumExecutors());
+        assertThat(computerWithDetails.getOfflineCause()).isNull();
     }
 }

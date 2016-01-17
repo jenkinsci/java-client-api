@@ -421,7 +421,7 @@ public class JenkinsServer {
      * @throws IOException
      */
     public ComputerSet getComputerSet() throws IOException {
-        return client.get("computer/", ComputerSet.class);
+        return client.get("computer/?depth=2", ComputerSet.class);
     }
 
     /**
