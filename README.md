@@ -3,8 +3,7 @@
 A Java client for the Jenkins API
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.offbytwo.jenkins/jenkins-client.svg?label=Maven%20Central)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.offbytwo.jenkins%22%20a%3A%22jenkins-client%22)
-[![Build Status](https://travis-ci.org/risingoak/-maven-plugin.svg)](https://travis-ci.org/risingoak/jenkins-client)
-
+[![Build Status](https://travis-ci.org/risingoak/-maven-plugin.svg)](https://travis-ci.org/RisingOak/jenkins-client)
 
 ## Getting Started
 
