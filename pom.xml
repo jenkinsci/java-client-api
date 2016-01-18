@@ -34,6 +34,10 @@
       <url>scm:git:git@github.com:RisingOak/jenkins-client.git</url>
     </site>
   </distributionManagement>
+  <ciManagement>
+    <system>Travis-CI</system>
+    <url>https://travis-ci.org/RisingOak/jenkins-client/</url>
+  </ciManagement>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
