@@ -59,6 +59,11 @@ To run integration tests simply start
 mvn -Prun-its clean verify
 ```
 
+There is also a separate project which contains [integration
+tests][integration-tests] which are running with a special version of Jenkins
+within a Docker container to check several aspects of the API which can't be
+covered by the usual integration tests.
+
 ## Release Notes
 
 You can find details about the different releases in the [Release Notes](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md).
@@ -92,6 +97,7 @@ A pull request has to fulfill only a single ticket and should never create/add/f
 several issues in one, cause otherwise the history is hard to read and to understand 
 and makes the maintenance of the issues and pull request hard.
 
+
 ## Generated Site
 
 http://risingoak.github.io/jenkins-client/
@@ -101,3 +107,5 @@ http://risingoak.github.io/jenkins-client/
 Copyright (C) 2013, Rising Oak LLC.
 
 Distributed under the MIT license: http://opensource.org/licenses/MIT
+
+[integration-tests]: https://github.com/RisingOak/jenkins-client-docker
