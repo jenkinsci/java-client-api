@@ -13,6 +13,7 @@ import org.apache.http.client.HttpResponseException;
 public class Build extends BaseModel {
 
     int number;
+    int queueId;
     String url;
 
     public Build() {}
@@ -28,6 +29,10 @@ public class Build extends BaseModel {
 
     public int getNumber() {
         return number;
+    }
+    
+    public int getQueueId() {
+        return queueId;
     }
 
     public String getUrl() {

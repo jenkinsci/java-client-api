@@ -18,7 +18,7 @@ import static com.google.common.collect.Collections2.filter;
 
 public class BuildWithDetails extends Build {
 
-    List actions;
+    List actions; //Should be improved.
     boolean building;
     String description;
     int duration;
@@ -125,6 +125,11 @@ public class BuildWithDetails extends Build {
         return params;
     }
 
+    /**
+     * @return The console output of the build. The
+     * line separation is done by {@code CR+LF}.
+     * @throws IOException in case of a failure.
+     */
     public String getConsoleOutputText() throws IOException {
         return client.get(url + "/logText/progressiveText");
     }
