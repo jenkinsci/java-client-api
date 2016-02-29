@@ -45,7 +45,6 @@ public class Job extends BaseModel {
      * Trigger a build without parameters
      */
     public void build() throws IOException {
-        System.out.println( "URL:" + url );
         client.post(url + "build", true);
     }
 
