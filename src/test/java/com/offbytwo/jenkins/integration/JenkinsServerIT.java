@@ -158,7 +158,7 @@ public class JenkinsServerIT {
         assertTrue(jenkinsRule.getInstance().getJobNames().contains(jobName));
 
         JobWithDetails job = server.getJob(jobName);
-        job.build();
+        job.build(true);
 
         while (project.isInQueue() || project.isBuilding()) {
         }

@@ -38,4 +38,14 @@ public class ComputerSetIT extends BaseForIntegrationTests {
         assertThat(computerWithDetails.getNumExecutors()).isEqualTo(ji.getNumExecutors());
         assertThat(computerWithDetails.getOfflineCause()).isNull();
     }
+    
+    @Test
+    public void shouldTrunFromOnlineToOffline() throws IOException {
+        ComputerWithDetails computerWithDetails = jenkinsServer.getComputerSet().getComputer().get( 0 );
+        computerWithDetails.toggleOffline(true);
+
+        ComputerWithDetails computerWithDetailsAfterStarting = jenkinsServer.getComputerSet().getComputer().get( 0 );
+
+        assertThat( computerWithDetailsAfterStarting.getOffline() ).isTrue();
+    }
 }

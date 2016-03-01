@@ -5,6 +5,16 @@
 
 ### API Changes
 
+  [Added toggleOffline Node][issue-157]
+  Added toggleOffline to `ComputerWithDetails` class.
+
+```java
+public class ComputerWithDetails {
+  public void toggleOffline(boolean crumbFlag) throws IOException;
+  public void toggleOffline() throws IOException;
+}
+```
+
   [deleteJob throws exception but works anyway][issue-154]
   [Some HTTP calls to jenkins result in a 302, which currently throws an HttpResponseException #7[issue-7]
   [Create Job is failing - any idea on this error][issue-121]

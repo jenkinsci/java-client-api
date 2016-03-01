@@ -7,6 +7,7 @@
 package com.offbytwo.jenkins.model;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,9 @@ public class ComputerWithDetails extends Computer {
     List oneOffExecutors;
     Boolean temporarilyOffline;
 
+    public ComputerWithDetails()
+    {
+    }
     public String getDisplayName() {
         return displayName;
     }
@@ -73,6 +77,24 @@ public class ComputerWithDetails extends Computer {
 
         // TODO: ?depth=2 good idea or could this being done better?
         return client.get("/computer/" + name + "/" + "loadStatistics/?depth=2", LoadStatistics.class);
+    }
+
+    public void toggleOffline(boolean crumbFlag) throws IOException {
+        // curl --data "json=init" -X POST "http://192.168.99.100:8080/computer/(master)/toggleOffline"
+        String name;
+        if ("master".equals(displayName)) {
+            name = "(master)";
+        } else {
+            name = UrlEscapers.urlPathSegmentEscaper().escape(displayName);
+        }
+        
+        Map<String, String> data = new HashMap<String, String>();
+        data.put( "json", "init" );
+        client.post( "/computer/" + name + "/toggleOffline", crumbFlag);
+    }
+
+    public void toggleOffline() throws IOException {
+        toggleOffline( false );
     }
 
     public Boolean getManualLaunchAllowed() {
