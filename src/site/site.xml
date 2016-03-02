@@ -7,7 +7,7 @@
   <skin>
     <groupId>org.apache.maven.skins</groupId>
     <artifactId>maven-fluido-skin</artifactId>
-    <version>1.4</version>
+    <version>1.5</version>
   </skin>
 
   <custom>
@@ -27,6 +27,10 @@
   <body>
     <menu name="Overview">
       <item name="Introduction" href="index.html"/>
+      <item name="Upgrade" href="upgrade.html"/>
+    </menu>
+    <menu name="Sub">
+      <item name="Sub" href="sub/sub.html"/>
     </menu>
     <menu ref="reports" />
   </body>

@@ -17,7 +17,7 @@
     <version>9</version>
   </parent>
 
-  <name>Jenkins Client</name>
+  <name>Jenkins API client for Java</name>
   <url>http://github.com/RisingOak/jenkins-client</url>
   <description>A Jenkins API client for Java</description>
 
@@ -47,6 +47,8 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
+
+    <asciidoctor-maven-plugin.version>1.5.3</asciidoctor-maven-plugin.version>
 
     <!-- Version of Jenkins to use for Integration Tests -->
     <jenkins-version>1.644</jenkins-version>
@@ -197,7 +199,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
-          <version>2.4</version>
+          <version>3.0.0</version>
           <executions>
             <!--
               ! here we override the super-pom attach-sources execution id which
@@ -241,7 +243,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.3</version>
+          <version>3.5.1</version>
         </plugin>
         <!--
           ! We define a newer version than in parent.
@@ -279,9 +281,45 @@
             <scmBranch>gh-pages</scmBranch>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.asciidoctor</groupId>
+          <artifactId>asciidoctor-maven-plugin</artifactId>
+          <version>${asciidoctor-maven-plugin.version}</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-site-plugin</artifactId>
+            <version>3.4</version>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.maven.doxia</groupId>
+                    <artifactId>doxia-module-markdown</artifactId>
+                    <version>1.6</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.asciidoctor</groupId>
+                    <artifactId>asciidoctor-maven-plugin</artifactId>
+                    <version>${asciidoctor-maven-plugin.version}</version>
+                </dependency>
+            </dependencies>
+            <configuration>
+                <asciidoc>
+                  <!-- optional site-wide AsciiDoc attributes -->
+                  <attributes>
+                    <icons>font</icons>
+                    <source-highlighter>coderay</source-highlighter>
+                    <coderay-css>style</coderay-css>
+                    <toclevels>2</toclevels>
+                    <project-version>${project.version}</project-version>
+                    <sectnums>true</sectnums>
+                    <preserveDirectories>true</preserveDirectories>
+                  </attributes>
+                </asciidoc>
+            </configuration>
+        </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -332,6 +370,7 @@
         <artifactId>maven-project-info-reports-plugin</artifactId>
         <version>2.8</version>
       </plugin>
+      <!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
@@ -355,6 +394,7 @@
         <artifactId>maven-jxr-plugin</artifactId>
         <version>2.5</version>
       </plugin>
+      -->
     </plugins>
   </reporting>
 
