@@ -107,6 +107,7 @@
       <groupId>org.jvnet.hudson</groupId>
       <artifactId>xstream</artifactId>
       <version>${xstream.version}</version>
+      <scope>test</scope>
     </dependency>
     
     <dependency>
