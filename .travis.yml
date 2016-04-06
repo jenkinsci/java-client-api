@@ -1,6 +1,10 @@
 ---
+# There is no need to install
+# artifacts before.
+# The mvn verfiy is sufficient.
+install: true
 language: java
-script: mvn verify -B
+script: mvn verify -B -Prun-its
 jdk:
  - oraclejdk8
  - oraclejdk7
