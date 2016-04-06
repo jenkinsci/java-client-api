@@ -1,16 +1,21 @@
 package com.offbytwo.jenkins.model;
 
 public class BuildCause {
-   String shortDescription;
+   private String shortDescription;
 
    // For upstreams
-   Integer upstreamBuild;
-   String upstreamProject;
-   String upstreamUrl;
+   private Integer upstreamBuild;
+   private String upstreamProject;
+   private String upstreamUrl;
 
    // For manual kickoffs
-   String userId;
-   String userName;
+   private String userId;
+   private String userName;
+
+	public BuildCause()
+	{
+		this.upstreamBuild = new Integer( 0 );
+	}
 
    public String getShortDescription() { return shortDescription; }
    public void setShortDescription(String shortDescription) { this.shortDescription = shortDescription; }
