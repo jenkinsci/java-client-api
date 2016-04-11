@@ -458,7 +458,7 @@ public class JenkinsHttpClient {
             String[] components = path.split("\\?", 2);
             path = urlJoin(components[0], "api/json") + "?" + components[1];
         }
-        return uri.resolve("/").resolve(path);
+        return uri.resolve("/").resolve(path.replace(" ","%20"));
     }
 
     private URI noapi(String path) {
