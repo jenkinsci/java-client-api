@@ -31,6 +31,7 @@ public class BuildWithDetails extends Build {
     String consoleOutputText;
     String consoleOutputHtml;
     BuildChangeSet changeSet;
+    String builtOn;
     List<BuildChangeSetAuthor> culprits;
 
     public List<Artifact> getArtifacts() {
@@ -101,6 +102,10 @@ public class BuildWithDetails extends Build {
 
     public BuildResult getResult() {
         return result;
+    }
+
+    public String getBuiltOn() {
+        return builtOn;
     }
 
     public List getActions() {
@@ -191,6 +196,11 @@ public class BuildWithDetails extends Build {
             return false;
         if (building != other.building)
             return false;
+        if (builtOn == null) {
+            if (other.builtOn != null)
+                return false;
+        } else if (!builtOn.equals(other.builtOn))
+            return false;
         if (changeSet == null) {
             if (other.changeSet != null)
                 return false;
@@ -244,6 +254,7 @@ public class BuildWithDetails extends Build {
         result = prime * result + ((actions == null) ? 0 : actions.hashCode());
         result = prime * result + ((artifacts == null) ? 0 : artifacts.hashCode());
         result = prime * result + (building ? 1231 : 1237);
+        result = prime * result + ((builtOn == null) ? 0 : builtOn.hashCode());
         result = prime * result + ((changeSet == null) ? 0 : changeSet.hashCode());
         result = prime * result + ((consoleOutputHtml == null) ? 0 : consoleOutputHtml.hashCode());
         result = prime * result + ((consoleOutputText == null) ? 0 : consoleOutputText.hashCode());

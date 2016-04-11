@@ -52,6 +52,7 @@ public class BuildWithDetailsIT {
         List<BuildCause> causes = build.getCauses();
         assertNotNull(causes);
 
+        assertEquals("", build.getBuiltOn());
     }
 
 }

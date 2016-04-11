@@ -23,6 +23,14 @@ void enableJob(String jobName, boolean crumbFlag);
 
   [Fixed #144 Problems with spaces in paths and job names][issue-144]
 
+  [Fixed #133 How do we find out which system the built was build on?][issue-133]
+
+  Now `BuildWithDetails` API has been enhanced with the following method get
+  the information on which node this build has ran.
+
+```java
+String getBuiltOn();
+```
 
 ## Release 0.3.3
 
@@ -229,6 +237,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-116]: https://github.com/RisingOak/jenkins-client/issues/116
 [issue-108]: https://github.com/RisingOak/jenkins-client/issues/108
 [issue-130]: https://github.com/RisingOak/jenkins-client/issues/130
+[issue-133]: https://github.com/RisingOak/jenkins-client/issues/133
 [issue-144]: https://github.com/RisingOak/jenkins-client/issues/144
 [pull-123]: https://github.com/RisingOak/jenkins-client/pull/123
 
