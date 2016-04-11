@@ -1,8 +1,6 @@
 package com.offbytwo.jenkins.model;
 
-public class QueueItem
-    extends BaseModel
-{
+public class QueueItem extends BaseModel {
     // actions
 
     private boolean blocked;
@@ -27,183 +25,149 @@ public class QueueItem
 
     private Executable executable;
 
-    public boolean isBlocked()
-    {
+    public boolean isBlocked() {
         return blocked;
     }
 
-    public void setBlocked( boolean blocked )
-    {
+    public void setBlocked(boolean blocked) {
         this.blocked = blocked;
     }
 
-    public boolean isBuildable()
-    {
+    public boolean isBuildable() {
         return buildable;
     }
 
-    public void setBuildable( boolean buildable )
-    {
+    public void setBuildable(boolean buildable) {
         this.buildable = buildable;
     }
 
-    public Long getId()
-    {
+    public Long getId() {
         return id;
     }
 
-    public void setId( Long id )
-    {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getInQueueSince()
-    {
+    public Long getInQueueSince() {
         return inQueueSince;
     }
 
-    public void setInQueueSince( Long inQueueSince )
-    {
+    public void setInQueueSince(Long inQueueSince) {
         this.inQueueSince = inQueueSince;
     }
 
-    public String getParams()
-    {
+    public String getParams() {
         return params;
     }
 
-    public void setParams( String params )
-    {
+    public void setParams(String params) {
         this.params = params;
     }
 
-    public boolean isStuck()
-    {
+    public boolean isStuck() {
         return stuck;
     }
 
-    public void setStuck( boolean stuck )
-    {
+    public void setStuck(boolean stuck) {
         this.stuck = stuck;
     }
 
-    public String getUrl()
-    {
+    public String getUrl() {
         return url;
     }
 
-    public void setUrl( String url )
-    {
+    public void setUrl(String url) {
         this.url = url;
     }
 
-    public String getWhy()
-    {
+    public String getWhy() {
         return why;
     }
 
-    public void setWhy( String why )
-    {
+    public void setWhy(String why) {
         this.why = why;
     }
 
-    public boolean isCancelled()
-    {
+    public boolean isCancelled() {
         return cancelled;
     }
 
-    public void setCancelled( boolean cancelled )
-    {
+    public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
 
-    public Executable getExecutable()
-    {
+    public Executable getExecutable() {
         return executable;
     }
 
-    public void setExecutable( Executable executable )
-    {
+    public void setExecutable(Executable executable) {
         this.executable = executable;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ( blocked ? 1231 : 1237 );
-        result = prime * result + ( buildable ? 1231 : 1237 );
-        result = prime * result + ( cancelled ? 1231 : 1237 );
-        result = prime * result + ( ( executable == null ) ? 0 : executable.hashCode() );
-        result = prime * result + ( ( id == null ) ? 0 : id.hashCode() );
-        result = prime * result + ( ( inQueueSince == null ) ? 0 : inQueueSince.hashCode() );
-        result = prime * result + ( ( params == null ) ? 0 : params.hashCode() );
-        result = prime * result + ( stuck ? 1231 : 1237 );
-        result = prime * result + ( ( url == null ) ? 0 : url.hashCode() );
-        result = prime * result + ( ( why == null ) ? 0 : why.hashCode() );
+        result = prime * result + (blocked ? 1231 : 1237);
+        result = prime * result + (buildable ? 1231 : 1237);
+        result = prime * result + (cancelled ? 1231 : 1237);
+        result = prime * result + ((executable == null) ? 0 : executable.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((inQueueSince == null) ? 0 : inQueueSince.hashCode());
+        result = prime * result + ((params == null) ? 0 : params.hashCode());
+        result = prime * result + (stuck ? 1231 : 1237);
+        result = prime * result + ((url == null) ? 0 : url.hashCode());
+        result = prime * result + ((why == null) ? 0 : why.hashCode());
         return result;
     }
 
     @Override
-    public boolean equals( Object obj )
-    {
-        if ( this == obj )
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if ( obj == null )
+        if (obj == null)
             return false;
-        if ( getClass() != obj.getClass() )
+        if (getClass() != obj.getClass())
             return false;
         QueueItem other = (QueueItem) obj;
-        if ( blocked != other.blocked )
+        if (blocked != other.blocked)
             return false;
-        if ( buildable != other.buildable )
+        if (buildable != other.buildable)
             return false;
-        if ( cancelled != other.cancelled )
+        if (cancelled != other.cancelled)
             return false;
-        if ( executable == null )
-        {
-            if ( other.executable != null )
+        if (executable == null) {
+            if (other.executable != null)
                 return false;
-        }
-        else if ( !executable.equals( other.executable ) )
+        } else if (!executable.equals(other.executable))
             return false;
-        if ( id == null )
-        {
-            if ( other.id != null )
+        if (id == null) {
+            if (other.id != null)
                 return false;
-        }
-        else if ( !id.equals( other.id ) )
+        } else if (!id.equals(other.id))
             return false;
-        if ( inQueueSince == null )
-        {
-            if ( other.inQueueSince != null )
+        if (inQueueSince == null) {
+            if (other.inQueueSince != null)
                 return false;
-        }
-        else if ( !inQueueSince.equals( other.inQueueSince ) )
+        } else if (!inQueueSince.equals(other.inQueueSince))
             return false;
-        if ( params == null )
-        {
-            if ( other.params != null )
+        if (params == null) {
+            if (other.params != null)
                 return false;
-        }
-        else if ( !params.equals( other.params ) )
+        } else if (!params.equals(other.params))
             return false;
-        if ( stuck != other.stuck )
+        if (stuck != other.stuck)
             return false;
-        if ( url == null )
-        {
-            if ( other.url != null )
+        if (url == null) {
+            if (other.url != null)
                 return false;
-        }
-        else if ( !url.equals( other.url ) )
+        } else if (!url.equals(other.url))
             return false;
-        if ( why == null )
-        {
-            if ( other.why != null )
+        if (why == null) {
+            if (other.why != null)
                 return false;
-        }
-        else if ( !why.equals( other.why ) )
+        } else if (!why.equals(other.why))
             return false;
         return true;
     }

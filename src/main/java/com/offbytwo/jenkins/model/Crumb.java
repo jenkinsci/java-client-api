@@ -8,7 +8,8 @@ public class Crumb extends BaseModel {
     private String crumbRequestField;
     private String crumb;
 
-    public Crumb() {}
+    public Crumb() {
+    }
 
     public Crumb(String crumbRequestField, String crumb) {
         this.crumbRequestField = crumbRequestField;

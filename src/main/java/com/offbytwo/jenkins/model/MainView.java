@@ -18,7 +18,7 @@ public class MainView extends BaseModel {
 
     /* default constructor needed for Jackson */
     public MainView() {
-        this(Lists.<Job> newArrayList(), Lists.<View> newArrayList());
+        this(Lists.<Job>newArrayList(), Lists.<View>newArrayList());
     }
 
     public MainView(List<Job> jobs, List<View> views) {
@@ -27,7 +27,7 @@ public class MainView extends BaseModel {
     }
 
     public MainView(Job... jobs) {
-        this(Arrays.asList(jobs), Lists.<View> newArrayList());
+        this(Arrays.asList(jobs), Lists.<View>newArrayList());
     }
 
     public List<Job> getJobs() {

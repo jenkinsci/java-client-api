@@ -19,7 +19,8 @@ public class JobConfigurationIT extends BaseForIntegrationTests {
     public static final String TEST_DEFAULT_VALUE = "testDefaultValue";
 
     @Test
-    public void shouldAddStringParamToGivenJob() throws URISyntaxException, IOException, DocumentException, JAXBException {
+    public void shouldAddStringParamToGivenJob()
+            throws URISyntaxException, IOException, DocumentException, JAXBException {
         // given
         jenkinsRule.getInstance().createProject(FreeStyleProject.class, TEST_JOB);
         String configXml = jenkinsServer.getJobXml(TEST_JOB);

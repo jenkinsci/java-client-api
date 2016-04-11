@@ -18,12 +18,13 @@ public class JenkinsLoadStatisticsExample {
 
     @Test
     public void getLoadStatistics() throws IOException {
-        // JenkinsServer js = new JenkinsServer(URI.create("http://localhost:10090/"));
+        // JenkinsServer js = new
+        // JenkinsServer(URI.create("http://localhost:10090/"));
         JenkinsServer js = new JenkinsServer(URI.create("http://ci.soebes.de:8080/"));
 
         Map<String, Computer> computers2 = js.getComputers();
         for (Entry<String, Computer> computerItem : computers2.entrySet()) {
-            
+
             System.out.println("Computer: " + computerItem.getKey());
             Computer value = computerItem.getValue();
             ComputerWithDetails details = value.details();
@@ -46,7 +47,6 @@ public class JenkinsLoadStatisticsExample {
             }
             System.out.println(" latest: " + queueLength.getHour().getLatest());
 
-        
             System.out.println("totalExecutors");
             HourMinSec10 totalExecutors = loadStatistics.getTotalExecutors();
             List<Double> totalExecutorsHistory = totalExecutors.getHour().getHistory();

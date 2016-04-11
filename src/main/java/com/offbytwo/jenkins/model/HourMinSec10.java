@@ -3,7 +3,7 @@ package com.offbytwo.jenkins.model;
 /**
  * @author Karl Heinz Marbaise
  *
- * TODO: Has someone a better name for the class?
+ *         TODO: Has someone a better name for the class?
  */
 public class HourMinSec10 {
 

@@ -55,5 +55,5 @@ public class TestChildReport {
     public void setResult(TestResult result) {
         this.result = result;
     }
-    
+
 }

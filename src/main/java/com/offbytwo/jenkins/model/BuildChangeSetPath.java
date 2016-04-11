@@ -9,7 +9,7 @@ public class BuildChangeSetPath {
     /**
      * Usually {@code edit} etc.
      */
-    //TODO: Think about it if its possible to use an enum type?
+    // TODO: Think about it if its possible to use an enum type?
     private String editType; // edit, ?
     private String file;
 

@@ -21,7 +21,8 @@ public class Job extends BaseModel {
     private String name;
     private String url;
 
-    public Job() {}
+    public Job() {
+    }
 
     public Job(String name, String url) {
         this();
@@ -55,7 +56,8 @@ public class Job extends BaseModel {
     /**
      * Trigger a parameterized build
      *
-     * @param params the job parameters
+     * @param params
+     *            the job parameters
      * @throws IOException
      */
     public void build(Map<String, String> params) throws IOException {
@@ -66,26 +68,31 @@ public class Job extends BaseModel {
     /**
      * Trigger a parameterized build
      *
-     * @param params the job parameters
-     * @param crumbFlag determines whether crumb flag is used
+     * @param params
+     *            the job parameters
+     * @param crumbFlag
+     *            determines whether crumb flag is used
      * @throws IOException
      */
     public QueueReference build(Map<String, String> params, boolean crumbFlag) throws IOException {
         String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
         ExtractHeader location = client.post(url + "buildWithParameters?" + qs, null, ExtractHeader.class, crumbFlag);
-        return new QueueReference(location.getLocation()); 
+        return new QueueReference(location.getLocation());
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         Job job = (Job) o;
 
         if (name != null ? !name.equals(job.name) : job.name != null)
             return false;
-        if (url != null ? !url.equals(job.url) : job.url != null) return false;
+        if (url != null ? !url.equals(job.url) : job.url != null)
+            return false;
 
         return true;
     }

@@ -18,5 +18,4 @@ public class BaseForIntegrationTests {
         jenkinsServer = new JenkinsServer(jenkinsRule.getURL().toURI());
     }
 
-
 }

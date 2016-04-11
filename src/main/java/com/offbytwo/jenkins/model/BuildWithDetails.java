@@ -18,7 +18,7 @@ import static com.google.common.collect.Collections2.filter;
 
 public class BuildWithDetails extends Build {
 
-    List actions; //Should be improved.
+    List actions; // Should be improved.
     boolean building;
     String description;
     int duration;
@@ -37,7 +37,9 @@ public class BuildWithDetails extends Build {
         return artifacts;
     }
 
-    public boolean isBuilding() { return building; }
+    public boolean isBuilding() {
+        return building;
+    }
 
     public List<BuildCause> getCauses() {
         // actions is a List<Map<String, List<Map<String, String ..
@@ -51,19 +53,20 @@ public class BuildWithDetails extends Build {
 
         List<BuildCause> result = new ArrayList<BuildCause>();
 
-        if (causes != null && ! causes.isEmpty()) {
-            // The underlying key-value can be either a <String, Integer> or a <String, String>.
-            List<Map<String, Object>> causes_blob =
-                    ((Map<String, List<Map<String, Object>>>) causes.toArray()[0]).get("causes");
-            for( Map<String, Object> cause : causes_blob) {
+        if (causes != null && !causes.isEmpty()) {
+            // The underlying key-value can be either a <String, Integer> or a
+            // <String, String>.
+            List<Map<String, Object>> causes_blob = ((Map<String, List<Map<String, Object>>>) causes.toArray()[0])
+                    .get("causes");
+            for (Map<String, Object> cause : causes_blob) {
 
                 BuildCause cause_object = new BuildCause();
-                cause_object.setShortDescription((String)cause.get("shortDescription"));
-                cause_object.setUpstreamBuild((Integer)cause.get("upstreamBuild"));
-                cause_object.setUpstreamProject((String)cause.get("upstreamProject"));
-                cause_object.setUpstreamUrl((String)cause.get("upstreamUrl"));
-                cause_object.setUserId((String)cause.get("userId"));
-                cause_object.setUserName((String)cause.get("userName"));
+                cause_object.setShortDescription((String) cause.get("shortDescription"));
+                cause_object.setUpstreamBuild((Integer) cause.get("upstreamBuild"));
+                cause_object.setUpstreamProject((String) cause.get("upstreamProject"));
+                cause_object.setUpstreamUrl((String) cause.get("upstreamUrl"));
+                cause_object.setUserId((String) cause.get("userId"));
+                cause_object.setUserName((String) cause.get("userName"));
 
                 result.add(cause_object);
             }
@@ -115,7 +118,8 @@ public class BuildWithDetails extends Build {
         Map<String, String> params = new HashMap<String, String>();
 
         if (parameters != null && !parameters.isEmpty()) {
-            for (Map<String, Object> param : ((Map<String, List<Map<String, Object>>>) parameters.toArray()[0]).get("parameters")) {
+            for (Map<String, Object> param : ((Map<String, List<Map<String, Object>>>) parameters.toArray()[0])
+                    .get("parameters")) {
                 String key = (String) param.get("name");
                 Object value = param.get("value");
                 params.put(key, String.valueOf(value));
@@ -126,9 +130,10 @@ public class BuildWithDetails extends Build {
     }
 
     /**
-     * @return The console output of the build. The
-     * line separation is done by {@code CR+LF}.
-     * @throws IOException in case of a failure.
+     * @return The console output of the build. The line separation is done by
+     *         {@code CR+LF}.
+     * @throws IOException
+     *             in case of a failure.
      */
     public String getConsoleOutputText() throws IOException {
         return client.get(url + "/logText/progressiveText");
@@ -155,11 +160,13 @@ public class BuildWithDetails extends Build {
     }
 
     public InputStream downloadArtifact(Artifact a) throws IOException, URISyntaxException {
-        //We can't just put the artifact's relative path at the end of the url string,
-        //as there could be characters that need to be escaped.
+        // We can't just put the artifact's relative path at the end of the url
+        // string,
+        // as there could be characters that need to be escaped.
         URI uri = new URI(getUrl());
         String artifactPath = uri.getPath() + "artifact/" + a.getRelativePath();
-        URI artifactUri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), artifactPath, "", "");
+        URI artifactUri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), artifactPath, "",
+                "");
         return client.getFile(artifactUri);
     }
 

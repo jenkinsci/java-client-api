@@ -11,7 +11,8 @@ public class MavenArtifact extends BaseModel {
     String type;
     String version;
 
-    public MavenArtifact() {}
+    public MavenArtifact() {
+    }
 
     public String getArtifactId() {
         return artifactId;

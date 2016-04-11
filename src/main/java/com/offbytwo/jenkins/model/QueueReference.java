@@ -1,19 +1,15 @@
 package com.offbytwo.jenkins.model;
 
-public class QueueReference extends BaseModel  
-{
+public class QueueReference extends BaseModel {
 
-  private String queueItem;
+    private String queueItem;
 
-  public QueueReference(String location)
-  {
-    queueItem = location;
-  }
+    public QueueReference(String location) {
+        queueItem = location;
+    }
 
-  public String getQueueItemUrlPart()
-  {
-    return queueItem;
-  }
- 
+    public String getQueueItemUrlPart() {
+        return queueItem;
+    }
 
 }

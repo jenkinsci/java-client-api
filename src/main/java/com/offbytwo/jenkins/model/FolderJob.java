@@ -13,9 +13,10 @@ public class FolderJob extends Job {
 
     String displayName;
     List<Job> jobs;
-    
-    public FolderJob() {}
-    
+
+    public FolderJob() {
+    }
+
     public FolderJob(String name, String url) {
         super(name, url);
     }
@@ -37,7 +38,7 @@ public class FolderJob extends Job {
         }
         return false;
     }
-    
+
     /**
      * Get a list of all the defined jobs in this folder
      *
@@ -53,7 +54,7 @@ public class FolderJob extends Job {
             }
         });
     }
-    
+
     /**
      * Get a job in this folder by name
      *
@@ -69,7 +70,7 @@ public class FolderJob extends Job {
             }
         }).get(name);
     }
-    
+
     /**
      * Create a folder on the server (as a subfolder of this folder)
      *
@@ -85,24 +86,18 @@ public class FolderJob extends Job {
      * @throws IOException
      */
     public void createFolder(String jobName, Boolean crumbFlag) throws IOException {
-        // https://gist.github.com/stuart-warren/7786892 was slightly helpful here
-        ImmutableMap<String, String> params = ImmutableMap.of(
-            "mode", "com.cloudbees.hudson.plugins.folder.Folder",
-            "name", EncodingUtils.encodeParam(jobName),
-            "from", "",
-            "Submit", "OK");
+        // https://gist.github.com/stuart-warren/7786892 was slightly helpful
+        // here
+        ImmutableMap<String, String> params = ImmutableMap.of("mode", "com.cloudbees.hudson.plugins.folder.Folder",
+                "name", EncodingUtils.encodeParam(jobName), "from", "", "Submit", "OK");
         client.post_form(this.getUrl() + "/createItem?", params, crumbFlag);
     }
-    
-    /* TODO
-    public List<Job> getJobsRecursive() {
-        return Lists.transform(jobs, new Function<Job, Job>() {
-            @Override
-            public Job apply(Job job) {
-                // TODO: try to see if each job is a folder
-                return job;
-            }
-        });
-    }
-    */
+
+    /*
+     * TODO public List<Job> getJobsRecursive() { return Lists.transform(jobs,
+     * new Function<Job, Job>() {
+     * 
+     * @Override public Job apply(Job job) { // TODO: try to see if each job is
+     * a folder return job; } }); }
+     */
 }

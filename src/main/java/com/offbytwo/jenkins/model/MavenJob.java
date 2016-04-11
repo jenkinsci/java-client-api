@@ -4,7 +4,8 @@ import java.io.IOException;
 
 public class MavenJob extends Job {
 
-    public MavenJob() {}
+    public MavenJob() {
+    }
 
     public MavenJob(String name, String url) {
         super(name, url);

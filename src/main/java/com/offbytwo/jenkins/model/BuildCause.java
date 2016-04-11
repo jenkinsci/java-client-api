@@ -1,44 +1,75 @@
 package com.offbytwo.jenkins.model;
 
 public class BuildCause {
-   private String shortDescription;
+    private String shortDescription;
 
-   // For upstreams
-   private Integer upstreamBuild;
-   private String upstreamProject;
-   private String upstreamUrl;
+    // For upstreams
+    private Integer upstreamBuild;
+    private String upstreamProject;
+    private String upstreamUrl;
 
-   // For manual kickoffs
-   private String userId;
-   private String userName;
+    // For manual kickoffs
+    private String userId;
+    private String userName;
 
-	public BuildCause()
-	{
-		this.upstreamBuild = new Integer( 0 );
-	}
+    public BuildCause() {
+        this.upstreamBuild = new Integer(0);
+    }
 
-   public String getShortDescription() { return shortDescription; }
-   public void setShortDescription(String shortDescription) { this.shortDescription = shortDescription; }
+    public String getShortDescription() {
+        return shortDescription;
+    }
 
-   public int getUpstreamBuild() { return upstreamBuild; }
-   public void setUpstreamBuild(Integer upstreamBuild) { this.upstreamBuild = upstreamBuild; }
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
 
-   public String getUpstreamProject() { return upstreamProject; }
-   public void setUpstreamProject(String upstreamProject) { this.upstreamProject = upstreamProject; }
+    public int getUpstreamBuild() {
+        return upstreamBuild;
+    }
 
-   public String getUpstreamUrl() {return upstreamUrl; }
-   public void setUpstreamUrl(String upstreamUrl) { this.upstreamUrl = upstreamUrl; }
+    public void setUpstreamBuild(Integer upstreamBuild) {
+        this.upstreamBuild = upstreamBuild;
+    }
 
-   public String getUserId() { return userId; }
-   public void setUserId(String userId) { this.userId = userId; }
+    public String getUpstreamProject() {
+        return upstreamProject;
+    }
 
-   public String getUserName() { return userName; }
-   public void setUserName(String userName) { this.userName = userName; }
+    public void setUpstreamProject(String upstreamProject) {
+        this.upstreamProject = upstreamProject;
+    }
+
+    public String getUpstreamUrl() {
+        return upstreamUrl;
+    }
+
+    public void setUpstreamUrl(String upstreamUrl) {
+        this.upstreamUrl = upstreamUrl;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         BuildCause that = (BuildCause) o;
 

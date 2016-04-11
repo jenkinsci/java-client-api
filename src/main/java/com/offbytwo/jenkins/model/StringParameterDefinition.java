@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "hudson.model.StringParameterDefinition")
 @XmlAccessorOrder(XmlAccessOrder.ALPHABETICAL)
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = {"name", "description", "defaultValue"})
+@XmlType(propOrder = { "name", "description", "defaultValue" })
 public class StringParameterDefinition {
 
     @XmlElement
@@ -21,7 +21,8 @@ public class StringParameterDefinition {
     @XmlElement
     private String defaultValue;
 
-    public StringParameterDefinition() {}
+    public StringParameterDefinition() {
+    }
 
     public StringParameterDefinition(String name, String description, String defaultValue) {
         this.name = name;

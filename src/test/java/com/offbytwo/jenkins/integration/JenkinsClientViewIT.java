@@ -51,14 +51,14 @@ public class JenkinsClientViewIT extends BaseForIntegrationTests {
         Map<String, View> testView = jenkinsServer.getViews();
 
         assertThat(testView).hasSize(3);
-        //TODO: Check why this does not work?
-//        // then
-//        View first = new View();
-//        first.setName("FirstView");
-//        assertThat(testView.get("FirstView")).isEqualTo(first);
-//        View second = new View();
-//        second.setName("SecondView");
-//        assertThat(testView.get("SecondView")).isEqualTo(second);
+        // TODO: Check why this does not work?
+        // // then
+        // View first = new View();
+        // first.setName("FirstView");
+        // assertThat(testView.get("FirstView")).isEqualTo(first);
+        // View second = new View();
+        // second.setName("SecondView");
+        // assertThat(testView.get("SecondView")).isEqualTo(second);
     }
 
     private static class TestView extends hudson.model.View implements Serializable {

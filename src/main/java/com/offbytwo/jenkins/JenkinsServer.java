@@ -112,7 +112,7 @@ public class JenkinsServer {
     public Map<String, Job> getJobs(FolderJob folder) throws IOException {
         return getJobs(folder, null);
     }
-    
+
     /**
      * Get a list of all the defined jobs on the server (at the specified view
      * level)
@@ -123,7 +123,7 @@ public class JenkinsServer {
     public Map<String, Job> getJobs(String view) throws IOException {
         return getJobs(null, view);
     }
-    
+
     /**
      * Get a list of all the defined jobs on the server (at the specified view
      * level and in the specified folder)
@@ -150,7 +150,7 @@ public class JenkinsServer {
             }
         });
     }
-    
+
     /**
      * Get a list of all the defined views on the server (at the summary level)
      *
@@ -160,9 +160,10 @@ public class JenkinsServer {
     public Map<String, View> getViews() throws IOException {
         return getViews(null);
     }
-    
+
     /**
-     * Get a list of all the defined views on the server (at the summary level and in the given folder)
+     * Get a list of all the defined views on the server (at the summary level
+     * and in the given folder)
      *
      * @return list of defined views
      * @throws IOException
@@ -182,7 +183,7 @@ public class JenkinsServer {
             }
         });
     }
-    
+
     /**
      * Get a single view object from the server
      *
@@ -210,7 +211,7 @@ public class JenkinsServer {
         }
         return client.get(path + "view/" + EncodingUtils.encode(name) + "/", View.class);
     }
-    
+
     /**
      * Get a single Job from the server.
      *
@@ -255,7 +256,8 @@ public class JenkinsServer {
             path = folder.getUrl();
         }
         try {
-            MavenJobWithDetails job = client.get(path + "job/" + EncodingUtils.encode(jobName), MavenJobWithDetails.class);
+            MavenJobWithDetails job = client.get(path + "job/" + EncodingUtils.encode(jobName),
+                    MavenJobWithDetails.class);
             job.setClient(client);
 
             return job;
@@ -305,7 +307,8 @@ public class JenkinsServer {
     }
 
     /**
-     * Create a job on the server using the provided xml and in the provided folder
+     * Create a job on the server using the provided xml and in the provided
+     * folder
      *
      * @return the new job object
      * @throws IOException
@@ -315,7 +318,8 @@ public class JenkinsServer {
     }
 
     /**
-     * Create a job on the server using the provided xml and in the provided folder
+     * Create a job on the server using the provided xml and in the provided
+     * folder
      *
      * @return the new job object
      * @throws IOException
@@ -345,7 +349,7 @@ public class JenkinsServer {
     public void createFolder(String jobName, Boolean crumbFlag) throws IOException {
         createFolder(null, jobName, crumbFlag);
     }
-    
+
     /**
      * Create a folder on the server (in the given folder)
      *
@@ -365,15 +369,13 @@ public class JenkinsServer {
         if (folder != null) {
             path = folder.getUrl();
         }
-        // https://gist.github.com/stuart-warren/7786892 was slightly helpful here
-        ImmutableMap<String, String> params = ImmutableMap.of(
-            "mode", "com.cloudbees.hudson.plugins.folder.Folder",
-            "name", EncodingUtils.encodeParam(jobName),
-            "from", "",
-            "Submit", "OK");
+        // https://gist.github.com/stuart-warren/7786892 was slightly helpful
+        // here
+        ImmutableMap<String, String> params = ImmutableMap.of("mode", "com.cloudbees.hudson.plugins.folder.Folder",
+                "name", EncodingUtils.encodeParam(jobName), "from", "", "Submit", "OK");
         client.post_form(path + "createItem?", params, crumbFlag);
     }
-    
+
     /**
      * Get the xml description of an existing job
      *
@@ -413,9 +415,9 @@ public class JenkinsServer {
     }
 
     /**
-     * The ComputerSet class will give informations
-     * like {@link ComputerSet#getBusyExecutors()} or
-     * the {@link ComputerSet#getTotalExecutors()}.
+     * The ComputerSet class will give informations like
+     * {@link ComputerSet#getBusyExecutors()} or the
+     * {@link ComputerSet#getTotalExecutors()}.
      * 
      * @return {@link ComputerSet}
      * @throws IOException
@@ -560,38 +562,36 @@ public class JenkinsServer {
         return client.post_text("/scriptText", "script=" + script, ContentType.APPLICATION_FORM_URLENCODED, false);
     }
 
-    public QueueItem getQueueItem(QueueReference ref) throws IOException 
-    {
-      try {
-        String url = ref.getQueueItemUrlPart();
-        // "/queue/item/" + id
-        QueueItem job = client.get(url , QueueItem.class);
-        job.setClient(client);
+    public QueueItem getQueueItem(QueueReference ref) throws IOException {
+        try {
+            String url = ref.getQueueItemUrlPart();
+            // "/queue/item/" + id
+            QueueItem job = client.get(url, QueueItem.class);
+            job.setClient(client);
 
-        return job;
-      } catch (HttpResponseException e) {
-          if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
-              return null;
-          }
-          throw e;
-      }      
+            return job;
+        } catch (HttpResponseException e) {
+            if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+                return null;
+            }
+            throw e;
+        }
     }
 
-    public Build getBuild(QueueItem q)  throws IOException 
-    {
-      // http://ci.seitenbau.net/job/rainer-ansible-build/51/
-      try {
-        String url = q.getExecutable().getUrl();
-        // "/queue/item/" + id
-        Build job = client.get(url , Build.class);
-        job.setClient(client);
+    public Build getBuild(QueueItem q) throws IOException {
+        // http://ci.seitenbau.net/job/rainer-ansible-build/51/
+        try {
+            String url = q.getExecutable().getUrl();
+            // "/queue/item/" + id
+            Build job = client.get(url, Build.class);
+            job.setClient(client);
 
-        return job;
-      } catch (HttpResponseException e) {
-          if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
-              return null;
-          }
-          throw e;
-      }      
+            return job;
+        } catch (HttpResponseException e) {
+            if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+                return null;
+            }
+            throw e;
+        }
     }
 }

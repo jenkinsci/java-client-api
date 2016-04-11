@@ -15,7 +15,8 @@ public class ParametersDefinitionProperty {
     @XmlElement(name = "parameterDefinitions")
     private ParameterDefinitions pd;
 
-    public ParametersDefinitionProperty() {}
+    public ParametersDefinitionProperty() {
+    }
 
     public ParametersDefinitionProperty(ParameterDefinitions pd) {
         this.pd = pd;

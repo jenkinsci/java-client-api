@@ -28,7 +28,8 @@ public class JobConfiguration {
         doc = reader.read(new StringReader(configXml));
     }
 
-    public JobConfiguration addStringParam(String name, String desc, String defaultValue) throws JAXBException, DocumentException {
+    public JobConfiguration addStringParam(String name, String desc, String defaultValue)
+            throws JAXBException, DocumentException {
         List<Node> nodes = doc.selectNodes("//hudson.model.ParametersDefinitionProperty");
         StringWriter sw = new StringWriter();
         StringParameterDefinition spd = new StringParameterDefinition(name, desc, defaultValue);

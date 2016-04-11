@@ -13,7 +13,7 @@ public class TestResult {
     private int failCount;
     private int passCount;
     private int skipCount;
-    
+
     private List<TestSuites> suites;
 
     public double getDuration() {

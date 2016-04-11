@@ -24,7 +24,7 @@ import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.FolderJob;
 import com.offbytwo.jenkins.model.JobWithDetails;
 
-public class FolderTestsIT  {
+public class FolderTestsIT {
 
     private final String JENKINS_WITH_DETAILS_TEST_JOB = "build_with_details";
 
@@ -42,19 +42,19 @@ public class FolderTestsIT  {
         StaplerResponse res = Mockito.mock(StaplerResponse.class);
         Vector<String> pluginNames = new Vector<String>();
         pluginNames.add("plugin.cloudbees-folder");
-        
+
         Mockito.when(req.getParameterNames()).thenReturn(pluginNames.elements());
         Mockito.when(req.getParameter("dynamicLoad")).thenReturn("true");
-        
+
         UpdateCenter uc = jenkins.getUpdateCenter();
         uc.updateAllSites();
-        
+
         List<hudson.model.UpdateSite.Plugin> availables = uc.getAvailables();
         List<PluginWrapper> plugins = pm.getPlugins();
-        
+
         // TODO: need to figure out how to install the cloudbees folder plugin
-        //pm.doInstall(req, res);
-        
+        // pm.doInstall(req, res);
+
         jenkins.getCrumbIssuer().getCrumb();
         jenkins.getCrumbIssuer().getCrumbRequestField();
         server = new JenkinsServer(jenkinsRule.getURL().toURI());
@@ -66,17 +66,17 @@ public class FolderTestsIT  {
         server.createFolder("root");
         JobWithDetails root = server.getJob("root");
         Assert.assertNotNull(root);
-        
+
         Optional<FolderJob> rootFolder = server.getFolderJob(root);
         Assert.assertTrue(rootFolder.isPresent());
-        
+
         server.createFolder(rootFolder.get(), "subfolder");
         JobWithDetails subfolder = server.getJob(rootFolder.get(), "subfolder");
         Assert.assertNotNull(subfolder);
-        
+
         Optional<FolderJob> subfolderFolder = server.getFolderJob(subfolder);
         Assert.assertTrue(subfolderFolder.isPresent());
-        
+
         server.deleteJob("root");
         root = server.getJob("root");
         Assert.assertNull(root);

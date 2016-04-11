@@ -12,7 +12,7 @@ public class TestReport extends BaseModel {
     private int skipCount;
     private int totalCount;
     private String urlName;
-    
+
     private List<TestChildReport> childReports;
 
     public int getFailCount() {

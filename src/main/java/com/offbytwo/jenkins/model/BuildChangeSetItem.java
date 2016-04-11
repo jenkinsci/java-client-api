@@ -19,7 +19,7 @@ public class BuildChangeSetItem {
     private BuildChangeSetAuthor author;
     private String comment;
     private String date; // Better use Date
-    private String id; //seemed to be the same as the commitId?
+    private String id; // seemed to be the same as the commitId?
     private String msg; // Message difference to comment?
     private List<BuildChangeSetPath> paths;
 

@@ -2,10 +2,10 @@ package com.offbytwo.jenkins.client.util;
 
 import com.google.common.net.UrlEscapers;
 
-
 public final class EncodingUtils {
-    
-    private EncodingUtils() {} // nope
+
+    private EncodingUtils() {
+    } // nope
 
     public static String encode(String pathPart) {
         // jenkins doesn't like the + for space, use %20 instead

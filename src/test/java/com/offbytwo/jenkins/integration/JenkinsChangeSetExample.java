@@ -26,8 +26,8 @@ public class JenkinsChangeSetExample {
         // MavenJobWithDetails mavenJob = js.getMavenJob("javaee");
         MavenJobWithDetails mavenJob = js.getMavenJob("appassembler-maven-plugin");
 
-//        BuildWithDetails details = mavenJob.getLastBuild().details();
-         BuildWithDetails details = mavenJob.getBuilds().get(10).details();
+        // BuildWithDetails details = mavenJob.getLastBuild().details();
+        BuildWithDetails details = mavenJob.getBuilds().get(10).details();
         System.out.println("Build Number: " + details.getNumber());
 
         List<BuildCause> causes = details.getCauses();

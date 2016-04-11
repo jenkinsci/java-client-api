@@ -19,37 +19,37 @@ public class BuildCauseTest {
 
     @Before
     public void before() {
-	this.bc = new BuildCause();
+        this.bc = new BuildCause();
     }
 
     @Test
     public void getUpstreamBuildShouldNotResultWithNPE() {
-	assertThat(bc.getUpstreamBuild()).isEqualTo(0);
+        assertThat(bc.getUpstreamBuild()).isEqualTo(0);
     }
 
     @Test
     public void getShortDescriptionShouldReturnNull() {
-	assertThat(bc.getShortDescription()).isNull();
+        assertThat(bc.getShortDescription()).isNull();
     }
 
     @Test
     public void getUpstreamProjectShouldReturnNull() {
-	assertThat(bc.getUpstreamProject()).isNull();
+        assertThat(bc.getUpstreamProject()).isNull();
     }
 
     @Test
     public void getUpstreamUrlShouldReturnNull() {
-	assertThat(bc.getUpstreamUrl()).isNull();
+        assertThat(bc.getUpstreamUrl()).isNull();
     }
 
     @Test
     public void getUserIdShouldReturnNull() {
-	assertThat(bc.getUserId()).isNull();
+        assertThat(bc.getUserId()).isNull();
     }
 
     @Test
     public void getUserNameShouldReturnNull() {
-	assertThat(bc.getUserName()).isNull();
+        assertThat(bc.getUserName()).isNull();
     }
 
 }

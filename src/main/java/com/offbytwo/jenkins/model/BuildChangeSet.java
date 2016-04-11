@@ -15,10 +15,10 @@ public class BuildChangeSet {
     private List<BuildChangeSetItem> items;
 
     /**
-    * The SCM system by which this changeset is being built.
-    * {@code git}, {@code svn} etc.
-    */
-    //TODO: Think about it if its possible to use an enum type
+     * The SCM system by which this changeset is being built. {@code git},
+     * {@code svn} etc.
+     */
+    // TODO: Think about it if its possible to use an enum type
     private String kind;
 
     /**
