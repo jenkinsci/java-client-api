@@ -21,8 +21,8 @@ public class BuildWithDetails extends Build {
     List actions; // Should be improved.
     boolean building;
     String description;
-    int duration;
-    int estimatedDuration;
+    long duration;
+    long estimatedDuration;
     String fullDisplayName;
     String id;
     long timestamp;
@@ -80,11 +80,11 @@ public class BuildWithDetails extends Build {
         return description;
     }
 
-    public int getDuration() {
+    public long getDuration() {
         return duration;
     }
 
-    public int getEstimatedDuration() {
+    public long getEstimatedDuration() {
         return estimatedDuration;
     }
 
@@ -260,8 +260,8 @@ public class BuildWithDetails extends Build {
         result = prime * result + ((consoleOutputText == null) ? 0 : consoleOutputText.hashCode());
         result = prime * result + ((culprits == null) ? 0 : culprits.hashCode());
         result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + duration;
-        result = prime * result + estimatedDuration;
+        result = prime * result + (int) (duration ^ (duration >>> 32));
+        result = prime * result + (int) (estimatedDuration ^ (estimatedDuration >>> 32));
         result = prime * result + ((fullDisplayName == null) ? 0 : fullDisplayName.hashCode());
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((this.result == null) ? 0 : this.result.hashCode());

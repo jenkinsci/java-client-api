@@ -32,6 +32,21 @@ void enableJob(String jobName, boolean crumbFlag);
 String getBuiltOn();
 ```
 
+   [Fixed #146 duration / estimatedDuration are long][issue-146]
+
+   The API in `BuildWithDetails`has been changed to represent the change
+   in datatype.
+
+```java
+int getDuration();
+int getEstimatedDuration();
+```
+   into:
+```java
+long getDuration();
+long getEstimatedDuration();
+```
+
 ## Release 0.3.3
 
   [Fixed #111 A missing dependency to jaxen caused problems][issue-111]
@@ -239,5 +254,6 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-130]: https://github.com/RisingOak/jenkins-client/issues/130
 [issue-133]: https://github.com/RisingOak/jenkins-client/issues/133
 [issue-144]: https://github.com/RisingOak/jenkins-client/issues/144
+[issue-146]: https://github.com/RisingOak/jenkins-client/issues/146
 [pull-123]: https://github.com/RisingOak/jenkins-client/pull/123
 
