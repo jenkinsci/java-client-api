@@ -16,6 +16,12 @@ void enableJob(String jobName);
 void enableJob(String jobName, boolean crumbFlag);
 ```
 
+  [Fixed #130 org.jvnet.hudson:xstream][issue-130]
+  I needed to remove the toString method from View class
+  which uses the XStream classes which does not make sense
+  from my point of view.
+
+
 ## Release 0.3.3
 
   [Fixed #111 A missing dependency to jaxen caused problems][issue-111]
@@ -220,5 +226,6 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-111]: https://github.com/RisingOak/jenkins-client/issues/111
 [issue-116]: https://github.com/RisingOak/jenkins-client/issues/116
 [issue-108]: https://github.com/RisingOak/jenkins-client/issues/108
+[issue-130]: https://github.com/RisingOak/jenkins-client/issues/130
 [pull-123]: https://github.com/RisingOak/jenkins-client/pull/123
 

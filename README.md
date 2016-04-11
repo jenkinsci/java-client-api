@@ -68,6 +68,7 @@ covered by the usual integration tests.
 
 You can find details about the different releases in the [Release Notes](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md).
 
+ * [Release 0.3.4](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-034).
  * [Release 0.3.3](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-033).
  * [Release 0.3.2](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-032).
  * [Release 0.3.1](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-031).
