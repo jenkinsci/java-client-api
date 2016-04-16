@@ -8,12 +8,18 @@ package com.offbytwo.jenkins.model;
 
 import static com.google.common.collect.Lists.transform;
 
+import java.io.IOException;
 import java.util.List;
+
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpResponseException;
 
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.offbytwo.jenkins.client.util.EncodingUtils;
+import com.offbytwo.jenkins.helper.Range;
 
 public class JobWithDetails extends Job {
 
@@ -61,6 +67,15 @@ public class JobWithDetails extends Job {
         return inQueue;
     }
 
+    /**
+     * This method will give you back the builds of a particular job.<br/>
+     * <b>Note: Jenkins limits the number of results to a maximum of 100 builds
+     * which you will get back.</b>. In case you have more than 100 build you
+     * won't get back all builds via this method. In such cases you need to use
+     * {@link #getAllBuilds()}.
+     * 
+     * @return the list of {@link Build}.
+     */
     public List<Build> getBuilds() {
         return transform(builds, new Function<Build, Build>() {
             @Override
@@ -68,6 +83,89 @@ public class JobWithDetails extends Job {
                 return buildWithClient(from);
             }
         });
+    }
+
+    /**
+     * This method will give you back all builds which exists independent of the
+     * number. You should be aware that this can be much in some cases if you
+     * have more than 100 builds which is by default limited by Jenkins
+     * {@link #getBuilds()}. This method limits it to particular information
+     * which can be later used to get supplemental information about a
+     * particular build {@link Build#details()} to reduce the amount of data
+     * which needed to be transfered.
+     * 
+     * @return the list of {@link Build}.
+     * @throws IOException
+     *             In case of failure.
+     * @see <a href="https://issues.jenkins-ci.org/browse/JENKINS-30238">Jenkins
+     *      Issue</a>
+     */
+    public List<Build> getAllBuilds() throws IOException {
+        String path = "/";
+
+        try {
+            List<Build> builds = client.get(path + "job/" + EncodingUtils.encode(this.getName())
+                    + "?tree=allBuilds[number[*],url[*],queueId[*]]", AllBuilds.class).getAllBuilds();
+
+            return transform(builds, new Function<Build, Build>() {
+                @Override
+                public Build apply(Build from) {
+                    return buildWithClient(from);
+                }
+            });
+        } catch (HttpResponseException e) {
+            // TODO: Thinks about a better handline if the job does not exist?
+            if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+                // TODO: Check this if this is necessary or a good idea?
+
+                return null;
+            }
+            throw e;
+        }
+
+    }
+
+    /**
+     *
+     * <ul>
+     * <li>{M,N}: From the M-th element (inclusive) to the N-th element
+     * (exclusive).</li>
+     * <li>{M,}: From the M-th element (inclusive) to the end.</li>
+     * <li>{,N}: From the first element (inclusive) to the N-th element
+     * (exclusive). The same as {0,N}.</li>
+     * <li>{N}: Just retrieve the N-th element. The same as {N,N+1}.</li>
+     * </ul>
+     * 
+     * <b>Note: At the moment there seemed to be no option to get the number of
+     * existing builds for a job. The only option is to get all builds via
+     * {@link #getAllBuilds()}.</b>
+     * 
+     * @param range {@link Range}
+     * @return The list of builds defined by the given range.
+     * @throws IOException in case of an error.
+     */
+    public List<Build> getAllBuilds(Range range) throws IOException {
+        String path = "/" + "job/" + EncodingUtils.encode(this.getName())
+                + "?tree=allBuilds[number[*],url[*],queueId[*]]";
+
+        try {
+            List<Build> builds = client.get(path + range.getRangeString(), AllBuilds.class).getAllBuilds();
+
+            return transform(builds, new Function<Build, Build>() {
+                @Override
+                public Build apply(Build from) {
+                    return buildWithClient(from);
+                }
+            });
+        } catch (HttpResponseException e) {
+            // TODO: Thinks about a better handline if the job does not exist?
+            if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+                // TODO: Check this if this is necessary or a good idea?
+
+                return null;
+            }
+            throw e;
+        }
     }
 
     private Build buildWithClient(Build from) {

@@ -16,6 +16,9 @@ public class QueueItem extends BaseModel {
     private boolean stuck;
 
     // task
+    //   name
+    //   url
+    //   color?
 
     private String url;
     

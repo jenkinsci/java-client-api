@@ -2,6 +2,24 @@
 
 ## Release 0.3.5 (NOT RELEASED YET)
 
+### API Changes
+
+  [Added getAllBuilds(), getAllBuilds(Range range) ][issue-148]
+
+  The `JobWithDetails` has been enhanced with two methods
+  to get all builds which exists or a range can be used
+  to select.
+  
+  Note: There seemed to be no option to extract simply the number
+  of existing builds of a particular job via the REST API.
+
+```java
+public class JobWithDetails {
+    public List<Build> getAllBuilds() throws IOException;
+    public List<Build> getAllBuilds(Range range) throws IOException;
+}
+```
+
  [Added renameJob(..)][pull-158]
  
 ```java
@@ -9,7 +27,8 @@ public class JenkinsServer {
   renameJob(String jobName, String newJobName) throws IOException;
   .
 }
-```
+``` 
+
 
 ## Release 0.3.4
 
@@ -173,14 +192,13 @@ void createJob(FolderJob folder, String jobName, String jobXml, Boolean crumbFla
 
 ### API Changes:
 
-  [JobWithDetails has been enhanced with information about the
-  first build][issue-91].
+  [JobWithDetails has been enhanced with information about the first build][issue-91].
 
 ```java
 Build getFirstBuild()
 ```
 
-  [The `JenkinsServer` API has been enhanced to get information about the Queue](issue-104)
+  [The `JenkinsServer` API has been enhanced to get information about the Queue][issue-104]
 
 ```java
 QueueItem getQueueItem(QueueReference ref) throws IOException 
@@ -356,6 +374,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-135]: https://github.com/RisingOak/jenkins-client/issues/135
 [issue-144]: https://github.com/RisingOak/jenkins-client/issues/144
 [issue-146]: https://github.com/RisingOak/jenkins-client/issues/146
+[issue-148]: https://github.com/RisingOak/jenkins-client/issues/148
 [issue-154]: https://github.com/RisingOak/jenkins-client/issues/154
 [issue-155]: https://github.com/RisingOak/jenkins-client/issues/155
 [issue-157]: https://github.com/RisingOak/jenkins-client/issues/157
