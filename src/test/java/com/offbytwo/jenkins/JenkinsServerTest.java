@@ -73,23 +73,30 @@ public class JenkinsServerTest extends BaseUnitTest {
 
     @Test
     public void testFolderGetJobs() throws Exception {
+    	
+    	String[] jobNames = { "job-the-first", "Job-The-Next", "Job-the-Next"};
         // given
         String path = "http://localhost/jobs/someFolder/";
         Job someJob = new Job("jobname", path + "jobname");
         FolderJob folderJob = new FolderJob("someFolder", path);
-        MainView mv = new MainView();
-        mv.setJobs(ImmutableList.of(someJob));
+
+        List<Job> someJobs = createTestJobs(path, jobNames);
+        MainView mv = createTestView(someJobs);
 
         given(client.get(eq(path), eq(MainView.class))).willReturn(mv);
-
+        
         // when
         Map<String, Job> map = server.getJobs(folderJob);
-
+        
         // then
         verify(client).get(path, MainView.class);
-        assertEquals(someJob, map.get("jobname"));
-    }
 
+        for(String name : jobNames)
+            assertTrue(someJobs.contains(map.get(name)));
+
+        assertEquals(jobNames.length, map.size());
+    }
+    
     @Test
     public void testFolderGetJob() throws Exception {
         // given
