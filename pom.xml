@@ -45,11 +45,11 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <maven.compiler.source>1.6</maven.compiler.source>
-    <maven.compiler.target>1.6</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
 
     <!-- Version of Jenkins to use for Integration Tests -->
-    <jenkins-version>1.593</jenkins-version>
+    <jenkins-version>1.644</jenkins-version>
     <junit.version>4.11</junit.version>
     <mockito-core.version>1.9.5</mockito-core.version>
     <commons-io.version>2.4</commons-io.version>
@@ -177,6 +177,12 @@
       <artifactId>assertj-core</artifactId>
       <version>1.7.1</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>xml-apis</groupId>
+      <artifactId>xml-apis</artifactId>
+      <version>1.4.01</version>
     </dependency>
   </dependencies>
 

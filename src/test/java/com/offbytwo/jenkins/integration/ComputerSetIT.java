@@ -25,7 +25,7 @@ public class ComputerSetIT extends BaseForIntegrationTests {
         assertThat(computerSet).isNotNull();
         assertThat(computerSet.getBusyExecutors()).isEqualTo(0);
         assertThat(computerSet.getTotalExecutors()).isEqualTo(ji.getNumExecutors());
-        assertThat(computerSet.getDisplayName()).isEqualTo("nodes");
+        assertThat(computerSet.getDisplayName()).isEqualTo("Nodes");
     }
 
     @Test
