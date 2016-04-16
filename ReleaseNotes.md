@@ -16,6 +16,35 @@ void enableJob(String jobName);
 void enableJob(String jobName, boolean crumbFlag);
 ```
 
+  [Fixed #128 Added OfflineCause as a real object in ComputerWithDetails][issue-128]
+  Added `OfflineCause` class which can now being used 
+  as a return type for the attribute `offlineCause` instead
+  of `Object` in `ComputerWithDetails`. 
+
+```java
+public class ComputerWithDetails {
+  Object offlineCause;
+..
+}
+```
+
+  into the following which also influenced the appropriate return types 
+  of the getters:
+
+into 
+```java
+public class ComputerWithDetails {
+    OfflineCause offlineCause;
+
+    public OfflineCause getOfflineCause() throws IOException;
+
+}
+```
+
+  [Fixed #135 Created documentation area][issue-135]
+  Started a documentation area und src/site/ for either Markdown
+  or asciidoctor.
+
   [Fixed #130 org.jvnet.hudson:xstream][issue-130]
   I needed to remove the toString method from View class
   which uses the XStream classes which does not make sense
@@ -251,8 +280,10 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-111]: https://github.com/RisingOak/jenkins-client/issues/111
 [issue-116]: https://github.com/RisingOak/jenkins-client/issues/116
 [issue-108]: https://github.com/RisingOak/jenkins-client/issues/108
+[issue-128]: https://github.com/RisingOak/jenkins-client/issues/128
 [issue-130]: https://github.com/RisingOak/jenkins-client/issues/130
 [issue-133]: https://github.com/RisingOak/jenkins-client/issues/133
+[issue-135]: https://github.com/RisingOak/jenkins-client/issues/135
 [issue-144]: https://github.com/RisingOak/jenkins-client/issues/144
 [issue-146]: https://github.com/RisingOak/jenkins-client/issues/146
 [pull-123]: https://github.com/RisingOak/jenkins-client/pull/123
