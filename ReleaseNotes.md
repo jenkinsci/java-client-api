@@ -42,7 +42,7 @@ public class ComputerWithDetails {
 ```
 
   [Fixed #135 Created documentation area][issue-135]
-  Started a documentation area und src/site/ for either Markdown
+  Started a documentation area under src/site/ for either Markdown
   or asciidoctor.
 
   [Fixed #130 org.jvnet.hudson:xstream][issue-130]
