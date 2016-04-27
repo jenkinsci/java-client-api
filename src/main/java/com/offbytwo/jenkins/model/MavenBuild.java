@@ -20,6 +20,6 @@ public class MavenBuild extends Build {
     }
 
     public TestReport getTestReport() throws IOException {
-        return client.get(this.url + "/testReport/", TestReport.class);
+        return client.get(this.url + "/testReport/?depth=1", TestReport.class);
     }
 }

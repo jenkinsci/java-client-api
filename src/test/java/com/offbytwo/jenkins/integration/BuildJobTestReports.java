@@ -20,17 +20,17 @@ public class BuildJobTestReports {
 
     @Test
     public void shouldAddStringParamToAnExistingJob() throws IOException {
-        // JenkinsServer js = new
-        // JenkinsServer(URI.create("http://localhost:10090/"));
-        JenkinsServer js = new JenkinsServer(URI.create("http://ci.soebes.de:8080/"));
+         JenkinsServer js = new
+         JenkinsServer(URI.create("http://localhost:10090/"));
+//        JenkinsServer js = new JenkinsServer(URI.create("http://ci.soebes.de:8080/"));
         // MavenJobWithDetails mavenJob = js.getMavenJob("javaee");
-        MavenJobWithDetails mavenJob = js.getMavenJob("SupoSE");
+        MavenJobWithDetails mavenJob = js.getMavenJob("test-maven");
 
         BuildWithDetails details = mavenJob.getLastSuccessfulBuild().details();
         // BuildWithDetails details = mavenJob.getBuilds().get(8).details();
         System.out.println("Build Number: " + details.getNumber());
 
-        TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
+        TestReport testReport = mavenJob.getLastUnstableBuild().getTestReport();
         System.out.println("------ Tests");
         System.out.println("    urlName: " + testReport.getUrlName());
         System.out.println("  failCount: " + testReport.getFailCount());
@@ -58,12 +58,14 @@ public class BuildJobTestReports {
                 double sumTestCases = 0.0;
                 for (TestCase testCase : testCases) {
                     System.out.println("     ------------------------------------------");
-                    System.out.println("     TestCase:         age: " + testCase.getAge());
-                    System.out.println("     TestCase:   classname: " + testCase.getClassName());
-                    System.out.println("     TestCase:    duration: " + testCase.getDuration());
-                    System.out.println("     TestCase: failedSince: " + testCase.getFailedSince());
-                    System.out.println("     TestCase:        name: " + testCase.getName());
-                    System.out.println("     TestCase:      status: " + testCase.getStatus());
+                    System.out.println("     TestCase:             age: " + testCase.getAge());
+                    System.out.println("     TestCase:       classname: " + testCase.getClassName());
+                    System.out.println("     TestCase:        duration: " + testCase.getDuration());
+                    System.out.println("     TestCase:     failedSince: " + testCase.getFailedSince());
+                    System.out.println("     TestCase:            name: " + testCase.getName());
+                    System.out.println("     TestCase:          status: " + testCase.getStatus());
+                    System.out.println("     TestCase:    errorDetails: " + testCase.getErrorDetails());
+                    System.out.println("     TestCase: errorStackTrace: " + testCase.getErrorStackTrace());
                     sumTestCases += testCase.getDuration();
                 }
                 System.out.println("----> SUM: " + sumTestCases);

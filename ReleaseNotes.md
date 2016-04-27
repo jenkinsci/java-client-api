@@ -5,6 +5,16 @@
 
 ### API Changes
 
+  [TestCase class enhanced][issue-155]
+  Now the `TestCase` contains the information
+  about the errorDetails and the errorStackTrace of 
+  a failed test case.
+
+```java
+String getErrorDetails();
+String getErrorStackTrace()
+```
+
   [Added disableJob, enabledJob][pull-123]
   The following methods have been added to support enabling
   and disabling jobs.
@@ -286,5 +296,6 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-135]: https://github.com/RisingOak/jenkins-client/issues/135
 [issue-144]: https://github.com/RisingOak/jenkins-client/issues/144
 [issue-146]: https://github.com/RisingOak/jenkins-client/issues/146
+[issue-155]: https://github.com/RisingOak/jenkins-client/issues/155
 [pull-123]: https://github.com/RisingOak/jenkins-client/pull/123
 
