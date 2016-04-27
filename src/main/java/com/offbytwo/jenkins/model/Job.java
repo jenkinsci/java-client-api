@@ -6,15 +6,18 @@
 
 package com.offbytwo.jenkins.model;
 
+import static org.apache.commons.lang.StringUtils.join;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Map;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
-
-import java.io.IOException;
-import java.util.Map;
-
-import static org.apache.commons.lang.StringUtils.join;
 
 public class Job extends BaseModel {
 
@@ -40,6 +43,25 @@ public class Job extends BaseModel {
 
     public JobWithDetails details() throws IOException {
         return client.get(url, JobWithDetails.class);
+    }
+
+    /**
+     * Get a file from workspace.
+     * 
+     * @param fileName The name of the file to download from workspace.
+     *  You can also access files which are in sub folders of the workspace.
+     * @return The string which contains the content of the file.
+     * @throws IOException
+     */
+    public String getFileFromWorkspace(String fileName) throws IOException {
+        InputStream is = client.getFile( URI.create( url + "/ws/" + fileName ));
+        ByteArrayOutputStream result = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = is.read(buffer)) != -1) {
+            result.write(buffer, 0, length);
+        }
+        return result.toString("UTF-8");
     }
 
     /**

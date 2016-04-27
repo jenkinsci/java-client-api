@@ -5,6 +5,15 @@
 
 ### API Changes
 
+  [Added getFileFromWorkspace() to Job][issue-119]
+  Added method `getFileFromWorkspace()` to `Job` class to get a file 
+  from workspace in Jenkins.
+
+```java
+String getFileFromWorkspace(String fileName)
+```
+
+
   [Make jobNames case sensitive.][pull-149]
 
   [TestCase class enhanced][issue-155]
@@ -292,6 +301,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-111]: https://github.com/RisingOak/jenkins-client/issues/111
 [issue-116]: https://github.com/RisingOak/jenkins-client/issues/116
 [issue-108]: https://github.com/RisingOak/jenkins-client/issues/108
+[issue-119]: https://github.com/RisingOak/jenkins-client/issues/119
 [issue-128]: https://github.com/RisingOak/jenkins-client/issues/128
 [issue-130]: https://github.com/RisingOak/jenkins-client/issues/130
 [issue-133]: https://github.com/RisingOak/jenkins-client/issues/133
