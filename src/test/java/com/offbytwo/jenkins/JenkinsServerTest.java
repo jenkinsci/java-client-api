@@ -17,6 +17,8 @@ import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -50,7 +52,7 @@ public class JenkinsServerTest extends BaseUnitTest {
 
     @Test
     public void shouldReturnListOfJobs() throws Exception {
-        assertTrue(server.getJobs().containsKey("hello"));
+        assertTrue(server.getJobs().containsKey("Hello"));
     }
 
     @Test
@@ -71,23 +73,30 @@ public class JenkinsServerTest extends BaseUnitTest {
 
     @Test
     public void testFolderGetJobs() throws Exception {
+    	
+    	String[] jobNames = { "job-the-first", "Job-The-Next", "Job-the-Next"};
         // given
         String path = "http://localhost/jobs/someFolder/";
         Job someJob = new Job("jobname", path + "jobname");
         FolderJob folderJob = new FolderJob("someFolder", path);
-        MainView mv = new MainView();
-        mv.setJobs(ImmutableList.of(someJob));
+
+        List<Job> someJobs = createTestJobs(path, jobNames);
+        MainView mv = createTestView(someJobs);
 
         given(client.get(eq(path), eq(MainView.class))).willReturn(mv);
-
+        
         // when
         Map<String, Job> map = server.getJobs(folderJob);
-
+        
         // then
         verify(client).get(path, MainView.class);
-        assertEquals(someJob, map.get("jobname"));
-    }
 
+        for(String name : jobNames)
+            assertTrue(someJobs.contains(map.get(name)));
+
+        assertEquals(jobNames.length, map.size());
+    }
+    
     @Test
     public void testFolderGetJob() throws Exception {
         // given
@@ -149,7 +158,7 @@ public class JenkinsServerTest extends BaseUnitTest {
 
         given(folderJob.isFolder()).willReturn(false);
         given(client.get(eq(path), eq(FolderJob.class))).willReturn(folderJob);
-
+        
         // when
         Optional<FolderJob> oj = server.getFolderJob(someJob);
 
@@ -181,7 +190,7 @@ public class JenkinsServerTest extends BaseUnitTest {
         // then
         verify(client).post_form(eq(path + "createItem?"), anyMap(), eq(false));
     }
-
+    
     @Test
     public void testUpdateJobXml() throws Exception {
         // given
@@ -242,7 +251,7 @@ public class JenkinsServerTest extends BaseUnitTest {
     @Test
     public void testScriptPosts() throws IOException, URISyntaxException {
         given(client.post_text("/scriptText", "script=script", ContentType.APPLICATION_FORM_URLENCODED, false))
-                .willReturn("result");
+            .willReturn("result");
         String result = server.runScript("script");
         verify(client).post_text("/scriptText", "script=script", ContentType.APPLICATION_FORM_URLENCODED, false);
         assertEquals("result", result);
@@ -252,5 +261,94 @@ public class JenkinsServerTest extends BaseUnitTest {
         given(client.get("/job/encoded%2Fproperly%3F/config.xml")).willReturn("<xml>not a real response</xml>");
 
         assertEquals("<xml>not a real response</xml>", server.getJobXml("encoded/properly?"));
+    }
+
+    private MainView createTestView(List<Job> jobs) {
+        return new MainView(jobs.toArray(new Job[0]));
+    }
+
+    private MainView createTestView(String baseUrl, String... jobNames) {
+        return createTestView(createTestJobs(baseUrl, jobNames));
+    }
+
+    private List<Job> createTestJobs(String baseUrl, String... jobNames) {
+        List<Job> jobs = new ArrayList<Job>();
+        for(String name: jobNames) {
+            jobs.add(new Job(name, baseUrl+name));
+        }
+
+        return jobs;
+    }
+
+
+    @Test
+    public void testReturnSingleJob() throws Exception {
+        shouldReturnListOfJobs("hello");
+    }
+
+    @Test
+    public void testReturnListOfJobs() throws Exception {
+        shouldReturnListOfJobs("hello", "Hello", "HeLLo");
+    }
+
+    @Test
+    public void testFolderGetSingleJob() throws Exception {
+        shouldGetFolderJobs("jobname");
+    }
+
+
+    private void shouldReturnListOfJobs(String...jobNames) throws Exception {
+        MainView mainView = createTestView("http://localhost/job/", jobNames);
+        given(client.get("/", MainView.class)).willReturn(mainView);
+        Map<String, Job> jobs = server.getJobs();
+        for(String name : jobNames)
+            assertTrue(jobs.containsKey(name));
+
+        assertEquals(jobNames.length, jobs.size());
+   }
+
+    @Test
+    public void testGetJobXmls() throws Exception {
+
+        shouldGetJobXml("pr");
+        shouldGetJobXml("hello");
+        shouldGetJobXml("Hello");
+        shouldGetJobXml("HeLLo");
+    }
+
+    private void shouldGetFolderJobs(String... jobNames) throws IOException {
+        // given
+        String path = "http://localhost/jobs/someFolder/";
+        FolderJob folderJob = new FolderJob("someFolder", path);
+
+        List<Job> someJobs = createTestJobs(path, jobNames);
+        MainView mv = createTestView(someJobs);
+
+        given(client.get(eq(path), eq(MainView.class))).willReturn(mv);
+        
+        // when
+        Map<String, Job> map = server.getJobs(folderJob);
+        
+        // then
+        verify(client).get(path, MainView.class);
+
+        for(String name : jobNames)
+            assertTrue(someJobs.contains(map.get(name)));
+
+        assertEquals(jobNames.length, map.size());
+    }
+    private void shouldGetJobXml(String jobName) throws Exception {
+        // given
+        String xmlString = "<xml>some xml goes here</xml>";
+
+        given(client.get(anyString())).willReturn(xmlString);
+
+        // when
+        String xmlReturn = server.getJobXml(jobName);
+
+        // then
+        verify(client).get("/job/"+jobName+"/config.xml");
+        verify(client).get("/job/"+jobName+"/config.xml");
+        assertEquals(xmlString, xmlReturn);
     }
 }
