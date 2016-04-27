@@ -12,8 +12,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -28,13 +26,15 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
 import com.offbytwo.jenkins.model.FolderJob;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.JobWithDetails;
 import com.offbytwo.jenkins.model.MainView;
 import com.offbytwo.jenkins.model.View;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class JenkinsServerTest extends BaseUnitTest {
 
