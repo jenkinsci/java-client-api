@@ -5,6 +5,8 @@
 
 ### API Changes
 
+  [Make jobNames case sensitive.][pull-149]
+
   [TestCase class enhanced][issue-155]
   Now the `TestCase` contains the information
   about the errorDetails and the errorStackTrace of 
@@ -298,4 +300,5 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-146]: https://github.com/RisingOak/jenkins-client/issues/146
 [issue-155]: https://github.com/RisingOak/jenkins-client/issues/155
 [pull-123]: https://github.com/RisingOak/jenkins-client/pull/123
+[pull-149]: https://github.com/RisingOak/jenkins-client/pull/149
 
