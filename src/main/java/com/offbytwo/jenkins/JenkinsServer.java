@@ -34,6 +34,7 @@ import com.offbytwo.jenkins.model.JobWithDetails;
 import com.offbytwo.jenkins.model.LabelWithDetails;
 import com.offbytwo.jenkins.model.MainView;
 import com.offbytwo.jenkins.model.MavenJobWithDetails;
+import com.offbytwo.jenkins.model.PluginManager;
 import com.offbytwo.jenkins.model.QueueItem;
 import com.offbytwo.jenkins.model.QueueReference;
 import com.offbytwo.jenkins.model.View;
@@ -424,6 +425,15 @@ public class JenkinsServer {
      */
     public ComputerSet getComputerSet() throws IOException {
         return client.get("computer/?depth=2", ComputerSet.class);
+    }
+    
+    /**
+     * This will give you back the {@link PluginManager}.
+     * @return {@link PluginManager}
+     * @throws IOException in case of a failure.
+     */
+    public PluginManager getPluginManager() throws IOException {
+        return client.get( "pluginManager/?depth=2", PluginManager.class );
     }
 
     /**

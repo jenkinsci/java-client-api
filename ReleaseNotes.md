@@ -5,6 +5,23 @@
 
 ### API Changes
 
+  [Added getPluginManager() to JenkinsServer][issue-120]
+
+```java
+PluginManager getPluginManager() throws IOException;
+```
+
+  Added method to get `Plugin`.
+
+```java
+public class PluginManager extends BaseModel {
+    public List<Plugin> getPlugins()
+}
+```
+
+  `Plugin` class contains methods to get informations about
+  the plugins plus a `PluginDependency` class.
+
   [Added getFileFromWorkspace() to Job][issue-119]
   Added method `getFileFromWorkspace()` to `Job` class to get a file 
   from workspace in Jenkins.
@@ -302,6 +319,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-116]: https://github.com/RisingOak/jenkins-client/issues/116
 [issue-108]: https://github.com/RisingOak/jenkins-client/issues/108
 [issue-119]: https://github.com/RisingOak/jenkins-client/issues/119
+[issue-120]: https://github.com/RisingOak/jenkins-client/issues/120
 [issue-128]: https://github.com/RisingOak/jenkins-client/issues/128
 [issue-130]: https://github.com/RisingOak/jenkins-client/issues/130
 [issue-133]: https://github.com/RisingOak/jenkins-client/issues/133
