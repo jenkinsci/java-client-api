@@ -18,9 +18,9 @@ public class ComputerWithDetails {
 }
 ```
 
-  [deleteJob throws exception but works anyway][issue-154]
-  [Some HTTP calls to jenkins result in a 302, which currently throws an HttpResponseException #7[issue-7]
-  [Create Job is failing - any idea on this error][issue-121]
+  * [deleteJob throws exception but works anyway][issue-154]
+  * [Some HTTP calls to jenkins result in a 302, which currently throws an HttpResponseException][issue-7]
+  * [Create Job is failing - any idea on this error][issue-121]
   
   * Fixed. by changing call to client.post(, crumbFlag = true) into
     client.post(, crumbFlag = false).
