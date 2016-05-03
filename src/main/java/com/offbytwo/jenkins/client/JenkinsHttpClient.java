@@ -431,7 +431,7 @@ public class JenkinsHttpClient {
      *             HttpResponseException
      */
     public void post(String path) throws IOException {
-        post(path, null, null, true);
+        post(path, null, null, false);
     }
 
     public void post(String path, boolean crumbFlag) throws IOException {

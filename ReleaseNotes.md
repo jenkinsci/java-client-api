@@ -5,6 +5,13 @@
 
 ### API Changes
 
+  [deleteJob throws exception but works anyway][issue-154]
+  [Some HTTP calls to jenkins result in a 302, which currently throws an HttpResponseException #7[issue-7]
+  [Create Job is failing - any idea on this error][issue-121]
+  
+  * Fixed. by changing call to client.post(, crumbFlag = true) into
+    client.post(, crumbFlag = false).
+
   [Added getPluginManager() to JenkinsServer][issue-120]
 
 ```java
@@ -309,6 +316,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [2]: https://github.com/RisingOak/jenkins-client/blob/master/src/test/java/com/offbytwo/jenkins/integration/JenkinsLoadStatisticsExample.java
 [3]: https://github.com/RisingOak/jenkins-client/blob/master/src/test/java/com/offbytwo/jenkins/integration/BuildJobTestReports.java
 [4]: https://github.com/RisingOak/jenkins-client/blob/master/src/main/java/com/offbytwo/jenkins/model/Executor.java
+[issue-7]: https://github.com/RisingOak/jenkins-client/issues/7
 [issue-53]: https://github.com/RisingOak/jenkins-client/issues/53
 [issue-67]: https://github.com/RisingOak/jenkins-client/issues/67
 [issue-82]: https://github.com/RisingOak/jenkins-client/issues/82
@@ -320,12 +328,14 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-108]: https://github.com/RisingOak/jenkins-client/issues/108
 [issue-119]: https://github.com/RisingOak/jenkins-client/issues/119
 [issue-120]: https://github.com/RisingOak/jenkins-client/issues/120
+[issue-121]: https://github.com/RisingOak/jenkins-client/issues/121
 [issue-128]: https://github.com/RisingOak/jenkins-client/issues/128
 [issue-130]: https://github.com/RisingOak/jenkins-client/issues/130
 [issue-133]: https://github.com/RisingOak/jenkins-client/issues/133
 [issue-135]: https://github.com/RisingOak/jenkins-client/issues/135
 [issue-144]: https://github.com/RisingOak/jenkins-client/issues/144
 [issue-146]: https://github.com/RisingOak/jenkins-client/issues/146
+[issue-154]: https://github.com/RisingOak/jenkins-client/issues/154
 [issue-155]: https://github.com/RisingOak/jenkins-client/issues/155
 [pull-123]: https://github.com/RisingOak/jenkins-client/pull/123
 [pull-149]: https://github.com/RisingOak/jenkins-client/pull/149

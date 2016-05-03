@@ -68,7 +68,7 @@ public class Job extends BaseModel {
      * Trigger a build without parameters
      */
     public void build() throws IOException {
-        client.post(url + "build", true);
+        client.post(url + "build");
     }
 
     public void build(boolean crumbFlag) throws IOException {
@@ -84,7 +84,7 @@ public class Job extends BaseModel {
      */
     public void build(Map<String, String> params) throws IOException {
         String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
-        client.post(url + "buildWithParameters?" + qs, null, null);
+        client.post(url + "buildWithParameters?" + qs);
     }
 
     /**
