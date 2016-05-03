@@ -20,13 +20,13 @@
 
   <groupId>com.offbytwo.jenkins</groupId>
   <artifactId>jenkins-client</artifactId>
-  <version>0.3.4</version>
+  <version>0.3.5-SNAPSHOT</version>
 
   <scm>
     <connection>scm:git:git@github.com:RisingOak/jenkins-client.git</connection>
     <developerConnection>scm:git:git@github.com:RisingOak/jenkins-client.git</developerConnection>
     <url>https://github.com/RisingOak/jenkins-client</url>
-    <tag>jenkins-client-0.3.4</tag>
+    <tag>HEAD</tag>
   </scm>
   <distributionManagement>
     <site>
