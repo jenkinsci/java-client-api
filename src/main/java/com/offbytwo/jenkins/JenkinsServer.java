@@ -21,6 +21,7 @@ import org.dom4j.DocumentException;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
 import com.offbytwo.jenkins.client.util.EncodingUtils;
@@ -35,6 +36,7 @@ import com.offbytwo.jenkins.model.LabelWithDetails;
 import com.offbytwo.jenkins.model.MainView;
 import com.offbytwo.jenkins.model.MavenJobWithDetails;
 import com.offbytwo.jenkins.model.PluginManager;
+import com.offbytwo.jenkins.model.Queue;
 import com.offbytwo.jenkins.model.QueueItem;
 import com.offbytwo.jenkins.model.QueueReference;
 import com.offbytwo.jenkins.model.View;
@@ -570,6 +572,10 @@ public class JenkinsServer {
      */
     public String runScript(String script) throws IOException {
         return client.post_text("/scriptText", "script=" + script, ContentType.APPLICATION_FORM_URLENCODED, false);
+    }
+
+    public Queue getQueue() throws IOException {
+        return client.get("queue/?depth=1", Queue.class);
     }
 
     public QueueItem getQueueItem(QueueReference ref) throws IOException {

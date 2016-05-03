@@ -18,7 +18,7 @@ public class QueueItem extends BaseModel {
     // task
 
     private String url;
-
+    
     private String why;
 
     private boolean cancelled;
