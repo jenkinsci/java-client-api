@@ -610,4 +610,16 @@ public class JenkinsServer {
             throw e;
         }
     }
+    
+    /**
+	 * Rename a job
+	 *
+	 * @param jobName Existing Job name
+	 * @param newJobName New Job Name
+	 * @throws IOException In case of a failure.
+	 */
+	public void renameJob(String jobName, String newJobName) throws IOException {
+		client.post(
+				"/job/" + EncodingUtils.encode(jobName) + "/doRename?newName=" + EncodingUtils.encodeParam(newJobName));
+	}
 }
