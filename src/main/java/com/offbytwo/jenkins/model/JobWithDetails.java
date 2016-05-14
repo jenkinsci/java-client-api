@@ -75,15 +75,21 @@ public class JobWithDetails extends Job {
      * won't get back all builds via this method. In such cases you need to use
      * {@link #getAllBuilds()}.
      * 
-     * @return the list of {@link Build}.
+     * @return the list of {@link Build}. In case of no builds have been 
+     * executed yet return {@link Collections#emptyList()}.
      */
     public List<Build> getBuilds() {
-        return transform(builds, new Function<Build, Build>() {
-            @Override
-            public Build apply(Build from) {
-                return buildWithClient(from);
-            }
-        });
+        if (builds == null) {
+            return Collections.emptyList();
+        }
+        else {
+            return transform(builds, new Function<Build, Build>() {
+                @Override
+                public Build apply(Build from) {
+                    return buildWithClient(from);
+                }
+            });
+        }
     }
 
     /**
@@ -95,7 +101,8 @@ public class JobWithDetails extends Job {
      * particular build {@link Build#details()} to reduce the amount of data
      * which needed to be transfered.
      * 
-     * @return the list of {@link Build}.
+     * @return the list of {@link Build}. In case of no builds have been 
+     * executed yet return {@link Collections#emptyList()}.
      * @throws IOException
      *             In case of failure.
      * @see <a href="https://issues.jenkins-ci.org/browse/JENKINS-30238">Jenkins
@@ -108,12 +115,16 @@ public class JobWithDetails extends Job {
             List<Build> builds = client.get(path + "job/" + EncodingUtils.encode(this.getName())
                     + "?tree=allBuilds[number[*],url[*],queueId[*]]", AllBuilds.class).getAllBuilds();
 
-            return transform(builds, new Function<Build, Build>() {
-                @Override
-                public Build apply(Build from) {
-                    return buildWithClient(from);
-                }
-            });
+            if (builds == null) {
+                return Collections.emptyList();
+            } else {
+                return transform(builds, new Function<Build, Build>() {
+                    @Override
+                    public Build apply(Build from) {
+                        return buildWithClient(from);
+                    }
+                });
+            }
         } catch (HttpResponseException e) {
             // TODO: Thinks about a better handline if the job does not exist?
             if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
@@ -142,7 +153,8 @@ public class JobWithDetails extends Job {
      * {@link #getAllBuilds()}.</b>
      * 
      * @param range {@link Range}
-     * @return The list of builds defined by the given range.
+     * @return the list of {@link Build}. In case of no builds have been 
+     * executed yet return {@link Collections#emptyList()}.
      * @throws IOException in case of an error.
      */
     public List<Build> getAllBuilds(Range range) throws IOException {
@@ -152,12 +164,16 @@ public class JobWithDetails extends Job {
         try {
             List<Build> builds = client.get(path + range.getRangeString(), AllBuilds.class).getAllBuilds();
 
-            return transform(builds, new Function<Build, Build>() {
-                @Override
-                public Build apply(Build from) {
-                    return buildWithClient(from);
-                }
-            });
+            if (builds == null) {
+                return Collections.emptyList();
+            } else {
+                return transform(builds, new Function<Build, Build>() {
+                    @Override
+                    public Build apply(Build from) {
+                        return buildWithClient(from);
+                    }
+                });
+            }
         } catch (HttpResponseException e) {
             // TODO: Thinks about a better handline if the job does not exist?
             if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
@@ -292,6 +308,7 @@ public class JobWithDetails extends Job {
         };
 
         Optional<Build> optionalBuild = Iterables.tryFind(builds, isMatchingBuildNumber);
+        //TODO: Check if we could use Build#NO...instead of Null?
         return optionalBuild.orNull() == null ? null : buildWithClient(optionalBuild.orNull());
     }
 

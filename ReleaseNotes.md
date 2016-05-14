@@ -4,6 +4,17 @@
 
 ### API Changes
 
+  [Fixed issue 159][issue-159]
+
+  The following methods have been changed to return `Collections.emtpyList()` if 
+  no builds exists or have ran before.
+
+```java
+getAllBuilds(Range range);
+getAllBuilds(), 
+getBuilds()
+```
+
   [Fixed NPE][issue-147]
 
   The JobWithDetails class contains several methods which could
@@ -407,6 +418,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-154]: https://github.com/RisingOak/jenkins-client/issues/154
 [issue-155]: https://github.com/RisingOak/jenkins-client/issues/155
 [issue-157]: https://github.com/RisingOak/jenkins-client/issues/157
+[issue-159]: https://github.com/RisingOak/jenkins-client/issues/159
 [pull-123]: https://github.com/RisingOak/jenkins-client/pull/123
 [pull-149]: https://github.com/RisingOak/jenkins-client/pull/149
 [pull-158]: https://github.com/RisingOak/jenkins-client/pull/158
