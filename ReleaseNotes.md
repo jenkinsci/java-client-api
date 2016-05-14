@@ -2,6 +2,14 @@
 
 ## Release 0.3.5 (NOT RELEASED YET)
 
+ [Added renameJob(..)][pull-158]
+ 
+```java
+public class JenkinsServer {
+  renameJob(String jobName, String newJobName) throws IOException;
+  .
+}
+```
 
 ## Release 0.3.4
 
@@ -350,6 +358,8 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-146]: https://github.com/RisingOak/jenkins-client/issues/146
 [issue-154]: https://github.com/RisingOak/jenkins-client/issues/154
 [issue-155]: https://github.com/RisingOak/jenkins-client/issues/155
+[issue-157]: https://github.com/RisingOak/jenkins-client/issues/157
 [pull-123]: https://github.com/RisingOak/jenkins-client/pull/123
 [pull-149]: https://github.com/RisingOak/jenkins-client/pull/149
+[pull-158]: https://github.com/RisingOak/jenkins-client/pull/158
 
