@@ -188,17 +188,17 @@
         Project Reports</a>
                     <ul class="nav nav-list">
                     
-      <li>
-  
-                          <a href="failsafe-report.html" title="Failsafe Report">
-          <span class="none"></span>
-        Failsafe Report</a>
-            </li>
-                    
       <li class="active">
   
-            <a href="#"><span class="none"></span>Surefire Report</a>
+            <a href="#"><span class="none"></span>Failsafe Report</a>
           </li>
+                    
+      <li>
+  
+                          <a href="surefire-report.html" title="Surefire Report">
+          <span class="none"></span>
+        Surefire Report</a>
+            </li>
               </ul>
         </li>
             </ul>
@@ -258,12 +258,12 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td>49</td>
+<td>22</td>
 <td>0</td>
 <td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.486</td></tr></table><br />
+<td>1</td>
+<td>95.455%</td>
+<td>42.782</td></tr></table><br />
 <p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></div>
 <div class="section">
 <h2><a name="Package_List"></a>Package List</h2><a name="Package_List"></a>
@@ -278,40 +278,16 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td><a href="#com.offbytwo.jenkins.helper">com.offbytwo.jenkins.helper</a></td>
-<td>7</td>
+<td><a href="#com.offbytwo.jenkins.integration">com.offbytwo.jenkins.integration</a></td>
+<td>22</td>
 <td>0</td>
 <td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.053</td></tr>
-<tr class="a">
-<td><a href="#com.offbytwo.jenkins.model">com.offbytwo.jenkins.model</a></td>
-<td>19</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.118</td></tr>
-<tr class="b">
-<td><a href="#com.offbytwo.jenkins">com.offbytwo.jenkins</a></td>
-<td>19</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.114</td></tr>
-<tr class="a">
-<td><a href="#com.offbytwo.jenkins.client.validator">com.offbytwo.jenkins.client.validator</a></td>
-<td>4</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.201</td></tr></table><br />
+<td>1</td>
+<td>95.455%</td>
+<td>42.782</td></tr></table><br />
 <p>Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.</p>
 <div class="section">
-<h3><a name="com.offbytwo.jenkins.helper"></a>com.offbytwo.jenkins.helper</h3><a name="com.offbytwo.jenkins.helper"></a>
+<h3><a name="com.offbytwo.jenkins.integration"></a>com.offbytwo.jenkins.integration</h3><a name="com.offbytwo.jenkins.integration"></a>
 <table border="1" class="table table-striped">
 <tr class="a">
 <th></th>
@@ -323,348 +299,195 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td><a href="#com.offbytwo.jenkins.helperRangeTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.offbytwo.jenkins.helperRangeTest">RangeTest</a></td>
-<td>7</td>
+<td><a href="#com.offbytwo.jenkins.integrationBuildWithDetailsIT"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.offbytwo.jenkins.integrationBuildWithDetailsIT">BuildWithDetailsIT</a></td>
+<td>1</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.053</td></tr></table></div>
-<div class="section">
-<h3><a name="com.offbytwo.jenkins.model"></a>com.offbytwo.jenkins.model</h3><a name="com.offbytwo.jenkins.model"></a>
-<table border="1" class="table table-striped">
+<td>18.528</td></tr>
 <tr class="a">
-<th></th>
-<th>Class</th>
-<th>Tests</th>
-<th>Errors </th>
-<th>Failures</th>
-<th>Skipped</th>
-<th>Success Rate</th>
-<th>Time</th></tr>
-<tr class="b">
-<td><a href="#com.offbytwo.jenkins.modelBuildCauseTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.offbytwo.jenkins.modelBuildCauseTest">BuildCauseTest</a></td>
-<td>6</td>
+<td><a href="#com.offbytwo.jenkins.integrationComputerSetIT"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.offbytwo.jenkins.integrationComputerSetIT">ComputerSetIT</a></td>
+<td>3</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
+<td>2.813</td></tr>
+<tr class="b">
+<td><a href="#com.offbytwo.jenkins.integrationFolderTestsIT"><img src="images/icon_warning_sml.gif" alt="" /></a></td>
+<td><a href="#com.offbytwo.jenkins.integrationFolderTestsIT">FolderTestsIT</a></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0%</td>
 <td>0</td></tr>
 <tr class="a">
-<td><a href="#com.offbytwo.jenkins.modelJobWithDetailsTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.offbytwo.jenkins.modelJobWithDetailsTest">JobWithDetailsTest</a></td>
-<td>9</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.005</td></tr>
-<tr class="b">
-<td><a href="#com.offbytwo.jenkins.modelMainViewTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.offbytwo.jenkins.modelMainViewTest">MainViewTest</a></td>
+<td><a href="#com.offbytwo.jenkins.integrationJenkinsClientIT"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.offbytwo.jenkins.integrationJenkinsClientIT">JenkinsClientIT</a></td>
 <td>1</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0</td></tr>
+<td>1.024</td></tr>
+<tr class="b">
+<td><a href="#com.offbytwo.jenkins.integrationJenkinsClientViewIT"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.offbytwo.jenkins.integrationJenkinsClientViewIT">JenkinsClientViewIT</a></td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>1.277</td></tr>
 <tr class="a">
-<td><a href="#com.offbytwo.jenkins.modelParameterDefinitionsTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.offbytwo.jenkins.modelParameterDefinitionsTest">ParameterDefinitionsTest</a></td>
+<td><a href="#com.offbytwo.jenkins.integrationJenkinsServerIT"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.offbytwo.jenkins.integrationJenkinsServerIT">JenkinsServerIT</a></td>
+<td>13</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>18.255</td></tr>
+<tr class="b">
+<td><a href="#com.offbytwo.jenkins.integrationJobConfigurationIT"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.offbytwo.jenkins.integrationJobConfigurationIT">JobConfigurationIT</a></td>
 <td>1</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.108</td></tr>
-<tr class="b">
-<td><a href="#com.offbytwo.jenkins.modelParametersDefinitionPropertyTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.offbytwo.jenkins.modelParametersDefinitionPropertyTest">ParametersDefinitionPropertyTest</a></td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.003</td></tr>
-<tr class="a">
-<td><a href="#com.offbytwo.jenkins.modelStringParameterDefinitionTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.offbytwo.jenkins.modelStringParameterDefinitionTest">StringParameterDefinitionTest</a></td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.002</td></tr></table></div>
-<div class="section">
-<h3><a name="com.offbytwo.jenkins"></a>com.offbytwo.jenkins</h3><a name="com.offbytwo.jenkins"></a>
-<table border="1" class="table table-striped">
-<tr class="a">
-<th></th>
-<th>Class</th>
-<th>Tests</th>
-<th>Errors </th>
-<th>Failures</th>
-<th>Skipped</th>
-<th>Success Rate</th>
-<th>Time</th></tr>
-<tr class="b">
-<td><a href="#com.offbytwo.jenkinsJenkinsServerTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.offbytwo.jenkinsJenkinsServerTest">JenkinsServerTest</a></td>
-<td>19</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.114</td></tr></table></div>
-<div class="section">
-<h3><a name="com.offbytwo.jenkins.client.validator"></a>com.offbytwo.jenkins.client.validator</h3><a name="com.offbytwo.jenkins.client.validator"></a>
-<table border="1" class="table table-striped">
-<tr class="a">
-<th></th>
-<th>Class</th>
-<th>Tests</th>
-<th>Errors </th>
-<th>Failures</th>
-<th>Skipped</th>
-<th>Success Rate</th>
-<th>Time</th></tr>
-<tr class="b">
-<td><a href="#com.offbytwo.jenkins.client.validatorHttpRequestValidatorTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.offbytwo.jenkins.client.validatorHttpRequestValidatorTest">HttpRequestValidatorTest</a></td>
-<td>4</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.201</td></tr></table></div><br /></div>
+<td>0.885</td></tr></table></div><br /></div>
 <div class="section">
 <h2><a name="Test_Cases"></a>Test Cases</h2><a name="Test_Cases"></a>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p>
 <div class="section">
-<h3><a name="HttpRequestValidatorTest"></a>HttpRequestValidatorTest</h3><a name="com.offbytwo.jenkins.client.validatorHttpRequestValidatorTest"></a>
+<h3><a name="BuildWithDetailsIT"></a>BuildWithDetailsIT</h3><a name="com.offbytwo.jenkins.integrationBuildWithDetailsIT"></a>
 <table border="1" class="table table-striped">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>shouldNotThrowHttpResponseExceptionWhenStatusIsBetween200and400</td>
-<td>0.2</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>shouldThrowHttpResponseExceptionWhenStatusIsLowerThan200</td>
-<td>0</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>shouldThrowHttpResponseExceptionWhenStatusIs400</td>
-<td>0</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>shouldThrowHttpResponseExceptionWhenStatusIsHigherThan400</td>
-<td>0.001</td></tr></table></div>
+<td>checkCauses</td>
+<td>18.528</td></tr></table></div>
 <div class="section">
-<h3><a name="RangeTest"></a>RangeTest</h3><a name="com.offbytwo.jenkins.helperRangeTest"></a>
+<h3><a name="ComputerSetIT"></a>ComputerSetIT</h3><a name="com.offbytwo.jenkins.integrationComputerSetIT"></a>
 <table border="1" class="table table-striped">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>fromGivenPositiveToNegativeValueShouldResultInIllegalArgumentException</td>
-<td>0.004</td></tr>
+<td>shouldGetTotalExecutors</td>
+<td>0.835</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>fromToGiven</td>
-<td>0.046</td></tr>
+<td>shouldGetComputerWithDetailsAndExecutors</td>
+<td>0.964</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>onlyGiven</td>
-<td>0.001</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>toIsGivenLargerThanFromShouldResultInIllegalArgumentException</td>
-<td>0</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>fromGivenNegativeValueShouldResultInIllegalArgumentException</td>
-<td>0.001</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>onlyToGiven</td>
-<td>0.001</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>onlyFromGiven</td>
-<td>0</td></tr></table></div>
+<td>shouldTrunFromOnlineToOffline</td>
+<td>1.014</td></tr></table></div>
 <div class="section">
-<h3><a name="JenkinsServerTest"></a>JenkinsServerTest</h3><a name="com.offbytwo.jenkinsJenkinsServerTest"></a>
+<h3><a name="FolderTestsIT"></a>FolderTestsIT</h3><a name="com.offbytwo.jenkins.integrationFolderTestsIT"></a>
+<table border="1" class="table table-striped">
+<tr class="a">
+<td><a href="#com.offbytwo.jenkins.integration.FolderTestsIT.testFolderPluginAPIs"><img src="images/icon_warning_sml.gif" alt="" /></a></td>
+<td><a href="#com.offbytwo.jenkins.integration.FolderTestsIT.testFolderPluginAPIs">testFolderPluginAPIs</a>
+<div class="detailToggle" style="display:inline"><a href="javascript:toggleDisplay(&apos;com.offbytwo.jenkins.integration.FolderTestsIT.testFolderPluginAPIs&apos;);"><span style="display:inline;" id="com.offbytwo.jenkins.integration.FolderTestsIT.testFolderPluginAPIsoff"> + </span><span style="display:none;" id="com.offbytwo.jenkins.integration.FolderTestsIT.testFolderPluginAPIson"> - </span>[ Detail ]</a></div></td>
+<td>0</td></tr>
+<tr class="b">
+<td></td>
+<td>skipped</td>
+<td></td></tr></table></div>
+<div class="section">
+<h3><a name="JenkinsClientIT"></a>JenkinsClientIT</h3><a name="com.offbytwo.jenkins.integrationJenkinsClientIT"></a>
 <table border="1" class="table table-striped">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>testCreateSubFolderJob</td>
-<td>0.053</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>testGetJobXmls</td>
-<td>0.001</td></tr>
+<td>shouldAddStringParamToAnExistingJob</td>
+<td>1.024</td></tr></table></div>
+<div class="section">
+<h3><a name="JenkinsClientViewIT"></a>JenkinsClientViewIT</h3><a name="com.offbytwo.jenkins.integrationJenkinsClientViewIT"></a>
+<table border="1" class="table table-striped">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>testCreateFolderJob</td>
-<td>0</td></tr>
+<td>shouldGetAllViews</td>
+<td>0.578</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>testScriptPosts</td>
-<td>0.003</td></tr>
+<td>shouldObtainView</td>
+<td>0.699</td></tr></table></div>
+<div class="section">
+<h3><a name="JenkinsServerIT"></a>JenkinsServerIT</h3><a name="com.offbytwo.jenkins.integrationJenkinsServerIT"></a>
+<table border="1" class="table table-striped">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>testJenkinsConnectivity</td>
-<td>0.001</td></tr>
+<td>shouldReturnListOfComputers</td>
+<td>0.661</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>testFolderGetJob</td>
-<td>0.014</td></tr>
+<td>shouldReturnDetailOfComputer</td>
+<td>0.991</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>testReturnListOfJobs</td>
-<td>0.012</td></tr>
+<td>shouldSupportBooleanParameters</td>
+<td>0.686</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>testJenkinsConnectivityBroken</td>
-<td>0.004</td></tr>
+<td>testUpdateJob</td>
+<td>0.57</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>testUpdateJobXml</td>
-<td>0.002</td></tr>
+<td>shouldReturnBuildStatusForBuild</td>
+<td>0.769</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>testReturnSingleJob</td>
-<td>0.002</td></tr>
+<td>shouldReturnDetailOfLablel</td>
+<td>0.794</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>testFolderGetSingleJob</td>
-<td>0.001</td></tr>
+<td>testGetJobByNameDoesntExist</td>
+<td>0.62</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>testFolderGetJobs</td>
-<td>0.001</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>testFolderGetView</td>
-<td>0.008</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>testGetFolderJobInvalidFolder</td>
-<td>0.003</td></tr>
+<td>shouldReturnBuildsForJob</td>
+<td>0.65</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>testGetJobXml</td>
-<td>0</td></tr>
+<td>0.901</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>testCreateJob</td>
-<td>0.008</td></tr>
+<td>0.514</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>testGetFolderJob</td>
-<td>0.001</td></tr>
+<td>testGetJobByName</td>
+<td>0.555</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>shouldReturnListOfJobs</td>
-<td>0</td></tr>
+<td>0.426</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>testQuietDown</td>
-<td>0</td></tr></table></div>
+<td>shouldBuildAJob</td>
+<td>10.118</td></tr></table></div>
 <div class="section">
-<h3><a name="BuildCauseTest"></a>BuildCauseTest</h3><a name="com.offbytwo.jenkins.modelBuildCauseTest"></a>
+<h3><a name="JobConfigurationIT"></a>JobConfigurationIT</h3><a name="com.offbytwo.jenkins.integrationJobConfigurationIT"></a>
 <table border="1" class="table table-striped">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>getUpstreamBuildShouldNotResultWithNPE</td>
-<td>0</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>getUserIdShouldReturnNull</td>
-<td>0</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>getUserNameShouldReturnNull</td>
-<td>0</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>getUpstreamUrlShouldReturnNull</td>
-<td>0</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>getUpstreamProjectShouldReturnNull</td>
-<td>0</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>getShortDescriptionShouldReturnNull</td>
-<td>0</td></tr></table></div>
+<td>shouldAddStringParamToGivenJob</td>
+<td>0.885</td></tr></table></div><br /></div>
 <div class="section">
-<h3><a name="JobWithDetailsTest"></a>JobWithDetailsTest</h3><a name="com.offbytwo.jenkins.modelJobWithDetailsTest"></a>
+<h2><a name="Failure_Details"></a>Failure Details</h2><a name="Failure_Details"></a>
+<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
 <table border="1" class="table table-striped">
 <tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>getLastSuccessfulBuildShouldReturnBuildHasNeverRan</td>
-<td>0</td></tr>
+<td><img src="images/icon_warning_sml.gif" alt="" /></td>
+<td><a name="com.offbytwo.jenkins.integration.FolderTestsIT.testFolderPluginAPIs"></a>testFolderPluginAPIs</td></tr>
 <tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>getLastStableBuildShouldReturnBuildHasNeverRan</td>
-<td>0</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>getLastBuildShouldReturnBuildHasNeverRan</td>
-<td>0</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>getDownstreamProjectsShouldReturnEmptyList</td>
-<td>0.003</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>getLastUnsuccessfulBuildShouldReturnBuildHasNeverRan</td>
-<td>0</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>getLastUnstableBuildShouldReturnBuildHasNeverRan</td>
-<td>0.001</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>getUpstreamProjectsShouldReturnEmptyList</td>
-<td>0</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>getLastCompletedBuildShouldReturnBuildHasNeverRan</td>
-<td>0</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>getLastFailedBuildShouldReturnBuildHasNeverRan</td>
-<td>0.001</td></tr></table></div>
-<div class="section">
-<h3><a name="MainViewTest"></a>MainViewTest</h3><a name="com.offbytwo.jenkins.modelMainViewTest"></a>
-<table border="1" class="table table-striped">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>defaultConstructorShouldInitializeWithEmptyJobs</td>
-<td>0</td></tr></table></div>
-<div class="section">
-<h3><a name="ParameterDefinitionsTest"></a>ParameterDefinitionsTest</h3><a name="com.offbytwo.jenkins.modelParameterDefinitionsTest"></a>
-<table border="1" class="table table-striped">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>shouldMarshallParameterDefinition</td>
-<td>0.108</td></tr></table></div>
-<div class="section">
-<h3><a name="ParametersDefinitionPropertyTest"></a>ParametersDefinitionPropertyTest</h3><a name="com.offbytwo.jenkins.modelParametersDefinitionPropertyTest"></a>
-<table border="1" class="table table-striped">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>shouldMarshallParametersDefinitionProperty</td>
-<td>0.003</td></tr></table></div>
-<div class="section">
-<h3><a name="StringParameterDefinitionTest"></a>StringParameterDefinitionTest</h3><a name="com.offbytwo.jenkins.modelStringParameterDefinitionTest"></a>
-<table border="1" class="table table-striped">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>shouldMarshallStringParameterDefinition</td>
-<td>0.002</td></tr></table></div><br /></div>
+<td></td>
+<td>skipped: skipped</td></tr></table><br /></div>
                   </div>
             </div>
           </div>
