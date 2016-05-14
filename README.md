@@ -92,12 +92,17 @@ the [ticket system before](https://github.com/RisingOak/jenkins-client/issues)
 and describe what the problem is or what kind of feature you would like
 to add. Afterwards you can create an appropriate pull request.
 
-It is required if you want to get a Pull request to be integrated into to squash your
-commits into a single commit which references the issue in the commit message.
+It is required if you want to get a Pull request to be integrated into please
+squash your commits into a single commit which references the issue in the
+commit message.
 
-A pull request has to fulfill only a single ticket and should never create/add/fix
-several issues in one, cause otherwise the history is hard to read and to understand 
-and makes the maintenance of the issues and pull request hard.
+A pull request has to fulfill only a single ticket and should never
+create/add/fix several issues in one, cause otherwise the history is hard to
+read and to understand and makes the maintenance of the issues and pull request
+hard.
+
+Furthermore it is neccesary to create appropriate entries into the `ReleaseNotes.md`
+file as well.
 
 
 ## Generated Site
