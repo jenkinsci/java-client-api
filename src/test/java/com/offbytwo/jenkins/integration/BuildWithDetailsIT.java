@@ -1,5 +1,6 @@
 package com.offbytwo.jenkins.integration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -52,7 +53,7 @@ public class BuildWithDetailsIT {
         List<BuildCause> causes = build.getCauses();
         assertNotNull(causes);
 
-        assertEquals("", build.getBuiltOn());
+        assertThat(build.getBuiltOn()).isEmpty();
     }
 
 }

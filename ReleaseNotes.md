@@ -4,6 +4,34 @@
 
 ### API Changes
 
+  [Fixed NPE][issue-147]
+
+  The JobWithDetails class contains several methods which could
+  have returned `null`. This has been changed to return non null values.
+
+```java
+     public List<Job> getDownstreamProjects();
+     public List<Job> getUpstreamProjects();
+```
+
+  They will return `Collections.emptyList()`.
+
+  The following methods will return `Build.BUILD_HAS_NEVER_RAN` in
+  cases where no build has executed for the appropriate methods instead
+  of the previous `null` value.
+
+```java
+    public Build getFirstBuild();
+    public Build getLastBuild();
+    public Build getLastCompletedBuild();
+    public Build getLastFailedBuild();
+    public Build getLastStableBuild();
+    public Build getLastSuccessfulBuild();
+    public Build getLastUnstableBuild();
+    public Build getLastUnsuccessfulBuild();
+```
+
+
   [Added getAllBuilds(), getAllBuilds(Range range) ][issue-148]
 
   The `JobWithDetails` has been enhanced with two methods
@@ -374,6 +402,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-135]: https://github.com/RisingOak/jenkins-client/issues/135
 [issue-144]: https://github.com/RisingOak/jenkins-client/issues/144
 [issue-146]: https://github.com/RisingOak/jenkins-client/issues/146
+[issue-147]: https://github.com/RisingOak/jenkins-client/issues/147
 [issue-148]: https://github.com/RisingOak/jenkins-client/issues/148
 [issue-154]: https://github.com/RisingOak/jenkins-client/issues/154
 [issue-155]: https://github.com/RisingOak/jenkins-client/issues/155

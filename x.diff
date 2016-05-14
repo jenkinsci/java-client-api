@@ -1,0 +1,5 @@
+Fixed #147
+ o Changed the return type to something usefull
+   instead of null.
+   Based on the issue changed several other methods
+   to return something usefull instead of null.

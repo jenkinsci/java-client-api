@@ -141,11 +141,11 @@ public class BuildWithDetails extends Build {
      *             in case of a failure.
      */
     public String getConsoleOutputText() throws IOException {
-        return client.get(url + "/logText/progressiveText");
+        return client.get(getUrl() + "/logText/progressiveText");
     }
 
     public String getConsoleOutputHtml() throws IOException {
-        return client.get(url + "/logText/progressiveHtml");
+        return client.get(getUrl() + "/logText/progressiveHtml");
     }
 
     public BuildChangeSet getChangeSet() {

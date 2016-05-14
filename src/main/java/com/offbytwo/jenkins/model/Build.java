@@ -12,10 +12,23 @@ import org.apache.http.client.HttpResponseException;
 
 public class Build extends BaseModel {
 
-    int number;
-    int queueId;
-    String url;
+    /**
+     * This will be returned by the API in cases where no build has ever 
+     * been executed like {@link JobWithDetails#getLastBuild()} etc.
+     */
+    public static final Build BUILD_HAS_NEVER_RAN = new Build (-1, -1, "UNKNOWN");
 
+    private int number;
+    private int queueId;
+    private String url;
+
+    private Build(int number, int queueId, String url) {
+        super();
+        this.number = number;
+        this.queueId = queueId;
+        this.url = url;
+    }
+    
     public Build() {
     }
 

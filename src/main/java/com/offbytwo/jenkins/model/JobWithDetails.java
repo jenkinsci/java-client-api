@@ -9,6 +9,7 @@ package com.offbytwo.jenkins.model;
 import static com.google.common.collect.Lists.transform;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.http.HttpStatus;
@@ -177,48 +178,103 @@ public class JobWithDetails extends Job {
         return ret;
     }
 
+    /**
+     * @return the first build which has been executed or
+     *  {@link Build#BUILD_HAS_NEVER_RAN} is this has never
+     *  been executed.
+     */
     public Build getFirstBuild() {
-        return buildWithClient(firstBuild);
+        if (firstBuild == null) {
+            return Build.BUILD_HAS_NEVER_RAN;
+        } else {
+            return buildWithClient(firstBuild);
+        }
     }
 
     public Build getLastBuild() {
-        return buildWithClient(lastBuild);
+        if (lastBuild == null) {
+            return Build.BUILD_HAS_NEVER_RAN;
+        } else {
+            return buildWithClient(lastBuild);
+        }
     }
 
     public Build getLastCompletedBuild() {
-        return buildWithClient(lastCompletedBuild);
+        if (lastCompletedBuild == null) {
+            return Build.BUILD_HAS_NEVER_RAN;
+        } else {
+            return buildWithClient(lastCompletedBuild);
+        }
     }
 
     public Build getLastFailedBuild() {
-        return buildWithClient(lastFailedBuild);
+        if (lastFailedBuild == null) {
+            return Build.BUILD_HAS_NEVER_RAN;
+        } else {
+            return buildWithClient(lastFailedBuild);
+        }
     }
 
     public Build getLastStableBuild() {
-        return buildWithClient(lastStableBuild);
+        if (lastStableBuild == null) {
+            return Build.BUILD_HAS_NEVER_RAN;
+        } else {
+            return buildWithClient(lastStableBuild);
+        }
     }
 
     public Build getLastSuccessfulBuild() {
-        return buildWithClient(lastSuccessfulBuild);
+        if (lastSuccessfulBuild == null) {
+            return Build.BUILD_HAS_NEVER_RAN;
+        } else {
+            return buildWithClient(lastSuccessfulBuild);
+        }
     }
 
     public Build getLastUnstableBuild() {
-        return buildWithClient(lastUnstableBuild);
+        if (lastUnstableBuild == null) {
+            return Build.BUILD_HAS_NEVER_RAN;
+        } else {
+            return buildWithClient(lastUnstableBuild);
+        }
     }
 
     public Build getLastUnsuccessfulBuild() {
-        return buildWithClient(lastUnsuccessfulBuild);
+        if (lastUnsuccessfulBuild == null) {
+            return Build.BUILD_HAS_NEVER_RAN;
+        } else {
+            return buildWithClient(lastUnsuccessfulBuild);
+        }
     }
 
     public int getNextBuildNumber() {
         return nextBuildNumber;
     }
 
+    /**
+     * @return the list of downstream projects.
+     * If no downstream projects exist just return
+     * an {@link Collections#emptyList()} 
+     */
     public List<Job> getDownstreamProjects() {
-        return transform(downstreamProjects, new JobWithClient());
+        if (downstreamProjects == null) {
+            return Collections.emptyList();
+        } else {
+            return transform(downstreamProjects, new JobWithClient());
+        }
     }
 
+    /**
+     * @return the list of upstream projects.
+     * If no upstream projects exist just return
+     * an {@link Collections#emptyList()} 
+     */
     public List<Job> getUpstreamProjects() {
-        return transform(upstreamProjects, new JobWithClient());
+        if (upstreamProjects == null) {
+            return Collections.emptyList();
+        } else {
+            return transform(upstreamProjects, new JobWithClient());
+        }
     }
 
     public QueueItem getQueueItem() {

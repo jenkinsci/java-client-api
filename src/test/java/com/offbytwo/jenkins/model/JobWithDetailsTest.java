@@ -1,36 +1,71 @@
 package com.offbytwo.jenkins.model;
 
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.Assert.assertNull;
+import java.util.Collections;
+
+import org.junit.Before;
+import org.junit.Test;
 
 public class JobWithDetailsTest {
 
-    @Test
-    public void shouldReturnNullBuildsIfJobWithDetailsDoesntHaveAnyBuildsYet() {
-        // given
-        JobWithDetails job = givenNewJobWithoutAnyBuilds();
+    private JobWithDetails job;
 
-        // when
-        Build lastBuild = job.getLastBuild();
-        Build lastCompletedBuild = job.getLastCompletedBuild();
-        Build lastFailedBuild = job.getLastFailedBuild();
-        Build lastStableBuild = job.getLastStableBuild();
-        Build lastSuccessfulBuild = job.getLastSuccessfulBuild();
-        Build lastUnstableBuild = job.getLastUnstableBuild();
-        Build lastUnsuccessfulBuild = job.getLastUnsuccessfulBuild();
-
-        // then
-        assertNull(lastBuild);
-        assertNull(lastCompletedBuild);
-        assertNull(lastFailedBuild);
-        assertNull(lastStableBuild);
-        assertNull(lastSuccessfulBuild);
-        assertNull(lastUnstableBuild);
-        assertNull(lastUnsuccessfulBuild);
+    @Before
+    public void setUp() {
+        job = givenNewJobWithoutAnyBuilds();
     }
 
     private JobWithDetails givenNewJobWithoutAnyBuilds() {
         return new JobWithDetails();
+    }
+
+    private void failIfNotBuildHasNeverRanReturned(Build build) {
+        assertThat(build).isEqualTo(Build.BUILD_HAS_NEVER_RAN);
+    }
+
+    @Test
+    public void getLastStableBuildShouldReturnBuildHasNeverRan() {
+        failIfNotBuildHasNeverRanReturned(job.getLastStableBuild());
+    }
+
+    @Test
+    public void getLastBuildShouldReturnBuildHasNeverRan() {
+        failIfNotBuildHasNeverRanReturned(job.getLastBuild());
+    }
+
+    @Test
+    public void getLastCompletedBuildShouldReturnBuildHasNeverRan() {
+        failIfNotBuildHasNeverRanReturned(job.getLastCompletedBuild());
+    }
+
+    @Test
+    public void getLastFailedBuildShouldReturnBuildHasNeverRan() {
+        failIfNotBuildHasNeverRanReturned(job.getLastFailedBuild());
+    }
+
+    @Test
+    public void getLastSuccessfulBuildShouldReturnBuildHasNeverRan() {
+        failIfNotBuildHasNeverRanReturned(job.getLastSuccessfulBuild());
+    }
+
+    @Test
+    public void getLastUnstableBuildShouldReturnBuildHasNeverRan() {
+        failIfNotBuildHasNeverRanReturned(job.getLastUnstableBuild());
+    }
+
+    @Test
+    public void getLastUnsuccessfulBuildShouldReturnBuildHasNeverRan() {
+        failIfNotBuildHasNeverRanReturned(job.getLastUnsuccessfulBuild());
+    }
+
+    @Test
+    public void getDownstreamProjectsShouldReturnEmptyList() {
+        assertThat(job.getDownstreamProjects()).isEqualTo(Collections.emptyList());
+    }
+
+    @Test
+    public void getUpstreamProjectsShouldReturnEmptyList() {
+        assertThat(job.getUpstreamProjects()).isEqualTo(Collections.emptyList());
     }
 }

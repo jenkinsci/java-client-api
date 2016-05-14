@@ -16,10 +16,10 @@ public class MavenBuild extends Build {
     }
 
     public MavenModule getMavenModule() throws IOException {
-        return client.get(this.url + "/mavenArtifacts/", MavenModule.class);
+        return client.get(this.getUrl() + "/mavenArtifacts/", MavenModule.class);
     }
 
     public TestReport getTestReport() throws IOException {
-        return client.get(this.url + "/testReport/?depth=1", TestReport.class);
+        return client.get(this.getUrl() + "/testReport/?depth=1", TestReport.class);
     }
 }
