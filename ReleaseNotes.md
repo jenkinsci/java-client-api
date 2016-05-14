@@ -1,6 +1,8 @@
 # Release Notes
 
-## Release 0.3.5 (NOT RELEASED YET)
+## Release 0.3.6 (NOT RELEASED YET)
+
+## Release 0.3.5
 
 ### API Changes
 

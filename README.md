@@ -14,7 +14,7 @@ To get started add the following dependency to your project
 <dependency>
   <groupId>com.offbytwo.jenkins</groupId>
   <artifactId>jenkins-client</artifactId>
-  <version>0.3.4</version>
+  <version>0.3.5</version>
 </dependency>
 ```
 
@@ -68,6 +68,7 @@ covered by the usual integration tests.
 
 You can find details about the different releases in the [Release Notes](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md).
 
+ * [Release 0.3.6](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-036).
  * [Release 0.3.5](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-035).
  * [Release 0.3.4](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-034).
  * [Release 0.3.3](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-033).
