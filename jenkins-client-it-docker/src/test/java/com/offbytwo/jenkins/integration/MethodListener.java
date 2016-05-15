@@ -4,6 +4,7 @@ import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
+import org.testng.SkipException;
 
 public class MethodListener
     implements IInvokedMethodListener
@@ -51,7 +52,12 @@ public class MethodListener
             }
             else
             {
-                System.out.println( "FAILURE." );
+                //Isn't there an more elegant way?
+                if (testResult.getThrowable() instanceof SkipException) {
+                    System.out.println( "SKIPPED." );
+                } else {
+                    System.out.println( "FAILURE." );
+                }
             }
         }
     }

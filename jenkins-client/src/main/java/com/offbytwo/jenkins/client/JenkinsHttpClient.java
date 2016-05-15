@@ -17,6 +17,7 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -63,6 +64,8 @@ public class JenkinsHttpClient {
 
     private ObjectMapper mapper;
     private String context;
+    
+    private String jenkinsVersion;
 
     /**
      * Create an unauthenticated Jenkins HTTP client
@@ -82,6 +85,7 @@ public class JenkinsHttpClient {
         this.client = client;
         this.httpResponseValidator = new HttpResponseValidator();
         // this.contentExtractor = new HttpResponseContentExtractor();
+        this.jenkinsVersion = null;
     }
 
     /**
@@ -153,6 +157,7 @@ public class JenkinsHttpClient {
     public <T extends BaseModel> T get(String path, Class<T> cls) throws IOException {
         HttpGet getMethod = new HttpGet(api(path));
         HttpResponse response = client.execute(getMethod, localContext);
+        getJenkinsVersionFromHeader(response);
         try {
             httpResponseValidator.validateResponse(response);
             return objectFromResponse(cls, response);
@@ -175,7 +180,7 @@ public class JenkinsHttpClient {
     public String get(String path) throws IOException {
         HttpGet getMethod = new HttpGet(api(path));
         HttpResponse response = client.execute(getMethod, localContext);
-
+        getJenkinsVersionFromHeader(response);
         try {
             httpResponseValidator.validateResponse(response);
             return IOUtils.toString(response.getEntity().getContent());
@@ -220,6 +225,7 @@ public class JenkinsHttpClient {
     public InputStream getFile(URI path) throws IOException {
         HttpGet getMethod = new HttpGet(path);
         HttpResponse response = client.execute(getMethod, localContext);
+        getJenkinsVersionFromHeader(response);
         httpResponseValidator.validateResponse(response);
         return new RequestReleasingInputStream(response.getEntity().getContent(), getMethod);
     }
@@ -260,6 +266,7 @@ public class JenkinsHttpClient {
             request.setEntity(stringEntity);
         }
         HttpResponse response = client.execute(request, localContext);
+        getJenkinsVersionFromHeader(response);
 
         try {
             httpResponseValidator.validateResponse(response);
@@ -330,6 +337,7 @@ public class JenkinsHttpClient {
         }
 
         HttpResponse response = client.execute(request, localContext);
+        getJenkinsVersionFromHeader(response);
 
         try {
             httpResponseValidator.validateResponse(response);
@@ -368,6 +376,7 @@ public class JenkinsHttpClient {
             request.setEntity(new StringEntity(xml_data, ContentType.create("text/xml", "utf-8")));
         }
         HttpResponse response = client.execute(request, localContext);
+        getJenkinsVersionFromHeader(response);
         httpResponseValidator.validateResponse(response);
         try {
             return IOUtils.toString(response.getEntity().getContent());
@@ -413,6 +422,7 @@ public class JenkinsHttpClient {
             request.setEntity(new StringEntity(textData, contentType));
         }
         HttpResponse response = client.execute(request, localContext);
+        getJenkinsVersionFromHeader(response);
         httpResponseValidator.validateResponse(response);
         try {
             return IOUtils.toString(response.getEntity().getContent());
@@ -471,7 +481,6 @@ public class JenkinsHttpClient {
     private <T extends BaseModel> T objectFromResponse(Class<T> cls, HttpResponse response) throws IOException {
         InputStream content = response.getEntity().getContent();
         byte[] bytes = ByteStreams.toByteArray(content);
-        String bytestring = new String(bytes);
         T result = mapper.readValue(bytes, cls);
         // TODO: original:
         // T result = mapper.readValue(content, cls);
@@ -483,6 +492,20 @@ public class JenkinsHttpClient {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(FAIL_ON_UNKNOWN_PROPERTIES);
         return mapper;
+    }
+
+    /**
+     * @return the version string.
+     */
+    public String getJenkinsVersion() {
+        return this.jenkinsVersion;
+    }
+
+    private void getJenkinsVersionFromHeader(HttpResponse response) {
+        Header[] headers = response.getHeaders("X-Jenkins");
+        if (headers.length == 1) {
+            this.jenkinsVersion = headers[0].getValue();
+        } 
     }
 
     private void releaseConnection(HttpRequestBase httpRequestBase) {

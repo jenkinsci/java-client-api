@@ -2,6 +2,22 @@
 
 ## Release 0.3.6 (NOT RELEASED YET)
 
+### General Changes
+
+  [Changed the structure and integrated Docker IT][issue-160]
+  
+### API Changes
+
+  [Get Jenkins Version from http header][issue-90]
+
+```java
+public class JenkinsServer {
+  public String getVersion();
+  .
+}
+``` 
+
+
 ## Release 0.3.5
 
 ### API Changes
@@ -401,6 +417,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-67]: https://github.com/RisingOak/jenkins-client/issues/67
 [issue-82]: https://github.com/RisingOak/jenkins-client/issues/82
 [issue-89]: https://github.com/RisingOak/jenkins-client/issues/89
+[issue-90]: https://github.com/RisingOak/jenkins-client/issues/90
 [issue-91]: https://github.com/RisingOak/jenkins-client/issues/91
 [issue-104]: https://github.com/RisingOak/jenkins-client/issues/104
 [issue-111]: https://github.com/RisingOak/jenkins-client/issues/111

@@ -96,6 +96,18 @@ public class JenkinsServer {
     }
 
     /**
+     * @return The Jenkins version.
+     */
+    public String getVersion() {
+        if (client.getJenkinsVersion().isEmpty()) {
+            //Force a request to get at least once
+            //HttpHeader
+            isRunning();
+        }
+        return client.getJenkinsVersion();
+    }
+
+    /**
      * Get a list of all the defined jobs on the server (at the summary level)
      *
      * @return list of defined jobs (summary level, for details @see Job#details

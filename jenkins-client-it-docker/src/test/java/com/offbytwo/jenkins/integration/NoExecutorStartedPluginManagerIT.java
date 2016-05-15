@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.util.List;
 
+import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -26,8 +27,19 @@ public class NoExecutorStartedPluginManagerIT
     }
 
     @Test
-    public void getPluginsShouldReturn26()
+    public void getPluginsShouldReturn9ForJenkins20()
     {
+        if (!jenkinsServer.getVersion().equals("2.0")) {
+            throw new SkipException("Not Version 2.0");
+        }
+        assertThat( pluginManager.getPlugins() ).hasSize( 9 );
+    }
+    @Test
+    public void getPluginsShouldReturn26ForJenkins1651()
+    {
+        if (!jenkinsServer.getVersion().equals("1.651")) {
+            throw new SkipException("Not Version 1.651");
+        }
         assertThat( pluginManager.getPlugins() ).hasSize( 26 );
     }
 
@@ -39,8 +51,48 @@ public class NoExecutorStartedPluginManagerIT
     }   
     
     @Test
-    public void getPluginsShouldReturnTheListOfInstalledPlugins()
+    public void getPluginsShouldReturnTheListOfInstalledPluginsForJenkins20() {
+        
+        if (!jenkinsServer.getVersion().equals("2.0")) {
+            throw new SkipException("Not Version 2.0");
+        }
+        
+        //TODO: The list of plugins is contained in the plugin.txt
+        // which should be read and used as base of comparison.
+        // instead of maintaining at two locations.
+        Plugin[] expectedPlugins = {
+            createPlugin("token-macro", "1.12.1"),
+            createPlugin("testng-plugin", "1.10"),
+            createPlugin("job-dsl", "1.41"),
+            createPlugin("junit", "1.10"),
+            createPlugin("jacoco", "1.0.19"),
+            createPlugin("config-file-provider", "2.10.0"),
+            createPlugin("timestamper", "1.7.2"),
+            createPlugin("credentials", "1.24"),
+            createPlugin("throttle-concurrents", "1.8.4"),
+        };
+        List<Plugin> plugins = pluginManager.getPlugins();
+        
+        for ( Plugin plugin : plugins )
+        {
+            boolean found = false;
+            for ( int i = 0; i < expectedPlugins.length; i++ )
+            {
+                if (plugin.getShortName().equals( expectedPlugins[i].getShortName()) &&
+                plugin.getVersion().equals( expectedPlugins[i].getVersion())) {
+                    found = true;
+                }
+            }
+            assertThat( found ).isTrue().as("Plugin shortName:{} version:{} couldn't be found.", plugin.getShortName(), plugin.getVersion());
+        }
+        
+    }
+    @Test
+    public void getPluginsShouldReturnTheListOfInstalledPluginsFor1651()
     {
+        if (!jenkinsServer.getVersion().equals("1.651")) {
+            throw new SkipException("Not Version 1.651");
+        }
         //TODO: The list of plugins is contained in the plugin.txt
         // which should be read and used as base of comparison.
         // instead of maintaining at two locations.
