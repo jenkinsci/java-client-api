@@ -1,0 +1,5 @@
+jenkins:
+  image: "jenkins-with-plugins"
+
+maven:
+  image: "3.3.3-jdk-7"

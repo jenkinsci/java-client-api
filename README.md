@@ -1,6 +1,4 @@
-# jenkins-client
-
-A Java client for the Jenkins API
+# A Jenkins API Client for Java
 
 [![MIT Licence](https://img.shields.io/github/license/RisingOak/jenkins-client.svg?label=License)](http://opensource.org/licenses/MIT)
 [![Maven Central](https://img.shields.io/maven-central/v/com.offbytwo.jenkins/jenkins-client.svg?label=Maven%20Central)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.offbytwo.jenkins%22%20a%3A%22jenkins-client%22)
@@ -68,6 +66,7 @@ covered by the usual integration tests.
 
 You can find details about the different releases in the [Release Notes](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md).
 
+ * [Release 0.4.0](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-040).
  * [Release 0.3.6](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-036).
  * [Release 0.3.5](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-035).
  * [Release 0.3.4](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-034).

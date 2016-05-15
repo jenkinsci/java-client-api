@@ -1,14 +1,36 @@
 ---
-# There is no need to install
-# artifacts before.
-# The mvn verfiy is sufficient.
-install: true
+sudo: required
+
+services: 
+  - docker
+
+# Building the image which is needed for the integration tests.
+# This is done in the sub module.
+# TODO: May be we need to think about this.
+# TODO: Make our own image and publish this to docker hub.
+before_install:
+  - cd jenkins-client-it-docker
+  - docker build --no-cache -t jenkins-with-plugins .
+  - docker run --name jenkins-for-testing -v "$(pwd)/jobs":/var/jenkins_home/jobs  -d -p 8080:8080 -p 50000:50000 --env JENKINS_OPTS=--httpPort=8080 jenkins-with-plugins
+  - cd ..
+
 language: java
-script: mvn verify -B -Prun-its
+
+script: 
+  - mvn -Prun-its,run-docker-its clean verify --batch-mode
+
+# Make sure we stop the container
+# and remove the container independent
+# if it is running or not (-f option).
+# Finally remove the image which has been created
+# before during the before_install part.
+after_script:
+  - docker stop jenkins-for-testing
+  - docker rm -f -v jenkins-for-testing
+  - docker rmi -f jenkins-with-plugins
+
 jdk:
- - oraclejdk8
  - oraclejdk7
- - openjdk7
 cache:
   directories:
   - $HOME/.m2/repository
