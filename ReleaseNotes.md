@@ -438,6 +438,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-155]: https://github.com/RisingOak/jenkins-client/issues/155
 [issue-157]: https://github.com/RisingOak/jenkins-client/issues/157
 [issue-159]: https://github.com/RisingOak/jenkins-client/issues/159
+[issue-160]: https://github.com/RisingOak/jenkins-client/issues/160
 [pull-123]: https://github.com/RisingOak/jenkins-client/pull/123
 [pull-149]: https://github.com/RisingOak/jenkins-client/pull/149
 [pull-158]: https://github.com/RisingOak/jenkins-client/pull/158
