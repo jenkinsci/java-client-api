@@ -54,7 +54,7 @@ public class MethodListener
             {
                 //Isn't there an more elegant way?
                 if (testResult.getThrowable() instanceof SkipException) {
-                    System.out.println( "SKIPPED." );
+                    System.out.println( "SKIPPED. ( " + testResult.getThrowable().getMessage() + " )" );
                 } else {
                     System.out.println( "FAILURE." );
                 }
