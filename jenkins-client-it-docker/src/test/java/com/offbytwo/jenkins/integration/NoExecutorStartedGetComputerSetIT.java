@@ -33,7 +33,7 @@ public class NoExecutorStartedGetComputerSetIT
         assertThat( computers.get( 0 ).getDisplayName() ).isEqualTo( "master" );
     }
 
-    @Test( enabled = false, description = "Currently disabled until i have reconfigured the Docker configuration appropriately." )
+    @Test
     public void getTotalExecutorsShouldReturnZero()
     {
         assertThat( computerSet.getTotalExecutors() ).isEqualTo( 0 );
