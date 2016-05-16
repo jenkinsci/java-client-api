@@ -29,6 +29,7 @@ public class NoExecutorStartedPluginManagerIT
     @Test
     public void getPluginsShouldReturn9ForJenkins20()
     {
+        //TODO: Check why there is such a difference in the number of Plugins?
         if (!jenkinsServer.getVersion().equals("2.0")) {
             throw new SkipException("Not Version 2.0");
         }
@@ -37,6 +38,7 @@ public class NoExecutorStartedPluginManagerIT
     @Test
     public void getPluginsShouldReturn26ForJenkins1651()
     {
+        //TODO: Check why there is such a difference in the number of Plugins?
         if (!jenkinsServer.getVersion().equals("1.651")) {
             throw new SkipException("Not Version 1.651");
         }
