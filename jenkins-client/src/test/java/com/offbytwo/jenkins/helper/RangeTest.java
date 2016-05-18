@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Rising Oak LLC.
+ * Copyright (c) 2016 Cosmin Stejerean, Karl Heinz Marbaise, and contributors.
  *
  * Distributed under the MIT license: http://opensource.org/licenses/MIT
  */

@@ -111,7 +111,7 @@ http://risingoak.github.io/jenkins-client/
 
 ## License
 
-Copyright (C) 2013, Rising Oak LLC.
+Copyright (C) 2013, Cosmin Stejerean, Karl Heinz Marbaise, and contributors.
 
 Distributed under the MIT license: http://opensource.org/licenses/MIT
 
