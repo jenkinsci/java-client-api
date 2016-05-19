@@ -1,8 +1,12 @@
 # A Jenkins API Client for Java
 
-[![MIT Licence](https://img.shields.io/github/license/RisingOak/jenkins-client.svg?label=License)](http://opensource.org/licenses/MIT)
+[![MIT Licence](https://img.shields.io/github/license/jenkinsci/java-client-api.svg?label=License)](http://opensource.org/licenses/MIT)
 [![Maven Central](https://img.shields.io/maven-central/v/com.offbytwo.jenkins/jenkins-client.svg?label=Maven%20Central)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.offbytwo.jenkins%22%20a%3A%22jenkins-client%22)
 [![Build Status](https://travis-ci.org/RisingOak/jenkins-client.svg?branch=master)](https://travis-ci.org/RisingOak/jenkins-client)
+
+## Important Note
+
+The Jenkins API Client For Java has now moved under the umbrella of the Jenkins GitHub Organization.
 
 ## Getting Started
 
@@ -13,6 +17,17 @@ To get started add the following dependency to your project
   <groupId>com.offbytwo.jenkins</groupId>
   <artifactId>jenkins-client</artifactId>
   <version>0.3.5</version>
+</dependency>
+```
+
+Starting with Release 0.4.0 the groupId/artifactId will change (NOT YET DONE!)
+
+```xml
+<dependency>
+  NOT YET FINALIZED
+  <groupId>org.jenkins-ci.plugins</groupId>
+  <artifactId>java-client-api</artifactId>
+  <version>0.4.0</version>
 </dependency>
 ```
 
@@ -66,20 +81,20 @@ covered by the usual integration tests.
 
 You can find details about the different releases in the [Release Notes](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md).
 
- * [Release 0.4.0](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-040).
- * [Release 0.3.6](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-036).
- * [Release 0.3.5](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-035).
- * [Release 0.3.4](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-034).
- * [Release 0.3.3](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-033).
- * [Release 0.3.2](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-032).
- * [Release 0.3.1](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md#release-031).
+ * [Release 0.4.0](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-040).
+ * [Release 0.3.6](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-036).
+ * [Release 0.3.5](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-035).
+ * [Release 0.3.4](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-034).
+ * [Release 0.3.3](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-033).
+ * [Release 0.3.2](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-032).
+ * [Release 0.3.1](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-031).
 
 ## Contribution
 
 ### Creating Issues
 
 If you find a problem please create an 
-[issue in the ticket system](https://github.com/RisingOak/jenkins-client/issues)
+[issue in the ticket system with the component `java-client-api`](https://issues.jenkins-ci.org/projects/JENKINS/)
 and describe what is going wrong or what you expect to happen.
 If you have a full working example or a log file this is also helpful.
 You should of course describe only a single issue in a single ticket and not 
@@ -88,7 +103,7 @@ mixing up several different things into a single issue.
 ### Creating a Pull Request
 
 Before you create a pull request it is necessary to create an issue in
-the [ticket system before](https://github.com/RisingOak/jenkins-client/issues)
+the [ticket system before with the component `java-client-api`](https://issues.jenkins-ci.org/browse/JENKINS)
 and describe what the problem is or what kind of feature you would like
 to add. Afterwards you can create an appropriate pull request.
 
@@ -99,20 +114,23 @@ commit message.
 A pull request has to fulfill only a single ticket and should never
 create/add/fix several issues in one, cause otherwise the history is hard to
 read and to understand and makes the maintenance of the issues and pull request
-hard.
+hard or to be honest impossible.
 
 Furthermore it is neccesary to create appropriate entries into the `ReleaseNotes.md`
 file as well.
 
 
+## Help & Questions
+
+You can ask questions in the [mailing list](https://groups.google.com/d/forum/java-client-api)
+ which is also intended as discussion forum for development.
+
 ## Generated Site
 
-http://risingoak.github.io/jenkins-client/
+http://jenkinsci.github.io/java-client-api/
 
 ## License
 
 Copyright (C) 2013, Cosmin Stejerean, Karl Heinz Marbaise, and contributors.
 
 Distributed under the MIT license: http://opensource.org/licenses/MIT
-
-[integration-tests]: https://github.com/RisingOak/jenkins-client-docker
