@@ -3,13 +3,13 @@ package com.offbytwo.jenkins.integration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.offbytwo.jenkins.helper.JenkinsVersion;
 import com.offbytwo.jenkins.model.Plugin;
 import com.offbytwo.jenkins.model.PluginManager;
 
@@ -26,18 +26,17 @@ public class NoExecutorStartedPluginManagerIT extends AbstractJenkinsIntegration
     @Test
     public void getPluginsShouldReturn9ForJenkins20() {
         // TODO: Check why there is such a difference in the number of Plugins?
-        if (!jenkinsServer.getVersion().equals("2.0")) {
-            throw new SkipException("Not Version 2.0");
+        if (jenkinsServer.getVersion().isLessThan("2.0")) {
+            throw new SkipException("Not Version 2.0 (" + jenkinsServer.getVersion() + ")");
         }
         assertThat(pluginManager.getPlugins()).hasSize(9);
     }
 
     @Test
     public void getPluginsShouldReturn27ForJenkins1651() {
-        List<String> asList = Arrays.asList("1.651", "1.651.1", "1.651.2", "1.651.3");
-        // TODO: Check why there is such a difference in the number of Plugins?
-        if (!asList.contains(jenkinsServer.getVersion())) {
-            throw new SkipException("Not Version 1.651");
+        JenkinsVersion jv = jenkinsServer.getVersion();
+        if (jv.isLessThan("1.651") && jv.isGreaterThan("1.651.3")) {
+            throw new SkipException("Not Version 1.651 (" + jv.toString() + ")");
         }
         assertThat(pluginManager.getPlugins()).hasSize(27);
     }
@@ -52,8 +51,8 @@ public class NoExecutorStartedPluginManagerIT extends AbstractJenkinsIntegration
     @Test
     public void getPluginsShouldReturnTheListOfInstalledPluginsForJenkins20() {
 
-        if (!jenkinsServer.getVersion().equals("2.0")) {
-            throw new SkipException("Not Version 2.0");
+        if (jenkinsServer.getVersion().isLessThan("2.0")) {
+            throw new SkipException("Not Version 2.0 (" + jenkinsServer.getVersion() + ")");
         }
 
         // TODO: The list of plugins is contained in the plugin.txt
@@ -91,12 +90,12 @@ public class NoExecutorStartedPluginManagerIT extends AbstractJenkinsIntegration
 
     @Test
     public void getPluginsShouldReturnTheListOfInstalledPluginsFor1651() {
-        List<String> asList = Arrays.asList("1.651", "1.651.1", "1.651.2", "1.651.3");
+        JenkinsVersion jv = jenkinsServer.getVersion();
+        if (jv.isLessThan("1.651") && jv.isGreaterThan("1.651.3")) {
+            throw new SkipException("Not Version 1.651 (" + jv + ")");
+        }
 
         // TODO: Check why there is such a difference in the number of Plugins?
-        if (!asList.contains(jenkinsServer.getVersion())) {
-            throw new SkipException("Not Version 1.651");
-        }
         // TODO: The list of plugins is contained in the plugin.txt
         // which should be read and used as base of comparison.
         // instead of maintaining at two locations.

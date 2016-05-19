@@ -26,6 +26,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
 import com.offbytwo.jenkins.client.util.EncodingUtils;
+import com.offbytwo.jenkins.helper.JenkinsVersion;
 import com.offbytwo.jenkins.model.Build;
 import com.offbytwo.jenkins.model.Computer;
 import com.offbytwo.jenkins.model.ComputerSet;
@@ -100,15 +101,16 @@ public class JenkinsServer {
     }
 
     /**
-     * @return The Jenkins version.
+     * @return {@link JenkinsVersion}
      */
-    public String getVersion() {
+    public JenkinsVersion getVersion() {
         if (client.getJenkinsVersion().isEmpty()) {
             // Force a request to get at least once
             // HttpHeader
             isRunning();
         }
-        return client.getJenkinsVersion();
+        JenkinsVersion jv = new JenkinsVersion(client.getJenkinsVersion());
+        return jv;
     }
 
     /**

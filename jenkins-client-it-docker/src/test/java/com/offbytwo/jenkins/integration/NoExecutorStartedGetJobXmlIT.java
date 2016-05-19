@@ -19,15 +19,31 @@ public class NoExecutorStartedGetJobXmlIT extends AbstractJenkinsIntegrationCase
         jobXml = jenkinsServer.getJobXml("test");
     }
 
-    private static final String[] CONFIG_XML = { "<?xml version='1.0' encoding='UTF-8'?>", "<project>", "  <actions/>",
-            "  <description>This is the description with umlauts äöü</description>",
-            "  <keepDependencies>false</keepDependencies>", "  <properties/>", "  <scm class=\"hudson.scm.NullSCM\"/>",
-            "  <canRoam>true</canRoam>", "  <disabled>false</disabled>",
-            "  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>",
-            "  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>", "  <triggers/>",
-            "  <concurrentBuild>false</concurrentBuild>", "  <builders>", "    <hudson.tasks.Shell>",
-            "      <command>echo &quot;test&quot;</command>", "    </hudson.tasks.Shell>", "  </builders>",
-            "  <publishers/>", "  <buildWrappers/>", "</project>" };
+    //@formatter:off
+    private static final String[] CONFIG_XML = { 
+        "<?xml version='1.0' encoding='UTF-8'?>", 
+        "<project>", 
+        "  <actions/>",
+        "  <description>This is the description with umlauts äöü</description>",
+        "  <keepDependencies>false</keepDependencies>", 
+        "  <properties/>", 
+        "  <scm class=\"hudson.scm.NullSCM\"/>",
+        "  <canRoam>true</canRoam>", 
+        "  <disabled>false</disabled>",
+        "  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>",
+        "  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>", 
+        "  <triggers/>",
+        "  <concurrentBuild>false</concurrentBuild>", 
+        "  <builders>", 
+        "    <hudson.tasks.Shell>",
+        "      <command>echo &quot;test&quot;</command>", 
+        "    </hudson.tasks.Shell>", 
+        "  </builders>",
+        "  <publishers/>", 
+        "  <buildWrappers/>", 
+        "</project>" 
+    };
+    //@formatter:on
 
     @Test
     public void getJobXmlShouldReturnTheExpectedConfigXml() {

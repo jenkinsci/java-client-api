@@ -16,6 +16,30 @@
 
 ### API Changes
 
+  * [Fixed Issue 215][issue-215]
+  
+    The JenkinsServer class will return `JenkinsVersion` instead of String if you
+    call `getJenkinsVersion()`.
+    
+```java
+public class JenkinsVersion ... {
+    public boolean isGreaterThan(String version);
+    public boolean isGreaterOrEqual(String version);
+    public boolean isLessThan(String version);
+    public boolean isLessOrEqual(String version);
+    public boolean isEqualTo(String version);
+}
+```
+
+   The `JenkinsVersion` class can be used to compare different versions with
+   each other.
+   
+```java
+JenkinsVersion jv = new JenkinsVersion("1.651.1");
+assertThat(jv.isGreaterThan("1.651.1")).isFalse();
+``` 
+    
+    
   * [Fixed issue 184][issue-184]
 
     Based on the differences between getting a TestReport for a MavenJob type and 
@@ -916,6 +940,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-207]: https://github.com/jenkinsci/java-client-api/issues/207
 [issue-209]: https://github.com/jenkinsci/java-client-api/issues/209
 [issue-211]: https://github.com/jenkinsci/java-client-api/issues/211
+[issue-215]: https://github.com/jenkinsci/java-client-api/issues/215
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
