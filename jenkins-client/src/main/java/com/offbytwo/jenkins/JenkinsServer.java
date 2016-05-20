@@ -257,7 +257,7 @@ public class JenkinsServer {
 
             return job;
         } catch (HttpResponseException e) {
-            LOGGER.debug("getJob(folder={}, jobName={}) status={}", folder.getName(), jobName, e.getStatusCode());
+            LOGGER.debug("getJob(folder={}, jobName={}) status={}", folder, jobName, e.getStatusCode());
             if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
                 return null;
             }
