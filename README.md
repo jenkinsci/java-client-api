@@ -2,7 +2,7 @@
 
 [![MIT Licence](https://img.shields.io/github/license/jenkinsci/java-client-api.svg?label=License)](http://opensource.org/licenses/MIT)
 [![Maven Central](https://img.shields.io/maven-central/v/com.offbytwo.jenkins/jenkins-client.svg?label=Maven%20Central)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.offbytwo.jenkins%22%20a%3A%22jenkins-client%22)
-[![Build Status](https://travis-ci.org/RisingOak/jenkins-client.svg?branch=master)](https://travis-ci.org/RisingOak/jenkins-client)
+[![Build Status](https://travis-ci.org/jenkinsci/jenkins-client-api.svg?branch=master)](https://travis-ci.org/RisingOak/jenkins-client)
 
 ## Important Note
 
@@ -25,7 +25,7 @@ Starting with Release 0.4.0 the groupId/artifactId will change (NOT YET DONE!)
 ```xml
 <dependency>
   NOT YET FINALIZED
-  <groupId>org.jenkins-ci.plugins</groupId>
+  <groupId>org.jenkins-ci.lib</groupId>
   <artifactId>java-client-api</artifactId>
   <version>0.4.0</version>
 </dependency>
