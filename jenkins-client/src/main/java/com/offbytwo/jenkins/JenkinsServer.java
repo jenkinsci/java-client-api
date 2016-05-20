@@ -17,6 +17,8 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.entity.ContentType;
 import org.dom4j.DocumentException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
@@ -44,6 +46,7 @@ import com.offbytwo.jenkins.model.View;
  * The main starting point for interacting with a Jenkins server.
  */
 public class JenkinsServer {
+    private final Logger LOGGER = LoggerFactory.getLogger( getClass() );
 
     private final JenkinsHttpClient client;
 
@@ -91,6 +94,7 @@ public class JenkinsServer {
             client.get("/");
             return true;
         } catch (IOException e) {
+            LOGGER.debug("isRunning()", e);
             return false;
         }
     }
@@ -253,6 +257,7 @@ public class JenkinsServer {
 
             return job;
         } catch (HttpResponseException e) {
+            LOGGER.debug("getJob(folder={}, jobName={}) status={}", folder.getName(), jobName, e.getStatusCode());
             if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
                 return null;
             }
@@ -276,6 +281,7 @@ public class JenkinsServer {
 
             return job;
         } catch (HttpResponseException e) {
+            LOGGER.debug("getMavenJob(jobName={}) status={}", jobName, e.getStatusCode());
             if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
                 return null;
             }
@@ -294,6 +300,7 @@ public class JenkinsServer {
             return Optional.of(folder);
         } catch (HttpResponseException e) {
             if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+                //TODO: Check if this is a good idea ? What about Optional.absent() ?
                 return null;
             }
             throw e;
@@ -480,7 +487,7 @@ public class JenkinsServer {
         try {
             client.get("/quietDown/");
         } catch (org.apache.http.client.ClientProtocolException e) {
-            e.printStackTrace();
+            LOGGER.error("quietDown()", e);
         }
 
     }
@@ -494,7 +501,7 @@ public class JenkinsServer {
         try {
             client.post("/cancelQuietDown/");
         } catch (org.apache.http.client.ClientProtocolException e) {
-            e.printStackTrace();
+            LOGGER.error("cancelQuietDown()", e);
         }
     }
 

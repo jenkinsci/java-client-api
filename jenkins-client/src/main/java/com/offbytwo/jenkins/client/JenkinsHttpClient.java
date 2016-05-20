@@ -37,6 +37,8 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
@@ -52,7 +54,8 @@ import com.offbytwo.jenkins.model.ExtractHeader;
 import net.sf.json.JSONObject;
 
 public class JenkinsHttpClient {
-
+    private final Logger LOGGER = LoggerFactory.getLogger( getClass() );
+    
     private static final int SO_TIMEOUT_IN_MILLISECONDS = 3000;
     private static final int CONNECTION_TIMEOUT_IN_MILLISECONDS = 500;
 
@@ -86,6 +89,7 @@ public class JenkinsHttpClient {
         this.httpResponseValidator = new HttpResponseValidator();
         // this.contentExtractor = new HttpResponseContentExtractor();
         this.jenkinsVersion = null;
+        LOGGER.debug("uri={}", uri.toString());
     }
 
     /**
@@ -121,6 +125,7 @@ public class JenkinsHttpClient {
         httpParams.setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_IN_MILLISECONDS);
 
         this.httpResponseValidator = new HttpResponseValidator();
+        LOGGER.debug("uri={}", uri.toString());
     }
 
     /**
@@ -181,6 +186,7 @@ public class JenkinsHttpClient {
         HttpGet getMethod = new HttpGet(api(path));
         HttpResponse response = client.execute(getMethod, localContext);
         getJenkinsVersionFromHeader(response);
+        LOGGER.debug("get({}), version={}, responseCode={}", path, this.jenkinsVersion, response.getStatusLine().getStatusCode());
         try {
             httpResponseValidator.validateResponse(response);
             return IOUtils.toString(response.getEntity().getContent());
@@ -188,6 +194,7 @@ public class JenkinsHttpClient {
             EntityUtils.consume(response.getEntity());
             releaseConnection(getMethod);
         }
+
     }
 
     /**
@@ -208,7 +215,8 @@ public class JenkinsHttpClient {
             value = get(path, cls);
             return value;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.debug("getQuietly({}, {})", path, cls.getName(), e);
+            //TODO: Is returing null a good idea?
             return null;
         }
     }

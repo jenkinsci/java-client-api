@@ -4,6 +4,15 @@
 
 ### General Changes
 
+  [Using Logging framework][issue-161]
+  [Using Logging framework][issue-113]
+  [Using Logging framework][jissue-35002]
+
+  Added slf4j-api as foundation for logging. Using 
+  log4j2-slf4j-impl in jenkins-client-it-docker for logging. 
+  As a user you can now decide which logging framework
+  you would like to use.
+
   [Changed the structure and integrated Docker IT][issue-160]
   
 ### API Changes
@@ -423,6 +432,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-111]: https://github.com/jenkinsci/java-client-api/issues/111
 [issue-116]: https://github.com/jenkinsci/java-client-api/issues/116
 [issue-108]: https://github.com/jenkinsci/java-client-api/issues/108
+[issue-113]: https://github.com/jenkinsci/java-client-api/issues/113
 [issue-119]: https://github.com/jenkinsci/java-client-api/issues/119
 [issue-120]: https://github.com/jenkinsci/java-client-api/issues/120
 [issue-121]: https://github.com/jenkinsci/java-client-api/issues/121
@@ -439,7 +449,8 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-157]: https://github.com/jenkinsci/java-client-api/issues/157
 [issue-159]: https://github.com/jenkinsci/java-client-api/issues/159
 [issue-160]: https://github.com/jenkinsci/java-client-api/issues/160
+[issue-161]: https://github.com/jenkinsci/java-client-api/issues/161
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
-
+[jissue-35002]: https://issues.jenkins-ci.org/browse/JENKINS-35002
