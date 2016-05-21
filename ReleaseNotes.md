@@ -4,9 +4,9 @@
 
 ### General Changes
 
-  [Using Logging framework][issue-161]
-  [Using Logging framework][issue-113]
-  [Using Logging framework][jissue-35002]
+  Serveral issues fixed related to using logging framework 
+  [issue-161][issue-161], [issue-113][issue-113] and
+  [JENKINS-35002][jissue-35002]
 
   Added slf4j-api as foundation for logging. Using 
   log4j2-slf4j-impl in jenkins-client-it-docker for logging. 
