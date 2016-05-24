@@ -4,6 +4,12 @@
 
 ### General Changes
 
+  [Upgraded Maven Plugins][jissue-35108]
+
+   * maven-clean-plugin to 3.0.0
+   * maven-resources-plugin to 3.0.0
+   * maven-jar-plugin to 3.0.0
+
   Serveral issues fixed related to using logging framework 
   [issue-161][issue-161], [issue-113][issue-113] and
   [JENKINS-35002][jissue-35002]
@@ -454,3 +460,4 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
 [jissue-35002]: https://issues.jenkins-ci.org/browse/JENKINS-35002
+[jissue-35108]: https://issues.jenkins-ci.org/browse/JENKINS-35108
