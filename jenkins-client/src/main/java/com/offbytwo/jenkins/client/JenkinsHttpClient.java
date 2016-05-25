@@ -520,7 +520,7 @@ public class JenkinsHttpClient {
         httpRequestBase.releaseConnection();
     }
 
-    private static HttpClientBuilder addAuthentication(HttpClientBuilder builder, URI uri, String username,
+    protected static HttpClientBuilder addAuthentication(HttpClientBuilder builder, URI uri, String username,
             String password) {
         if (isNotBlank(username)) {
             CredentialsProvider provider = new BasicCredentialsProvider();
@@ -532,5 +532,13 @@ public class JenkinsHttpClient {
             builder.addInterceptorFirst(new PreemptiveAuth());
         }
         return builder;
+    }
+
+    protected BasicHttpContext getLocalContext() {
+      return localContext;
+    }
+
+    protected void setLocalContext(BasicHttpContext localContext) {
+      this.localContext = localContext;
     }
 }
