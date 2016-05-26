@@ -15,7 +15,7 @@
   </parent>
 
   <name>Jenkins API client for Java</name>
-  <url>http://github.com/RisingOak/jenkins-client</url>
+  <url>http://github.com/jenkinsci/java-client-api</url>
   <description>A Jenkins API client for Java</description>
 
   <groupId>com.offbytwo.jenkins</groupId>
@@ -24,20 +24,20 @@
   <packaging>pom</packaging>
 
   <scm>
-    <connection>scm:git:git@github.com:RisingOak/jenkins-client.git</connection>
-    <developerConnection>scm:git:git@github.com:RisingOak/jenkins-client.git</developerConnection>
-    <url>https://github.com/RisingOak/jenkins-client</url>
+    <connection>scm:git:https://github.com/jenkinsci/java-client-api.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/jenkinsci/java-client-api.git</developerConnection>
+    <url>https://github.com/jenkinsci/java-client-api</url>
     <tag>HEAD</tag>
   </scm>
   <distributionManagement>
     <site>
       <id>github</id>
-      <url>scm:git:git@github.com:RisingOak/jenkins-client.git</url>
+      <url>scm:git:https://github.com/jenkinsci/java-client-api.git</url>
     </site>
   </distributionManagement>
   <ciManagement>
     <system>Travis-CI</system>
-    <url>https://travis-ci.org/RisingOak/jenkins-client/</url>
+    <url>https://travis-ci.org/jenkinsci/java-client-api/</url>
   </ciManagement>
 
   <properties>

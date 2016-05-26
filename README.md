@@ -79,7 +79,7 @@ covered by the usual integration tests.
 
 ## Release Notes
 
-You can find details about the different releases in the [Release Notes](https://github.com/RisingOak/jenkins-client/blob/master/ReleaseNotes.md).
+You can find details about the different releases in the [Release Notes](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md).
 
  * [Release 0.4.0](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-040).
  * [Release 0.3.6](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-036).
