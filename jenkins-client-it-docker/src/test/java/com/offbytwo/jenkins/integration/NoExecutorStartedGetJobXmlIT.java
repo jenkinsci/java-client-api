@@ -27,7 +27,7 @@ public class NoExecutorStartedGetJobXmlIT
         "<?xml version='1.0' encoding='UTF-8'?>",
         "<project>",
         "  <actions/>",
-        "  <description></description>",
+        "  <description>This is the description with umlauts äöü</description>",
         "  <keepDependencies>false</keepDependencies>",
         "  <properties>",
         "    <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin=\"throttle-concurrents@1.8.4\">",

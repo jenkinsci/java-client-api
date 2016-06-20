@@ -32,6 +32,15 @@ public class JenkinsServer {
 }
 ``` 
 
+  [Added description for Job][issue-165]
+
+```java
+public class JobWithDetails {
+  public String getDescription();
+  .
+}
+``` 
+  
 
 ## Release 0.3.5
 
@@ -456,6 +465,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-159]: https://github.com/jenkinsci/java-client-api/issues/159
 [issue-160]: https://github.com/jenkinsci/java-client-api/issues/160
 [issue-161]: https://github.com/jenkinsci/java-client-api/issues/161
+[issue-165]: https://github.com/jenkinsci/java-client-api/issues/165
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158

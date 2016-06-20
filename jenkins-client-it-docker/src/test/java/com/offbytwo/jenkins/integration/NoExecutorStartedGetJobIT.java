@@ -123,4 +123,11 @@ public class NoExecutorStartedGetJobIT
     {
         assertThat( job.getLastUnsuccessfulBuild() ).isEqualTo(Build.BUILD_HAS_NEVER_RAN);
     }
+
+    @Test
+    public void getDescriptionShouldRetrunTheDescription()
+    {
+        assertThat( job.getDescription() ).isEqualTo("This is the description with umlauts äöü");
+    }
+    
 }
