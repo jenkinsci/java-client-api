@@ -4,6 +4,17 @@
 
 ### General Changes
 
+  [Upgraded Maven Plugins][issue-167]
+
+  * maven-release-plugin to 2.5.3
+  * maven-site-plugin to 3.5.1
+  * maven-shade-plugin to 2.4.3
+  * maven-jar-plugin to 3.0.2
+  * maven-source-plugin 3.0.1
+  * maven-surefire/failsafe-plugin to 2.19.1
+  * maven-resources-plugin to 3.0.1
+  * Add missing maven-javadoc-plugin 2.10.4
+
   [Upgraded Maven Plugins][jissue-35108]
 
    * maven-clean-plugin to 3.0.0
@@ -466,6 +477,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-160]: https://github.com/jenkinsci/java-client-api/issues/160
 [issue-161]: https://github.com/jenkinsci/java-client-api/issues/161
 [issue-165]: https://github.com/jenkinsci/java-client-api/issues/165
+[issue-167]: https://github.com/jenkinsci/java-client-api/issues/167
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
