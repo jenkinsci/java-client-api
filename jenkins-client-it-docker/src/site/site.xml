@@ -8,12 +8,5 @@
     <menu ref="parent" inherit="top" />
     <menu ref="modules" inherit="top" />
     <menu ref="reports" inherit="bottom" />
-    <menu name="Overview">
-      <item name="Introduction" href="index.html"/>
-      <item name="Upgrade" href="upgrade.html"/>
-    </menu>
-    <menu name="Sub">
-      <item name="Sub" href="sub/sub.html"/>
-    </menu>
   </body>
 </project>
