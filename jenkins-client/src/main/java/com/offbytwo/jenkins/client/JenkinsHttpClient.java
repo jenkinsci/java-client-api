@@ -36,6 +36,7 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +62,7 @@ public class JenkinsHttpClient {
 
     private URI uri;
     private CloseableHttpClient client;
-    private BasicHttpContext localContext;
+    private HttpContext localContext;
     private HttpResponseValidator httpResponseValidator;
     // private HttpResponseContentExtractor contentExtractor;
 
@@ -161,7 +162,11 @@ public class JenkinsHttpClient {
      */
     public <T extends BaseModel> T get(String path, Class<T> cls) throws IOException {
         HttpGet getMethod = new HttpGet(api(path));
+        
+        System.out.println(getMethod.getURI());
+        System.out.println(getMethod.getRequestLine());
         HttpResponse response = client.execute(getMethod, localContext);
+        System.out.println(response.getStatusLine());
         getJenkinsVersionFromHeader(response);
         try {
             httpResponseValidator.validateResponse(response);
@@ -534,11 +539,11 @@ public class JenkinsHttpClient {
         return builder;
     }
 
-    protected BasicHttpContext getLocalContext() {
+    protected HttpContext getLocalContext() {
       return localContext;
     }
 
-    protected void setLocalContext(BasicHttpContext localContext) {
+    protected void setLocalContext(HttpContext localContext) {
       this.localContext = localContext;
     }
 }
