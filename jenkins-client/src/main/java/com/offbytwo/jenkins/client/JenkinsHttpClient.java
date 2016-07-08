@@ -163,10 +163,7 @@ public class JenkinsHttpClient {
     public <T extends BaseModel> T get(String path, Class<T> cls) throws IOException {
         HttpGet getMethod = new HttpGet(api(path));
         
-        System.out.println(getMethod.getURI());
-        System.out.println(getMethod.getRequestLine());
         HttpResponse response = client.execute(getMethod, localContext);
-        System.out.println(response.getStatusLine());
         getJenkinsVersionFromHeader(response);
         try {
             httpResponseValidator.validateResponse(response);
