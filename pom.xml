@@ -233,6 +233,7 @@
               ! here we override the super-pom attach-sources execution id which
               ! calls sources:jar goal. That goals forks the lifecycle,
               ! causing the generate-sources phase to be called twice for the install goal.
+              ! With Maven 3.4.0 this will become superfluous.
             -->
             <execution>
               <id>attach-sources</id>
