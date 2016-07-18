@@ -36,6 +36,7 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +62,7 @@ public class JenkinsHttpClient {
 
     private URI uri;
     private CloseableHttpClient client;
-    private BasicHttpContext localContext;
+    private HttpContext localContext;
     private HttpResponseValidator httpResponseValidator;
     // private HttpResponseContentExtractor contentExtractor;
 
@@ -161,6 +162,7 @@ public class JenkinsHttpClient {
      */
     public <T extends BaseModel> T get(String path, Class<T> cls) throws IOException {
         HttpGet getMethod = new HttpGet(api(path));
+        
         HttpResponse response = client.execute(getMethod, localContext);
         getJenkinsVersionFromHeader(response);
         try {
@@ -520,7 +522,7 @@ public class JenkinsHttpClient {
         httpRequestBase.releaseConnection();
     }
 
-    private static HttpClientBuilder addAuthentication(HttpClientBuilder builder, URI uri, String username,
+    protected static HttpClientBuilder addAuthentication(HttpClientBuilder builder, URI uri, String username,
             String password) {
         if (isNotBlank(username)) {
             CredentialsProvider provider = new BasicCredentialsProvider();
@@ -532,5 +534,13 @@ public class JenkinsHttpClient {
             builder.addInterceptorFirst(new PreemptiveAuth());
         }
         return builder;
+    }
+
+    protected HttpContext getLocalContext() {
+      return localContext;
+    }
+
+    protected void setLocalContext(HttpContext localContext) {
+      this.localContext = localContext;
     }
 }
