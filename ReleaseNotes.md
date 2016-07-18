@@ -34,6 +34,33 @@
   
 ### API Changes
 
+  [Changing getLocalContext(), setLocalContext()][pull-163]
+
+  The protected method `getLocalContext()` now returns
+  `HttpContext` instead of `BasicHttpContext`.
+  So the API has changed from the following:
+
+```java
+public class JenkinsServer {
+  protected BasicHttpContext getLocalContext();
+  protected void setLocalContext(BasicHttpContext localContext); 
+  .
+}
+``` 
+
+  into this:
+
+```java
+public class JenkinsServer {
+  protected HttpContext getLocalContext();
+  protected void setLocalContext(HttpContext localContext); 
+  .
+}
+``` 
+
+  Apart from that the visibility of the class `PreemptiveAuth` has been changed 
+  from package private to public.
+
   [Get Jenkins Version from http header][issue-90]
 
 ```java
@@ -481,5 +508,6 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
+[pull-163]: https://github.com/jenkinsci/java-client-api/pull/163
 [jissue-35002]: https://issues.jenkins-ci.org/browse/JENKINS-35002
 [jissue-35108]: https://issues.jenkins-ci.org/browse/JENKINS-35108
