@@ -1,4 +1,4 @@
-FROM jenkins:2.0
+FROM jenkins:2.7.1
 MAINTAINER "docker@soebes.de"
 COPY ./plugins.txt /usr/share/jenkins/ref/plugins.txt
 COPY ./config.xml /usr/share/jenkins/ref/config.xml
