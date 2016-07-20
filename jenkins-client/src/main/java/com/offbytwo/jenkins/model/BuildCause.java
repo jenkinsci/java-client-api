@@ -12,10 +12,6 @@ public class BuildCause {
     private String userId;
     private String userName;
 
-    public BuildCause() {
-        this.upstreamBuild = new Integer(0);
-    }
-
     public String getShortDescription() {
         return shortDescription;
     }
@@ -25,7 +21,7 @@ public class BuildCause {
     }
 
     public int getUpstreamBuild() {
-        return upstreamBuild;
+        return upstreamBuild != null ? upstreamBuild : 0;
     }
 
     public void setUpstreamBuild(Integer upstreamBuild) {
