@@ -3,6 +3,7 @@ package com.offbytwo.jenkins.integration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.testng.SkipException;
@@ -38,8 +39,9 @@ public class NoExecutorStartedPluginManagerIT
     @Test
     public void getPluginsShouldReturn26ForJenkins1651()
     {
-        //TODO: Check why there is such a difference in the number of Plugins?
-        if (!jenkinsServer.getVersion().equals("1.651")) {
+	List<String> asList = Arrays.asList("1.651", "1.651.1", "1.651.2", "1.651.3");
+	//TODO: Check why there is such a difference in the number of Plugins?
+        if (!asList.contains(jenkinsServer.getVersion())) {
             throw new SkipException("Not Version 1.651");
         }
         assertThat( pluginManager.getPlugins() ).hasSize( 26 );
@@ -71,7 +73,7 @@ public class NoExecutorStartedPluginManagerIT
             createPlugin("config-file-provider", "2.10.0"),
             createPlugin("timestamper", "1.7.2"),
             createPlugin("credentials", "1.24"),
-            createPlugin("throttle-concurrents", "1.8.4"),
+            createPlugin("throttle-concurrents", "1.9.0"),
         };
         List<Plugin> plugins = pluginManager.getPlugins();
         
@@ -92,7 +94,10 @@ public class NoExecutorStartedPluginManagerIT
     @Test
     public void getPluginsShouldReturnTheListOfInstalledPluginsFor1651()
     {
-        if (!jenkinsServer.getVersion().equals("1.651")) {
+	List<String> asList = Arrays.asList("1.651", "1.651.1", "1.651.2", "1.651.3");
+
+	//TODO: Check why there is such a difference in the number of Plugins?
+        if (!asList.contains(jenkinsServer.getVersion())) {
             throw new SkipException("Not Version 1.651");
         }
         //TODO: The list of plugins is contained in the plugin.txt
@@ -122,7 +127,7 @@ public class NoExecutorStartedPluginManagerIT
             createPlugin("javadoc", "1.1"),
             createPlugin("timestamper", "1.7.2"),
             createPlugin("credentials", "1.24"),
-            createPlugin("throttle-concurrents", "1.8.4"),
+            createPlugin("throttle-concurrents", "1.9.0"),
             createPlugin("subversion", "1.54"),
             createPlugin("ssh-slaves", "1.9"),
         };
