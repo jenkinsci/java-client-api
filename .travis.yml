@@ -23,7 +23,7 @@ install: true
 language: java
 
 script: 
-  - mvn -Prun-its,run-docker-its clean verify --batch-mode
+  - mvn -Prun-its,run-docker-its clean verify --batch-mode --fail-at-end
 
 # Make sure we stop the container
 # and remove the container independent
