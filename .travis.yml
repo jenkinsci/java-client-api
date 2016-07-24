@@ -9,6 +9,7 @@ services:
 # TODO: May be we need to think about this.
 # TODO: Make our own image and publish this to docker hub.
 before_install:
+  - docker --version
   - cd jenkins-client-it-docker
   - docker build --no-cache -t jenkins-with-plugins .
   - docker run --name jenkins-for-testing -v "$(pwd)/jobs":/var/jenkins_home/jobs  -d -p 8080:8080 -p 50000:50000  --env JENKINS_OPTS=--httpPort=8080 jenkins-with-plugins
