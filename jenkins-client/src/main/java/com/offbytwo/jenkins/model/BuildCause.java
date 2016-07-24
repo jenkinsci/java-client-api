@@ -14,6 +14,9 @@ public class BuildCause {
 
     public BuildCause() {
         this.upstreamBuild = new Integer(0);
+        //TODO: Think about initialization of the other
+        // attributes as well.
+        // userId = StringConstant.EMPTY;
     }
 
     public String getShortDescription() {

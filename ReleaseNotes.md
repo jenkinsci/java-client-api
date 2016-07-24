@@ -21,6 +21,12 @@
    * maven-resources-plugin to 3.0.0
    * maven-jar-plugin to 3.0.0
 
+  [Fixed issue 172][issue-172]
+
+  The implementation `BuildWithDetails.getCauses()` could cause an 
+  NPE which now has been imroved to prevent it. Thanks for hint
+  which brought me to reconsider the implementation.
+
   [Fixed issue 162][issue-162]
 
   Serveral issues fixed related to using logging framework 
@@ -508,6 +514,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-162]: https://github.com/jenkinsci/java-client-api/issues/162
 [issue-165]: https://github.com/jenkinsci/java-client-api/issues/165
 [issue-167]: https://github.com/jenkinsci/java-client-api/issues/167
+[issue-172]: https://github.com/jenkinsci/java-client-api/issues/172
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158

@@ -7,6 +7,7 @@
 package com.offbytwo.jenkins.model;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,23 +17,29 @@ import java.util.*;
 
 import static com.google.common.collect.Collections2.filter;
 
+/**
+ * This class represents build information with
+ * details about what has been done like
+ * duration start and of course the build result.
+ *
+ */
 public class BuildWithDetails extends Build {
 
-    List actions; // Should be improved.
-    boolean building;
-    String description;
-    long duration;
-    long estimatedDuration;
-    String fullDisplayName;
-    String id;
-    long timestamp;
-    BuildResult result;
-    List<Artifact> artifacts;
-    String consoleOutputText;
-    String consoleOutputHtml;
-    BuildChangeSet changeSet;
-    String builtOn;
-    List<BuildChangeSetAuthor> culprits;
+    private List actions; // TODO: Should be improved.
+    private boolean building;
+    private String description;
+    private long duration;
+    private long estimatedDuration;
+    private String fullDisplayName;
+    private String id;
+    private long timestamp;
+    private BuildResult result;
+    private List<Artifact> artifacts;
+    private String consoleOutputText;
+    private String consoleOutputHtml;
+    private BuildChangeSet changeSet;
+    private String builtOn;
+    private List<BuildChangeSetAuthor> culprits;
 
     public List<Artifact> getArtifacts() {
         return artifacts;
@@ -61,19 +68,49 @@ public class BuildWithDetails extends Build {
                     .get("causes");
             for (Map<String, Object> cause : causes_blob) {
 
-                BuildCause cause_object = new BuildCause();
-                cause_object.setShortDescription((String) cause.get("shortDescription"));
-                cause_object.setUpstreamBuild((Integer) cause.get("upstreamBuild"));
-                cause_object.setUpstreamProject((String) cause.get("upstreamProject"));
-                cause_object.setUpstreamUrl((String) cause.get("upstreamUrl"));
-                cause_object.setUserId((String) cause.get("userId"));
-                cause_object.setUserName((String) cause.get("userName"));
+                BuildCause convertToBuildCause = convertToBuildCause(cause);
 
-                result.add(cause_object);
+                result.add(convertToBuildCause);
             }
         }
 
         return result;
+    }
+
+    private BuildCause convertToBuildCause(Map<String, Object> cause) {
+        BuildCause cause_object = new BuildCause();
+        
+        //TODO: Think about it. Can this be done more simpler?
+	String description = (String) cause.get("shortDescription");
+	if (!Strings.isNullOrEmpty(description)) {
+	    cause_object.setShortDescription(description);
+	}
+	
+	Integer upstreamBuild = (Integer) cause.get("upstreamBuild");
+	if (upstreamBuild != null) {
+	    cause_object.setUpstreamBuild(upstreamBuild);
+	}
+	
+	String upstreamProject = (String) cause.get("upstreamProject");
+	if (!Strings.isNullOrEmpty(upstreamProject)) {
+	    cause_object.setUpstreamProject(upstreamProject);
+	}
+
+	String upstreamUrl = (String) cause.get("upstreamUrl");
+	if (!Strings.isNullOrEmpty(upstreamProject)) {
+	    cause_object.setUpstreamUrl(upstreamUrl);
+	}
+
+	String userId = (String) cause.get("userId");
+	if (!Strings.isNullOrEmpty(userId)) {
+	    cause_object.setUserId(userId);
+	}
+
+	String userName = (String) cause.get("userName");
+	if (!Strings.isNullOrEmpty(userName)) {
+	    cause_object.setUserName(userName);
+	}
+	return cause_object;
     }
 
     public String getDescription() {
@@ -166,8 +203,7 @@ public class BuildWithDetails extends Build {
 
     public InputStream downloadArtifact(Artifact a) throws IOException, URISyntaxException {
         // We can't just put the artifact's relative path at the end of the url
-        // string,
-        // as there could be characters that need to be escaped.
+        // string, as there could be characters that need to be escaped.
         URI uri = new URI(getUrl());
         String artifactPath = uri.getPath() + "artifact/" + a.getRelativePath();
         URI artifactUri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), artifactPath, "",

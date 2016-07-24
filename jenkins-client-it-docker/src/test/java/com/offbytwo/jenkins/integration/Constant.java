@@ -10,6 +10,7 @@ public final class Constant {
      * At the moment it is solved by a profile in pom..but could that somehow 
      * identified by docker itself ?
      */
-    public static final URI JENKINS_URI = URI.create(System.getProperty("docker.container.network"));
+//    public static final URI JENKINS_URI = URI.create(System.getProperty("docker.container.network"));
+    public static final URI JENKINS_URI = URI.create("http://192.168.99.100:8080/");
 
 }
