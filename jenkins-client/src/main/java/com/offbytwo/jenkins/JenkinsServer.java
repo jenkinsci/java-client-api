@@ -191,11 +191,20 @@ public class JenkinsServer {
         if (folder != null) {
             path = folder.getUrl();
         }
-        List<View> views = client.get(path, MainView.class).getViews();
+        List<View> views = client.get(path + "?depth=1", MainView.class).getViews();
         return Maps.uniqueIndex(views, new Function<View, String>() {
             @Override
             public String apply(View view) {
+        	
                 view.setClient(client);
+                //TODO: Think about the following? Does there exists a simpler/more elegant method?
+                for (Job job : view.getJobs()) {
+                    job.setClient(client);
+                }
+                for (View item : view.getViews()) {
+                    item.setClient(client);
+                }
+                
                 // return view.getName().toLowerCase();
                 return view.getName();
             }
@@ -216,7 +225,7 @@ public class JenkinsServer {
 
     /**
      * Get a single view object from the given folder
-     *
+     * @param folder The name of the folder.
      * @param name
      *            name of the view in Jenkins
      * @return the view object
@@ -227,7 +236,18 @@ public class JenkinsServer {
         if (folder != null) {
             path = folder.getUrl();
         }
-        return client.get(path + "view/" + EncodingUtils.encode(name) + "/", View.class);
+        
+        View resultView = client.get(path + "view/" + EncodingUtils.encode(name) + "/", View.class);
+        resultView.setClient(client);
+        
+        //TODO: Think about the following? Does there exists a simpler/more elegant method?
+        for (Job job : resultView.getJobs()) {
+            job.setClient(client);
+        }
+        for (View view : resultView.getViews()) {
+            view.setClient(client);
+        }
+        return resultView;
     }
 
     /**
@@ -299,6 +319,7 @@ public class JenkinsServer {
 
             return Optional.of(folder);
         } catch (HttpResponseException e) {
+            LOGGER.debug("getForlderJob(job={}) status={}", job, e.getStatusCode());
             if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
                 //TODO: Check if this is a good idea ? What about Optional.absent() ?
                 return null;

@@ -21,6 +21,8 @@
    * maven-resources-plugin to 3.0.0
    * maven-jar-plugin to 3.0.0
 
+  [Fixed issue 162][issue-162]
+
   Serveral issues fixed related to using logging framework 
   [issue-161][issue-161], [issue-113][issue-113] and
   [JENKINS-35002][jissue-35002]
@@ -503,6 +505,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-159]: https://github.com/jenkinsci/java-client-api/issues/159
 [issue-160]: https://github.com/jenkinsci/java-client-api/issues/160
 [issue-161]: https://github.com/jenkinsci/java-client-api/issues/161
+[issue-162]: https://github.com/jenkinsci/java-client-api/issues/162
 [issue-165]: https://github.com/jenkinsci/java-client-api/issues/165
 [issue-167]: https://github.com/jenkinsci/java-client-api/issues/167
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
