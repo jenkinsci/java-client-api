@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import com.offbytwo.jenkins.model.ComputerWithDetails;
 import com.offbytwo.jenkins.model.JobWithDetails;
 
-@Test( dependsOnGroups = { Groups.NO_EXECUTOR_GROUP }, groups = { Groups.EXECUTOR_STARTING_GROUP } )
+@Test( dependsOnGroups = { Groups.NO_EXECUTOR_GROUP, Groups.NO_EXECUTOR_GROUP_FOLDER }, groups = { Groups.EXECUTOR_STARTING_GROUP } )
 public class ExecutorStartingIT
     extends AbstractJenkinsIntegrationCase
 {

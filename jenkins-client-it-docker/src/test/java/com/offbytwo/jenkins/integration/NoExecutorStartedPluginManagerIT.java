@@ -37,14 +37,14 @@ public class NoExecutorStartedPluginManagerIT
         assertThat( pluginManager.getPlugins() ).hasSize( 9 );
     }
     @Test
-    public void getPluginsShouldReturn26ForJenkins1651()
+    public void getPluginsShouldReturn27ForJenkins1651()
     {
 	List<String> asList = Arrays.asList("1.651", "1.651.1", "1.651.2", "1.651.3");
 	//TODO: Check why there is such a difference in the number of Plugins?
         if (!asList.contains(jenkinsServer.getVersion())) {
             throw new SkipException("Not Version 1.651");
         }
-        assertThat( pluginManager.getPlugins() ).hasSize( 26 );
+        assertThat( pluginManager.getPlugins() ).hasSize( 27 );
     }
 
     private Plugin createPlugin(String shortName, String version) {
@@ -74,6 +74,7 @@ public class NoExecutorStartedPluginManagerIT
             createPlugin("timestamper", "1.7.2"),
             createPlugin("credentials", "1.24"),
             createPlugin("throttle-concurrents", "1.9.0"),
+            createPlugin("cloudbees-folder", "5.12"),
         };
         List<Plugin> plugins = pluginManager.getPlugins();
         
@@ -130,6 +131,7 @@ public class NoExecutorStartedPluginManagerIT
             createPlugin("throttle-concurrents", "1.9.0"),
             createPlugin("subversion", "1.54"),
             createPlugin("ssh-slaves", "1.9"),
+            createPlugin("cloudbees-folder", "5.12"),
         };
         List<Plugin> plugins = pluginManager.getPlugins();
         
