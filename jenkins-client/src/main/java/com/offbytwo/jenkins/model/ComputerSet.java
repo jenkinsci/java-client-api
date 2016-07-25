@@ -3,9 +3,7 @@ package com.offbytwo.jenkins.model;
 import java.util.List;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 public class ComputerSet extends BaseModel {
     private int busyExecutors;
@@ -42,7 +40,7 @@ public class ComputerSet extends BaseModel {
         this.totalExecutors = totalExecutors;
     }
 
-    public List<ComputerWithDetails> getComputer() {
+    public List<ComputerWithDetails> getComputers() {
         return Lists.transform( computer, new Function<ComputerWithDetails, ComputerWithDetails>() {
             @Override
             public ComputerWithDetails apply(ComputerWithDetails computerWithDetails) {

@@ -29,7 +29,7 @@ public class ExecutorStartedIT
     public void shouldTriggerJobTest()
         throws IOException
     {
-        ComputerWithDetails computerWithDetailsAfterStarting = jenkinsServer.getComputerSet().getComputer().get( 0 );
+        ComputerWithDetails computerWithDetailsAfterStarting = jenkinsServer.getComputerSet().getComputers().get( 0 );
         assertThat( computerWithDetailsAfterStarting.getOffline() ).isFalse();
     }
 

@@ -20,7 +20,7 @@ public class NoExecutorStartedGetOfflineCauseIT
     public void beforeMethod()
         throws IOException
     {
-        offlineCause = jenkinsServer.getComputerSet().getComputer().get( 0 ).getOfflineCause();
+        offlineCause = jenkinsServer.getComputerSet().getComputers().get( 0 ).getOfflineCause();
     }
 
     /**

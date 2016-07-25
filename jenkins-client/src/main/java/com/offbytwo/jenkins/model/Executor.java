@@ -9,27 +9,27 @@ package com.offbytwo.jenkins.model;
  */
 public class Executor {
 
-    private String currentExecutable;
+    private Job currentExecutable;
     // in XSD it's a reference to a class
-    private String currentWorkUnit;
+    private Job currentWorkUnit;
     private Boolean idle;
     private Boolean likelyStuck;
     private int number;
     private int progress;
 
-    public String getCurrentExecutable() {
+    public Job getCurrentExecutable() {
         return currentExecutable;
     }
 
-    public void setCurrentExecutable(String currentExecutable) {
+    public void setCurrentExecutable(Job currentExecutable) {
         this.currentExecutable = currentExecutable;
     }
 
-    public String getCurrentWorkUnit() {
+    public Job getCurrentWorkUnit() {
         return currentWorkUnit;
     }
 
-    public void setCurrentWorkUnit(String currentWorkUnit) {
+    public void setCurrentWorkUnit(Job currentWorkUnit) {
         this.currentWorkUnit = currentWorkUnit;
     }
 

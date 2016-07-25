@@ -42,6 +42,27 @@
   
 ### API Changes
 
+  [Fixed issue 174][issue-174]
+
+  jenkins.getComputerSet().getComputer() produced an error.
+  Changed getComputer() into getComputers() cause it returns
+  a list an not only a single computer.
+  Based on the above problem the `Executor` needed to be changed to
+  represent the correct data which is being returned.
+
+```java
+public class ComputerSet {
+   public List<ComputerWithDetails> getComputers();
+}
+``` 
+
+```java
+public class Executor {
+  public Job getCurrentExecutable();
+  public Job getCurrentWorkUnit();
+}
+``` 
+
   [Fixed issue 169 Add crumbFlag to renameJob][issue-169]
 
   Added supplemental `renameJob` method which supports crumbFlag. Furthermore
@@ -542,6 +563,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-168]: https://github.com/jenkinsci/java-client-api/issues/168
 [issue-169]: https://github.com/jenkinsci/java-client-api/issues/169
 [issue-172]: https://github.com/jenkinsci/java-client-api/issues/172
+[issue-174]: https://github.com/jenkinsci/java-client-api/issues/174
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158

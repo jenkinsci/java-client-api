@@ -28,7 +28,7 @@ public class NoExecutorStartedGetComputerSetIT
     @Test
     public void shouldGetNameOfMasterNode()
     {
-        List<ComputerWithDetails> computers = computerSet.getComputer();
+        List<ComputerWithDetails> computers = computerSet.getComputers();
         assertThat( computers ).hasSize( 1 );
         assertThat( computers.get( 0 ).getDisplayName() ).isEqualTo( "master" );
     }

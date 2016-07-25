@@ -32,7 +32,7 @@ public class ComputerSetIT extends BaseForIntegrationTests {
     public void shouldGetComputerWithDetailsAndExecutors() throws IOException {
         Jenkins ji = jenkinsRule.getInstance();
 
-        List<ComputerWithDetails> computerSet = jenkinsServer.getComputerSet().getComputer();
+        List<ComputerWithDetails> computerSet = jenkinsServer.getComputerSet().getComputers();
         ComputerWithDetails computerWithDetails = computerSet.get(0);
         assertThat(computerWithDetails.getExecutors()).isNotNull();
         assertThat(computerWithDetails.getNumExecutors()).isEqualTo(ji.getNumExecutors());
@@ -41,10 +41,10 @@ public class ComputerSetIT extends BaseForIntegrationTests {
     
     @Test
     public void shouldTrunFromOnlineToOffline() throws IOException {
-        ComputerWithDetails computerWithDetails = jenkinsServer.getComputerSet().getComputer().get( 0 );
+        ComputerWithDetails computerWithDetails = jenkinsServer.getComputerSet().getComputers().get( 0 );
         computerWithDetails.toggleOffline(true);
 
-        ComputerWithDetails computerWithDetailsAfterStarting = jenkinsServer.getComputerSet().getComputer().get( 0 );
+        ComputerWithDetails computerWithDetailsAfterStarting = jenkinsServer.getComputerSet().getComputers().get( 0 );
 
         assertThat( computerWithDetailsAfterStarting.getOffline() ).isTrue();
     }

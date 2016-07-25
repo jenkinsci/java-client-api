@@ -20,7 +20,7 @@ public class NoExecutorStartedGetComputersWithDetailsIT
     public void beforeMethod()
         throws IOException
     {
-        computerWithDetails = jenkinsServer.getComputerSet().getComputer().get( 0 );
+        computerWithDetails = jenkinsServer.getComputerSet().getComputers().get( 0 );
     }
 
     @Test
