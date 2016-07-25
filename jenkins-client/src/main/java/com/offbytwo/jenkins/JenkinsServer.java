@@ -279,6 +279,7 @@ public class JenkinsServer {
         } catch (HttpResponseException e) {
             LOGGER.debug("getJob(folder={}, jobName={}) status={}", folder, jobName, e.getStatusCode());
             if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+        	//TODO: Think hard about this.
                 return null;
             }
             throw e;
@@ -379,8 +380,8 @@ public class JenkinsServer {
      *
      * @throws IOException
      */
-    public void createFolder(String jobName) throws IOException {
-        createFolder(null, jobName, false);
+    public void createFolder(String folderName) throws IOException {
+        createFolder(null, folderName, false);
     }
 
     /**
@@ -388,12 +389,12 @@ public class JenkinsServer {
      *
      * @throws IOException
      */
-    public void createFolder(String jobName, Boolean crumbFlag) throws IOException {
-        createFolder(null, jobName, crumbFlag);
+    public void createFolder(String folderName, Boolean crumbFlag) throws IOException {
+        createFolder(null, folderName, crumbFlag);
     }
 
     /**
-     * Create a folder on the server (in the given folder)
+     * Create a job on the server (in the given folder)
      *
      * @throws IOException
      */
@@ -402,7 +403,7 @@ public class JenkinsServer {
     }
 
     /**
-     * Create a folder on the server (in the given folder)
+     * Create a job on the server (in the given folder)
      *
      * @throws IOException
      */
@@ -533,6 +534,21 @@ public class JenkinsServer {
      */
     public void deleteJob(String jobName) throws IOException {
         client.post("/job/" + EncodingUtils.encode(jobName) + "/doDelete");
+    }
+    
+    /**
+     * Delete a job from Jenkins within a folder.
+     * 
+     * @param folder The folder where the given job is located.
+     * @param jobName The job which should be deleted.
+     * @throws IOException in case of problems.
+     */
+    public void deleteJob(FolderJob folder, String jobName) throws IOException {
+	String path = "/";
+	if (folder != null) {
+	    path = folder.getUrl();
+	}
+        client.post(path + "/job/" + EncodingUtils.encode(jobName) + "/doDelete");
     }
 
     /**

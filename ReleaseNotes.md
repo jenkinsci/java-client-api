@@ -42,6 +42,16 @@
   
 ### API Changes
 
+  [Fixed issue 168 deletejobs in folder][issue-168]
+
+  Added new method to delete a job within a folder.
+
+```java
+public class JenkinsServer {
+ public void deleteJob(FolderJob folder, String jobName) throws IOException;
+}
+```
+
   [Changing getLocalContext(), setLocalContext()][pull-163]
 
   The protected method `getLocalContext()` now returns
@@ -514,6 +524,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-162]: https://github.com/jenkinsci/java-client-api/issues/162
 [issue-165]: https://github.com/jenkinsci/java-client-api/issues/165
 [issue-167]: https://github.com/jenkinsci/java-client-api/issues/167
+[issue-168]: https://github.com/jenkinsci/java-client-api/issues/168
 [issue-172]: https://github.com/jenkinsci/java-client-api/issues/172
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
