@@ -21,16 +21,16 @@ public class BuildJobTestReports {
     @Test
     public void shouldAddStringParamToAnExistingJob() throws IOException {
          JenkinsServer js = new
-         JenkinsServer(URI.create("http://localhost:10090/"));
+         JenkinsServer(URI.create("http://localhost:10090/buildserver/"), "admin", "admin");
 //        JenkinsServer js = new JenkinsServer(URI.create("http://ci.soebes.de:8080/"));
         // MavenJobWithDetails mavenJob = js.getMavenJob("javaee");
-        MavenJobWithDetails mavenJob = js.getMavenJob("test-maven");
+        MavenJobWithDetails mavenJob = js.getMavenJob("maven-test");
 
         BuildWithDetails details = mavenJob.getLastSuccessfulBuild().details();
         // BuildWithDetails details = mavenJob.getBuilds().get(8).details();
         System.out.println("Build Number: " + details.getNumber());
 
-        TestReport testReport = mavenJob.getLastUnstableBuild().getTestReport();
+        TestReport testReport = mavenJob.getLastBuild().getTestReport();
         System.out.println("------ Tests");
         System.out.println("    urlName: " + testReport.getUrlName());
         System.out.println("  failCount: " + testReport.getFailCount());
