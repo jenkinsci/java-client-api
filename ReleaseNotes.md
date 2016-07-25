@@ -42,6 +42,21 @@
   
 ### API Changes
 
+  [Fixed issue 169 Add crumbFlag to renameJob][issue-169]
+
+  Added supplemental `renameJob` method which supports crumbFlag. Furthermore
+  added `renameJob` which supports folder with and without `crumbFlag`.
+  So we now have the following methods to rename jobs:
+
+```java
+public class JenkinsServer {
+  public void renameJob(String oldJobName, String newJobName) throws IOException;
+  public void renameJob(String oldJobName, String newJobName, Boolean crumbFlag) throws IOException;
+  public void renameJob(FolderJob folder, String oldJobName, String newJobName) throws IOException;
+  public void renameJob(FolderJob folder, String oldJobName, String newJobName, Boolean crumbFlag) throws IOException;
+}
+``` 
+
   [Fixed issue 168 deletejobs in folder][issue-168]
 
   Added new method to delete a job within a folder.
@@ -525,6 +540,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-165]: https://github.com/jenkinsci/java-client-api/issues/165
 [issue-167]: https://github.com/jenkinsci/java-client-api/issues/167
 [issue-168]: https://github.com/jenkinsci/java-client-api/issues/168
+[issue-169]: https://github.com/jenkinsci/java-client-api/issues/169
 [issue-172]: https://github.com/jenkinsci/java-client-api/issues/172
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149

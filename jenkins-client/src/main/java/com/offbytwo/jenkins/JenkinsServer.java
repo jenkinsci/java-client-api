@@ -667,14 +667,74 @@ public class JenkinsServer {
     }
     
     /**
-	 * Rename a job
-	 *
-	 * @param jobName Existing Job name
-	 * @param newJobName New Job Name
-	 * @throws IOException In case of a failure.
-	 */
-	public void renameJob(String jobName, String newJobName) throws IOException {
-		client.post(
-				"/job/" + EncodingUtils.encode(jobName) + "/doRename?newName=" + EncodingUtils.encodeParam(newJobName));
-	}
+     * Rename a job
+     *
+     * @param oldJobName
+     *            existing job name.
+     * @param newJobName
+     *            The new job name.
+     * @throws IOException
+     *             In case of a failure.
+     */
+    public void renameJob(String oldJobName, String newJobName) throws IOException {
+	renameJob(null, oldJobName, newJobName, false);
+    }
+
+    /**
+     * Rename a job
+     *
+     * @param oldJobName
+     *            existing job name.
+     * @param newJobName
+     *            The new job name.
+     * @param crumbFlag
+     * 		  <code>true</code> to add <b>crumbIssuer</b> <code>false</code> otherwise.  
+     * @throws IOException
+     *             In case of a failure.
+     */
+    public void renameJob(String oldJobName, String newJobName, Boolean crumbFlag) throws IOException {
+	renameJob(null, oldJobName, newJobName, crumbFlag);
+    }
+
+    /**
+     * Rename a job
+     *
+     * @param FolderJob
+     * 		  The folder.
+     * @param oldJobName
+     *            existing job name.
+     * @param newJobName
+     *            The new job name.
+     * @throws IOException
+     *             In case of a failure.
+     */
+    public void renameJob(FolderJob folder, String oldJobName, String newJobName) throws IOException {
+        renameJob(folder, oldJobName, newJobName, false);
+    }
+
+    /**
+     * Rename a job
+     *
+     * @param FolderJob
+     * 		  The folder.
+     * @param oldJobName
+     *            existing job name.
+     * @param newJobName
+     *            The new job name.
+     * @param crumbFlag
+     * 		  <code>true</code> to add <b>crumbIssuer</b> <code>false</code> otherwise.  
+     * @throws IOException
+     *             In case of a failure.
+     */
+    public void renameJob(FolderJob folder, String oldJobName, String newJobName, Boolean crumbFlag) throws IOException {
+	
+        String path = "/";
+        if (folder != null) {
+            path = folder.getUrl();
+        }
+	client.post( path + 
+		"job/" + EncodingUtils.encode(oldJobName) + "/doRename?newName=" + EncodingUtils.encodeParam(newJobName), crumbFlag);
+	
+    }
+
 }
