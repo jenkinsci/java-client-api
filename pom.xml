@@ -5,7 +5,10 @@
   ~ Distributed under the MIT license: http://opensource.org/licenses/MIT
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -158,7 +161,7 @@
       <dependency>
         <groupId>org.testng</groupId>
         <artifactId>testng</artifactId>
-      <version>6.8.21</version>
+        <version>6.8.21</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -187,7 +190,7 @@
         <version>1.7.1</version>
         <scope>test</scope>
       </dependency>
-      
+
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
@@ -338,36 +341,36 @@
       </plugins>
     </pluginManagement>
     <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-site-plugin</artifactId>
-            <dependencies>
-                <dependency>
-                    <groupId>org.apache.maven.doxia</groupId>
-                    <artifactId>doxia-module-markdown</artifactId>
-                    <version>1.7</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.asciidoctor</groupId>
-                    <artifactId>asciidoctor-maven-plugin</artifactId>
-                    <version>${asciidoctor-maven-plugin.version}</version>
-                </dependency>
-            </dependencies>
-            <configuration>
-                <asciidoc>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.doxia</groupId>
+            <artifactId>doxia-module-markdown</artifactId>
+            <version>1.7</version>
+          </dependency>
+          <dependency>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctor-maven-plugin</artifactId>
+            <version>${asciidoctor-maven-plugin.version}</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <asciidoc>
                   <!-- optional site-wide AsciiDoc attributes -->
-                  <attributes>
-                    <icons>font</icons>
-                    <source-highlighter>coderay</source-highlighter>
-                    <coderay-css>style</coderay-css>
-                    <toclevels>2</toclevels>
-                    <project-version>${project.version}</project-version>
-                    <sectnums>true</sectnums>
-                    <preserveDirectories>true</preserveDirectories>
-                  </attributes>
-                </asciidoc>
-            </configuration>
-        </plugin>
+            <attributes>
+              <icons>font</icons>
+              <source-highlighter>coderay</source-highlighter>
+              <coderay-css>style</coderay-css>
+              <toclevels>2</toclevels>
+              <project-version>${project.version}</project-version>
+              <sectnums>true</sectnums>
+              <preserveDirectories>true</preserveDirectories>
+            </attributes>
+          </asciidoc>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
