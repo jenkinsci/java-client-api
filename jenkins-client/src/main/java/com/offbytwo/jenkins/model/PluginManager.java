@@ -7,11 +7,15 @@ import java.util.List;
  */
 public class PluginManager extends BaseModel
 {
-    List<Plugin> plugins;
+    private List<Plugin> plugins;
 
     public List<Plugin> getPlugins()
     {
         return plugins;
+    }
+    
+    public void setPlugins(List<Plugin> plugins) {
+        this.plugins = plugins;
     }
 
     @Override

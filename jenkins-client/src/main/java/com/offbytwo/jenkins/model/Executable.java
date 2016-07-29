@@ -1,9 +1,9 @@
 package com.offbytwo.jenkins.model;
 
 public class Executable {
-    Long number;
+    private Long number;
 
-    String url;
+    private String url;
 
     public Long getNumber() {
         return number;

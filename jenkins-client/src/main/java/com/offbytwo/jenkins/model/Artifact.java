@@ -8,9 +8,9 @@ package com.offbytwo.jenkins.model;
 
 public class Artifact extends BaseModel {
 
-    String displayPath;
-    String fileName;
-    String relativePath;
+    private String displayPath;
+    private String fileName;
+    private String relativePath;
 
     public String getDisplayPath() {
         return displayPath;

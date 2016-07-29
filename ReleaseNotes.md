@@ -42,6 +42,13 @@
   
 ### API Changes
 
+  The attributes of the following classes have been made
+  private. They are only accessible via getters/setters.
+  
+  `MavenArtifact`, `ComputerWithDetails`, `Executable`, `FolderJob`,
+  `JobWithDetails`, `MavenJobWithDetails`, `MavenModule`, `MavenModuleRecord`,
+  `PluginManager`  
+
   [Fixed issue 174][issue-174]
 
   jenkins.getComputerSet().getComputer() produced an error.

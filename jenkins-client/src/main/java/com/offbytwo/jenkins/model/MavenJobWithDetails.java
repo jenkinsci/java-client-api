@@ -7,19 +7,19 @@ import com.google.common.collect.Lists;
 
 public class MavenJobWithDetails extends MavenJob {
 
-    String displayName;
-    boolean buildable;
-    List<MavenBuild> builds;
-    MavenBuild lastBuild;
-    MavenBuild lastCompletedBuild;
-    MavenBuild lastFailedBuild;
-    MavenBuild lastStableBuild;
-    MavenBuild lastSuccessfulBuild;
-    MavenBuild lastUnstableBuild;
-    MavenBuild lastUnsuccessfulBuild;
-    int nextBuildNumber;
-    List<Job> downstreamProjects;
-    List<Job> upstreamProjects;
+    private String displayName;
+    private boolean buildable;
+    private List<MavenBuild> builds;
+    private MavenBuild lastBuild;
+    private MavenBuild lastCompletedBuild;
+    private MavenBuild lastFailedBuild;
+    private MavenBuild lastStableBuild;
+    private MavenBuild lastSuccessfulBuild;
+    private MavenBuild lastUnstableBuild;
+    private MavenBuild lastUnsuccessfulBuild;
+    private int nextBuildNumber;
+    private List<Job> downstreamProjects;
+    private List<Job> upstreamProjects;
 
     public MavenJobWithDetails() {
     }

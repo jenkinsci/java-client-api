@@ -24,39 +24,39 @@ import com.offbytwo.jenkins.helper.Range;
 
 public class JobWithDetails extends Job {
 
-    String description;
+    private String description;
     
-    String displayName;
+    private String displayName;
 
-    boolean buildable;
+    private boolean buildable;
 
-    List<Build> builds;
+    private List<Build> builds;
 
-    Build firstBuild;
+    private Build firstBuild;
 
-    Build lastBuild;
+    private Build lastBuild;
 
-    Build lastCompletedBuild;
+    private Build lastCompletedBuild;
 
-    Build lastFailedBuild;
+    private Build lastFailedBuild;
 
-    Build lastStableBuild;
+    private Build lastStableBuild;
 
-    Build lastSuccessfulBuild;
+    private Build lastSuccessfulBuild;
 
-    Build lastUnstableBuild;
+    private Build lastUnstableBuild;
 
-    Build lastUnsuccessfulBuild;
+    private Build lastUnsuccessfulBuild;
 
-    int nextBuildNumber;
+    private int nextBuildNumber;
 
-    boolean inQueue;
+    private boolean inQueue;
 
-    QueueItem queueItem;
+    private QueueItem queueItem;
 
-    List<Job> downstreamProjects;
+    private List<Job> downstreamProjects;
 
-    List<Job> upstreamProjects;
+    private List<Job> upstreamProjects;
 
     public String getDescription()
     {
@@ -138,7 +138,7 @@ public class JobWithDetails extends Job {
                 });
             }
         } catch (HttpResponseException e) {
-            // TODO: Thinks about a better handline if the job does not exist?
+            // TODO: Thinks about a better handling if the job does not exist?
             if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
                 // TODO: Check this if this is necessary or a good idea?
 
@@ -282,7 +282,7 @@ public class JobWithDetails extends Job {
     /**
      * @return the list of downstream projects.
      * If no downstream projects exist just return
-     * an {@link Collections#emptyList()} 
+     * an empty list {@link Collections#emptyList()}. 
      */
     public List<Job> getDownstreamProjects() {
         if (downstreamProjects == null) {
@@ -295,7 +295,7 @@ public class JobWithDetails extends Job {
     /**
      * @return the list of upstream projects.
      * If no upstream projects exist just return
-     * an {@link Collections#emptyList()} 
+     * an empty list {@link Collections#emptyList()}. 
      */
     public List<Job> getUpstreamProjects() {
         if (upstreamProjects == null) {

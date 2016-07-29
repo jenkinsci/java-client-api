@@ -2,6 +2,9 @@ package com.offbytwo.jenkins.model;
 
 public class View extends MainView {
 
+    //TODO: Think about the initialization of
+    // the attributes? Better being done in 
+    // ctor.
     private String name = "";
     private String description = "";
     private String url = "";
@@ -15,7 +18,6 @@ public class View extends MainView {
     }
 
     public View() {
-
     }
 
     public String getDescription() {

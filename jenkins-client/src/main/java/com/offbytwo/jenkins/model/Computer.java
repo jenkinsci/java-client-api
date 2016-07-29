@@ -11,6 +11,10 @@ import java.util.List;
 
 import com.google.common.net.UrlEscapers;
 
+/**
+ * @author Kelly Plummer
+ *
+ */
 public class Computer extends BaseModel {
 
     private String displayName;

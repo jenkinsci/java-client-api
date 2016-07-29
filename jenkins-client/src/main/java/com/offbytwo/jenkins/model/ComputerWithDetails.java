@@ -16,20 +16,20 @@ import com.google.common.net.UrlEscapers;
 
 public class ComputerWithDetails extends Computer {
 
-    String displayName;
-    List actions;
-    List<Executor> executors;
-    Boolean idle;
-    Boolean jnlp;
-    Boolean launchSupported;
-    Boolean manualLaunchAllowed;
-    Map monitorData;
-    Integer numExecutors;
-    Boolean offline;
-    OfflineCause offlineCause;
-    String offlineCauseReason;
-    List oneOffExecutors;
-    Boolean temporarilyOffline;
+    private String displayName;
+    private List actions; //TODO: What kind of List?
+    private List<Executor> executors;
+    private Boolean idle;
+    private Boolean jnlp;
+    private Boolean launchSupported;
+    private Boolean manualLaunchAllowed;
+    private Map monitorData; //TODO: What kind of map?
+    private Integer numExecutors;
+    private Boolean offline;
+    private OfflineCause offlineCause;
+    private String offlineCauseReason;
+    private List oneOffExecutors; //TODO: What kind of List?
+    private Boolean temporarilyOffline;
 
     public ComputerWithDetails()
     {

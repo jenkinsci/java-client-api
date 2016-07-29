@@ -8,9 +8,14 @@ package com.offbytwo.jenkins.model;
 
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
 
+/**
+ * The base model.
+ *
+ */
 public class BaseModel {
 
-    JenkinsHttpClient client;
+    //TODO: We should make this private
+    protected JenkinsHttpClient client;
 
     public JenkinsHttpClient getClient() {
         return client;

@@ -2,14 +2,14 @@ package com.offbytwo.jenkins.model;
 
 public class MavenArtifact extends BaseModel {
 
-    String artifactId;
-    String canonicalName;
-    String classifier;
-    String fileName;
-    String groupId;
-    String md5sum;
-    String type;
-    String version;
+    private String artifactId;
+    private String canonicalName;
+    private String classifier;
+    private String fileName;
+    private String groupId;
+    private String md5sum;
+    private String type;
+    private String version;
 
     public MavenArtifact() {
     }

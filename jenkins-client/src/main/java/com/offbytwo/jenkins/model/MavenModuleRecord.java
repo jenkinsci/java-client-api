@@ -4,11 +4,11 @@ import java.util.List;
 
 public class MavenModuleRecord extends BaseModel {
 
-    List<MavenArtifact> attachedArtifacts;
-    Build parent;
-    MavenArtifact mainArtifact;
-    MavenArtifact pomArtifact;
-    String url;
+    private List<MavenArtifact> attachedArtifacts;
+    private Build parent;
+    private MavenArtifact mainArtifact;
+    private MavenArtifact pomArtifact;
+    private String url;
 
     public MavenModuleRecord() {
     }

@@ -11,8 +11,8 @@ import com.offbytwo.jenkins.client.util.EncodingUtils;
 
 public class FolderJob extends Job {
 
-    String displayName;
-    List<Job> jobs;
+    private String displayName;
+    private List<Job> jobs;
 
     public FolderJob() {
     }

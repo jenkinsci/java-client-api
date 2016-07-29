@@ -71,6 +71,11 @@ public class Job extends BaseModel {
         client.post(url + "build");
     }
 
+    /**
+     * Trigger a build with crumbFlag.
+     * @param crumbFlag true or false.
+     * @throws IOException in case of an error.
+     */
     public void build(boolean crumbFlag) throws IOException {
         client.post(url + "build", crumbFlag);
     }
