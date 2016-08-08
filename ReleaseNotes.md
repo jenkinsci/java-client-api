@@ -4,7 +4,7 @@
 
 ### General Changes
 
-  [Upgraded Maven Plugins][issue-167]
+[Upgraded Maven Plugins][issue-167]
 
   * maven-release-plugin to 2.5.3
   * maven-site-plugin to 3.5.1
@@ -16,20 +16,20 @@
   * Add missing maven-javadoc-plugin 2.10.4
 
 
-  [Upgraded Maven Plugins JENKINS-35108][jissue-35108]
+[Upgraded Maven Plugins JENKINS-35108][jissue-35108]
 
   * maven-clean-plugin to 3.0.0
   * maven-resources-plugin to 3.0.0
   * maven-jar-plugin to 3.0.0
 
 
-  [Fixed issue 172][issue-172]
+[Fixed issue 172][issue-172]
 
   The implementation `BuildWithDetails.getCauses()` could cause an 
   NPE which now has been imroved to prevent it. Thanks for hint
   which brought me to reconsider the implementation.
 
-  [Fixed issue 162][issue-162]
+[Fixed issue 162][issue-162]
 
   Serveral issues fixed related to using logging framework 
   [issue-161][issue-161], [issue-113][issue-113] and
@@ -40,7 +40,7 @@
   As a user you can now decide which logging framework
   you would like to use.
 
-  [Changed the structure and integrated Docker IT][issue-160]
+[Changed the structure and integrated Docker IT][issue-160]
   
 ### API Changes
 
