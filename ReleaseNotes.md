@@ -15,11 +15,13 @@
   * maven-resources-plugin to 3.0.1
   * Add missing maven-javadoc-plugin 2.10.4
 
-  [Upgraded Maven Plugins][jissue-35108]
 
-   * maven-clean-plugin to 3.0.0
-   * maven-resources-plugin to 3.0.0
-   * maven-jar-plugin to 3.0.0
+  [Upgraded Maven Plugins JENKINS-35108][jissue-35108]
+
+  * maven-clean-plugin to 3.0.0
+  * maven-resources-plugin to 3.0.0
+  * maven-jar-plugin to 3.0.0
+
 
   [Fixed issue 172][issue-172]
 
