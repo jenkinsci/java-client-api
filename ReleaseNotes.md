@@ -22,14 +22,15 @@
   * maven-resources-plugin to 3.0.0
   * maven-jar-plugin to 3.0.0
 
+[Fixed issue 162][issue-162]
+
+  JenkinsJob.details() produced NPE which has been got via view.getJob().
 
 [Fixed issue 172][issue-172]
 
   The implementation `BuildWithDetails.getCauses()` could cause an 
   NPE which now has been imroved to prevent it. Thanks for hint
   which brought me to reconsider the implementation.
-
-[Fixed issue 162][issue-162]
 
   Serveral issues fixed related to using logging framework 
   [issue-161][issue-161], [issue-113][issue-113] and
