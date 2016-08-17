@@ -22,6 +22,10 @@
   * maven-resources-plugin to 3.0.0
   * maven-jar-plugin to 3.0.0
 
+[Fixed issue 176 HttpResponseException: Not Found (createJob)][issue-176]
+  Based on the wrong usage of the sub methods using crumbFlag=true instead
+  of crumbFlag=false.
+
 [Fixed issue 162][issue-162]
 
   JenkinsJob.details() produced NPE which has been got via view.getJob().
@@ -574,6 +578,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-169]: https://github.com/jenkinsci/java-client-api/issues/169
 [issue-172]: https://github.com/jenkinsci/java-client-api/issues/172
 [issue-174]: https://github.com/jenkinsci/java-client-api/issues/174
+[issue-176]: https://github.com/jenkinsci/java-client-api/issues/176
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158

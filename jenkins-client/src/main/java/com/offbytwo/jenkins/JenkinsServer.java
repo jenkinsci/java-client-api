@@ -336,7 +336,7 @@ public class JenkinsServer {
      * @throws IOException
      */
     public void createJob(String jobName, String jobXml) throws IOException {
-        createJob(null, jobName, jobXml, true);
+        createJob(null, jobName, jobXml, false);
     }
 
     /**
@@ -357,7 +357,7 @@ public class JenkinsServer {
      * @throws IOException
      */
     public void createJob(FolderJob folder, String jobName, String jobXml) throws IOException {
-        createJob(folder, jobName, jobXml, true);
+        createJob(folder, jobName, jobXml, false);
     }
 
     /**
