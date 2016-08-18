@@ -336,6 +336,13 @@ public class JobWithDetails extends Job {
         return this.queueItem;
     }
 
+    /**
+     * Get a build by the given buildNumber.
+     * 
+     * @param buildNumber The number to select the build by.
+     * @return The {@link Build} selected by the given buildnumber
+     *  
+     */
     public Build getBuildByNumber(final int buildNumber) {
 
         Predicate<Build> isMatchingBuildNumber = new Predicate<Build>() {
