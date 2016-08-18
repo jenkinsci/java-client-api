@@ -141,7 +141,7 @@ public class JenkinsServerIT {
         jenkinsRule.getInstance().createProject(FreeStyleProject.class, JENKINS_TEST_JOB);
         String sourceXml = server.getJobXml(JENKINS_TEST_JOB);
 
-        server.createJob(jobName, sourceXml);
+        server.createJob(jobName, sourceXml, true);
 
         Map<String, Job> jobs = server.getJobs();
         assertTrue(jobs.containsKey(jobName));
