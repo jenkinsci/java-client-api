@@ -219,7 +219,7 @@ public class JenkinsServerTest extends BaseUnitTest {
 
         // then
         ArgumentCaptor<String> captureString = ArgumentCaptor.forClass(String.class);
-        verify(client).post_xml(eq("/createItem?name=" + jobName), captureString.capture(), eq(true));
+        verify(client).post_xml(eq("/createItem?name=" + jobName), captureString.capture(), eq(false));
         String xmlReturn = captureString.getValue();
         assertEquals(xmlReturn, xmlString);
     }
