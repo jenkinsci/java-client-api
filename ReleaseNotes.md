@@ -56,10 +56,16 @@
   `JobWithDetails`, `MavenJobWithDetails`, `MavenModule`, `MavenModuleRecord`,
   `PluginManager`  
 
+  [Fixed issue 179][issue-179]
+
+  The `getTestReport` has been moved up from `MavenBuild` into
+  `Build` class. This makes the `TestReport` accessible 
+  from any kind of build and not only from a Maven build.
+
   [Fixed issue 174][issue-174]
 
-  jenkins.getComputerSet().getComputer() produced an error.
-  Changed getComputer() into getComputers() cause it returns
+  `jenkins.getComputerSet().getComputer()` produced an error.
+  Changed `getComputer()` into `getComputers()` cause it returns
   a list an not only a single computer.
   Based on the above problem the `Executor` needed to be changed to
   represent the correct data which is being returned.
@@ -579,6 +585,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-172]: https://github.com/jenkinsci/java-client-api/issues/172
 [issue-174]: https://github.com/jenkinsci/java-client-api/issues/174
 [issue-176]: https://github.com/jenkinsci/java-client-api/issues/176
+[issue-179]: https://github.com/jenkinsci/java-client-api/issues/179
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
