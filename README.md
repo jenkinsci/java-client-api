@@ -109,7 +109,16 @@ to add. Afterwards you can create an appropriate pull request.
 
 It is required if you want to get a Pull request to be integrated into please
 squash your commits into a single commit which references the issue in the
-commit message.
+commit message which looks like this:
+
+```
+Fixed #Issue
+ o Description.
+```
+
+This makes it simpler to merge it and this will also close the
+appropriate issue automatically in one go. This make the life as 
+maintainer a little bit easier.
 
 A pull request has to fulfill only a single ticket and should never
 create/add/fix several issues in one, cause otherwise the history is hard to
