@@ -20,11 +20,11 @@ To get started add the following dependency to your project
 </dependency>
 ```
 
-Starting with Release 0.4.0 the groupId/artifactId will change (NOT YET DONE!)
+Starting with a future release 0.4.0 the groupId/artifactId will change (NOT YET DONE!)
 
 ```xml
 <dependency>
-  NOT YET FINALIZED
+  NOT YET FINALIZED NOR RELEASED !!!
   <groupId>org.jenkins-ci.lib</groupId>
   <artifactId>java-client-api</artifactId>
   <version>0.4.0</version>
