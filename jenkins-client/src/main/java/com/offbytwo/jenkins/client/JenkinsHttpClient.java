@@ -32,9 +32,6 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.CoreConnectionPNames;
-import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
@@ -56,9 +53,6 @@ import net.sf.json.JSONObject;
 
 public class JenkinsHttpClient {
     private final Logger LOGGER = LoggerFactory.getLogger( getClass() );
-    
-    private static final int SO_TIMEOUT_IN_MILLISECONDS = 3000;
-    private static final int CONNECTION_TIMEOUT_IN_MILLISECONDS = 500;
 
     private URI uri;
     private CloseableHttpClient client;
@@ -113,20 +107,6 @@ public class JenkinsHttpClient {
      */
     public JenkinsHttpClient(URI uri) {
         this(uri, HttpClientBuilder.create());
-        this.context = uri.getPath();
-
-        if (!context.endsWith("/")) {
-            context += "/";
-        }
-        this.uri = uri;
-        this.mapper = getDefaultMapper();
-
-        HttpParams httpParams = new BasicHttpParams();
-        httpParams.setIntParameter(CoreConnectionPNames.SO_TIMEOUT, SO_TIMEOUT_IN_MILLISECONDS);
-        httpParams.setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_IN_MILLISECONDS);
-
-        this.httpResponseValidator = new HttpResponseValidator();
-        LOGGER.debug("uri={}", uri.toString());
     }
 
     /**
