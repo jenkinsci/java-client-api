@@ -4,6 +4,8 @@
 
 ### General Changes
 
+[Fixed #182 remove duplicated code][issue-182]
+
 [Upgraded Maven Plugins][issue-167]
 
   * maven-release-plugin to 2.5.3
@@ -586,6 +588,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-174]: https://github.com/jenkinsci/java-client-api/issues/174
 [issue-176]: https://github.com/jenkinsci/java-client-api/issues/176
 [issue-179]: https://github.com/jenkinsci/java-client-api/issues/179
+[issue-182]: https://github.com/jenkinsci/java-client-api/issues/182
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
