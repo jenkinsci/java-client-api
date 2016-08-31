@@ -20,14 +20,14 @@
 
   <groupId>com.offbytwo.jenkins</groupId>
   <artifactId>jenkins-client-parent</artifactId>
-  <version>0.3.6</version>
+  <version>0.3.7-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <scm>
     <connection>scm:git:https://github.com/jenkinsci/java-client-api.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/jenkinsci/java-client-api.git</developerConnection>
     <url>https://github.com/jenkinsci/java-client-api</url>
-    <tag>jenkins-client-parent-0.3.6</tag>
+    <tag>HEAD</tag>
   </scm>
   <distributionManagement>
     <site>
