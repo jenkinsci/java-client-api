@@ -1,6 +1,9 @@
 # Release Notes
 
-## Release 0.3.6 (NOT RELEASED YET)
+## Release 0.3.7 (NOT RELEASED YET)
+
+
+## Release 0.3.6
 
 ### General Changes
 
