@@ -4,16 +4,27 @@ import java.util.List;
 
 /**
  * @author Karl Heinz Marbaise
- *
  */
 public class TestReport extends BaseModel {
 
     private int failCount;
     private int skipCount;
     private int totalCount;
+    private int passCount;
     private String urlName;
 
     private List<TestChildReport> childReports;
+
+    public int getPassCount() {
+        if (passCount == 0) {
+            passCount = totalCount - skipCount - failCount;
+        }
+        return passCount;
+    }
+
+    public void setPassCount(final int passCount) {
+        this.passCount = passCount;
+    }
 
     public int getFailCount() {
         return failCount;
@@ -32,6 +43,9 @@ public class TestReport extends BaseModel {
     }
 
     public int getTotalCount() {
+        if (totalCount == 0 && passCount > 0 || failCount > 0 || skipCount > 0) {
+            totalCount = passCount + failCount + skipCount;
+        }
         return totalCount;
     }
 
@@ -60,6 +74,7 @@ public class TestReport extends BaseModel {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((childReports == null) ? 0 : childReports.hashCode());
+        result = prime * result + passCount;
         result = prime * result + failCount;
         result = prime * result + skipCount;
         result = prime * result + totalCount;
@@ -81,6 +96,9 @@ public class TestReport extends BaseModel {
                 return false;
         } else if (!childReports.equals(other.childReports))
             return false;
+        if (passCount != other.passCount) {
+            return false;
+        }
         if (failCount != other.failCount)
             return false;
         if (skipCount != other.skipCount)

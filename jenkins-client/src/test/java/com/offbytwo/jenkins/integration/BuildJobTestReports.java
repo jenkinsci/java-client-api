@@ -35,6 +35,7 @@ public class BuildJobTestReports {
         System.out.println("    urlName: " + testReport.getUrlName());
         System.out.println("  failCount: " + testReport.getFailCount());
         System.out.println("  skipCount: " + testReport.getSkipCount());
+        System.out.println("  passCount: " + testReport.getPassCount());
         System.out.println(" totalCount: " + testReport.getTotalCount());
 
         List<TestChildReport> childReports = testReport.getChildReports();
