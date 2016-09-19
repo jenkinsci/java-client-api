@@ -2,6 +2,9 @@
 
 ## Release 0.3.7 (NOT RELEASED YET)
 
+[Fixed Issue 186][issue-186]
+
+ * Correctly escaping `{` and `}` for range syntax.
 
 ## Release 0.3.6
 
@@ -592,6 +595,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-176]: https://github.com/jenkinsci/java-client-api/issues/176
 [issue-179]: https://github.com/jenkinsci/java-client-api/issues/179
 [issue-182]: https://github.com/jenkinsci/java-client-api/issues/182
+[issue-186]: https://github.com/jenkinsci/java-client-api/issues/186
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158

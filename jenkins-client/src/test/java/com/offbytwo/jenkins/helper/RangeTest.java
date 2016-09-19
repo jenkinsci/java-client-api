@@ -25,32 +25,35 @@ import com.offbytwo.jenkins.helper.Range;
  * </ul>
  * 
  * @author Karl Heinz Marbaise
- *
  */
 public class RangeTest {
 
+    private String getEscaped(String m) {
+	return Range.CURLY_BRACKET_OPEN + m + Range.CURLY_BRACKET_CLOSE;
+    }
+
     @Test
     public void fromToGiven() {
-        Range r = Range.build().from(1).to(5);
-        assertThat(r.getRangeString()).isEqualTo("{1,5}");
+	Range r = Range.build().from(1).to(5);
+	assertThat(r.getRangeString()).isEqualTo(getEscaped("1,5"));
     }
-    
+
     @Test
     public void onlyFromGiven() {
-        Range r = Range.build().from(3).build();
-        assertThat(r.getRangeString()).isEqualTo("{3,}");
+	Range r = Range.build().from(3).build();
+	assertThat(r.getRangeString()).isEqualTo(getEscaped("3,"));
     }
 
     @Test
     public void onlyToGiven() {
-        Range r = Range.build().to(5).build();
-        assertThat(r.getRangeString()).isEqualTo("{,5}");
+	Range r = Range.build().to(5).build();
+	assertThat(r.getRangeString()).isEqualTo(getEscaped(",5"));
     }
 
     @Test
     public void onlyGiven() {
-        Range r = Range.build().only(3);
-        assertThat(r.getRangeString()).isEqualTo("{3,4}");
+	Range r = Range.build().only(3);
+	assertThat(r.getRangeString()).isEqualTo(getEscaped("3,4"));
     }
 
     @Rule
@@ -58,22 +61,22 @@ public class RangeTest {
 
     @Test
     public void toIsGivenLargerThanFromShouldResultInIllegalArgumentException() {
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("to must be greater than from");
-        Range.build().from(5).to(1);
+	exception.expect(IllegalArgumentException.class);
+	exception.expectMessage("to must be greater than from");
+	Range.build().from(5).to(1);
     }
 
     @Test
     public void fromGivenNegativeValueShouldResultInIllegalArgumentException() {
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("from value must be greater or equal null.");
-        Range.build().from(-1);
+	exception.expect(IllegalArgumentException.class);
+	exception.expectMessage("from value must be greater or equal null.");
+	Range.build().from(-1);
     }
 
     @Test
     public void fromGivenPositiveToNegativeValueShouldResultInIllegalArgumentException() {
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("to must be greater or equal null.");
-        Range.build().from(5).to(-1);
+	exception.expect(IllegalArgumentException.class);
+	exception.expectMessage("to must be greater or equal null.");
+	Range.build().from(5).to(-1);
     }
 }
