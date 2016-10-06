@@ -236,18 +236,27 @@ public class JenkinsServer {
         if (folder != null) {
             path = folder.getUrl();
         }
-        
-        View resultView = client.get(path + "view/" + EncodingUtils.encode(name) + "/", View.class);
-        resultView.setClient(client);
-        
-        //TODO: Think about the following? Does there exists a simpler/more elegant method?
-        for (Job job : resultView.getJobs()) {
-            job.setClient(client);
+
+        try {
+            View resultView = client.get(path + "view/" + EncodingUtils.encode(name) + "/", View.class);
+            resultView.setClient(client);
+
+            //TODO: Think about the following? Does there exists a simpler/more elegant method?
+            for (Job job : resultView.getJobs()) {
+                job.setClient(client);
+            }
+            for (View view : resultView.getViews()) {
+                view.setClient(client);
+            }
+            return resultView;
+        } catch (HttpResponseException e) {
+            LOGGER.debug("getView(folder={}, name={}) status={}", folder, name, e.getStatusCode());
+            if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+                //TODO: Think hard about this.
+                return null;
+            }
+            throw e;
         }
-        for (View view : resultView.getViews()) {
-            view.setClient(client);
-        }
-        return resultView;
     }
 
     /**
