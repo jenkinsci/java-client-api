@@ -376,6 +376,52 @@ public class JenkinsServer {
     }
 
     /**
+     * Create a view on the server using the provided xml
+     *
+     * @return the new view object
+     * @throws IOException
+     */
+    public void createView(String viewName, String viewXml) throws IOException {
+        createView(null, viewName, viewXml, false);
+    }
+
+    /**
+     * Create a view on the server using the provided xml
+     *
+     * @return the new view object
+     * @throws IOException
+     */
+    public void createView(String viewName, String viewXml, Boolean crumbFlag) throws IOException {
+        createView(null, viewName, viewXml, crumbFlag);
+    }
+
+    /**
+     * Create a view on the server using the provided xml and in the provided
+     * folder
+     *
+     * @return the new view object
+     * @throws IOException
+     */
+    public void createView(FolderJob folder, String viewName, String viewXml) throws IOException {
+        createView(folder, viewName, viewXml, false);
+    }
+
+    /**
+     * Create a view on the server using the provided xml and in the provided
+     * folder
+     *
+     * @return the new view object
+     * @throws IOException
+     */
+    public void createView(FolderJob folder, String viewName, String viewXml, Boolean crumbFlag) throws IOException {
+        String path = "/";
+        if (folder != null) {
+            path = folder.getUrl();
+        }
+        client.post_xml(path + "createView?name=" + EncodingUtils.encodeParam(viewName), viewXml, crumbFlag);
+    }
+
+    /**
      * Create a folder on the server (in the root)
      *
      * @throws IOException
@@ -476,6 +522,20 @@ public class JenkinsServer {
      */
     public PluginManager getPluginManager() throws IOException {
         return client.get( "pluginManager/?depth=2", PluginManager.class );
+    }
+
+    /**
+     * Update the xml description of an existing view
+     *
+     * @return the new view object
+     * @throws IOException
+     */
+    public void updateView(String viewName, String viewXml) throws IOException {
+        this.updateView(viewName, viewXml, true);
+    }
+
+    public void updateView(String viewName, String viewXml, boolean crumbFlag) throws IOException {
+        client.post_xml("/view/" + EncodingUtils.encode(viewName) + "/config.xml", viewXml, crumbFlag);
     }
 
     /**
