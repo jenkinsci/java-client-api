@@ -527,6 +527,34 @@ public class JenkinsServer {
         }
     }
 
+    /**
+     * Delete a job from Jenkins within a folder.
+     *
+     * @param folder The folder where the given job is located.
+     * @param jobName The job which should be deleted.
+     *
+     * @throws IOException
+     */
+    public void deleteJob(FolderJob folder, String jobName) throws IOException {
+        deleteJob(folder, jobName, false);
+    }
+
+    /**
+     * Delete a job from Jenkins within a folder.
+     * 
+     * @param folder The folder where the given job is located.
+     * @param jobName The job which should be deleted.
+     * @param crumbFlag The crumbFlag
+     * @throws IOException in case of problems.
+     */
+    public void deleteJob(FolderJob folder, String jobName, boolean crumbFlag) throws IOException {
+	String path = "/";
+	if (folder != null) {
+	    path = folder.getUrl();
+	}
+        client.post(path + "/job/" + EncodingUtils.encode(jobName) + "/doDelete", crumbFlag);
+    }
+
     /*
      * Delete a job from jenkins
      *
@@ -534,21 +562,6 @@ public class JenkinsServer {
      */
     public void deleteJob(String jobName) throws IOException {
         client.post("/job/" + EncodingUtils.encode(jobName) + "/doDelete");
-    }
-    
-    /**
-     * Delete a job from Jenkins within a folder.
-     * 
-     * @param folder The folder where the given job is located.
-     * @param jobName The job which should be deleted.
-     * @throws IOException in case of problems.
-     */
-    public void deleteJob(FolderJob folder, String jobName) throws IOException {
-	String path = "/";
-	if (folder != null) {
-	    path = folder.getUrl();
-	}
-        client.post(path + "/job/" + EncodingUtils.encode(jobName) + "/doDelete");
     }
 
     /**
