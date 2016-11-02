@@ -19,6 +19,22 @@ public class JenkinsServer {
 }
 ``` 
 
+ * [Fixed Issue 38816][jissue-38816]
+
+   Added several methods for creating/updating views.
+
+```java
+public class JenkinsServer {
+  void createView(String viewName, String viewXml);
+  void createView(String viewName, String viewXml, Boolean crumbFlag);
+  void createView(FolderJob folder, String viewName, String viewXml);
+  void createView(FolderJob folder, String viewName, String viewXml, Boolean crumbFlag);
+  void updateView(String viewName, String viewXml);
+  void updateView(String viewName, String viewXml, boolean crumbFlag);
+}
+``` 
+
+
 ## Release 0.3.6
 
 ### General Changes
@@ -615,4 +631,5 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [pull-163]: https://github.com/jenkinsci/java-client-api/pull/163
 [jissue-35002]: https://issues.jenkins-ci.org/browse/JENKINS-35002
 [jissue-35108]: https://issues.jenkins-ci.org/browse/JENKINS-35108
+[jissue-38816]: https://issues.jenkins-ci.org/browse/JENKINS-38816
 [jissue-38823]: https://issues.jenkins-ci.org/browse/JENKINS-38823
