@@ -6,6 +6,19 @@
 
  * Correctly escaping `{` and `}` for range syntax.
 
+
+### API Changes
+
+ * [Fixed Issue 38823[jissue-38823]
+
+   Added an deleteJob method with a crumbFlag.
+
+```java
+public class JenkinsServer {
+  deleteJob(FolderJob folder, String jobName, boolean crumbFlag);
+}
+``` 
+
 ## Release 0.3.6
 
 ### General Changes
@@ -602,3 +615,4 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [pull-163]: https://github.com/jenkinsci/java-client-api/pull/163
 [jissue-35002]: https://issues.jenkins-ci.org/browse/JENKINS-35002
 [jissue-35108]: https://issues.jenkins-ci.org/browse/JENKINS-35108
+[jissue-38823]: https://issues.jenkins-ci.org/browse/JENKINS-38823
