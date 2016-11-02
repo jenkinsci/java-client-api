@@ -34,6 +34,10 @@ public class JenkinsServer {
 }
 ``` 
 
+ * [Fixed Issue 38787][jissue-38787]
+
+ Returning null instead of IOException if view is not found in JenkinsServer.getView
+
 
 ## Release 0.3.6
 
@@ -631,5 +635,6 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [pull-163]: https://github.com/jenkinsci/java-client-api/pull/163
 [jissue-35002]: https://issues.jenkins-ci.org/browse/JENKINS-35002
 [jissue-35108]: https://issues.jenkins-ci.org/browse/JENKINS-35108
+[jissue-38787]: https://issues.jenkins-ci.org/browse/JENKINS-38787
 [jissue-38816]: https://issues.jenkins-ci.org/browse/JENKINS-38816
 [jissue-38823]: https://issues.jenkins-ci.org/browse/JENKINS-38823
