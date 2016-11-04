@@ -53,6 +53,18 @@ public class Build extends BaseModel {
         return url;
     }
 
+    protected void setNumber(int number) {
+        this.number = number;
+    }
+
+    protected void setQueueId(int queueId) {
+        this.queueId = queueId;
+    }
+
+    protected void setUrl(String url) {
+        this.url = url;
+    }
+
     public BuildWithDetails details() throws IOException {
         return client.get(url, BuildWithDetails.class);
     }

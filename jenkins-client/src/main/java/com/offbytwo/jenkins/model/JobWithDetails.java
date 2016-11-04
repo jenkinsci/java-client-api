@@ -25,7 +25,7 @@ import com.offbytwo.jenkins.helper.Range;
 public class JobWithDetails extends Job {
 
     private String description;
-    
+
     private String displayName;
 
     private boolean buildable;
@@ -58,13 +58,11 @@ public class JobWithDetails extends Job {
 
     private List<Job> upstreamProjects;
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public boolean hasDescription() 
-    {
+    public boolean hasDescription() {
         return description != null && !description.isEmpty();
     }
 
@@ -87,14 +85,13 @@ public class JobWithDetails extends Job {
      * won't get back all builds via this method. In such cases you need to use
      * {@link #getAllBuilds()}.
      * 
-     * @return the list of {@link Build}. In case of no builds have been 
-     * executed yet return {@link Collections#emptyList()}.
+     * @return the list of {@link Build}. In case of no builds have been
+     *         executed yet return {@link Collections#emptyList()}.
      */
     public List<Build> getBuilds() {
         if (builds == null) {
             return Collections.emptyList();
-        }
-        else {
+        } else {
             return transform(builds, new Function<Build, Build>() {
                 @Override
                 public Build apply(Build from) {
@@ -113,8 +110,8 @@ public class JobWithDetails extends Job {
      * particular build {@link Build#details()} to reduce the amount of data
      * which needed to be transfered.
      * 
-     * @return the list of {@link Build}. In case of no builds have been 
-     * executed yet return {@link Collections#emptyList()}.
+     * @return the list of {@link Build}. In case of no builds have been
+     *         executed yet return {@link Collections#emptyList()}.
      * @throws IOException
      *             In case of failure.
      * @see <a href="https://issues.jenkins-ci.org/browse/JENKINS-30238">Jenkins
@@ -164,10 +161,12 @@ public class JobWithDetails extends Job {
      * existing builds for a job. The only option is to get all builds via
      * {@link #getAllBuilds()}.</b>
      * 
-     * @param range {@link Range}
-     * @return the list of {@link Build}. In case of no builds have been 
-     * executed yet return {@link Collections#emptyList()}.
-     * @throws IOException in case of an error.
+     * @param range
+     *            {@link Range}
+     * @return the list of {@link Build}. In case of no builds have been
+     *         executed yet return {@link Collections#emptyList()}.
+     * @throws IOException
+     *             in case of an error.
      */
     public List<Build> getAllBuilds(Range range) throws IOException {
         String path = "/" + "job/" + EncodingUtils.encode(this.getName())
@@ -208,8 +207,8 @@ public class JobWithDetails extends Job {
 
     /**
      * @return the first build which has been executed or
-     *  {@link Build#BUILD_HAS_NEVER_RAN} is this has never
-     *  been executed.
+     *         {@link Build#BUILD_HAS_NEVER_RAN} is this has never been
+     *         executed.
      */
     public Build getFirstBuild() {
         if (firstBuild == null) {
@@ -219,6 +218,10 @@ public class JobWithDetails extends Job {
         }
     }
 
+    /**
+     * @return The lastBuild. If {@link #lastBuild} has never been run
+     *         {@link Build#BUILD_HAS_NEVER_RAN} will be returned.
+     */
     public Build getLastBuild() {
         if (lastBuild == null) {
             return Build.BUILD_HAS_NEVER_RAN;
@@ -227,6 +230,10 @@ public class JobWithDetails extends Job {
         }
     }
 
+    /**
+     * @return The lastCompletedBuild. If {@link #lastCompletedBuild} has never
+     *         been run {@link Build#BUILD_HAS_NEVER_RAN} will be returned.
+     */
     public Build getLastCompletedBuild() {
         if (lastCompletedBuild == null) {
             return Build.BUILD_HAS_NEVER_RAN;
@@ -235,6 +242,10 @@ public class JobWithDetails extends Job {
         }
     }
 
+    /**
+     * @return The lastFailedBuild. If {@link #lastFailedBuild} has never been
+     *         run {@link Build#BUILD_HAS_NEVER_RAN} will be returned.
+     */
     public Build getLastFailedBuild() {
         if (lastFailedBuild == null) {
             return Build.BUILD_HAS_NEVER_RAN;
@@ -243,6 +254,10 @@ public class JobWithDetails extends Job {
         }
     }
 
+    /**
+     * @return The lastStableBuild. If {@link #lastStableBuild} has never been
+     *         run {@link Build#BUILD_HAS_NEVER_RAN} will be returned.
+     */
     public Build getLastStableBuild() {
         if (lastStableBuild == null) {
             return Build.BUILD_HAS_NEVER_RAN;
@@ -251,6 +266,11 @@ public class JobWithDetails extends Job {
         }
     }
 
+    /**
+     * @return The lastSuccessfulBuild. If {@link #lastSuccessfulBuild} has
+     *         never been run {@link Build#BUILD_HAS_NEVER_RAN} will be
+     *         returned.
+     */
     public Build getLastSuccessfulBuild() {
         if (lastSuccessfulBuild == null) {
             return Build.BUILD_HAS_NEVER_RAN;
@@ -259,6 +279,10 @@ public class JobWithDetails extends Job {
         }
     }
 
+    /**
+     * @return The lastUnstableBuild. If {@link #lastUnstableBuild} has never
+     *         been run {@link Build#BUILD_HAS_NEVER_RAN} will be returned.
+     */
     public Build getLastUnstableBuild() {
         if (lastUnstableBuild == null) {
             return Build.BUILD_HAS_NEVER_RAN;
@@ -267,6 +291,11 @@ public class JobWithDetails extends Job {
         }
     }
 
+    /**
+     * @return The lastUnsuccessfulBuild. If {@link #lastUnsuccessfulBuild} has
+     *         never been run {@link Build#BUILD_HAS_NEVER_RAN} will be
+     *         returned.
+     */
     public Build getLastUnsuccessfulBuild() {
         if (lastUnsuccessfulBuild == null) {
             return Build.BUILD_HAS_NEVER_RAN;
@@ -280,9 +309,8 @@ public class JobWithDetails extends Job {
     }
 
     /**
-     * @return the list of downstream projects.
-     * If no downstream projects exist just return
-     * an empty list {@link Collections#emptyList()}. 
+     * @return the list of downstream projects. If no downstream projects exist
+     *         just return an empty list {@link Collections#emptyList()}.
      */
     public List<Job> getDownstreamProjects() {
         if (downstreamProjects == null) {
@@ -293,9 +321,8 @@ public class JobWithDetails extends Job {
     }
 
     /**
-     * @return the list of upstream projects.
-     * If no upstream projects exist just return
-     * an empty list {@link Collections#emptyList()}. 
+     * @return the list of upstream projects. If no upstream projects exist just
+     *         return an empty list {@link Collections#emptyList()}.
      */
     public List<Job> getUpstreamProjects() {
         if (upstreamProjects == null) {
@@ -320,7 +347,7 @@ public class JobWithDetails extends Job {
         };
 
         Optional<Build> optionalBuild = Iterables.tryFind(builds, isMatchingBuildNumber);
-        //TODO: Check if we could use Build#NO...instead of Null?
+        // TODO: Check if we could use Build#NO...instead of Null?
         return optionalBuild.orNull() == null ? null : buildWithClient(optionalBuild.orNull());
     }
 
@@ -333,143 +360,113 @@ public class JobWithDetails extends Job {
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ( buildable ? 1231 : 1237 );
-        result = prime * result + ( ( builds == null ) ? 0 : builds.hashCode() );
-        result = prime * result + ( ( description == null ) ? 0 : description.hashCode() );
-        result = prime * result + ( ( displayName == null ) ? 0 : displayName.hashCode() );
-        result = prime * result + ( ( downstreamProjects == null ) ? 0 : downstreamProjects.hashCode() );
-        result = prime * result + ( ( firstBuild == null ) ? 0 : firstBuild.hashCode() );
-        result = prime * result + ( inQueue ? 1231 : 1237 );
-        result = prime * result + ( ( lastBuild == null ) ? 0 : lastBuild.hashCode() );
-        result = prime * result + ( ( lastCompletedBuild == null ) ? 0 : lastCompletedBuild.hashCode() );
-        result = prime * result + ( ( lastFailedBuild == null ) ? 0 : lastFailedBuild.hashCode() );
-        result = prime * result + ( ( lastStableBuild == null ) ? 0 : lastStableBuild.hashCode() );
-        result = prime * result + ( ( lastSuccessfulBuild == null ) ? 0 : lastSuccessfulBuild.hashCode() );
-        result = prime * result + ( ( lastUnstableBuild == null ) ? 0 : lastUnstableBuild.hashCode() );
-        result = prime * result + ( ( lastUnsuccessfulBuild == null ) ? 0 : lastUnsuccessfulBuild.hashCode() );
+        result = prime * result + (buildable ? 1231 : 1237);
+        result = prime * result + ((builds == null) ? 0 : builds.hashCode());
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + ((displayName == null) ? 0 : displayName.hashCode());
+        result = prime * result + ((downstreamProjects == null) ? 0 : downstreamProjects.hashCode());
+        result = prime * result + ((firstBuild == null) ? 0 : firstBuild.hashCode());
+        result = prime * result + (inQueue ? 1231 : 1237);
+        result = prime * result + ((lastBuild == null) ? 0 : lastBuild.hashCode());
+        result = prime * result + ((lastCompletedBuild == null) ? 0 : lastCompletedBuild.hashCode());
+        result = prime * result + ((lastFailedBuild == null) ? 0 : lastFailedBuild.hashCode());
+        result = prime * result + ((lastStableBuild == null) ? 0 : lastStableBuild.hashCode());
+        result = prime * result + ((lastSuccessfulBuild == null) ? 0 : lastSuccessfulBuild.hashCode());
+        result = prime * result + ((lastUnstableBuild == null) ? 0 : lastUnstableBuild.hashCode());
+        result = prime * result + ((lastUnsuccessfulBuild == null) ? 0 : lastUnsuccessfulBuild.hashCode());
         result = prime * result + nextBuildNumber;
-        result = prime * result + ( ( queueItem == null ) ? 0 : queueItem.hashCode() );
-        result = prime * result + ( ( upstreamProjects == null ) ? 0 : upstreamProjects.hashCode() );
+        result = prime * result + ((queueItem == null) ? 0 : queueItem.hashCode());
+        result = prime * result + ((upstreamProjects == null) ? 0 : upstreamProjects.hashCode());
         return result;
     }
 
     @Override
-    public boolean equals( Object obj )
-    {
-        if ( this == obj )
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if ( !super.equals( obj ) )
+        if (!super.equals(obj))
             return false;
-        if ( getClass() != obj.getClass() )
+        if (getClass() != obj.getClass())
             return false;
         JobWithDetails other = (JobWithDetails) obj;
-        if ( buildable != other.buildable )
+        if (buildable != other.buildable)
             return false;
-        if ( builds == null )
-        {
-            if ( other.builds != null )
+        if (builds == null) {
+            if (other.builds != null)
                 return false;
-        }
-        else if ( !builds.equals( other.builds ) )
+        } else if (!builds.equals(other.builds))
             return false;
-        if ( description == null )
-        {
-            if ( other.description != null )
+        if (description == null) {
+            if (other.description != null)
                 return false;
-        }
-        else if ( !description.equals( other.description ) )
+        } else if (!description.equals(other.description))
             return false;
-        if ( displayName == null )
-        {
-            if ( other.displayName != null )
+        if (displayName == null) {
+            if (other.displayName != null)
                 return false;
-        }
-        else if ( !displayName.equals( other.displayName ) )
+        } else if (!displayName.equals(other.displayName))
             return false;
-        if ( downstreamProjects == null )
-        {
-            if ( other.downstreamProjects != null )
+        if (downstreamProjects == null) {
+            if (other.downstreamProjects != null)
                 return false;
-        }
-        else if ( !downstreamProjects.equals( other.downstreamProjects ) )
+        } else if (!downstreamProjects.equals(other.downstreamProjects))
             return false;
-        if ( firstBuild == null )
-        {
-            if ( other.firstBuild != null )
+        if (firstBuild == null) {
+            if (other.firstBuild != null)
                 return false;
-        }
-        else if ( !firstBuild.equals( other.firstBuild ) )
+        } else if (!firstBuild.equals(other.firstBuild))
             return false;
-        if ( inQueue != other.inQueue )
+        if (inQueue != other.inQueue)
             return false;
-        if ( lastBuild == null )
-        {
-            if ( other.lastBuild != null )
+        if (lastBuild == null) {
+            if (other.lastBuild != null)
                 return false;
-        }
-        else if ( !lastBuild.equals( other.lastBuild ) )
+        } else if (!lastBuild.equals(other.lastBuild))
             return false;
-        if ( lastCompletedBuild == null )
-        {
-            if ( other.lastCompletedBuild != null )
+        if (lastCompletedBuild == null) {
+            if (other.lastCompletedBuild != null)
                 return false;
-        }
-        else if ( !lastCompletedBuild.equals( other.lastCompletedBuild ) )
+        } else if (!lastCompletedBuild.equals(other.lastCompletedBuild))
             return false;
-        if ( lastFailedBuild == null )
-        {
-            if ( other.lastFailedBuild != null )
+        if (lastFailedBuild == null) {
+            if (other.lastFailedBuild != null)
                 return false;
-        }
-        else if ( !lastFailedBuild.equals( other.lastFailedBuild ) )
+        } else if (!lastFailedBuild.equals(other.lastFailedBuild))
             return false;
-        if ( lastStableBuild == null )
-        {
-            if ( other.lastStableBuild != null )
+        if (lastStableBuild == null) {
+            if (other.lastStableBuild != null)
                 return false;
-        }
-        else if ( !lastStableBuild.equals( other.lastStableBuild ) )
+        } else if (!lastStableBuild.equals(other.lastStableBuild))
             return false;
-        if ( lastSuccessfulBuild == null )
-        {
-            if ( other.lastSuccessfulBuild != null )
+        if (lastSuccessfulBuild == null) {
+            if (other.lastSuccessfulBuild != null)
                 return false;
-        }
-        else if ( !lastSuccessfulBuild.equals( other.lastSuccessfulBuild ) )
+        } else if (!lastSuccessfulBuild.equals(other.lastSuccessfulBuild))
             return false;
-        if ( lastUnstableBuild == null )
-        {
-            if ( other.lastUnstableBuild != null )
+        if (lastUnstableBuild == null) {
+            if (other.lastUnstableBuild != null)
                 return false;
-        }
-        else if ( !lastUnstableBuild.equals( other.lastUnstableBuild ) )
+        } else if (!lastUnstableBuild.equals(other.lastUnstableBuild))
             return false;
-        if ( lastUnsuccessfulBuild == null )
-        {
-            if ( other.lastUnsuccessfulBuild != null )
+        if (lastUnsuccessfulBuild == null) {
+            if (other.lastUnsuccessfulBuild != null)
                 return false;
-        }
-        else if ( !lastUnsuccessfulBuild.equals( other.lastUnsuccessfulBuild ) )
+        } else if (!lastUnsuccessfulBuild.equals(other.lastUnsuccessfulBuild))
             return false;
-        if ( nextBuildNumber != other.nextBuildNumber )
+        if (nextBuildNumber != other.nextBuildNumber)
             return false;
-        if ( queueItem == null )
-        {
-            if ( other.queueItem != null )
+        if (queueItem == null) {
+            if (other.queueItem != null)
                 return false;
-        }
-        else if ( !queueItem.equals( other.queueItem ) )
+        } else if (!queueItem.equals(other.queueItem))
             return false;
-        if ( upstreamProjects == null )
-        {
-            if ( other.upstreamProjects != null )
+        if (upstreamProjects == null) {
+            if (other.upstreamProjects != null)
                 return false;
-        }
-        else if ( !upstreamProjects.equals( other.upstreamProjects ) )
+        } else if (!upstreamProjects.equals(other.upstreamProjects))
             return false;
         return true;
     }

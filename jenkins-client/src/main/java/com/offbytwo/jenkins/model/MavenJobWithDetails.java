@@ -1,5 +1,6 @@
 package com.offbytwo.jenkins.model;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.google.common.base.Function;
@@ -10,6 +11,7 @@ public class MavenJobWithDetails extends MavenJob {
     private String displayName;
     private boolean buildable;
     private List<MavenBuild> builds;
+    // TODO: What about firstBuild
     private MavenBuild lastBuild;
     private MavenBuild lastCompletedBuild;
     private MavenBuild lastFailedBuild;
@@ -32,41 +34,107 @@ public class MavenJobWithDetails extends MavenJob {
         return buildable;
     }
 
+    /**
+     * @return the list of {@link MavenBuild}. In case of no builds have been
+     *         executed yet {@link Collections#emptyList()} will be returned.
+     */
     public List<MavenBuild> getBuilds() {
-        return Lists.transform(builds, new Function<MavenBuild, MavenBuild>() {
-            @Override
-            public MavenBuild apply(MavenBuild from) {
-                return buildWithClient(from);
-            }
-        });
+        if (builds == null) {
+            return Collections.emptyList();
+        } else {
+            return Lists.transform(builds, new Function<MavenBuild, MavenBuild>() {
+                @Override
+                public MavenBuild apply(MavenBuild from) {
+                    return buildWithClient(from);
+                }
+            });
+        }
     }
 
+    /**
+     * @return The lastBuild. If {@link #lastBuild} has never been run
+     *         {@link MavenBuild#BUILD_HAS_NEVER_RUN} will be returned.
+     */
     public MavenBuild getLastBuild() {
-        return buildWithClient(lastBuild);
+        if (lastBuild == null) {
+            return MavenBuild.BUILD_HAS_NEVER_RUN;
+        } else {
+            return buildWithClient(lastBuild);
+        }
     }
 
+    /**
+     * @return The lastCompletedBuild. If {@link #lastCompletedBuild} has never
+     *         been run {@link MavenBuild#BUILD_HAS_NEVER_RUN} will be returned.
+     */
     public MavenBuild getLastCompletedBuild() {
-        return buildWithClient(lastCompletedBuild);
+        if (lastCompletedBuild == null) {
+            return MavenBuild.BUILD_HAS_NEVER_RUN;
+        } else {
+            return buildWithClient(lastCompletedBuild);
+        }
     }
 
+    /**
+     * @return The lastFailedBuild. If {@link #lastFailedBuild} has never been
+     *         run {@link MavenBuild#BUILD_HAS_NEVER_RUN} will be returned.
+     */
     public MavenBuild getLastFailedBuild() {
-        return buildWithClient(lastFailedBuild);
+        if (lastFailedBuild == null) {
+            return MavenBuild.BUILD_HAS_NEVER_RUN;
+        } else {
+            return buildWithClient(lastFailedBuild);
+        }
     }
 
+    /**
+     * @return The lastStableBuild. If {@link #lastStableBuild} has never been
+     *         run {@link MavenBuild#BUILD_HAS_NEVER_RUN} will be returned.
+     */
     public MavenBuild getLastStableBuild() {
-        return buildWithClient(lastStableBuild);
+        if (lastStableBuild == null) {
+            return MavenBuild.BUILD_HAS_NEVER_RUN;
+        } else {
+            return buildWithClient(lastStableBuild);
+        }
     }
 
+    /**
+     * @return The lastSuccessfulBuild. If {@link #lastSuccessfulBuild} has
+     *         never been run {@link MavenBuild#BUILD_HAS_NEVER_RUN} will be
+     *         returned.
+     */
     public MavenBuild getLastSuccessfulBuild() {
-        return buildWithClient(lastSuccessfulBuild);
+        if (lastSuccessfulBuild == null) {
+            return MavenBuild.BUILD_HAS_NEVER_RUN;
+        } else {
+            return buildWithClient(lastSuccessfulBuild);
+        }
     }
 
+    /**
+     * @return The lastUnstableBuild. If {@link #lastUnstableBuild} has never
+     *         been run {@link MavenBuild#BUILD_HAS_NEVER_RUN} will be returned.
+     */
     public MavenBuild getLastUnstableBuild() {
-        return buildWithClient(lastUnstableBuild);
+        if (lastUnstableBuild == null) {
+            return MavenBuild.BUILD_HAS_NEVER_RUN;
+        } else {
+            return buildWithClient(lastUnstableBuild);
+        }
     }
 
+    /**
+     * @return The lastUnsuccessfulBuild. If {@link #lastUnsuccessfulBuild} has
+     *         never been run {@link MavenBuild#BUILD_HAS_NEVER_RUN} will be
+     *         returned.
+     */
     public MavenBuild getLastUnsuccessfulBuild() {
-        return buildWithClient(lastUnsuccessfulBuild);
+        if (lastUnsuccessfulBuild == null) {
+            return MavenBuild.BUILD_HAS_NEVER_RUN;
+        } else {
+            return buildWithClient(lastUnsuccessfulBuild);
+        }
     }
 
     public int getNextBuildNumber() {
@@ -74,11 +142,19 @@ public class MavenJobWithDetails extends MavenJob {
     }
 
     public List<Job> getDownstreamProjects() {
-        return Lists.transform(downstreamProjects, new MavenJobWithClient());
+        if (downstreamProjects == null) {
+            return Collections.emptyList();
+        } else {
+            return Lists.transform(downstreamProjects, new MavenJobWithClient());
+        }
     }
 
     public List<Job> getUpstreamProjects() {
-        return Lists.transform(upstreamProjects, new MavenJobWithClient());
+        if (upstreamProjects == null) {
+            return Collections.emptyList();
+        } else {
+            return Lists.transform(upstreamProjects, new MavenJobWithClient());
+        }
     }
 
     private MavenBuild buildWithClient(MavenBuild from) {

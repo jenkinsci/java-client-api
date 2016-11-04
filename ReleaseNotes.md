@@ -39,6 +39,28 @@ public class JenkinsServer {
  Returning null instead of IOException if view is not found in JenkinsServer.getView
 
 
+ * [Fixed Issue 201][issue-201]
+ 
+ `MavenJobsWithDetails` is now in line with `JobWithDetails` and returns
+ `MavenBuild.BUILD_HAS_NEVER_RUN` in cases where the run has not taken
+ place yet. 
+
+```java
+public class MavenJobWithDetails { 
+   public MavenBuild getLastBuild();
+   public MavenBuild getLastCompletedBuild();
+   public MavenBuild getLastFailedBuild();
+   public MavenBuild getLastStableBuild();
+   public MavenBuild getLastSuccessfulBuild();
+   public MavenBuild getLastUnstableBuild();
+   public MavenBuild getLastUnsuccessfulBuild();
+   
+}
+``` 
+
+ The `getBuilds()` method will return an empty list instead of `NULL` in cases no
+ builds exists.
+
 ## Release 0.3.6
 
 ### General Changes
@@ -629,6 +651,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-179]: https://github.com/jenkinsci/java-client-api/issues/179
 [issue-182]: https://github.com/jenkinsci/java-client-api/issues/182
 [issue-186]: https://github.com/jenkinsci/java-client-api/issues/186
+[issue-201]: https://github.com/jenkinsci/java-client-api/issues/201
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
