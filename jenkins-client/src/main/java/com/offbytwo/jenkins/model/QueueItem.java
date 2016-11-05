@@ -15,13 +15,10 @@ public class QueueItem extends BaseModel {
 
     private boolean stuck;
 
-    // task
-    //   name
-    //   url
-    //   color?
+    private QueueTask task;
 
     private String url;
-    
+
     private String why;
 
     private boolean cancelled;
@@ -72,6 +69,14 @@ public class QueueItem extends BaseModel {
         return stuck;
     }
 
+    public QueueTask getTask() {
+        return task;
+    }
+
+    public void setTask(QueueTask task) {
+        this.task = task;
+    }
+
     public void setStuck(boolean stuck) {
         this.stuck = stuck;
     }
@@ -120,6 +125,7 @@ public class QueueItem extends BaseModel {
         result = prime * result + ((inQueueSince == null) ? 0 : inQueueSince.hashCode());
         result = prime * result + ((params == null) ? 0 : params.hashCode());
         result = prime * result + (stuck ? 1231 : 1237);
+        result = prime * result + ((task == null) ? 0 : task.hashCode());
         result = prime * result + ((url == null) ? 0 : url.hashCode());
         result = prime * result + ((why == null) ? 0 : why.hashCode());
         return result;
@@ -161,6 +167,11 @@ public class QueueItem extends BaseModel {
         } else if (!params.equals(other.params))
             return false;
         if (stuck != other.stuck)
+            return false;
+        if (task == null) {
+            if (other.task != null)
+                return false;
+        } else if (!task.equals(other.task))
             return false;
         if (url == null) {
             if (other.url != null)

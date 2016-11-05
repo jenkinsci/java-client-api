@@ -54,7 +54,6 @@ public class MavenJobWithDetails {
    public MavenBuild getLastSuccessfulBuild();
    public MavenBuild getLastUnstableBuild();
    public MavenBuild getLastUnsuccessfulBuild();
-   
 }
 ``` 
 
@@ -68,6 +67,16 @@ public class MavenJobWithDetails {
 ```java
 public class MavenJobWithDetails { 
    public MavenBuild getFirstBuild();
+}
+```
+
+ * [Fixed Issue 198][issue-198]
+ 
+ Enhanced the `QueueItem` to add information about the task (QueueTask).
+
+```java
+public class QueueItem {
+    public QueueTask getTask();
 }
 ```
 
@@ -662,6 +671,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-179]: https://github.com/jenkinsci/java-client-api/issues/179
 [issue-182]: https://github.com/jenkinsci/java-client-api/issues/182
 [issue-186]: https://github.com/jenkinsci/java-client-api/issues/186
+[issue-198]: https://github.com/jenkinsci/java-client-api/issues/198
 [issue-201]: https://github.com/jenkinsci/java-client-api/issues/201
 [issue-202]: https://github.com/jenkinsci/java-client-api/issues/202
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
