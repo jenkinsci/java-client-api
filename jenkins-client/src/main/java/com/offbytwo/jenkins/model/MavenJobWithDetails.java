@@ -11,7 +11,7 @@ public class MavenJobWithDetails extends MavenJob {
     private String displayName;
     private boolean buildable;
     private List<MavenBuild> builds;
-    // TODO: What about firstBuild
+    private MavenBuild firstBuild;
     private MavenBuild lastBuild;
     private MavenBuild lastCompletedBuild;
     private MavenBuild lastFailedBuild;
@@ -48,6 +48,18 @@ public class MavenJobWithDetails extends MavenJob {
                     return buildWithClient(from);
                 }
             });
+        }
+    }
+
+    /**
+     * @return The firstBuild. If {@link #firstBuild} has never been run
+     *         {@link MavenBuild#BUILD_HAS_NEVER_RUN} will be returned.
+     */
+    public MavenBuild getFirstBuild() {
+        if (firstBuild == null) {
+            return MavenBuild.BUILD_HAS_NEVER_RUN;
+        } else {
+            return buildWithClient(firstBuild);
         }
     }
 

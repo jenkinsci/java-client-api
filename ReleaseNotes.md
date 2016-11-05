@@ -63,6 +63,15 @@ public class MavenJobWithDetails {
 
  Fixed grammar and changed `Build.BUILD_HAS_NEVER_RAN` into `Build.BUILD_HAS_NEVER_RUN`
 
+ * [Fixed Issue 202][issue-202]
+
+```java
+public class MavenJobWithDetails { 
+   public MavenBuild getFirstBuild();
+}
+```
+
+
 ## Release 0.3.6
 
 ### General Changes
@@ -654,6 +663,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-182]: https://github.com/jenkinsci/java-client-api/issues/182
 [issue-186]: https://github.com/jenkinsci/java-client-api/issues/186
 [issue-201]: https://github.com/jenkinsci/java-client-api/issues/201
+[issue-202]: https://github.com/jenkinsci/java-client-api/issues/202
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
