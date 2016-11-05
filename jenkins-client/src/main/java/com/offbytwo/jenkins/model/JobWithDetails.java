@@ -207,12 +207,12 @@ public class JobWithDetails extends Job {
 
     /**
      * @return the first build which has been executed or
-     *         {@link Build#BUILD_HAS_NEVER_RAN} is this has never been
+     *         {@link Build#BUILD_HAS_NEVER_RUN} is this has never been
      *         executed.
      */
     public Build getFirstBuild() {
         if (firstBuild == null) {
-            return Build.BUILD_HAS_NEVER_RAN;
+            return Build.BUILD_HAS_NEVER_RUN;
         } else {
             return buildWithClient(firstBuild);
         }
@@ -220,11 +220,11 @@ public class JobWithDetails extends Job {
 
     /**
      * @return The lastBuild. If {@link #lastBuild} has never been run
-     *         {@link Build#BUILD_HAS_NEVER_RAN} will be returned.
+     *         {@link Build#BUILD_HAS_NEVER_RUN} will be returned.
      */
     public Build getLastBuild() {
         if (lastBuild == null) {
-            return Build.BUILD_HAS_NEVER_RAN;
+            return Build.BUILD_HAS_NEVER_RUN;
         } else {
             return buildWithClient(lastBuild);
         }
@@ -232,11 +232,11 @@ public class JobWithDetails extends Job {
 
     /**
      * @return The lastCompletedBuild. If {@link #lastCompletedBuild} has never
-     *         been run {@link Build#BUILD_HAS_NEVER_RAN} will be returned.
+     *         been run {@link Build#BUILD_HAS_NEVER_RUN} will be returned.
      */
     public Build getLastCompletedBuild() {
         if (lastCompletedBuild == null) {
-            return Build.BUILD_HAS_NEVER_RAN;
+            return Build.BUILD_HAS_NEVER_RUN;
         } else {
             return buildWithClient(lastCompletedBuild);
         }
@@ -244,11 +244,11 @@ public class JobWithDetails extends Job {
 
     /**
      * @return The lastFailedBuild. If {@link #lastFailedBuild} has never been
-     *         run {@link Build#BUILD_HAS_NEVER_RAN} will be returned.
+     *         run {@link Build#BUILD_HAS_NEVER_RUN} will be returned.
      */
     public Build getLastFailedBuild() {
         if (lastFailedBuild == null) {
-            return Build.BUILD_HAS_NEVER_RAN;
+            return Build.BUILD_HAS_NEVER_RUN;
         } else {
             return buildWithClient(lastFailedBuild);
         }
@@ -256,11 +256,11 @@ public class JobWithDetails extends Job {
 
     /**
      * @return The lastStableBuild. If {@link #lastStableBuild} has never been
-     *         run {@link Build#BUILD_HAS_NEVER_RAN} will be returned.
+     *         run {@link Build#BUILD_HAS_NEVER_RUN} will be returned.
      */
     public Build getLastStableBuild() {
         if (lastStableBuild == null) {
-            return Build.BUILD_HAS_NEVER_RAN;
+            return Build.BUILD_HAS_NEVER_RUN;
         } else {
             return buildWithClient(lastStableBuild);
         }
@@ -268,12 +268,12 @@ public class JobWithDetails extends Job {
 
     /**
      * @return The lastSuccessfulBuild. If {@link #lastSuccessfulBuild} has
-     *         never been run {@link Build#BUILD_HAS_NEVER_RAN} will be
+     *         never been run {@link Build#BUILD_HAS_NEVER_RUN} will be
      *         returned.
      */
     public Build getLastSuccessfulBuild() {
         if (lastSuccessfulBuild == null) {
-            return Build.BUILD_HAS_NEVER_RAN;
+            return Build.BUILD_HAS_NEVER_RUN;
         } else {
             return buildWithClient(lastSuccessfulBuild);
         }
@@ -281,11 +281,11 @@ public class JobWithDetails extends Job {
 
     /**
      * @return The lastUnstableBuild. If {@link #lastUnstableBuild} has never
-     *         been run {@link Build#BUILD_HAS_NEVER_RAN} will be returned.
+     *         been run {@link Build#BUILD_HAS_NEVER_RUN} will be returned.
      */
     public Build getLastUnstableBuild() {
         if (lastUnstableBuild == null) {
-            return Build.BUILD_HAS_NEVER_RAN;
+            return Build.BUILD_HAS_NEVER_RUN;
         } else {
             return buildWithClient(lastUnstableBuild);
         }
@@ -293,12 +293,12 @@ public class JobWithDetails extends Job {
 
     /**
      * @return The lastUnsuccessfulBuild. If {@link #lastUnsuccessfulBuild} has
-     *         never been run {@link Build#BUILD_HAS_NEVER_RAN} will be
+     *         never been run {@link Build#BUILD_HAS_NEVER_RUN} will be
      *         returned.
      */
     public Build getLastUnsuccessfulBuild() {
         if (lastUnsuccessfulBuild == null) {
-            return Build.BUILD_HAS_NEVER_RAN;
+            return Build.BUILD_HAS_NEVER_RUN;
         } else {
             return buildWithClient(lastUnsuccessfulBuild);
         }

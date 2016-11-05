@@ -16,7 +16,7 @@ public class Build extends BaseModel {
      * This will be returned by the API in cases where no build has ever 
      * been executed like {@link JobWithDetails#getLastBuild()} etc.
      */
-    public static final Build BUILD_HAS_NEVER_RAN = new Build (-1, -1, "UNKNOWN");
+    public static final Build BUILD_HAS_NEVER_RUN = new Build (-1, -1, "UNKNOWN");
 
     private int number;
     private int queueId;

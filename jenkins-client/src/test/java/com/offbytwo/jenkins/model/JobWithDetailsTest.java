@@ -21,7 +21,7 @@ public class JobWithDetailsTest {
     }
 
     private void failIfNotBuildHasNeverRanReturned(Build build) {
-        assertThat(build).isEqualTo(Build.BUILD_HAS_NEVER_RAN);
+        assertThat(build).isEqualTo(Build.BUILD_HAS_NEVER_RUN);
     }
 
     @Test

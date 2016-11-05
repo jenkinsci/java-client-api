@@ -61,6 +61,8 @@ public class MavenJobWithDetails {
  The `getBuilds()` method will return an empty list instead of `NULL` in cases no
  builds exists.
 
+ Fixed grammar and changed `Build.BUILD_HAS_NEVER_RAN` into `Build.BUILD_HAS_NEVER_RUN`
+
 ## Release 0.3.6
 
 ### General Changes
