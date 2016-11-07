@@ -80,6 +80,17 @@ public class QueueItem {
 }
 ```
 
+ * [Fixed Issue 200][issue-200]
+
+ Added two methods to get all builds and a range of builds
+ so we are more in line wiht JobWithDetails.
+
+```java
+public class MavenJobWithDetails { 
+    public List<MavenBuild> getAllBuilds();
+    public List<MavenBuild> getAllBuilds(Range range);
+}
+```
 
 ## Release 0.3.6
 
@@ -672,6 +683,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-182]: https://github.com/jenkinsci/java-client-api/issues/182
 [issue-186]: https://github.com/jenkinsci/java-client-api/issues/186
 [issue-198]: https://github.com/jenkinsci/java-client-api/issues/198
+[issue-200]: https://github.com/jenkinsci/java-client-api/issues/200
 [issue-201]: https://github.com/jenkinsci/java-client-api/issues/201
 [issue-202]: https://github.com/jenkinsci/java-client-api/issues/202
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
