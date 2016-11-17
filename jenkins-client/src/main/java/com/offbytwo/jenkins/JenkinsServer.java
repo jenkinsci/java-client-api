@@ -150,10 +150,7 @@ public class JenkinsServer {
      * @throws IOException
      */
     public Map<String, Job> getJobs(FolderJob folder, String view) throws IOException {
-        String path = "/";
-        if (folder != null) {
-            path = folder.getUrl();
-        }
+        String path = toBaseUrl(folder);
         Class<? extends MainView> viewClass = MainView.class;
         if (view != null) {
             path = path + "view/" + EncodingUtils.encode(view) + "/";
@@ -187,11 +184,7 @@ public class JenkinsServer {
      * @throws IOException
      */
     public Map<String, View> getViews(FolderJob folder) throws IOException {
-        String path = "/";
-        if (folder != null) {
-            path = folder.getUrl();
-        }
-        List<View> views = client.get(path + "?depth=1", MainView.class).getViews();
+        List<View> views = client.get(toBaseUrl(folder) + "?depth=1", MainView.class).getViews();
         return Maps.uniqueIndex(views, new Function<View, String>() {
             @Override
             public String apply(View view) {
@@ -232,13 +225,8 @@ public class JenkinsServer {
      * @throws IOException
      */
     public View getView(FolderJob folder, String name) throws IOException {
-        String path = "/";
-        if (folder != null) {
-            path = folder.getUrl();
-        }
-
         try {
-            View resultView = client.get(path + "view/" + EncodingUtils.encode(name) + "/", View.class);
+            View resultView = client.get(toViewBaseUrl(folder,name) + "/", View.class);
             resultView.setClient(client);
 
             //TODO: Think about the following? Does there exists a simpler/more elegant method?
@@ -276,12 +264,8 @@ public class JenkinsServer {
      * @throws IOException
      */
     public JobWithDetails getJob(FolderJob folder, String jobName) throws IOException {
-        String path = "/";
-        if (folder != null) {
-            path = folder.getUrl();
-        }
         try {
-            JobWithDetails job = client.get(path + "job/" + EncodingUtils.encode(jobName), JobWithDetails.class);
+            JobWithDetails job = client.get(toJobBaseUrl(folder,jobName), JobWithDetails.class);
             job.setClient(client);
 
             return job;
@@ -300,12 +284,8 @@ public class JenkinsServer {
     }
 
     public MavenJobWithDetails getMavenJob(FolderJob folder, String jobName) throws IOException {
-        String path = "/";
-        if (folder != null) {
-            path = folder.getUrl();
-        }
         try {
-            MavenJobWithDetails job = client.get(path + "job/" + EncodingUtils.encode(jobName),
+            MavenJobWithDetails job = client.get(toJobBaseUrl(folder, jobName),
                     MavenJobWithDetails.class);
             job.setClient(client);
 
@@ -377,11 +357,7 @@ public class JenkinsServer {
      * @throws IOException
      */
     public void createJob(FolderJob folder, String jobName, String jobXml, Boolean crumbFlag) throws IOException {
-        String path = "/";
-        if (folder != null) {
-            path = folder.getUrl();
-        }
-        client.post_xml(path + "createItem?name=" + EncodingUtils.encodeParam(jobName), jobXml, crumbFlag);
+        client.post_xml( toBaseUrl(folder) + "createItem?name=" + EncodingUtils.encodeParam(jobName), jobXml, crumbFlag);
     }
 
     /**
@@ -423,11 +399,7 @@ public class JenkinsServer {
      * @throws IOException
      */
     public void createView(FolderJob folder, String viewName, String viewXml, Boolean crumbFlag) throws IOException {
-        String path = "/";
-        if (folder != null) {
-            path = folder.getUrl();
-        }
-        client.post_xml(path + "createView?name=" + EncodingUtils.encodeParam(viewName), viewXml, crumbFlag);
+        client.post_xml(toBaseUrl(folder) + "createView?name=" + EncodingUtils.encodeParam(viewName), viewXml, crumbFlag);
     }
 
     /**
@@ -463,15 +435,11 @@ public class JenkinsServer {
      * @throws IOException
      */
     public void createFolder(FolderJob folder, String jobName, Boolean crumbFlag) throws IOException {
-        String path = "/";
-        if (folder != null) {
-            path = folder.getUrl();
-        }
         // https://gist.github.com/stuart-warren/7786892 was slightly helpful
         // here
         ImmutableMap<String, String> params = ImmutableMap.of("mode", "com.cloudbees.hudson.plugins.folder.Folder",
                 "name", EncodingUtils.encodeParam(jobName), "from", "", "Submit", "OK");
-        client.post_form(path + "createItem?", params, crumbFlag);
+        client.post_form(toBaseUrl(folder) + "createItem?", params, crumbFlag);
     }
 
     /**
@@ -481,7 +449,18 @@ public class JenkinsServer {
      * @throws IOException
      */
     public String getJobXml(String jobName) throws IOException {
-        return client.get("/job/" + EncodingUtils.encode(jobName) + "/config.xml");
+      return getJobXml(null,jobName);
+    }
+    
+    /**
+     * Get the xml description of an existing job
+     *
+     * @return the new job object
+     * @throws IOException
+     */
+    public String getJobXml(FolderJob folder, String jobName) throws IOException
+    {
+      return client.get(toJobBaseUrl(folder, jobName) + "/config.xml");
     }
 
     /**
@@ -550,15 +529,29 @@ public class JenkinsServer {
     /**
      * Update the xml description of an existing job
      *
-     * @return the new job object
      * @throws IOException
      */
     public void updateJob(String jobName, String jobXml) throws IOException {
         this.updateJob(jobName, jobXml, true);
     }
 
+    /**
+     * Update the xml description of an existing job
+     *
+     * @throws IOException
+     */
     public void updateJob(String jobName, String jobXml, boolean crumbFlag) throws IOException {
-        client.post_xml("/job/" + EncodingUtils.encode(jobName) + "/config.xml", jobXml, crumbFlag);
+      updateJob(null,jobName,jobXml,crumbFlag);
+    }
+    
+    /**
+     * Update the xml description of an existing job
+     *
+     * @throws IOException
+     */
+    public void updateJob(FolderJob folder, String jobName, String jobXml, boolean crumbFlag) throws IOException
+    {
+      client.post_xml(toJobBaseUrl(folder, jobName) + "/config.xml", jobXml, crumbFlag);
     }
 
     public void addStringParam(String jobName, String name, String description, String defaultValue)
@@ -617,11 +610,7 @@ public class JenkinsServer {
      * @throws IOException in case of problems.
      */
     public void deleteJob(FolderJob folder, String jobName, boolean crumbFlag) throws IOException {
-	String path = "/";
-	if (folder != null) {
-	    path = folder.getUrl();
-	}
-        client.post(path + "/job/" + EncodingUtils.encode(jobName) + "/doDelete", crumbFlag);
+        client.post(toJobBaseUrl(folder, jobName) + "/doDelete", crumbFlag);
     }
 
     /*
@@ -759,7 +748,7 @@ public class JenkinsServer {
      *             In case of a failure.
      */
     public void renameJob(String oldJobName, String newJobName) throws IOException {
-	renameJob(null, oldJobName, newJobName, false);
+      renameJob(null, oldJobName, newJobName, false);
     }
 
     /**
@@ -775,7 +764,7 @@ public class JenkinsServer {
      *             In case of a failure.
      */
     public void renameJob(String oldJobName, String newJobName, Boolean crumbFlag) throws IOException {
-	renameJob(null, oldJobName, newJobName, crumbFlag);
+      renameJob(null, oldJobName, newJobName, crumbFlag);
     }
 
     /**
@@ -809,14 +798,42 @@ public class JenkinsServer {
      *             In case of a failure.
      */
     public void renameJob(FolderJob folder, String oldJobName, String newJobName, Boolean crumbFlag) throws IOException {
-	
-        String path = "/";
-        if (folder != null) {
-            path = folder.getUrl();
-        }
-	client.post( path + 
-		"job/" + EncodingUtils.encode(oldJobName) + "/doRename?newName=" + EncodingUtils.encodeParam(newJobName), crumbFlag);
-	
+
+        client.post( toJobBaseUrl(folder, oldJobName) + "/doRename?newName=" + EncodingUtils.encodeParam(newJobName), crumbFlag);
+    }
+    
+    /**
+     * Helper to create a base url in case a folder is given 
+     * @param folder the folder or {@code null}
+     * @return
+     */
+    private String toBaseUrl(FolderJob folder)
+    {
+      String path = "/";
+      if (folder != null) {
+          path = folder.getUrl();
+      }
+      return path;
+    }
+
+    /**
+     * Helper to create the base url for a job, with or without a given folder 
+     * @param folder the folder or {@code null}
+     * @return
+     */
+    private String toJobBaseUrl(FolderJob folder, String jobName)
+    {
+      return toBaseUrl(folder) + "job/" + EncodingUtils.encode(jobName);
+    }
+
+    /**
+     * Helper to create the base url for a view, with or without a given folder 
+     * @param folder the folder or {@code null}
+     * @return
+     */
+    private String toViewBaseUrl(FolderJob folder, String name)
+    {
+      return toBaseUrl(folder) + "view/" + EncodingUtils.encode(name);
     }
 
 }
