@@ -298,10 +298,38 @@ public class JenkinsServer {
             throw e;
         }
     }
+    
+    /**
+     * retrives a FolderJob instance for a given path
+     * @param folderPath a Jenkins folder path from the jenkins root ( e.g. "folder1/subfolder/next/" )
+     * @return the FolderJob instance of {@code null} if the folder does not exist or the job is not a folder
+     * @throws IOException
+     */
+    public FolderJob getFolderJob(String folderPath) throws IOException
+    {
+      StringBuffer folderUrlPath = new StringBuffer();
+      for(String part : folderPath.split("/")) {
+        folderUrlPath.append("/job/").append(part);
+      }
+      try {
+          FolderJob folder = client.get( folderUrlPath.toString() , FolderJob.class);
+          if (!folder.isFolder()) {
+            return null;
+          }
+          return folder;
+        } catch (HttpResponseException e) {
+          LOGGER.debug("getFolderJob(folderPath={}) status={}", folderPath, e.getStatusCode());
+          if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+              return null;
+          }
+          throw e;
+      }
+    }
 
     public Optional<FolderJob> getFolderJob(Job job) throws IOException {
         try {
-            FolderJob folder = client.get(job.getUrl(), FolderJob.class);
+            String relativeUrl = job.getRelativeUrl();
+            FolderJob folder = client.get(relativeUrl, FolderJob.class);
             if (!folder.isFolder()) {
                 return Optional.absent();
             }
@@ -706,6 +734,7 @@ public class JenkinsServer {
 
     public QueueItem getQueueItem(QueueReference ref) throws IOException {
         try {
+            // TODO: should probably be also use a toRelativeUrl() call
             String url = ref.getQueueItemUrlPart();
             // "/queue/item/" + id
             QueueItem job = client.get(url, QueueItem.class);
@@ -811,7 +840,7 @@ public class JenkinsServer {
     {
       String path = "/";
       if (folder != null) {
-          path = folder.getUrl();
+          path = folder.getRelativeUrl();
       }
       return path;
     }
@@ -835,5 +864,5 @@ public class JenkinsServer {
     {
       return toBaseUrl(folder) + "view/" + EncodingUtils.encode(name);
     }
-
+    
 }
