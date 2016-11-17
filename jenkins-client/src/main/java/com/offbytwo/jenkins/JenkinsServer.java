@@ -481,7 +481,22 @@ public class JenkinsServer {
      * @throws IOException
      */
     public String getJobXml(String jobName) throws IOException {
-        return client.get("/job/" + EncodingUtils.encode(jobName) + "/config.xml");
+      return getJobXml(null,jobName);
+    }
+    
+    /**
+     * Get the xml description of an existing job
+     *
+     * @return the new job object
+     * @throws IOException
+     */
+    public String getJobXml(FolderJob folder, String jobName) throws IOException
+    {
+      String path = "/";
+      if (folder != null) {
+          path = folder.getUrl();
+      }
+      return client.get(path + "/job/" + EncodingUtils.encode(jobName) + "/config.xml");
     }
 
     /**
@@ -550,15 +565,33 @@ public class JenkinsServer {
     /**
      * Update the xml description of an existing job
      *
-     * @return the new job object
      * @throws IOException
      */
     public void updateJob(String jobName, String jobXml) throws IOException {
         this.updateJob(jobName, jobXml, true);
     }
 
+    /**
+     * Update the xml description of an existing job
+     *
+     * @throws IOException
+     */
     public void updateJob(String jobName, String jobXml, boolean crumbFlag) throws IOException {
-        client.post_xml("/job/" + EncodingUtils.encode(jobName) + "/config.xml", jobXml, crumbFlag);
+      updateJob(null,jobName,jobXml,crumbFlag);
+    }
+    
+    /**
+     * Update the xml description of an existing job
+     *
+     * @throws IOException
+     */
+    public void updateJob(FolderJob folder, String jobName, String jobXml, boolean crumbFlag) throws IOException
+    {
+      String path = "/";
+      if (folder != null) {
+          path = folder.getUrl();
+      }
+      client.post_xml(path + "/job/" + EncodingUtils.encode(jobName) + "/config.xml", jobXml, crumbFlag);
     }
 
     public void addStringParam(String jobName, String name, String description, String defaultValue)
@@ -617,10 +650,10 @@ public class JenkinsServer {
      * @throws IOException in case of problems.
      */
     public void deleteJob(FolderJob folder, String jobName, boolean crumbFlag) throws IOException {
-	String path = "/";
-	if (folder != null) {
-	    path = folder.getUrl();
-	}
+      String path = "/";
+      if (folder != null) {
+        path = folder.getUrl();
+      }
         client.post(path + "/job/" + EncodingUtils.encode(jobName) + "/doDelete", crumbFlag);
     }
 
@@ -759,7 +792,7 @@ public class JenkinsServer {
      *             In case of a failure.
      */
     public void renameJob(String oldJobName, String newJobName) throws IOException {
-	renameJob(null, oldJobName, newJobName, false);
+      renameJob(null, oldJobName, newJobName, false);
     }
 
     /**
@@ -775,7 +808,7 @@ public class JenkinsServer {
      *             In case of a failure.
      */
     public void renameJob(String oldJobName, String newJobName, Boolean crumbFlag) throws IOException {
-	renameJob(null, oldJobName, newJobName, crumbFlag);
+      renameJob(null, oldJobName, newJobName, crumbFlag);
     }
 
     /**
@@ -809,14 +842,12 @@ public class JenkinsServer {
      *             In case of a failure.
      */
     public void renameJob(FolderJob folder, String oldJobName, String newJobName, Boolean crumbFlag) throws IOException {
-	
+
         String path = "/";
         if (folder != null) {
             path = folder.getUrl();
         }
-	client.post( path + 
-		"job/" + EncodingUtils.encode(oldJobName) + "/doRename?newName=" + EncodingUtils.encodeParam(newJobName), crumbFlag);
-	
+        client.post( path + "job/" + EncodingUtils.encode(oldJobName) + "/doRename?newName=" + EncodingUtils.encodeParam(newJobName), crumbFlag);
     }
 
 }
