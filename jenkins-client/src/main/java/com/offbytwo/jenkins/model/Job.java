@@ -23,6 +23,7 @@ public class Job extends BaseModel {
 
     private String name;
     private String url;
+//    private String relativeUrl;
 
     public Job() {
     }
@@ -30,7 +31,7 @@ public class Job extends BaseModel {
     public Job(String name, String url) {
         this();
         this.name = name;
-        this.url = url;
+        this.url=url;
     }
 
     public String getName() {
@@ -42,7 +43,7 @@ public class Job extends BaseModel {
     }
 
     public JobWithDetails details() throws IOException {
-        return client.get(url, JobWithDetails.class);
+        return client.get(getRelativeUrl(), JobWithDetails.class);
     }
 
     /**
@@ -66,18 +67,20 @@ public class Job extends BaseModel {
 
     /**
      * Trigger a build without parameters
+     * @return 
      */
-    public void build() throws IOException {
-        client.post(url + "build");
+    public QueueReference build() throws IOException {
+        return build(getRelativeUrl() + "build",false);
     }
-
+    
     /**
      * Trigger a build with crumbFlag.
      * @param crumbFlag true or false.
+     * @return 
      * @throws IOException in case of an error.
      */
-    public void build(boolean crumbFlag) throws IOException {
-        client.post(url + "build", crumbFlag);
+    public QueueReference build(boolean crumbFlag) throws IOException {
+        return build(getRelativeUrl() + "build",crumbFlag);
     }
 
     /**
@@ -85,11 +88,12 @@ public class Job extends BaseModel {
      *
      * @param params
      *            the job parameters
+     * @return 
      * @throws IOException
      */
-    public void build(Map<String, String> params) throws IOException {
+    public QueueReference build(Map<String, String> params) throws IOException {
         String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
-        client.post(url + "buildWithParameters?" + qs);
+        return build(getRelativeUrl() + "buildWithParameters?" + qs,false);
     }
 
     /**
@@ -103,9 +107,15 @@ public class Job extends BaseModel {
      */
     public QueueReference build(Map<String, String> params, boolean crumbFlag) throws IOException {
         String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
-        ExtractHeader location = client.post(url + "buildWithParameters?" + qs, null, ExtractHeader.class, crumbFlag);
-        return new QueueReference(location.getLocation());
+        return build(getRelativeUrl() + "buildWithParameters?" + qs,crumbFlag);
     }
+    
+    private QueueReference build(String url, boolean  crumbFlag) throws IOException {
+      System.out.println(url);
+      ExtractHeader location = client.post(url,null,ExtractHeader.class, crumbFlag);
+      return new QueueReference(location.getLocation());
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -137,5 +147,14 @@ public class Job extends BaseModel {
             Escaper escaper = UrlEscapers.urlFormParameterEscaper();
             return escaper.escape(entry.getKey()) + "=" + escaper.escape(entry.getValue());
         }
+    }
+    
+    /**
+     * @return get the relative url of this job from the server base url
+     */
+    public String getRelativeUrl()
+    {
+      int idx = url.indexOf("/job");
+      return url.substring(idx);
     }
 }

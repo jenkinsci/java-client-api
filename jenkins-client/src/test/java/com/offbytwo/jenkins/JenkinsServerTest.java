@@ -76,7 +76,7 @@ public class JenkinsServerTest extends BaseUnitTest {
     	
     	String[] jobNames = { "job-the-first", "Job-The-Next", "Job-the-Next"};
         // given
-        String path = "http://localhost/jobs/someFolder/";
+        String path = "/job/someFolder/";
         Job someJob = new Job("jobname", path + "jobname");
         FolderJob folderJob = new FolderJob("someFolder", path);
 
@@ -100,7 +100,7 @@ public class JenkinsServerTest extends BaseUnitTest {
     @Test
     public void testFolderGetJob() throws Exception {
         // given
-        String path = "http://localhost/jobs/someFolder/";
+        String path = "/job/someFolder/";
         JobWithDetails someJob = mock(JobWithDetails.class);
         FolderJob folderJob = new FolderJob("someFolder", path);
 
@@ -117,7 +117,7 @@ public class JenkinsServerTest extends BaseUnitTest {
     @Test
     public void testFolderGetView() throws Exception {
         // given
-        String path = "http://localhost/jobs/someFolder/";
+        String path = "/job/someFolder/";
         FolderJob folderJob = new FolderJob("someFolder", path);
         View someView = mock(View.class);
 
@@ -134,7 +134,7 @@ public class JenkinsServerTest extends BaseUnitTest {
     @Test
     public void testGetFolderJob() throws Exception {
         // given
-        String path = "http://localhost/jobs/someFolder/";
+        String path = "/job/someFolder/";
         Job someJob = new Job("someFolder", path);
         FolderJob folderJob = mock(FolderJob.class);
 
@@ -152,7 +152,7 @@ public class JenkinsServerTest extends BaseUnitTest {
     @Test
     public void testGetFolderJobInvalidFolder() throws Exception {
         // given
-        String path = "http://localhost/jobs/someFolder/";
+        String path = "/job/someFolder/";
         Job someJob = new Job("someFolder", path);
         FolderJob folderJob = mock(FolderJob.class);
 
@@ -179,10 +179,10 @@ public class JenkinsServerTest extends BaseUnitTest {
     @Test
     public void testCreateSubFolderJob() throws Exception {
         // given
-        String path = "http://localhost/jobs/someFolder/";
+        String path = "/job/someFolder/";
         FolderJob folderJob = mock(FolderJob.class);
 
-        given(folderJob.getUrl()).willReturn(path);
+        given(folderJob.getRelativeUrl()).willReturn(path);
 
         // when
         server.createFolder(folderJob, "someFolder");
@@ -318,7 +318,7 @@ public class JenkinsServerTest extends BaseUnitTest {
 
     private void shouldGetFolderJobs(String... jobNames) throws IOException {
         // given
-        String path = "http://localhost/jobs/someFolder/";
+        String path = "/job/someFolder/";
         FolderJob folderJob = new FolderJob("someFolder", path);
 
         List<Job> someJobs = createTestJobs(path, jobNames);
