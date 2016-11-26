@@ -6,6 +6,11 @@
 
  * Correctly escaping `{` and `}` for range syntax.
 
+[Fixed Issue 166][issue-166]
+
+ * Added a supplemental package with classifier `apachehttp` which 
+   includes the packages `org.apache.httpcomponents:httpclient` and
+   `org.apache.httpcomponents:httpcore`.
 
 ### API Changes
 
@@ -673,6 +678,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-161]: https://github.com/jenkinsci/java-client-api/issues/161
 [issue-162]: https://github.com/jenkinsci/java-client-api/issues/162
 [issue-165]: https://github.com/jenkinsci/java-client-api/issues/165
+[issue-166]: https://github.com/jenkinsci/java-client-api/issues/166
 [issue-167]: https://github.com/jenkinsci/java-client-api/issues/167
 [issue-168]: https://github.com/jenkinsci/java-client-api/issues/168
 [issue-169]: https://github.com/jenkinsci/java-client-api/issues/169

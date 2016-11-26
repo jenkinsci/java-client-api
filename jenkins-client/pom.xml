@@ -118,6 +118,7 @@
         <artifactId>maven-shade-plugin</artifactId>
         <executions>
           <execution>
+            <id>stash</id>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
@@ -130,6 +131,29 @@
               </artifactSet>
               <shadedArtifactAttached>true</shadedArtifactAttached>
               <shadedClassifierName>stash</shadedClassifierName>
+              <relocations>
+                <relocation>
+                  <pattern>com.google.common</pattern>
+                  <shadedPattern>com.google.common.jenkins_client_jarjar</shadedPattern>
+                </relocation>
+              </relocations>
+            </configuration>
+          </execution>
+          <execution>
+            <id>httpclient</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <artifactSet>
+                <includes>
+                  <include>org.apache.httpcomponents:httpclient</include>
+                  <include>org.apache.httpcomponents:httpcore</include>
+                </includes>
+              </artifactSet>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>apachehttp</shadedClassifierName>
               <relocations>
                 <relocation>
                   <pattern>com.google.common</pattern>
