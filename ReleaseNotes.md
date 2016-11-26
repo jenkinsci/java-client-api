@@ -27,7 +27,7 @@ public class QueueItem extends BaseModel {
   and the new `QueueItemActions` will offer access to the
   actions.
 
- * [Fixed Issue 38823[jissue-38823]
+ * [Fixed Issue 38823][jissue-38823]
 
    Added an deleteJob method with a crumbFlag.
 
