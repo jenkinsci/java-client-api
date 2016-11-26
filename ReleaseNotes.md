@@ -14,6 +14,19 @@
 
 ### API Changes
 
+ * [Fixed Issue 207][issue-207]
+
+   Added 
+```Java
+public class QueueItem extends BaseModel {
+
+  List<QueueItemActions> getActions();
+}
+```
+
+  and the new `QueueItemActions` will offer access to the
+  actions.
+
  * [Fixed Issue 38823[jissue-38823]
 
    Added an deleteJob method with a crumbFlag.
@@ -692,6 +705,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-200]: https://github.com/jenkinsci/java-client-api/issues/200
 [issue-201]: https://github.com/jenkinsci/java-client-api/issues/201
 [issue-202]: https://github.com/jenkinsci/java-client-api/issues/202
+[issue-207]: https://github.com/jenkinsci/java-client-api/issues/207
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158

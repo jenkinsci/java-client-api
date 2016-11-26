@@ -1,7 +1,16 @@
+/*
+ * Copyright (c) 2013 Cosmin Stejerean, Karl Heinz Marbaise, and contributors.
+ *
+ * Distributed under the MIT license: http://opensource.org/licenses/MIT
+ */
+
 package com.offbytwo.jenkins.model;
 
+import java.util.List;
+
 public class QueueItem extends BaseModel {
-    // actions
+
+    private List<QueueItemActions> actions;
 
     private boolean blocked;
 
@@ -24,6 +33,14 @@ public class QueueItem extends BaseModel {
     private boolean cancelled;
 
     private Executable executable;
+
+    public List<QueueItemActions> getActions() {
+        return actions;
+    }
+
+    public void setActions(List<QueueItemActions> actions) {
+        this.actions = actions;
+    }
 
     public boolean isBlocked() {
         return blocked;
@@ -117,6 +134,7 @@ public class QueueItem extends BaseModel {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((actions == null) ? 0 : actions.hashCode());
         result = prime * result + (blocked ? 1231 : 1237);
         result = prime * result + (buildable ? 1231 : 1237);
         result = prime * result + (cancelled ? 1231 : 1237);
@@ -140,6 +158,11 @@ public class QueueItem extends BaseModel {
         if (getClass() != obj.getClass())
             return false;
         QueueItem other = (QueueItem) obj;
+        if (actions == null) {
+            if (other.actions != null)
+                return false;
+        } else if (!actions.equals(other.actions))
+            return false;
         if (blocked != other.blocked)
             return false;
         if (buildable != other.buildable)
