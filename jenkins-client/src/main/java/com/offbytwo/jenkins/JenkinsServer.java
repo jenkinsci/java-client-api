@@ -46,7 +46,7 @@ import com.offbytwo.jenkins.model.View;
  * The main starting point for interacting with a Jenkins server.
  */
 public class JenkinsServer {
-    private final Logger LOGGER = LoggerFactory.getLogger( getClass() );
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private final JenkinsHttpClient client;
 
@@ -104,8 +104,8 @@ public class JenkinsServer {
      */
     public String getVersion() {
         if (client.getJenkinsVersion().isEmpty()) {
-            //Force a request to get at least once
-            //HttpHeader
+            // Force a request to get at least once
+            // HttpHeader
             isRunning();
         }
         return client.getJenkinsVersion();
@@ -195,16 +195,17 @@ public class JenkinsServer {
         return Maps.uniqueIndex(views, new Function<View, String>() {
             @Override
             public String apply(View view) {
-        	
+
                 view.setClient(client);
-                //TODO: Think about the following? Does there exists a simpler/more elegant method?
+                // TODO: Think about the following? Does there exists a
+                // simpler/more elegant method?
                 for (Job job : view.getJobs()) {
                     job.setClient(client);
                 }
                 for (View item : view.getViews()) {
                     item.setClient(client);
                 }
-                
+
                 // return view.getName().toLowerCase();
                 return view.getName();
             }
@@ -225,7 +226,9 @@ public class JenkinsServer {
 
     /**
      * Get a single view object from the given folder
-     * @param folder The name of the folder.
+     * 
+     * @param folder
+     *            The name of the folder.
      * @param name
      *            name of the view in Jenkins
      * @return the view object
@@ -241,7 +244,8 @@ public class JenkinsServer {
             View resultView = client.get(path + "view/" + EncodingUtils.encode(name) + "/", View.class);
             resultView.setClient(client);
 
-            //TODO: Think about the following? Does there exists a simpler/more elegant method?
+            // TODO: Think about the following? Does there exists a simpler/more
+            // elegant method?
             for (Job job : resultView.getJobs()) {
                 job.setClient(client);
             }
@@ -252,7 +256,7 @@ public class JenkinsServer {
         } catch (HttpResponseException e) {
             LOGGER.debug("getView(folder={}, name={}) status={}", folder, name, e.getStatusCode());
             if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
-                //TODO: Think hard about this.
+                // TODO: Think hard about this.
                 return null;
             }
             throw e;
@@ -288,7 +292,7 @@ public class JenkinsServer {
         } catch (HttpResponseException e) {
             LOGGER.debug("getJob(folder={}, jobName={}) status={}", folder, jobName, e.getStatusCode());
             if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
-        	//TODO: Think hard about this.
+                // TODO: Think hard about this.
                 return null;
             }
             throw e;
@@ -331,7 +335,8 @@ public class JenkinsServer {
         } catch (HttpResponseException e) {
             LOGGER.debug("getForlderJob(job={}) status={}", job, e.getStatusCode());
             if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
-                //TODO: Check if this is a good idea ? What about Optional.absent() ?
+                // TODO: Check if this is a good idea ? What about
+                // Optional.absent() ?
                 return null;
             }
             throw e;
@@ -523,14 +528,16 @@ public class JenkinsServer {
     public ComputerSet getComputerSet() throws IOException {
         return client.get("computer/?depth=2", ComputerSet.class);
     }
-    
+
     /**
      * This will give you back the {@link PluginManager}.
+     * 
      * @return {@link PluginManager}
-     * @throws IOException in case of a failure.
+     * @throws IOException
+     *             in case of a failure.
      */
     public PluginManager getPluginManager() throws IOException {
-        return client.get( "pluginManager/?depth=2", PluginManager.class );
+        return client.get("pluginManager/?depth=2", PluginManager.class);
     }
 
     /**
@@ -599,8 +606,10 @@ public class JenkinsServer {
     /**
      * Delete a job from Jenkins within a folder.
      *
-     * @param folder The folder where the given job is located.
-     * @param jobName The job which should be deleted.
+     * @param folder
+     *            The folder where the given job is located.
+     * @param jobName
+     *            The job which should be deleted.
      *
      * @throws IOException
      */
@@ -611,16 +620,20 @@ public class JenkinsServer {
     /**
      * Delete a job from Jenkins within a folder.
      * 
-     * @param folder The folder where the given job is located.
-     * @param jobName The job which should be deleted.
-     * @param crumbFlag The crumbFlag
-     * @throws IOException in case of problems.
+     * @param folder
+     *            The folder where the given job is located.
+     * @param jobName
+     *            The job which should be deleted.
+     * @param crumbFlag
+     *            The crumbFlag
+     * @throws IOException
+     *             in case of problems.
      */
     public void deleteJob(FolderJob folder, String jobName, boolean crumbFlag) throws IOException {
-	String path = "/";
-	if (folder != null) {
-	    path = folder.getUrl();
-	}
+        String path = "/";
+        if (folder != null) {
+            path = folder.getUrl();
+        }
         client.post(path + "/job/" + EncodingUtils.encode(jobName) + "/doDelete", crumbFlag);
     }
 
@@ -747,7 +760,7 @@ public class JenkinsServer {
             throw e;
         }
     }
-    
+
     /**
      * Rename a job
      *
@@ -759,7 +772,7 @@ public class JenkinsServer {
      *             In case of a failure.
      */
     public void renameJob(String oldJobName, String newJobName) throws IOException {
-	renameJob(null, oldJobName, newJobName, false);
+        renameJob(null, oldJobName, newJobName, false);
     }
 
     /**
@@ -770,19 +783,20 @@ public class JenkinsServer {
      * @param newJobName
      *            The new job name.
      * @param crumbFlag
-     * 		  <code>true</code> to add <b>crumbIssuer</b> <code>false</code> otherwise.  
+     *            <code>true</code> to add <b>crumbIssuer</b> <code>false</code>
+     *            otherwise.
      * @throws IOException
      *             In case of a failure.
      */
     public void renameJob(String oldJobName, String newJobName, Boolean crumbFlag) throws IOException {
-	renameJob(null, oldJobName, newJobName, crumbFlag);
+        renameJob(null, oldJobName, newJobName, crumbFlag);
     }
 
     /**
      * Rename a job
      *
      * @param FolderJob
-     * 		  The folder.
+     *            The folder.
      * @param oldJobName
      *            existing job name.
      * @param newJobName
@@ -798,25 +812,27 @@ public class JenkinsServer {
      * Rename a job
      *
      * @param FolderJob
-     * 		  The folder.
+     *            The folder.
      * @param oldJobName
      *            existing job name.
      * @param newJobName
      *            The new job name.
      * @param crumbFlag
-     * 		  <code>true</code> to add <b>crumbIssuer</b> <code>false</code> otherwise.  
+     *            <code>true</code> to add <b>crumbIssuer</b> <code>false</code>
+     *            otherwise.
      * @throws IOException
      *             In case of a failure.
      */
-    public void renameJob(FolderJob folder, String oldJobName, String newJobName, Boolean crumbFlag) throws IOException {
-	
+    public void renameJob(FolderJob folder, String oldJobName, String newJobName, Boolean crumbFlag)
+            throws IOException {
+
         String path = "/";
         if (folder != null) {
             path = folder.getUrl();
         }
-	client.post( path + 
-		"job/" + EncodingUtils.encode(oldJobName) + "/doRename?newName=" + EncodingUtils.encodeParam(newJobName), crumbFlag);
-	
+        client.post(path + "job/" + EncodingUtils.encode(oldJobName) + "/doRename?newName="
+                + EncodingUtils.encodeParam(newJobName), crumbFlag);
+
     }
 
 }

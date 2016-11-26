@@ -10,30 +10,24 @@ import org.testng.annotations.Test;
 
 import com.offbytwo.jenkins.model.Computer;
 
-@Test( groups = { Groups.NO_EXECUTOR_GROUP } )
-public class NoExecutorStartedGetComputersIT
-    extends AbstractJenkinsIntegrationCase
-{
+@Test(groups = { Groups.NO_EXECUTOR_GROUP })
+public class NoExecutorStartedGetComputersIT extends AbstractJenkinsIntegrationCase {
 
     private Map<String, Computer> computers;
 
     @BeforeMethod
-    public void beforeMethod()
-        throws IOException
-    {
+    public void beforeMethod() throws IOException {
         computers = jenkinsServer.getComputers();
     }
 
     @Test
-    public void numberOfComputersIsEqualOne()
-    {
-        assertThat( computers ).hasSize( 1 );
+    public void numberOfComputersIsEqualOne() {
+        assertThat(computers).hasSize(1);
     }
 
     @Test
-    public void getNameShouldReturnMaster()
-    {
+    public void getNameShouldReturnMaster() {
         String key = computers.keySet().iterator().next();
-        assertThat( computers.get( key ).getDisplayName() ).isEqualTo( "master" );
+        assertThat(computers.get(key).getDisplayName()).isEqualTo("master");
     }
 }

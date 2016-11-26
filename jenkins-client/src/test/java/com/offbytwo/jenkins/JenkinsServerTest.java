@@ -73,8 +73,8 @@ public class JenkinsServerTest extends BaseUnitTest {
 
     @Test
     public void testFolderGetJobs() throws Exception {
-    	
-    	String[] jobNames = { "job-the-first", "Job-The-Next", "Job-the-Next"};
+
+        String[] jobNames = { "job-the-first", "Job-The-Next", "Job-the-Next" };
         // given
         String path = "http://localhost/jobs/someFolder/";
         Job someJob = new Job("jobname", path + "jobname");
@@ -84,19 +84,19 @@ public class JenkinsServerTest extends BaseUnitTest {
         MainView mv = createTestView(someJobs);
 
         given(client.get(eq(path), eq(MainView.class))).willReturn(mv);
-        
+
         // when
         Map<String, Job> map = server.getJobs(folderJob);
-        
+
         // then
         verify(client).get(path, MainView.class);
 
-        for(String name : jobNames)
+        for (String name : jobNames)
             assertTrue(someJobs.contains(map.get(name)));
 
         assertEquals(jobNames.length, map.size());
     }
-    
+
     @Test
     public void testFolderGetJob() throws Exception {
         // given
@@ -158,7 +158,7 @@ public class JenkinsServerTest extends BaseUnitTest {
 
         given(folderJob.isFolder()).willReturn(false);
         given(client.get(eq(path), eq(FolderJob.class))).willReturn(folderJob);
-        
+
         // when
         Optional<FolderJob> oj = server.getFolderJob(someJob);
 
@@ -190,7 +190,7 @@ public class JenkinsServerTest extends BaseUnitTest {
         // then
         verify(client).post_form(eq(path + "createItem?"), anyMap(), eq(false));
     }
-    
+
     @Test
     public void testUpdateJobXml() throws Exception {
         // given
@@ -251,7 +251,7 @@ public class JenkinsServerTest extends BaseUnitTest {
     @Test
     public void testScriptPosts() throws IOException, URISyntaxException {
         given(client.post_text("/scriptText", "script=script", ContentType.APPLICATION_FORM_URLENCODED, false))
-            .willReturn("result");
+                .willReturn("result");
         String result = server.runScript("script");
         verify(client).post_text("/scriptText", "script=script", ContentType.APPLICATION_FORM_URLENCODED, false);
         assertEquals("result", result);
@@ -273,13 +273,12 @@ public class JenkinsServerTest extends BaseUnitTest {
 
     private List<Job> createTestJobs(String baseUrl, String... jobNames) {
         List<Job> jobs = new ArrayList<Job>();
-        for(String name: jobNames) {
-            jobs.add(new Job(name, baseUrl+name));
+        for (String name : jobNames) {
+            jobs.add(new Job(name, baseUrl + name));
         }
 
         return jobs;
     }
-
 
     @Test
     public void testReturnSingleJob() throws Exception {
@@ -296,16 +295,15 @@ public class JenkinsServerTest extends BaseUnitTest {
         shouldGetFolderJobs("jobname");
     }
 
-
-    private void shouldReturnListOfJobs(String...jobNames) throws Exception {
+    private void shouldReturnListOfJobs(String... jobNames) throws Exception {
         MainView mainView = createTestView("http://localhost/job/", jobNames);
         given(client.get("/", MainView.class)).willReturn(mainView);
         Map<String, Job> jobs = server.getJobs();
-        for(String name : jobNames)
+        for (String name : jobNames)
             assertTrue(jobs.containsKey(name));
 
         assertEquals(jobNames.length, jobs.size());
-   }
+    }
 
     @Test
     public void testGetJobXmls() throws Exception {
@@ -325,18 +323,19 @@ public class JenkinsServerTest extends BaseUnitTest {
         MainView mv = createTestView(someJobs);
 
         given(client.get(eq(path), eq(MainView.class))).willReturn(mv);
-        
+
         // when
         Map<String, Job> map = server.getJobs(folderJob);
-        
+
         // then
         verify(client).get(path, MainView.class);
 
-        for(String name : jobNames)
+        for (String name : jobNames)
             assertTrue(someJobs.contains(map.get(name)));
 
         assertEquals(jobNames.length, map.size());
     }
+
     private void shouldGetJobXml(String jobName) throws Exception {
         // given
         String xmlString = "<xml>some xml goes here</xml>";
@@ -347,8 +346,8 @@ public class JenkinsServerTest extends BaseUnitTest {
         String xmlReturn = server.getJobXml(jobName);
 
         // then
-        verify(client).get("/job/"+jobName+"/config.xml");
-        verify(client).get("/job/"+jobName+"/config.xml");
+        verify(client).get("/job/" + jobName + "/config.xml");
+        verify(client).get("/job/" + jobName + "/config.xml");
         assertEquals(xmlString, xmlReturn);
     }
 }

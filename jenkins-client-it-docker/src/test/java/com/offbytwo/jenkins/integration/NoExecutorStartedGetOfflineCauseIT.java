@@ -9,41 +9,35 @@ import org.testng.annotations.Test;
 
 import com.offbytwo.jenkins.model.OfflineCause;
 
-@Test( groups = { Groups.NO_EXECUTOR_GROUP } )
-public class NoExecutorStartedGetOfflineCauseIT
-    extends AbstractJenkinsIntegrationCase
-{
+@Test(groups = { Groups.NO_EXECUTOR_GROUP })
+public class NoExecutorStartedGetOfflineCauseIT extends AbstractJenkinsIntegrationCase {
 
     private OfflineCause offlineCause;
 
     @BeforeMethod
-    public void beforeMethod()
-        throws IOException
-    {
-        offlineCause = jenkinsServer.getComputerSet().getComputers().get( 0 ).getOfflineCause();
+    public void beforeMethod() throws IOException {
+        offlineCause = jenkinsServer.getComputerSet().getComputers().get(0).getOfflineCause();
     }
 
     /**
-     * This is a timestamp so I really can't make a test which compares to a real value. TODO: Think about this...
+     * This is a timestamp so I really can't make a test which compares to a
+     * real value. TODO: Think about this...
      */
     @Test
-    public void getTimestampShouldReturnNonZero()
-    {
+    public void getTimestampShouldReturnNonZero() {
         // FIXME: This magic number is in the config.xml
-        // I need to find a simply way to read the config.xml and get the value from there.
-        assertThat( offlineCause.getTimestamp() ).isEqualTo( 1453986179962L );
+        // I need to find a simply way to read the config.xml and get the value
+        // from there.
+        assertThat(offlineCause.getTimestamp()).isEqualTo(1453986179962L);
     }
 
     @Test
-    public void getOfflineCauseGetDescriptionShouldReturnDescription()
-        throws IOException
-    {
-        assertThat( offlineCause.getDescription() ).isEqualTo( "Disconnected by anonymous : Manually turned off" );
+    public void getOfflineCauseGetDescriptionShouldReturnDescription() throws IOException {
+        assertThat(offlineCause.getDescription()).isEqualTo("Disconnected by anonymous : Manually turned off");
     }
 
     @Test
-    public void getDescriptionShouldReturnTheAppropriateMessage()
-    {
-        assertThat( offlineCause.getDescription() ).isEqualTo( "Disconnected by anonymous : Manually turned off" );
+    public void getDescriptionShouldReturnTheAppropriateMessage() {
+        assertThat(offlineCause.getDescription()).isEqualTo("Disconnected by anonymous : Manually turned off");
     }
 }

@@ -13,139 +13,109 @@ import org.testng.annotations.Test;
 import com.offbytwo.jenkins.model.Plugin;
 import com.offbytwo.jenkins.model.PluginManager;
 
-@Test( groups = { Groups.NO_EXECUTOR_GROUP } )
-public class NoExecutorStartedPluginManagerIT
-    extends AbstractJenkinsIntegrationCase
-{
+@Test(groups = { Groups.NO_EXECUTOR_GROUP })
+public class NoExecutorStartedPluginManagerIT extends AbstractJenkinsIntegrationCase {
 
     private PluginManager pluginManager;
 
     @BeforeMethod
-    public void beforeMethod()
-        throws IOException
-    {
+    public void beforeMethod() throws IOException {
         pluginManager = jenkinsServer.getPluginManager();
     }
 
     @Test
-    public void getPluginsShouldReturn9ForJenkins20()
-    {
-        //TODO: Check why there is such a difference in the number of Plugins?
+    public void getPluginsShouldReturn9ForJenkins20() {
+        // TODO: Check why there is such a difference in the number of Plugins?
         if (!jenkinsServer.getVersion().equals("2.0")) {
             throw new SkipException("Not Version 2.0");
         }
-        assertThat( pluginManager.getPlugins() ).hasSize( 9 );
+        assertThat(pluginManager.getPlugins()).hasSize(9);
     }
+
     @Test
-    public void getPluginsShouldReturn27ForJenkins1651()
-    {
-	List<String> asList = Arrays.asList("1.651", "1.651.1", "1.651.2", "1.651.3");
-	//TODO: Check why there is such a difference in the number of Plugins?
+    public void getPluginsShouldReturn27ForJenkins1651() {
+        List<String> asList = Arrays.asList("1.651", "1.651.1", "1.651.2", "1.651.3");
+        // TODO: Check why there is such a difference in the number of Plugins?
         if (!asList.contains(jenkinsServer.getVersion())) {
             throw new SkipException("Not Version 1.651");
         }
-        assertThat( pluginManager.getPlugins() ).hasSize( 27 );
+        assertThat(pluginManager.getPlugins()).hasSize(27);
     }
 
     private Plugin createPlugin(String shortName, String version) {
         Plugin result = new Plugin();
-        result.setShortName( shortName );
-        result.setVersion( version );
+        result.setShortName(shortName);
+        result.setVersion(version);
         return result;
-    }   
-    
+    }
+
     @Test
     public void getPluginsShouldReturnTheListOfInstalledPluginsForJenkins20() {
-        
+
         if (!jenkinsServer.getVersion().equals("2.0")) {
             throw new SkipException("Not Version 2.0");
         }
-        
-        //TODO: The list of plugins is contained in the plugin.txt
+
+        // TODO: The list of plugins is contained in the plugin.txt
         // which should be read and used as base of comparison.
         // instead of maintaining at two locations.
-        Plugin[] expectedPlugins = {
-            createPlugin("token-macro", "1.12.1"),
-            createPlugin("testng-plugin", "1.10"),
-            createPlugin("job-dsl", "1.41"),
-            createPlugin("junit", "1.10"),
-            createPlugin("jacoco", "1.0.19"),
-            createPlugin("config-file-provider", "2.10.0"),
-            createPlugin("timestamper", "1.7.2"),
-            createPlugin("credentials", "1.24"),
-            createPlugin("throttle-concurrents", "1.9.0"),
-            createPlugin("cloudbees-folder", "5.12"),
-        };
+        Plugin[] expectedPlugins = { createPlugin("token-macro", "1.12.1"), createPlugin("testng-plugin", "1.10"),
+                createPlugin("job-dsl", "1.41"), createPlugin("junit", "1.10"), createPlugin("jacoco", "1.0.19"),
+                createPlugin("config-file-provider", "2.10.0"), createPlugin("timestamper", "1.7.2"),
+                createPlugin("credentials", "1.24"), createPlugin("throttle-concurrents", "1.9.0"),
+                createPlugin("cloudbees-folder", "5.12"), };
         List<Plugin> plugins = pluginManager.getPlugins();
-        
-        for ( Plugin plugin : plugins )
-        {
+
+        for (Plugin plugin : plugins) {
             boolean found = false;
-            for ( int i = 0; i < expectedPlugins.length; i++ )
-            {
-                if (plugin.getShortName().equals( expectedPlugins[i].getShortName()) &&
-                plugin.getVersion().equals( expectedPlugins[i].getVersion())) {
+            for (int i = 0; i < expectedPlugins.length; i++) {
+                if (plugin.getShortName().equals(expectedPlugins[i].getShortName())
+                        && plugin.getVersion().equals(expectedPlugins[i].getVersion())) {
                     found = true;
                 }
             }
-            assertThat( found ).isTrue().as("Plugin shortName:{} version:{} couldn't be found.", plugin.getShortName(), plugin.getVersion());
+            assertThat(found).isTrue().as("Plugin shortName:{} version:{} couldn't be found.", plugin.getShortName(),
+                    plugin.getVersion());
         }
-        
-    }
-    @Test
-    public void getPluginsShouldReturnTheListOfInstalledPluginsFor1651()
-    {
-	List<String> asList = Arrays.asList("1.651", "1.651.1", "1.651.2", "1.651.3");
 
-	//TODO: Check why there is such a difference in the number of Plugins?
+    }
+
+    @Test
+    public void getPluginsShouldReturnTheListOfInstalledPluginsFor1651() {
+        List<String> asList = Arrays.asList("1.651", "1.651.1", "1.651.2", "1.651.3");
+
+        // TODO: Check why there is such a difference in the number of Plugins?
         if (!asList.contains(jenkinsServer.getVersion())) {
             throw new SkipException("Not Version 1.651");
         }
-        //TODO: The list of plugins is contained in the plugin.txt
+        // TODO: The list of plugins is contained in the plugin.txt
         // which should be read and used as base of comparison.
         // instead of maintaining at two locations.
-        Plugin[] expectedPlugins = {
-            createPlugin("token-macro", "1.12.1"),
-            createPlugin("translation", "1.10"),
-            createPlugin("testng-plugin", "1.10"),
-            createPlugin("matrix-project", "1.4.1"),
-            createPlugin("job-dsl", "1.41"),
-            createPlugin("windows-slaves", "1.0"),
-            createPlugin("antisamy-markup-formatter", "1.1"),
-            createPlugin("junit", "1.10"),
-            createPlugin("maven-plugin", "2.7.1"),
-            createPlugin("external-monitor-job", "1.4"),
-            createPlugin("jacoco", "1.0.19"),
-            createPlugin("pam-auth", "1.1"),
-            createPlugin("ldap", "1.11"),
-            createPlugin("script-security", "1.13"),
-            createPlugin("mailer", "1.11"),
-            createPlugin("cvs", "2.11"),
-            createPlugin("ant", "1.2"),
-            createPlugin("config-file-provider", "2.10.0"),
-            createPlugin("ssh-credentials", "1.10"),
-            createPlugin("matrix-auth", "1.1"),
-            createPlugin("javadoc", "1.1"),
-            createPlugin("timestamper", "1.7.2"),
-            createPlugin("credentials", "1.24"),
-            createPlugin("throttle-concurrents", "1.9.0"),
-            createPlugin("subversion", "1.54"),
-            createPlugin("ssh-slaves", "1.9"),
-            createPlugin("cloudbees-folder", "5.12"),
-        };
+        Plugin[] expectedPlugins = { createPlugin("token-macro", "1.12.1"), createPlugin("translation", "1.10"),
+                createPlugin("testng-plugin", "1.10"), createPlugin("matrix-project", "1.4.1"),
+                createPlugin("job-dsl", "1.41"), createPlugin("windows-slaves", "1.0"),
+                createPlugin("antisamy-markup-formatter", "1.1"), createPlugin("junit", "1.10"),
+                createPlugin("maven-plugin", "2.7.1"), createPlugin("external-monitor-job", "1.4"),
+                createPlugin("jacoco", "1.0.19"), createPlugin("pam-auth", "1.1"), createPlugin("ldap", "1.11"),
+                createPlugin("script-security", "1.13"), createPlugin("mailer", "1.11"), createPlugin("cvs", "2.11"),
+                createPlugin("ant", "1.2"), createPlugin("config-file-provider", "2.10.0"),
+                createPlugin("ssh-credentials", "1.10"), createPlugin("matrix-auth", "1.1"),
+                createPlugin("javadoc", "1.1"), createPlugin("timestamper", "1.7.2"),
+                createPlugin("credentials", "1.24"), createPlugin("throttle-concurrents", "1.9.0"),
+                createPlugin("subversion", "1.54"), createPlugin("ssh-slaves", "1.9"),
+                createPlugin("cloudbees-folder", "5.12"), };
         List<Plugin> plugins = pluginManager.getPlugins();
-        
-        for ( Plugin plugin : plugins )
-        {
+
+        for (Plugin plugin : plugins) {
             boolean found = false;
-            for ( int i = 0; i < expectedPlugins.length; i++ )
-            {
-                if (plugin.getShortName().equals( expectedPlugins[i].getShortName()) &&
-                plugin.getVersion().equals( expectedPlugins[i].getVersion())) {
+            for (int i = 0; i < expectedPlugins.length; i++) {
+                if (plugin.getShortName().equals(expectedPlugins[i].getShortName())
+                        && plugin.getVersion().equals(expectedPlugins[i].getVersion())) {
                     found = true;
                 }
             }
-            assertThat( found ).isTrue().as("Plugin shortName:{} version:{} couldn't be found.", plugin.getShortName(), plugin.getVersion());
+            assertThat(found).isTrue().as("Plugin shortName:{} version:{} couldn't be found.", plugin.getShortName(),
+                    plugin.getVersion());
         }
     }
 
