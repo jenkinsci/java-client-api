@@ -36,7 +36,7 @@ STATUS
   Proof of Concept how to write integration tests
   based on Docker image for Jenkins.
 
-[1]: https://github.com/RisingOak/jenkins-client
-[issue-119]: https://github.com/RisingOak/jenkins-client/issues/119
-[pr-99]: https://github.com/RisingOak/jenkins-client/pull/99
-[pr-127]: https://github.com/RisingOak/jenkins-client/pull/127
+[1]: https://github.com/jenkinsci/java-client-api/
+[issue-119]: https://github.com/jenkinsci/java-client-api//issues/119
+[pr-99]: https://github.com/jenkinsci/java-client-api//pull/99
+[pr-127]: https://github.com/jenkinsci/java-client-api//pull/127
