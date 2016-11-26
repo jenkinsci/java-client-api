@@ -72,8 +72,8 @@ To run integration tests simply start
 mvn -Prun-its clean verify
 ```
 
-There is also a separate project which contains [integration
-tests][integration-tests] which are running with a special version of Jenkins
+There is also a separate project which contains [integration tests][integration-tests] 
+which are running with a special version of Jenkins
 within a Docker container to check several aspects of the API which can't be
 covered by the usual integration tests.
 
@@ -142,3 +142,5 @@ http://jenkinsci.github.io/java-client-api/
 Copyright (C) 2013, Cosmin Stejerean, Karl Heinz Marbaise, and contributors.
 
 Distributed under the MIT license: http://opensource.org/licenses/MIT
+
+[integration-tests]: https://github.com/jenkinsci/java-client-api/tree/master/jenkins-client-it-docker
