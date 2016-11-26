@@ -14,6 +14,18 @@
 
 ### API Changes
 
+ * [Fixed Issue 203][issue-203] with [pull request #204][pull-204]
+   of RainerW <github@inforw.de>
+
+   Added methods getJobXml and updateJob with folder parameter.
+
+```java
+public class JenkinsServer {
+  String getJobXml(FolderJob folder, String jobName);
+  void updateJob(FolderJob folder, String jobName, String jobXml, boolean crumbFlag);
+}
+``` 
+
  * [Fixed Issue 207][issue-207]
 
    Added 
@@ -705,11 +717,13 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-200]: https://github.com/jenkinsci/java-client-api/issues/200
 [issue-201]: https://github.com/jenkinsci/java-client-api/issues/201
 [issue-202]: https://github.com/jenkinsci/java-client-api/issues/202
+[issue-203]: https://github.com/jenkinsci/java-client-api/issues/203
 [issue-207]: https://github.com/jenkinsci/java-client-api/issues/207
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
 [pull-163]: https://github.com/jenkinsci/java-client-api/pull/163
+[pull-204]: https://github.com/jenkinsci/java-client-api/pull/204
 [jissue-35002]: https://issues.jenkins-ci.org/browse/JENKINS-35002
 [jissue-35108]: https://issues.jenkins-ci.org/browse/JENKINS-35108
 [jissue-38787]: https://issues.jenkins-ci.org/browse/JENKINS-38787
