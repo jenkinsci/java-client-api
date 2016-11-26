@@ -81,6 +81,7 @@ covered by the usual integration tests.
 
 You can find details about the different releases in the [Release Notes](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md).
 
+ * [Release 0.3.7](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-037).
  * [Release 0.3.6](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-036).
  * [Release 0.3.5](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-035).
  * [Release 0.3.4](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-034).
