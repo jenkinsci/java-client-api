@@ -40,6 +40,9 @@ public class BuildWithDetails extends Build {
     private String builtOn;
     private List<BuildChangeSetAuthor> culprits;
 
+    public BuildWithDetails() {
+        // Default ctor is needed to jackson.
+    }
     public BuildWithDetails(BuildWithDetails details) {
         this.actions = details.actions;
         this.description = details.description;
