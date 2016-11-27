@@ -14,6 +14,16 @@
 
 ### API Changes
 
+  * [Pull Request #206][pull-206] added runScript with `crumbFlag`.
+    
+    Thanks Rainer W. 
+  
+```java
+public class JenkinsServer {
+	public String runScript(String script,boolean crumb);
+}
+```
+
  * [Fixed issue 197][issue-197] Provide method for waiting until job has finished.
  
    Added a helper class to support this.
@@ -752,6 +762,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
 [pull-163]: https://github.com/jenkinsci/java-client-api/pull/163
 [pull-204]: https://github.com/jenkinsci/java-client-api/pull/204
+[pull-206]: https://github.com/jenkinsci/java-client-api/pull/206
 [jissue-35002]: https://issues.jenkins-ci.org/browse/JENKINS-35002
 [jissue-35108]: https://issues.jenkins-ci.org/browse/JENKINS-35108
 [jissue-38787]: https://issues.jenkins-ci.org/browse/JENKINS-38787
