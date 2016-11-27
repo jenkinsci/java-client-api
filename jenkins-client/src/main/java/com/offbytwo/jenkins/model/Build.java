@@ -13,10 +13,15 @@ import org.apache.http.client.HttpResponseException;
 public class Build extends BaseModel {
 
     /**
-     * This will be returned by the API in cases where no build has ever 
-     * been executed like {@link JobWithDetails#getLastBuild()} etc.
+     * This will be returned by the API in cases where no build has ever been
+     * executed like {@link JobWithDetails#getLastBuild()} etc.
      */
-    public static final Build BUILD_HAS_NEVER_RUN = new Build (-1, -1, "UNKNOWN");
+    public static final Build BUILD_HAS_NEVER_RUN = new Build(-1, -1, "UNKNOWN");
+    /**
+     * This will be returned by the API in cases where a build has been
+     * cancelled.
+     */
+    public static final Build BUILD_HAS_BEEN_CANCELLED = new Build(-1, -1, "CANCELLED");
 
     private int number;
     private int queueId;
@@ -28,7 +33,7 @@ public class Build extends BaseModel {
         this.queueId = queueId;
         this.url = url;
     }
-    
+
     public Build() {
     }
 

@@ -40,6 +40,25 @@ public class BuildWithDetails extends Build {
     private String builtOn;
     private List<BuildChangeSetAuthor> culprits;
 
+    public BuildWithDetails(BuildWithDetails details) {
+        this.actions = details.actions;
+        this.description = details.description;
+        this.building = details.building;
+        this.duration = details.duration;
+        this.estimatedDuration = details.estimatedDuration;
+        this.fullDisplayName = details.fullDisplayName;
+        this.id = details.id;
+        this.timestamp = details.timestamp;
+        this.result = details.result;
+        this.artifacts = details.artifacts;
+        this.consoleOutputHtml = details.consoleOutputHtml;
+        this.consoleOutputText = details.consoleOutputText;
+        this.changeSet = details.changeSet;
+        this.builtOn = details.builtOn;
+        this.culprits = details.culprits;
+        this.setClient(details.getClient());
+    }
+
     public List<Artifact> getArtifacts() {
         return artifacts;
     }
@@ -198,6 +217,10 @@ public class BuildWithDetails extends Build {
 
     public void setCulprits(List<BuildChangeSetAuthor> culprits) {
         this.culprits = culprits;
+    }
+
+    public void setResult(BuildResult result) {
+        this.result = result;
     }
 
     public InputStream downloadArtifact(Artifact a) throws IOException, URISyntaxException {

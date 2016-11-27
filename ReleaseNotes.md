@@ -14,6 +14,19 @@
 
 ### API Changes
 
+ * [Fixed issue 197][issue-197] Provide method for waiting until job has finished.
+ 
+   Added a helper class to support this.
+ 
+```java
+public class JenkinsTriggerHelper {
+	public BuildWithDetails triggerJobAndWaitUntilFinished(String jobName);
+	public BuildWithDetails triggerJobAndWaitUntilFinished(String jobName, Map<String, String> params);
+	public BuildWithDetails triggerJobAndWaitUntilFinished(String jobName, Map<String, String> params,boolean crumbFlag);
+	public BuildWithDetails triggerJobAndWaitUntilFinished(String jobName, boolean crumbFlag);
+}
+```
+
  * [Fixed Issue 104][issue-104] all build* methods now return consistently `QueueReference` 
    to make it possible to query for a queued build and if a build from the queue has
    been cancelled or to see if a build is running.
@@ -727,6 +740,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-179]: https://github.com/jenkinsci/java-client-api/issues/179
 [issue-182]: https://github.com/jenkinsci/java-client-api/issues/182
 [issue-186]: https://github.com/jenkinsci/java-client-api/issues/186
+[issue-197]: https://github.com/jenkinsci/java-client-api/issues/197
 [issue-198]: https://github.com/jenkinsci/java-client-api/issues/198
 [issue-200]: https://github.com/jenkinsci/java-client-api/issues/200
 [issue-201]: https://github.com/jenkinsci/java-client-api/issues/201
