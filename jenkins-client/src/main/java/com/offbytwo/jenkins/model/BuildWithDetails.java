@@ -18,9 +18,8 @@ import java.util.*;
 import static com.google.common.collect.Collections2.filter;
 
 /**
- * This class represents build information with
- * details about what has been done like
- * duration start and of course the build result.
+ * This class represents build information with details about what has been done
+ * like duration start and of course the build result.
  *
  */
 public class BuildWithDetails extends Build {
@@ -79,38 +78,38 @@ public class BuildWithDetails extends Build {
 
     private BuildCause convertToBuildCause(Map<String, Object> cause) {
         BuildCause cause_object = new BuildCause();
-        
-        //TODO: Think about it. Can this be done more simpler?
-	String description = (String) cause.get("shortDescription");
-	if (!Strings.isNullOrEmpty(description)) {
-	    cause_object.setShortDescription(description);
-	}
-	
-	Integer upstreamBuild = (Integer) cause.get("upstreamBuild");
-	if (upstreamBuild != null) {
-	    cause_object.setUpstreamBuild(upstreamBuild);
-	}
-	
-	String upstreamProject = (String) cause.get("upstreamProject");
-	if (!Strings.isNullOrEmpty(upstreamProject)) {
-	    cause_object.setUpstreamProject(upstreamProject);
-	}
 
-	String upstreamUrl = (String) cause.get("upstreamUrl");
-	if (!Strings.isNullOrEmpty(upstreamProject)) {
-	    cause_object.setUpstreamUrl(upstreamUrl);
-	}
+        // TODO: Think about it. Can this be done more simpler?
+        String description = (String) cause.get("shortDescription");
+        if (!Strings.isNullOrEmpty(description)) {
+            cause_object.setShortDescription(description);
+        }
 
-	String userId = (String) cause.get("userId");
-	if (!Strings.isNullOrEmpty(userId)) {
-	    cause_object.setUserId(userId);
-	}
+        Integer upstreamBuild = (Integer) cause.get("upstreamBuild");
+        if (upstreamBuild != null) {
+            cause_object.setUpstreamBuild(upstreamBuild);
+        }
 
-	String userName = (String) cause.get("userName");
-	if (!Strings.isNullOrEmpty(userName)) {
-	    cause_object.setUserName(userName);
-	}
-	return cause_object;
+        String upstreamProject = (String) cause.get("upstreamProject");
+        if (!Strings.isNullOrEmpty(upstreamProject)) {
+            cause_object.setUpstreamProject(upstreamProject);
+        }
+
+        String upstreamUrl = (String) cause.get("upstreamUrl");
+        if (!Strings.isNullOrEmpty(upstreamProject)) {
+            cause_object.setUpstreamUrl(upstreamUrl);
+        }
+
+        String userId = (String) cause.get("userId");
+        if (!Strings.isNullOrEmpty(userId)) {
+            cause_object.setUserId(userId);
+        }
+
+        String userName = (String) cause.get("userName");
+        if (!Strings.isNullOrEmpty(userName)) {
+            cause_object.setUserName(userName);
+        }
+        return cause_object;
     }
 
     public String getDescription() {
