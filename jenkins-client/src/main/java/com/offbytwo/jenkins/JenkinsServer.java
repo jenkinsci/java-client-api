@@ -710,7 +710,26 @@ public class JenkinsServer {
      * @throws IOException
      */
     public String runScript(String script) throws IOException {
-        return client.post_text("/scriptText", "script=" + script, ContentType.APPLICATION_FORM_URLENCODED, false);
+        return runScript(script,false);
+    }
+    
+    /**
+     * Runs the provided groovy script on the server and returns the result.
+     *
+     * This is similar to running groovy scripts using the script console.
+     *
+     * In the instance where your script causes an exception, the server still
+     * returns a 200 status, so detecting errors is very challenging. It is
+     * recommended to use heuristics to check your return string for stack
+     * traces by detecting strings like "groovy.lang.(something)Exception".
+     *
+     * @param script
+     * @param crumb enable crumb
+     * @return results
+     * @throws IOException
+     */
+    public String runScript(String script,boolean crumb) throws IOException {
+        return client.post_text("/scriptText", "script=" + script, ContentType.APPLICATION_FORM_URLENCODED, crumb);
     }
 
     public Queue getQueue() throws IOException {
