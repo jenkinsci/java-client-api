@@ -14,6 +14,19 @@
 
 ### API Changes
 
+ * [Fixed Issue 104][issue-104] all build* methods now return consistently `QueueReference` 
+   to make it possible to query for a queued build and if a build from the queue has
+   been cancelled or to see if a build is running.
+ 
+```java
+ public class Job extends BaseModel {
+   public QueueReference build();
+   public QueueReference build(boolean crumbFlag);
+   public QueueReference build(Map<String, String> params);
+   public QueueReference build(Map<String, String> params, boolean crumbFlag);
+}
+```
+
  * [Fixed Issue 203][issue-203] with [pull request #204][pull-204]
    of RainerW <github@inforw.de>
 
@@ -682,6 +695,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-104]: https://github.com/jenkinsci/java-client-api/issues/104
 [issue-111]: https://github.com/jenkinsci/java-client-api/issues/111
 [issue-116]: https://github.com/jenkinsci/java-client-api/issues/116
+[issue-104]: https://github.com/jenkinsci/java-client-api/issues/104
 [issue-108]: https://github.com/jenkinsci/java-client-api/issues/108
 [issue-113]: https://github.com/jenkinsci/java-client-api/issues/113
 [issue-119]: https://github.com/jenkinsci/java-client-api/issues/119

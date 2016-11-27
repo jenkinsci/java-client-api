@@ -714,6 +714,7 @@ public class JenkinsServer {
     }
 
     public Queue getQueue() throws IOException {
+        //TODO: Check if using depth=1 is a good idea?
         return client.get("queue/?depth=1", Queue.class);
     }
 
@@ -721,10 +722,10 @@ public class JenkinsServer {
         try {
             String url = ref.getQueueItemUrlPart();
             // "/queue/item/" + id
-            QueueItem job = client.get(url, QueueItem.class);
-            job.setClient(client);
+            QueueItem queueItem = client.get(url, QueueItem.class);
+            queueItem.setClient(client);
 
-            return job;
+            return queueItem;
         } catch (HttpResponseException e) {
             if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
                 return null;
