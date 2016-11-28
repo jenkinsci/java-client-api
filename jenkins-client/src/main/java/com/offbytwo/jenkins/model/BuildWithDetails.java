@@ -8,6 +8,7 @@ package com.offbytwo.jenkins.model;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +28,7 @@ public class BuildWithDetails extends Build {
     private List actions; // TODO: Should be improved.
     private boolean building;
     private String description;
+    private String displayName;
     private long duration;
     private long estimatedDuration;
     private String fullDisplayName;
@@ -43,9 +45,11 @@ public class BuildWithDetails extends Build {
     public BuildWithDetails() {
         // Default ctor is needed to jackson.
     }
+
     public BuildWithDetails(BuildWithDetails details) {
         this.actions = details.actions;
         this.description = details.description;
+        this.displayName = details.displayName;
         this.building = details.building;
         this.duration = details.duration;
         this.estimatedDuration = details.estimatedDuration;
@@ -96,6 +100,81 @@ public class BuildWithDetails extends Build {
         }
 
         return result;
+    }
+
+    /**
+     * Update <code>displayName</code> and the <code>description</code> of a build.
+     * @param displayName The new displayName which should be set.
+     * @param description The description which should be set.
+     * @param crumbFlag <code>true</code> or <code>false</code>.
+     * @throws IOException in case of errors.
+     */
+    public void updateDisplayNameAndDescription(String displayName, String description, boolean crumbFlag)
+            throws IOException {
+        Objects.requireNonNull(displayName, "displayName is not allowed to be null.");
+        Objects.requireNonNull(description, "description is not allowed to be null.");
+        //TODO: Check what the "core:apply" means?
+        ImmutableMap<String, String> params = ImmutableMap.of("displayName", displayName, "description", description,
+                "core:apply", "", "Submit", "Save");
+        client.post_form(this.getUrl() + "/configSubmit?", params, crumbFlag);
+    }
+
+    /**
+     * Update <code>displayName</code> and the <code>description</code> of a build.
+     * @param displayName The new displayName which should be set.
+     * @param description The description which should be set.
+     * @throws IOException in case of errors.
+     */
+    public void updateDisplayNameAndDescription(String displayName, String description) throws IOException {
+        updateDisplayNameAndDescription(displayName, description, false);
+    }
+
+    /**
+     * Update <code>displayName</code> of a build.
+     * @param displayName The new displayName which should be set.
+     * @param crumbFlag <code>true</code> or <code>false</code>.
+     * @throws IOException in case of errors.
+     */
+    public void updateDisplayName(String displayName, boolean crumbFlag) throws IOException {
+        Objects.requireNonNull(displayName, "displayName is not allowed to be null.");
+        String description = getDescription() == null ? "" : getDescription();
+        //TODO: Check what the "core:apply" means?
+        ImmutableMap<String, String> params = ImmutableMap.of("displayName", displayName, "description",
+                description, "core:apply", "", "Submit", "Save");
+        client.post_form(this.getUrl() + "/configSubmit?", params, crumbFlag);
+    }
+
+    /**
+     * Update <code>displayName</code> of a build.
+     * @param displayName The new displayName which should be set.
+     * @throws IOException in case of errors.
+     */
+    public void updateDisplayName(String displayName) throws IOException {
+        updateDisplayName(displayName, false);
+    }
+
+    /**
+     * Update the <code>description</code> of a build.
+     * @param description The description which should be set.
+     * @param crumbFlag <code>true</code> or <code>false</code>.
+     * @throws IOException in case of errors.
+     */
+    public void updateDescription(String description, boolean crumbFlag) throws IOException {
+        Objects.requireNonNull(description, "description is not allowed to be null.");
+        String displayName = getDisplayName() == null ? "" : getDisplayName();
+        //TODO: Check what the "core:apply" means?
+        ImmutableMap<String, String> params = ImmutableMap.of("displayName", displayName, "description",
+                description, "core:apply", "", "Submit", "Save");
+        client.post_form(this.getUrl() + "/configSubmit?", params, crumbFlag);
+    }
+
+    /**
+     * Update the <code>description</code> of a build.
+     * @param description The description which should be set.
+     * @throws IOException in case of errors.
+     */
+    public void updateDescription(String description) throws IOException {
+        updateDescription(description, false);
     }
 
     private BuildCause convertToBuildCause(Map<String, Object> cause) {
@@ -150,6 +229,10 @@ public class BuildWithDetails extends Build {
         return fullDisplayName;
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
     public String getId() {
         return id;
     }
@@ -202,6 +285,11 @@ public class BuildWithDetails extends Build {
         return client.get(getUrl() + "/logText/progressiveText");
     }
 
+    /**
+     * The console output with HTML.
+     * @return The console output as HTML.
+     * @throws IOException
+     */
     public String getConsoleOutputHtml() throws IOException {
         return client.get(getUrl() + "/logText/progressiveHtml");
     }
@@ -287,6 +375,11 @@ public class BuildWithDetails extends Build {
                 return false;
         } else if (!description.equals(other.description))
             return false;
+        if (displayName == null) {
+            if (other.displayName != null)
+                return false;
+        } else if (!displayName.equals(other.displayName))
+            return false;
         if (duration != other.duration)
             return false;
         if (estimatedDuration != other.estimatedDuration)
@@ -321,6 +414,7 @@ public class BuildWithDetails extends Build {
         result = prime * result + ((consoleOutputText == null) ? 0 : consoleOutputText.hashCode());
         result = prime * result + ((culprits == null) ? 0 : culprits.hashCode());
         result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + ((displayName == null) ? 0 : displayName.hashCode());
         result = prime * result + (int) (duration ^ (duration >>> 32));
         result = prime * result + (int) (estimatedDuration ^ (estimatedDuration >>> 32));
         result = prime * result + ((fullDisplayName == null) ? 0 : fullDisplayName.hashCode());

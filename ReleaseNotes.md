@@ -14,6 +14,21 @@
 
 ### API Changes
 
+  * [Fixed issue 188][issue-188]
+  
+    Added methods to update the description and the display name of a build.
+
+```java
+public class BuildWithDetails .. {
+    public void updateDisplayNameAndDescription(String displayName, String description, boolean crumbFlag);
+    public void updateDisplayNameAndDescription(String displayName, String description);
+    public void updateDisplayName(String displayName, boolean crumbFlag);
+    public void updateDisplayName(String displayName);
+    public void updateDescription(String description, boolean crumbFlag);
+    public void updateDescription(String description);
+}
+```
+
   * [Pull Request #206][pull-206] added runScript with `crumbFlag`.
     
     Thanks Rainer W. 
@@ -750,6 +765,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-179]: https://github.com/jenkinsci/java-client-api/issues/179
 [issue-182]: https://github.com/jenkinsci/java-client-api/issues/182
 [issue-186]: https://github.com/jenkinsci/java-client-api/issues/186
+[issue-188]: https://github.com/jenkinsci/java-client-api/issues/188
 [issue-197]: https://github.com/jenkinsci/java-client-api/issues/197
 [issue-198]: https://github.com/jenkinsci/java-client-api/issues/198
 [issue-200]: https://github.com/jenkinsci/java-client-api/issues/200
