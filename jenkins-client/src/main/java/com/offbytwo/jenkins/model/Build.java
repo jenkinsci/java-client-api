@@ -10,8 +10,6 @@ import java.io.IOException;
 
 import org.apache.http.client.HttpResponseException;
 
-import com.google.common.collect.ImmutableMap;
-
 public class Build extends BaseModel {
 
     /**
