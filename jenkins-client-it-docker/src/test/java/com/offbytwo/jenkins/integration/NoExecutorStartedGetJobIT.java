@@ -80,6 +80,11 @@ public class NoExecutorStartedGetJobIT extends AbstractJenkinsIntegrationCase {
     }
 
     @Test
+    public void hasLastFailedBuildShouldBeTrue() {
+        assertThat(job.hasLastFailedBuildRun()).isTrue();
+    }
+    
+    @Test
     public void getLastStableBuildShouldNotBeNull() throws IOException {
         assertThat(job.getLastStableBuild()).isNotNull();
         checkJob(job.getLastStableBuild().details());

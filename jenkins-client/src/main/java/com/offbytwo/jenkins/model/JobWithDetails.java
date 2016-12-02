@@ -114,8 +114,7 @@ public class JobWithDetails extends Job {
      * 
      * @return the list of {@link Build}. In case of no builds have been
      *         executed yet return {@link Collections#emptyList()}.
-     * @throws IOException
-     *             In case of failure.
+     * @throws IOException In case of failure.
      * @see <a href="https://issues.jenkins-ci.org/browse/JENKINS-30238">Jenkins
      *      Issue</a>
      */
@@ -163,12 +162,10 @@ public class JobWithDetails extends Job {
      * existing builds for a job. The only option is to get all builds via
      * {@link #getAllBuilds()}.</b>
      * 
-     * @param range
-     *            {@link Range}
+     * @param range {@link Range}
      * @return the list of {@link Build}. In case of no builds have been
      *         executed yet return {@link Collections#emptyList()}.
-     * @throws IOException
-     *             in case of an error.
+     * @throws IOException in case of an error.
      */
     public List<Build> getAllBuilds(Range range) throws IOException {
         String path = "/" + "job/" + EncodingUtils.encode(this.getName())
@@ -209,14 +206,28 @@ public class JobWithDetails extends Job {
 
     /**
      * @return the first build which has been executed or
-     *         {@link Build#BUILD_HAS_NEVER_RUN} is this has never been
-     *         executed.
+     *         {@link Build#BUILD_HAS_NEVER_RUN} if the build has never been
+     *         run.
      */
     public Build getFirstBuild() {
         if (firstBuild == null) {
             return Build.BUILD_HAS_NEVER_RUN;
         } else {
             return buildWithClient(firstBuild);
+        }
+    }
+
+    /**
+     * Check if the {@link #firstBuild} has been run or not.
+     * 
+     * @return <code>true</code> if a build has been run <code>false</code>
+     *         otherwise.
+     */
+    public boolean hasFirstBuildRun() {
+        if (firstBuild == null) {
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -233,6 +244,20 @@ public class JobWithDetails extends Job {
     }
 
     /**
+     * Check if the {@link #lastBuild} has been run or not.
+     * 
+     * @return <code>true</code> if the last build has been run
+     *         <code>false</code> otherwise.
+     */
+    public boolean hasLastBuildRun() {
+        if (lastBuild == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * @return The lastCompletedBuild. If {@link #lastCompletedBuild} has never
      *         been run {@link Build#BUILD_HAS_NEVER_RUN} will be returned.
      */
@@ -241,6 +266,20 @@ public class JobWithDetails extends Job {
             return Build.BUILD_HAS_NEVER_RUN;
         } else {
             return buildWithClient(lastCompletedBuild);
+        }
+    }
+
+    /**
+     * Check if the {@link #lastCompletedBuild} has been run or not.
+     * 
+     * @return <code>true</code> if the last completed build has been run
+     *         <code>false</code> otherwise.
+     */
+    public boolean hasLastCompletedBuildRun() {
+        if (lastCompletedBuild == null) {
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -257,6 +296,20 @@ public class JobWithDetails extends Job {
     }
 
     /**
+     * Check if the {@link #lastFailedBuild} has been run or not.
+     * 
+     * @return <code>true</code> if the last failed build has been run
+     *         <code>false</code> otherwise.
+     */
+    public boolean hasLastFailedBuildRun() {
+        if (lastFailedBuild == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * @return The lastStableBuild. If {@link #lastStableBuild} has never been
      *         run {@link Build#BUILD_HAS_NEVER_RUN} will be returned.
      */
@@ -265,6 +318,20 @@ public class JobWithDetails extends Job {
             return Build.BUILD_HAS_NEVER_RUN;
         } else {
             return buildWithClient(lastStableBuild);
+        }
+    }
+
+    /**
+     * Check if the {@link #lastStableBuild} has been run or not.
+     * 
+     * @return <code>true</code> if the last stable build has been run
+     *         <code>false</code> otherwise.
+     */
+    public boolean hasLastStableBuildRun() {
+        if (lastStableBuild == null) {
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -282,6 +349,20 @@ public class JobWithDetails extends Job {
     }
 
     /**
+     * Check if the {@link #lastSuccessfulBuild} has been run or not.
+     * 
+     * @return <code>true</code> if the last successful build has been run
+     *         <code>false</code> otherwise.
+     */
+    public boolean hasLastSuccessfulBuildRun() {
+        if (lastSuccessfulBuild == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * @return The lastUnstableBuild. If {@link #lastUnstableBuild} has never
      *         been run {@link Build#BUILD_HAS_NEVER_RUN} will be returned.
      */
@@ -290,6 +371,20 @@ public class JobWithDetails extends Job {
             return Build.BUILD_HAS_NEVER_RUN;
         } else {
             return buildWithClient(lastUnstableBuild);
+        }
+    }
+
+    /**
+     * Check if the {@link #lastUnstableBuild} has been run or not.
+     * 
+     * @return <code>true</code> if the last unstable build has been run
+     *         <code>false</code> otherwise.
+     */
+    public boolean hasLastUnstableBuildRun() {
+        if (lastUnstableBuild == null) {
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -303,6 +398,20 @@ public class JobWithDetails extends Job {
             return Build.BUILD_HAS_NEVER_RUN;
         } else {
             return buildWithClient(lastUnsuccessfulBuild);
+        }
+    }
+
+    /**
+     * Check if the {@link #lastUnsuccessfulBuild} has been run or not.
+     * 
+     * @return <code>true</code> if the last unsuccessful build has been run
+     *         <code>false</code> otherwise.
+     */
+    public boolean hasLastUnsuccessfulBuildRun() {
+        if (lastUnsuccessfulBuild == null) {
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -341,8 +450,7 @@ public class JobWithDetails extends Job {
     /**
      * Get a build by the given buildNumber.
      * 
-     * @param buildNumber
-     *            The number to select the build by.
+     * @param buildNumber The number to select the build by.
      * @return The {@link Build} selected by the given buildnumber
      * 
      */
@@ -370,36 +478,31 @@ public class JobWithDetails extends Job {
     }
 
     /**
-     * Empty description to be used for {@link #updateDescription(String)}
-     * or {@link #updateDescription(String, boolean)}.
+     * Empty description to be used for {@link #updateDescription(String)} or
+     * {@link #updateDescription(String, boolean)}.
      */
     public static final String EMPTY_DESCRIPTION = "";
 
     /**
      * Update the <code>description</code> of a Job.
      * 
-     * @param description
-     *            The description which should be set.
-     *            If you like to set an empty description
-     *            you should use {@link #EMPTY_DESCRIPTION}.
-     * @throws IOException
-     *             in case of errors.
+     * @param description The description which should be set. If you like to
+     *            set an empty description you should use
+     *            {@link #EMPTY_DESCRIPTION}.
+     * @throws IOException in case of errors.
      */
     public void updateDescription(String description) throws IOException {
         updateDescription(description, false);
     }
-    
+
     /**
      * Update the <code>description</code> of a Job.
      * 
-     * @param description
-     *            The description which should be set.
-     *            If you like to set an empty description
-     *            you should use {@link #EMPTY_DESCRIPTION}.
-     * @param crumbFlag
-     *            <code>true</code> or <code>false</code>.
-     * @throws IOException
-     *             in case of errors.
+     * @param description The description which should be set. If you like to
+     *            set an empty description you should use
+     *            {@link #EMPTY_DESCRIPTION}.
+     * @param crumbFlag <code>true</code> or <code>false</code>.
+     * @throws IOException in case of errors.
      */
     public void updateDescription(String description, boolean crumbFlag) throws IOException {
         Objects.requireNonNull(description, "description is not allowed to be null.");
@@ -410,8 +513,7 @@ public class JobWithDetails extends Job {
     /**
      * clear the description of a job.
      * 
-     * @throws IOException
-     *             in case of errors.
+     * @throws IOException in case of errors.
      */
     public void clearDescription() throws IOException {
         updateDescription(EMPTY_DESCRIPTION);
@@ -420,10 +522,8 @@ public class JobWithDetails extends Job {
     /**
      * clear the description of a job.
      * 
-     * @param crumbFlag
-     *            <code>true</code> or <code>false</code>.
-     * @throws IOException
-     *             in case of errors.
+     * @param crumbFlag <code>true</code> or <code>false</code>.
+     * @throws IOException in case of errors.
      */
     public void clearDescription(boolean crumbFlag) throws IOException {
         updateDescription(EMPTY_DESCRIPTION, crumbFlag);

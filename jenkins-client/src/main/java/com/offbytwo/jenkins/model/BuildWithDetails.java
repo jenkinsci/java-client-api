@@ -25,6 +25,72 @@ import static com.google.common.collect.Collections2.filter;
  */
 public class BuildWithDetails extends Build {
 
+    /**
+     * This will be returned by the API in cases where the build has never run.
+     * For example {@link Build#BUILD_HAS_NEVER_RUN}
+     */
+    public static final BuildWithDetails BUILD_HAS_NEVER_RUN = new BuildWithDetails() {
+
+        @Override
+        public List getActions() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public List<Artifact> getArtifacts() {
+            return Collections.<Artifact>emptyList();
+        }
+
+        @Override
+        public List<BuildCause> getCauses() {
+            return Collections.<BuildCause>emptyList();
+        }
+
+        @Override
+        public List<BuildChangeSetAuthor> getCulprits() {
+            return Collections.<BuildChangeSetAuthor>emptyList();
+        }
+
+        @Override
+        public BuildResult getResult() {
+            return BuildResult.NOT_BUILT;
+        }
+
+    };
+
+    /**
+     * This will be returned by the API in cases where the build has been
+     * cancelled. For example {@link Build#BUILD_HAS_BEEN_CANCELLED}
+     */
+    public static final BuildWithDetails BUILD_HAS_BEEN_CANCELLED = new BuildWithDetails() {
+
+        @Override
+        public List getActions() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public List<Artifact> getArtifacts() {
+            return Collections.<Artifact>emptyList();
+        }
+
+        @Override
+        public List<BuildCause> getCauses() {
+            return Collections.<BuildCause>emptyList();
+        }
+
+        @Override
+        public List<BuildChangeSetAuthor> getCulprits() {
+            return Collections.<BuildChangeSetAuthor>emptyList();
+        }
+
+        @Override
+        public BuildResult getResult() {
+            return BuildResult.CANCELLED;
+        }
+
+    };
+
     private List actions; // TODO: Should be improved.
     private boolean building;
     private String description;
@@ -103,7 +169,9 @@ public class BuildWithDetails extends Build {
     }
 
     /**
-     * Update <code>displayName</code> and the <code>description</code> of a build.
+     * Update <code>displayName</code> and the <code>description</code> of a
+     * build.
+     * 
      * @param displayName The new displayName which should be set.
      * @param description The description which should be set.
      * @param crumbFlag <code>true</code> or <code>false</code>.
@@ -113,14 +181,16 @@ public class BuildWithDetails extends Build {
             throws IOException {
         Objects.requireNonNull(displayName, "displayName is not allowed to be null.");
         Objects.requireNonNull(description, "description is not allowed to be null.");
-        //TODO: Check what the "core:apply" means?
+        // TODO: Check what the "core:apply" means?
         ImmutableMap<String, String> params = ImmutableMap.of("displayName", displayName, "description", description,
                 "core:apply", "", "Submit", "Save");
         client.post_form(this.getUrl() + "/configSubmit?", params, crumbFlag);
     }
 
     /**
-     * Update <code>displayName</code> and the <code>description</code> of a build.
+     * Update <code>displayName</code> and the <code>description</code> of a
+     * build.
+     * 
      * @param displayName The new displayName which should be set.
      * @param description The description which should be set.
      * @throws IOException in case of errors.
@@ -131,6 +201,7 @@ public class BuildWithDetails extends Build {
 
     /**
      * Update <code>displayName</code> of a build.
+     * 
      * @param displayName The new displayName which should be set.
      * @param crumbFlag <code>true</code> or <code>false</code>.
      * @throws IOException in case of errors.
@@ -138,14 +209,15 @@ public class BuildWithDetails extends Build {
     public void updateDisplayName(String displayName, boolean crumbFlag) throws IOException {
         Objects.requireNonNull(displayName, "displayName is not allowed to be null.");
         String description = getDescription() == null ? "" : getDescription();
-        //TODO: Check what the "core:apply" means?
-        ImmutableMap<String, String> params = ImmutableMap.of("displayName", displayName, "description",
-                description, "core:apply", "", "Submit", "Save");
+        // TODO: Check what the "core:apply" means?
+        ImmutableMap<String, String> params = ImmutableMap.of("displayName", displayName, "description", description,
+                "core:apply", "", "Submit", "Save");
         client.post_form(this.getUrl() + "/configSubmit?", params, crumbFlag);
     }
 
     /**
      * Update <code>displayName</code> of a build.
+     * 
      * @param displayName The new displayName which should be set.
      * @throws IOException in case of errors.
      */
@@ -155,6 +227,7 @@ public class BuildWithDetails extends Build {
 
     /**
      * Update the <code>description</code> of a build.
+     * 
      * @param description The description which should be set.
      * @param crumbFlag <code>true</code> or <code>false</code>.
      * @throws IOException in case of errors.
@@ -162,14 +235,15 @@ public class BuildWithDetails extends Build {
     public void updateDescription(String description, boolean crumbFlag) throws IOException {
         Objects.requireNonNull(description, "description is not allowed to be null.");
         String displayName = getDisplayName() == null ? "" : getDisplayName();
-        //TODO: Check what the "core:apply" means?
-        ImmutableMap<String, String> params = ImmutableMap.of("displayName", displayName, "description",
-                description, "core:apply", "", "Submit", "Save");
+        // TODO: Check what the "core:apply" means?
+        ImmutableMap<String, String> params = ImmutableMap.of("displayName", displayName, "description", description,
+                "core:apply", "", "Submit", "Save");
         client.post_form(this.getUrl() + "/configSubmit?", params, crumbFlag);
     }
 
     /**
      * Update the <code>description</code> of a build.
+     * 
      * @param description The description which should be set.
      * @throws IOException in case of errors.
      */
@@ -278,8 +352,7 @@ public class BuildWithDetails extends Build {
     /**
      * @return The console output of the build. The line separation is done by
      *         {@code CR+LF}.
-     * @throws IOException
-     *             in case of a failure.
+     * @throws IOException in case of a failure.
      */
     public String getConsoleOutputText() throws IOException {
         return client.get(getUrl() + "/logText/progressiveText");
@@ -287,6 +360,7 @@ public class BuildWithDetails extends Build {
 
     /**
      * The console output with HTML.
+     * 
      * @return The console output as HTML.
      * @throws IOException
      */

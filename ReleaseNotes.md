@@ -16,6 +16,53 @@
 
 ### API Changes
 
+
+  * [Fixed issue 209][issue-209]
+  
+    Consider Returning null from the "getTestReport()" of Build.java class for builds that Never run.
+    
+    The type `BUILD_HAS_NEVER_RUN` has been enhanced to return `TestReport.NO_TEST_REPORT` if you
+    call `getTestReport()` and return `BuildWithDetails.BUILD_HAS_NEVER_RUN` if you call `details()` on the 
+    type.
+    
+    Furthermore `JobWithDetails` class has been enhanced with the following methods:
+    
+```java
+public class JobWithDetails ... {
+    public boolean hasFirstBuildRun();
+    public boolean hasLastBuildRun(;
+    public boolean hasLastCompletedBuildRun();
+    public boolean hasLastFailedBuildRun();
+    public boolean hasLastStableBuildRun();
+    public boolean hasLastSuccessfulBuildRun();
+    public boolean hasLastUnstableBuildRun();
+    public boolean hasLastUnsuccessfulBuildRun();
+}
+```
+   to make checking more convenient. The following code snippet
+   shows how you need to go before this change:
+   
+```java
+JobWithDetails job = server.getJob(jobName);
+if (Build.BUILD_HAS_NEVER_RUN.equals(job.getLastBuild()) {
+  ...
+} else {
+  // Now we can get the TestReport
+  job.getLastBuild().getTestReport();
+}
+```
+
+   This can now be simplified to the following:
+   
+```java
+JobWithDetails job = server.getJob(jobName);
+if (job.hasLastBuildRun()) {
+  // Now we can get the TestReport
+  job.getLastBuild().getTestReport();
+} else {
+}
+```
+
   * [Fixed issue 211][issue-211]
   
     Added methods to update/clear the description of a job.
@@ -787,6 +834,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-202]: https://github.com/jenkinsci/java-client-api/issues/202
 [issue-203]: https://github.com/jenkinsci/java-client-api/issues/203
 [issue-207]: https://github.com/jenkinsci/java-client-api/issues/207
+[issue-209]: https://github.com/jenkinsci/java-client-api/issues/209
 [issue-211]: https://github.com/jenkinsci/java-client-api/issues/211
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149

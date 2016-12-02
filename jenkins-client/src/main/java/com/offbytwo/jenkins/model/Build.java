@@ -14,14 +14,38 @@ public class Build extends BaseModel {
 
     /**
      * This will be returned by the API in cases where no build has ever been
-     * executed like {@link JobWithDetails#getLastBuild()} etc.
+     * executed like {@link JobWithDetails#getLastBuild()} etc. This will also
+     * be returned by {@link #details()} is the build has not been run.
      */
-    public static final Build BUILD_HAS_NEVER_RUN = new Build(-1, -1, "UNKNOWN");
+    public static final Build BUILD_HAS_NEVER_RUN = new Build(-1, -1, "UNKNOWN") {
+        @Override
+        public TestReport getTestReport() {
+            return TestReport.NO_TEST_REPORT;
+        }
+
+        @Override
+        public BuildWithDetails details() {
+            // For a build which never has been run you couldn't get
+            // details about!
+            return BuildWithDetails.BUILD_HAS_NEVER_RUN;
+        }
+    };
+
     /**
      * This will be returned by the API in cases where a build has been
      * cancelled.
      */
-    public static final Build BUILD_HAS_BEEN_CANCELLED = new Build(-1, -1, "CANCELLED");
+    public static final Build BUILD_HAS_BEEN_CANCELLED = new Build(-1, -1, "CANCELLED") {
+        @Override
+        public TestReport getTestReport() {
+            return TestReport.NO_TEST_REPORT;
+        }
+
+        @Override
+        public BuildWithDetails details() {
+            return BuildWithDetails.BUILD_HAS_BEEN_CANCELLED;
+        }
+    };
 
     private int number;
     private int queueId;
@@ -70,6 +94,13 @@ public class Build extends BaseModel {
         this.url = url;
     }
 
+    /**
+     * 
+     * @return The information from Jenkins. In cases the build has never run
+     *         {@link #BUILD_HAS_NEVER_RUN} will be returned.
+     * @throws IOException
+     *             in case of an error.
+     */
     public BuildWithDetails details() throws IOException {
         return client.get(url, BuildWithDetails.class);
     }
