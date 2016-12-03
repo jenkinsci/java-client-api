@@ -59,11 +59,20 @@ public class NoExecutorStartedPluginManagerIT extends AbstractJenkinsIntegration
         // TODO: The list of plugins is contained in the plugin.txt
         // which should be read and used as base of comparison.
         // instead of maintaining at two locations.
-        Plugin[] expectedPlugins = { createPlugin("token-macro", "1.12.1"), createPlugin("testng-plugin", "1.10"),
-                createPlugin("job-dsl", "1.41"), createPlugin("junit", "1.10"), createPlugin("jacoco", "1.0.19"),
-                createPlugin("config-file-provider", "2.10.0"), createPlugin("timestamper", "1.7.2"),
-                createPlugin("credentials", "1.24"), createPlugin("throttle-concurrents", "1.9.0"),
-                createPlugin("cloudbees-folder", "5.12"), };
+        //@formatter:off
+        Plugin[] expectedPlugins = { 
+            createPlugin("token-macro", "1.12.1"), 
+            createPlugin("testng-plugin", "1.10"),
+            createPlugin("job-dsl", "1.41"), 
+            createPlugin("junit", "1.10"), 
+            createPlugin("jacoco", "1.0.19"),
+            createPlugin("config-file-provider", "2.10.0"), 
+            createPlugin("timestamper", "1.7.2"),
+            createPlugin("credentials", "1.24"), 
+            createPlugin("throttle-concurrents", "1.9.0"),
+            createPlugin("cloudbees-folder", "5.12"), 
+        };
+        //@formatter:on
         List<Plugin> plugins = pluginManager.getPlugins();
 
         for (Plugin plugin : plugins) {
@@ -91,19 +100,37 @@ public class NoExecutorStartedPluginManagerIT extends AbstractJenkinsIntegration
         // TODO: The list of plugins is contained in the plugin.txt
         // which should be read and used as base of comparison.
         // instead of maintaining at two locations.
-        Plugin[] expectedPlugins = { createPlugin("token-macro", "1.12.1"), createPlugin("translation", "1.10"),
-                createPlugin("testng-plugin", "1.10"), createPlugin("matrix-project", "1.4.1"),
-                createPlugin("job-dsl", "1.41"), createPlugin("windows-slaves", "1.0"),
-                createPlugin("antisamy-markup-formatter", "1.1"), createPlugin("junit", "1.10"),
-                createPlugin("maven-plugin", "2.7.1"), createPlugin("external-monitor-job", "1.4"),
-                createPlugin("jacoco", "1.0.19"), createPlugin("pam-auth", "1.1"), createPlugin("ldap", "1.11"),
-                createPlugin("script-security", "1.13"), createPlugin("mailer", "1.11"), createPlugin("cvs", "2.11"),
-                createPlugin("ant", "1.2"), createPlugin("config-file-provider", "2.10.0"),
-                createPlugin("ssh-credentials", "1.10"), createPlugin("matrix-auth", "1.1"),
-                createPlugin("javadoc", "1.1"), createPlugin("timestamper", "1.7.2"),
-                createPlugin("credentials", "1.24"), createPlugin("throttle-concurrents", "1.9.0"),
-                createPlugin("subversion", "1.54"), createPlugin("ssh-slaves", "1.9"),
-                createPlugin("cloudbees-folder", "5.12"), };
+        //@formatter:off
+        Plugin[] expectedPlugins = { 
+            createPlugin("token-macro", "1.12.1"), 
+            createPlugin("translation", "1.10"),
+            createPlugin("testng-plugin", "1.10"), 
+            createPlugin("matrix-project", "1.4.1"),
+            createPlugin("job-dsl", "1.41"), 
+            createPlugin("windows-slaves", "1.0"),
+            createPlugin("antisamy-markup-formatter", "1.1"), 
+            createPlugin("junit", "1.10"),
+            createPlugin("maven-plugin", "2.7.1"), 
+            createPlugin("external-monitor-job", "1.4"),
+            createPlugin("jacoco", "1.0.19"), 
+            createPlugin("pam-auth", "1.1"), 
+            createPlugin("ldap", "1.11"),
+            createPlugin("script-security", "1.13"), 
+            createPlugin("mailer", "1.11"), 
+            createPlugin("cvs", "2.11"),
+            createPlugin("ant", "1.2"), 
+            createPlugin("config-file-provider", "2.10.0"),
+            createPlugin("ssh-credentials", "1.10"), 
+            createPlugin("matrix-auth", "1.1"),
+            createPlugin("javadoc", "1.1"), 
+            createPlugin("timestamper", "1.7.2"),
+            createPlugin("credentials", "1.24"), 
+            createPlugin("throttle-concurrents", "1.9.0"),
+            createPlugin("subversion", "1.54"), 
+            createPlugin("ssh-slaves", "1.9"),
+            createPlugin("cloudbees-folder", "5.12"), 
+        };
+        //@formatter:on
         List<Plugin> plugins = pluginManager.getPlugins();
 
         for (Plugin plugin : plugins) {
