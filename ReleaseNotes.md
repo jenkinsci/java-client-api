@@ -46,9 +46,9 @@ public class JenkinsServer {
 ```java
 public class JenkinsTriggerHelper {
 	public BuildWithDetails triggerJobAndWaitUntilFinished(String jobName);
+	public BuildWithDetails triggerJobAndWaitUntilFinished(String jobName, boolean crumbFlag);
 	public BuildWithDetails triggerJobAndWaitUntilFinished(String jobName, Map<String, String> params);
 	public BuildWithDetails triggerJobAndWaitUntilFinished(String jobName, Map<String, String> params,boolean crumbFlag);
-	public BuildWithDetails triggerJobAndWaitUntilFinished(String jobName, boolean crumbFlag);
 }
 ```
 
