@@ -11,6 +11,7 @@ import static com.google.common.collect.Lists.transform;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
@@ -18,6 +19,7 @@ import org.apache.http.client.HttpResponseException;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.offbytwo.jenkins.client.util.EncodingUtils;
 import com.offbytwo.jenkins.helper.Range;
@@ -339,9 +341,10 @@ public class JobWithDetails extends Job {
     /**
      * Get a build by the given buildNumber.
      * 
-     * @param buildNumber The number to select the build by.
+     * @param buildNumber
+     *            The number to select the build by.
      * @return The {@link Build} selected by the given buildnumber
-     *  
+     * 
      */
     public Build getBuildByNumber(final int buildNumber) {
 
@@ -364,6 +367,66 @@ public class JobWithDetails extends Job {
             job.setClient(client);
             return job;
         }
+    }
+
+    /**
+     * Empty description to be used for {@link #updateDescription(String)}
+     * or {@link #updateDescription(String, boolean)}.
+     */
+    public static final String EMPTY_DESCRIPTION = "";
+
+    /**
+     * Update the <code>description</code> of a Job.
+     * 
+     * @param description
+     *            The description which should be set.
+     *            If you like to set an empty description
+     *            you should use {@link #EMPTY_DESCRIPTION}.
+     * @throws IOException
+     *             in case of errors.
+     */
+    public void updateDescription(String description) throws IOException {
+        updateDescription(description, false);
+    }
+    
+    /**
+     * Update the <code>description</code> of a Job.
+     * 
+     * @param description
+     *            The description which should be set.
+     *            If you like to set an empty description
+     *            you should use {@link #EMPTY_DESCRIPTION}.
+     * @param crumbFlag
+     *            <code>true</code> or <code>false</code>.
+     * @throws IOException
+     *             in case of errors.
+     */
+    public void updateDescription(String description, boolean crumbFlag) throws IOException {
+        Objects.requireNonNull(description, "description is not allowed to be null.");
+        ImmutableMap<String, String> params = ImmutableMap.of("description", description);
+        client.post_form(this.getUrl() + "/submitDescription?", params, crumbFlag);
+    }
+
+    /**
+     * clear the description of a job.
+     * 
+     * @throws IOException
+     *             in case of errors.
+     */
+    public void clearDescription() throws IOException {
+        updateDescription(EMPTY_DESCRIPTION);
+    }
+
+    /**
+     * clear the description of a job.
+     * 
+     * @param crumbFlag
+     *            <code>true</code> or <code>false</code>.
+     * @throws IOException
+     *             in case of errors.
+     */
+    public void clearDescription(boolean crumbFlag) throws IOException {
+        updateDescription(EMPTY_DESCRIPTION, crumbFlag);
     }
 
     @Override

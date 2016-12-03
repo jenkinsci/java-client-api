@@ -14,6 +14,18 @@
 
 ### API Changes
 
+  * [Fixed issue 211][issue-211]
+  
+    Added methods to update/clear the description of a job.
+
+```java
+public class JobWithDetails .. {
+    public void updateDescription(String description);
+    public void updateDescription(String description, boolean crumbFlag);
+    public void clearDescription();
+    public void clearDescription(boolean crumbFlag);
+```
+
   * [Fixed issue 188][issue-188]
   
     Added methods to update the description and the display name of a build.
@@ -773,6 +785,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-202]: https://github.com/jenkinsci/java-client-api/issues/202
 [issue-203]: https://github.com/jenkinsci/java-client-api/issues/203
 [issue-207]: https://github.com/jenkinsci/java-client-api/issues/207
+[issue-211]: https://github.com/jenkinsci/java-client-api/issues/211
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
