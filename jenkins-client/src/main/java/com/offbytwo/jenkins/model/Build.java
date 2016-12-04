@@ -107,26 +107,33 @@ public class Build extends BaseModel {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (o == null || getClass() != o.getClass())
+        if (obj == null)
             return false;
-
-        Build build = (Build) o;
-
-        if (number != build.number)
+        if (getClass() != obj.getClass())
             return false;
-        if (url != null ? !url.equals(build.url) : build.url != null)
+        Build other = (Build) obj;
+        if (number != other.number)
             return false;
-
+        if (queueId != other.queueId)
+            return false;
+        if (url == null) {
+            if (other.url != null)
+                return false;
+        } else if (!url.equals(other.url))
+            return false;
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = number;
-        result = 31 * result + (url != null ? url.hashCode() : 0);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + number;
+        result = prime * result + queueId;
+        result = prime * result + ((url == null) ? 0 : url.hashCode());
         return result;
     }
 }
