@@ -2,6 +2,8 @@
 
 ## Release 0.3.7 (NOT RELEASED YET)
 
+ * Changed Eclipse Formatting configuration.
+
 [Fixed Issue 186][issue-186]
 
  * Correctly escaping `{` and `}` for range syntax.
