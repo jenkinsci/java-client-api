@@ -107,8 +107,18 @@ public class NoExecutorStartedGetJobIT extends AbstractJenkinsIntegrationCase {
     }
 
     @Test
+    public void hasLastUnstableBuildShouldBeFalse() {
+        assertThat(job.hasLastUnstableBuildRun()).isFalse();
+    }
+
+    @Test
     public void getLastUnsuccessfulBuildShouldBeBUILD_HAS_NEVER_RAN() {
         assertThat(job.getLastUnsuccessfulBuild()).isEqualTo(Build.BUILD_HAS_NEVER_RUN);
+    }
+
+    @Test
+    public void hasLastUnsuccessfulBuildShouldBeFalse() {
+        assertThat(job.hasLastUnsuccessfulBuildRun()).isFalse();
     }
 
     @Test
