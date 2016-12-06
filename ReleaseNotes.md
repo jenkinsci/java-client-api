@@ -30,7 +30,7 @@
 ```java
 public class JobWithDetails ... {
     public boolean hasFirstBuildRun();
-    public boolean hasLastBuildRun(;
+    public boolean hasLastBuildRun();
     public boolean hasLastCompletedBuildRun();
     public boolean hasLastFailedBuildRun();
     public boolean hasLastStableBuildRun();
