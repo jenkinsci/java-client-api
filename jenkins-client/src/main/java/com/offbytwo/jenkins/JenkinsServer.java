@@ -8,6 +8,7 @@ package com.offbytwo.jenkins;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
@@ -762,6 +763,32 @@ public class JenkinsServer {
             job.setClient(client);
 
             return job;
+        } catch (HttpResponseException e) {
+            if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+                return null;
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * Fetch build basing on jobName and build number
+     *
+     * @param jobName
+     * @param buildNumber
+     * @return Build object
+     *
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public Build getBuild(String jobName, Long buildNumber) throws IOException, URISyntaxException {
+        try {
+            String url = new URI(jobName +"/" + buildNumber).toString();
+            Build build = client.get(url, Build.class);
+            if(build!=null){
+                build.setClient(client);
+            }
+            return build;
         } catch (HttpResponseException e) {
             if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
                 return null;

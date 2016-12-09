@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.offbytwo.jenkins.model.*;
 import org.apache.http.entity.ContentType;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,11 +28,6 @@ import org.mockito.ArgumentCaptor;
 
 import com.google.common.base.Optional;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
-import com.offbytwo.jenkins.model.FolderJob;
-import com.offbytwo.jenkins.model.Job;
-import com.offbytwo.jenkins.model.JobWithDetails;
-import com.offbytwo.jenkins.model.MainView;
-import com.offbytwo.jenkins.model.View;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -112,6 +108,21 @@ public class JenkinsServerTest extends BaseUnitTest {
         // then
         verify(client).get(path + "job/jobname", JobWithDetails.class);
         assertEquals(someJob, jobResult);
+    }
+
+    @Test
+    public void testGetBuild() throws Exception {
+        // given
+        BuildWithDetails someBuild = mock(BuildWithDetails.class);
+
+        given(client.get(eq("job/1"), eq(Build.class))).willReturn(someBuild);
+
+        // when
+        Build build = server.getBuild("job", 1l);
+
+        // then
+        verify(client).get("job/1", Build.class);
+        assertEquals(someBuild, build);
     }
 
     @Test
