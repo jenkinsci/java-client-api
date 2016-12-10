@@ -25,7 +25,7 @@ public class JenkinsTestManualTestReport {
         System.out.println("totalCount: " + testReport.getTotalCount());
         System.out.println(" failCount: " + testReport.getFailCount());
         System.out.println(" skipCount: " + testReport.getSkipCount());
-        
+
         TestResult testResult = lastCompletedBuild.getTestResult();
         System.out.println(" --- TestResult ---");
 
@@ -35,7 +35,6 @@ public class JenkinsTestManualTestReport {
         System.out.println("  duration: " + testResult.getDuration());
         System.out.println("   isEmpty: " + testResult.isEmpty());
         List<TestSuites> suites = testResult.getSuites();
-        
-        
+
     }
 }
