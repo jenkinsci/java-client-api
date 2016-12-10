@@ -6,7 +6,7 @@ import java.util.List;
  * @author Karl Heinz Marbaise
  *
  */
-public class TestResult {
+public class TestResult extends BaseModel {
 
     private double duration;
     private boolean empty;

@@ -109,6 +109,11 @@ public class Build extends BaseModel {
         return client.get(this.getUrl() + "/testReport/?depth=1", TestReport.class);
     }
 
+    //Only for non Maven Jobs..
+    public TestResult getTestResult() throws IOException {
+        return client.get(this.getUrl() + "/testReport/?depth=1", TestResult.class);
+    }
+
     /*
      * This Change (Bad Practice) is due to inconsistencies in Jenkins various
      * versions. Jenkins changed their API from post to get and from get to post

@@ -16,6 +16,85 @@
 
 ### API Changes
 
+  * [Fixed issue 184][issue-184]
+
+    Based on the differences between getting a TestReport for a MavenJob type and 
+    a freestyle job etc. you would have hit by getting 0 from `getTotalCount()` like
+    in the following code snippet:
+
+```java
+JobWithDetails job = js.getJob("non-maven-test");
+Build lastCompletedBuild = job.getLastCompletedBuild();
+TestReport testReport = lastCompletedBuild.getTestReport();
+```
+
+   This is caused by the difference in the API of Jenkins which results in the following
+   for a MavenJob type:
+
+	{
+	  "_class" : "hudson.maven.reporters.SurefireAggregatedReport",
+	  "failCount" : 0,
+	  "skipCount" : 0,
+	  "totalCount" : 489,
+	  "urlName" : "testReport",
+	  "childReports" : [
+	    {
+	      "child" : {
+	        "_class" : "hudson.maven.MavenBuild",
+	        "number" : 2,
+	        "url" : "http://localhost:27100/buildserver/job/maven-test/com.soebes.subversion.sapm$sapm/2/"
+	      },
+	      "result" : {
+	        "_class" : "hudson.tasks.junit.TestResult",
+	        "testActions" : [
+	          
+	        ],
+	        "duration" : 0.009,
+	        "empty" : false,
+	        "failCount" : 0,
+	        "passCount" : 489,
+	        "skipCount" : 0,
+	        "suites" : [
+	          {
+	            "cases" : [
+
+   But for a non Maven job like freestyle job you will get the following:
+    
+	{
+	  "_class" : "hudson.tasks.junit.TestResult",
+	  "testActions" : [
+	    
+	  ],
+	  "duration" : 0.01,
+	  "empty" : false,
+	  "failCount" : 0,
+	  "passCount" : 489,
+	  "skipCount" : 0,
+	  "suites" : [
+	    {
+	      "cases" : [
+	        {
+	          "testActions" : [
+	            
+	          ],
+	          "age" : 0,
+	          "className" : "com.soebes.subversion.sapm.AccessRuleGroupTest",
+	          "duration" : 0.003,
+
+   This is exactly the cause for this result.
+    
+   The API has been enhanced to get the correct result. This can be achieved by calling
+   the following in cases where you have a non Maven job type.
+    
+```java
+TestResult testResult = lastCompletedBuild.getTestResult();
+```
+
+   This means you need to take care yourself if you are getting the test results from
+   Maven job type or non Maven job. (Future releases of the lib hopefully handle that
+   in a more convenient way).       
+     
+  
 
   * [Fixed issue 209][issue-209]
   
@@ -825,6 +904,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-176]: https://github.com/jenkinsci/java-client-api/issues/176
 [issue-179]: https://github.com/jenkinsci/java-client-api/issues/179
 [issue-182]: https://github.com/jenkinsci/java-client-api/issues/182
+[issue-184]: https://github.com/jenkinsci/java-client-api/issues/184
 [issue-186]: https://github.com/jenkinsci/java-client-api/issues/186
 [issue-188]: https://github.com/jenkinsci/java-client-api/issues/188
 [issue-197]: https://github.com/jenkinsci/java-client-api/issues/197
