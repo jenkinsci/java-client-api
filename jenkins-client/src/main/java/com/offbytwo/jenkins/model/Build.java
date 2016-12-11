@@ -109,7 +109,7 @@ public class Build extends BaseModel {
      * This is to get the information about {@link TestReport}
      * for a Maven Job type.
      * @return {@link TestReport}
-     * @throws IOException in casae of an error.
+     * @throws IOException in case of an error.
      */
     public TestReport getTestReport() throws IOException {
         return client.get(this.getUrl() + "/testReport/?depth=1", TestReport.class);
