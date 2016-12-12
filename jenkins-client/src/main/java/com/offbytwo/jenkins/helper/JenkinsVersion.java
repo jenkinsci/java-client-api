@@ -1,5 +1,13 @@
+/*
+ * Copyright (c) 2016 Karl Heinz Marbaise
+ *
+ * Distributed under the MIT license: http://opensource.org/licenses/MIT
+ */
 package com.offbytwo.jenkins.helper;
 
+/**
+ * @author Karl Heinz Marbaise
+ */
 public class JenkinsVersion implements Comparable<JenkinsVersion> {
     private ComparableVersion cv;
     private String literalVersion;

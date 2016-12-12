@@ -1,5 +1,3 @@
-package com.offbytwo.jenkins.helper;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,8 @@ package com.offbytwo.jenkins.helper;
  * specific language governing permissions and limitations
  * under the License.
  */
+
+package com.offbytwo.jenkins.helper;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
