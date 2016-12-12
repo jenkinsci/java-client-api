@@ -54,8 +54,8 @@ public class JenkinsServer {
     /**
      * Create a new Jenkins server reference given only the server address
      *
-     * @param serverUri
-     *            address of jenkins server (ex. http://localhost:8080/jenkins)
+     * @param serverUri address of jenkins server (ex.
+     *            http://localhost:8080/jenkins)
      */
     public JenkinsServer(URI serverUri) {
         this(new JenkinsHttpClient(serverUri));
@@ -64,12 +64,10 @@ public class JenkinsServer {
     /**
      * Create a new Jenkins server reference given the address and credentials
      *
-     * @param serverUri
-     *            address of jenkins server (ex. http://localhost:8080/jenkins)
-     * @param username
-     *            username to use when connecting
-     * @param passwordOrToken
-     *            password (not recommended) or token (recommended)
+     * @param serverUri address of jenkins server (ex.
+     *            http://localhost:8080/jenkins)
+     * @param username username to use when connecting
+     * @param passwordOrToken password (not recommended) or token (recommended)
      */
     public JenkinsServer(URI serverUri, String username, String passwordOrToken) {
         this(new JenkinsHttpClient(serverUri, username, passwordOrToken));
@@ -78,8 +76,7 @@ public class JenkinsServer {
     /**
      * Create a new Jenkins server directly from an HTTP client (ADVANCED)
      *
-     * @param client
-     *            Specialized client to use.
+     * @param client Specialized client to use.
      */
     public JenkinsServer(JenkinsHttpClient client) {
         this.client = client;
@@ -210,8 +207,7 @@ public class JenkinsServer {
     /**
      * Get a single view object from the server
      *
-     * @param name
-     *            name of the view in Jenkins
+     * @param name name of the view in Jenkins
      * @return the view object
      * @throws IOException
      */
@@ -222,16 +218,14 @@ public class JenkinsServer {
     /**
      * Get a single view object from the given folder
      * 
-     * @param folder
-     *            The name of the folder.
-     * @param name
-     *            name of the view in Jenkins
+     * @param folder The name of the folder.
+     * @param name name of the view in Jenkins
      * @return the view object
      * @throws IOException
      */
     public View getView(FolderJob folder, String name) throws IOException {
         try {
-            View resultView = client.get(toViewBaseUrl(folder,name) + "/", View.class);
+            View resultView = client.get(toViewBaseUrl(folder, name) + "/", View.class);
             resultView.setClient(client);
 
             // TODO: Think about the following? Does there exists a simpler/more
@@ -271,7 +265,7 @@ public class JenkinsServer {
      */
     public JobWithDetails getJob(FolderJob folder, String jobName) throws IOException {
         try {
-            JobWithDetails job = client.get(toJobBaseUrl(folder,jobName), JobWithDetails.class);
+            JobWithDetails job = client.get(toJobBaseUrl(folder, jobName), JobWithDetails.class);
             job.setClient(client);
 
             return job;
@@ -291,8 +285,7 @@ public class JenkinsServer {
 
     public MavenJobWithDetails getMavenJob(FolderJob folder, String jobName) throws IOException {
         try {
-            MavenJobWithDetails job = client.get(toJobBaseUrl(folder, jobName),
-                    MavenJobWithDetails.class);
+            MavenJobWithDetails job = client.get(toJobBaseUrl(folder, jobName), MavenJobWithDetails.class);
             job.setClient(client);
 
             return job;
@@ -364,7 +357,7 @@ public class JenkinsServer {
      * @throws IOException
      */
     public void createJob(FolderJob folder, String jobName, String jobXml, Boolean crumbFlag) throws IOException {
-        client.post_xml( toBaseUrl(folder) + "createItem?name=" + EncodingUtils.encodeParam(jobName), jobXml, crumbFlag);
+        client.post_xml(toBaseUrl(folder) + "createItem?name=" + EncodingUtils.encodeParam(jobName), jobXml, crumbFlag);
     }
 
     /**
@@ -406,7 +399,8 @@ public class JenkinsServer {
      * @throws IOException
      */
     public void createView(FolderJob folder, String viewName, String viewXml, Boolean crumbFlag) throws IOException {
-        client.post_xml(toBaseUrl(folder) + "createView?name=" + EncodingUtils.encodeParam(viewName), viewXml, crumbFlag);
+        client.post_xml(toBaseUrl(folder) + "createView?name=" + EncodingUtils.encodeParam(viewName), viewXml,
+                crumbFlag);
     }
 
     /**
@@ -456,18 +450,17 @@ public class JenkinsServer {
      * @throws IOException
      */
     public String getJobXml(String jobName) throws IOException {
-      return getJobXml(null,jobName);
+        return getJobXml(null, jobName);
     }
-    
+
     /**
      * Get the xml description of an existing job
      *
      * @return the new job object
      * @throws IOException
      */
-    public String getJobXml(FolderJob folder, String jobName) throws IOException
-    {
-      return client.get(toJobBaseUrl(folder, jobName) + "/config.xml");
+    public String getJobXml(FolderJob folder, String jobName) throws IOException {
+        return client.get(toJobBaseUrl(folder, jobName) + "/config.xml");
     }
 
     /**
@@ -514,8 +507,7 @@ public class JenkinsServer {
      * This will give you back the {@link PluginManager}.
      * 
      * @return {@link PluginManager}
-     * @throws IOException
-     *             in case of a failure.
+     * @throws IOException in case of a failure.
      */
     public PluginManager getPluginManager() throws IOException {
         return client.get("pluginManager/?depth=2", PluginManager.class);
@@ -550,17 +542,16 @@ public class JenkinsServer {
      * @throws IOException
      */
     public void updateJob(String jobName, String jobXml, boolean crumbFlag) throws IOException {
-      updateJob(null,jobName,jobXml,crumbFlag);
+        updateJob(null, jobName, jobXml, crumbFlag);
     }
-    
+
     /**
      * Update the xml description of an existing job
      *
      * @throws IOException
      */
-    public void updateJob(FolderJob folder, String jobName, String jobXml, boolean crumbFlag) throws IOException
-    {
-      client.post_xml(toJobBaseUrl(folder, jobName) + "/config.xml", jobXml, crumbFlag);
+    public void updateJob(FolderJob folder, String jobName, String jobXml, boolean crumbFlag) throws IOException {
+        client.post_xml(toJobBaseUrl(folder, jobName) + "/config.xml", jobXml, crumbFlag);
     }
 
     public void addStringParam(String jobName, String name, String description, String defaultValue)
@@ -601,10 +592,8 @@ public class JenkinsServer {
     /**
      * Delete a job from Jenkins within a folder.
      *
-     * @param folder
-     *            The folder where the given job is located.
-     * @param jobName
-     *            The job which should be deleted.
+     * @param folder The folder where the given job is located.
+     * @param jobName The job which should be deleted.
      *
      * @throws IOException
      */
@@ -615,14 +604,10 @@ public class JenkinsServer {
     /**
      * Delete a job from Jenkins within a folder.
      * 
-     * @param folder
-     *            The folder where the given job is located.
-     * @param jobName
-     *            The job which should be deleted.
-     * @param crumbFlag
-     *            The crumbFlag
-     * @throws IOException
-     *             in case of problems.
+     * @param folder The folder where the given job is located.
+     * @param jobName The job which should be deleted.
+     * @param crumbFlag The crumbFlag
+     * @throws IOException in case of problems.
      */
     public void deleteJob(FolderJob folder, String jobName, boolean crumbFlag) throws IOException {
         client.post(toJobBaseUrl(folder, jobName) + "/doDelete", crumbFlag);
@@ -640,12 +625,9 @@ public class JenkinsServer {
     /**
      * Delete a job from Jenkins.
      * 
-     * @param jobName
-     *            The name of the job to be deleted.
-     * @param crumbFlag
-     *            The crumFlag.
-     * @throws IOException
-     *             In case of an failure.
+     * @param jobName The name of the job to be deleted.
+     * @param crumbFlag The crumFlag.
+     * @throws IOException In case of an failure.
      */
     public void deleteJob(String jobName, boolean crumbFlag) throws IOException {
         client.post("/job/" + EncodingUtils.encode(jobName) + "/doDelete", crumbFlag);
@@ -663,12 +645,9 @@ public class JenkinsServer {
     /**
      * Disable a job from Jenkins.
      *
-     * @param jobName
-     *            The name of the job to be deleted.
-     * @param crumbFlag
-     *            The crumFlag.
-     * @throws IOException
-     *             In case of an failure.
+     * @param jobName The name of the job to be deleted.
+     * @param crumbFlag The crumFlag.
+     * @throws IOException In case of an failure.
      */
     public void disableJob(String jobName, boolean crumbFlag) throws IOException {
         client.post("/job/" + EncodingUtils.encode(jobName) + "/disable", crumbFlag);
@@ -686,12 +665,9 @@ public class JenkinsServer {
     /**
      * Enable a job from Jenkins.
      *
-     * @param jobName
-     *            The name of the job to be deleted.
-     * @param crumbFlag
-     *            The crumFlag.
-     * @throws IOException
-     *             In case of an failure.
+     * @param jobName The name of the job to be deleted.
+     * @param crumbFlag The crumFlag.
+     * @throws IOException In case of an failure.
      */
     public void enableJob(String jobName, boolean crumbFlag) throws IOException {
         client.post("/job/" + EncodingUtils.encode(jobName) + "/enable", crumbFlag);
@@ -712,9 +688,9 @@ public class JenkinsServer {
      * @throws IOException
      */
     public String runScript(String script) throws IOException {
-        return runScript(script,false);
+        return runScript(script, false);
     }
-    
+
     /**
      * Runs the provided groovy script on the server and returns the result.
      *
@@ -730,12 +706,12 @@ public class JenkinsServer {
      * @return results
      * @throws IOException
      */
-    public String runScript(String script,boolean crumb) throws IOException {
+    public String runScript(String script, boolean crumb) throws IOException {
         return client.post_text("/scriptText", "script=" + script, ContentType.APPLICATION_FORM_URLENCODED, crumb);
     }
 
     public Queue getQueue() throws IOException {
-        //TODO: Check if using depth=1 is a good idea?
+        // TODO: Check if using depth=1 is a good idea?
         return client.get("queue/?depth=1", Queue.class);
     }
 
@@ -775,12 +751,9 @@ public class JenkinsServer {
     /**
      * Rename a job
      *
-     * @param oldJobName
-     *            existing job name.
-     * @param newJobName
-     *            The new job name.
-     * @throws IOException
-     *             In case of a failure.
+     * @param oldJobName existing job name.
+     * @param newJobName The new job name.
+     * @throws IOException In case of a failure.
      */
     public void renameJob(String oldJobName, String newJobName) throws IOException {
         renameJob(null, oldJobName, newJobName, false);
@@ -789,15 +762,11 @@ public class JenkinsServer {
     /**
      * Rename a job
      *
-     * @param oldJobName
-     *            existing job name.
-     * @param newJobName
-     *            The new job name.
-     * @param crumbFlag
-     *            <code>true</code> to add <b>crumbIssuer</b> <code>false</code>
-     *            otherwise.
-     * @throws IOException
-     *             In case of a failure.
+     * @param oldJobName existing job name.
+     * @param newJobName The new job name.
+     * @param crumbFlag <code>true</code> to add <b>crumbIssuer</b>
+     *            <code>false</code> otherwise.
+     * @throws IOException In case of a failure.
      */
     public void renameJob(String oldJobName, String newJobName, Boolean crumbFlag) throws IOException {
         renameJob(null, oldJobName, newJobName, crumbFlag);
@@ -806,14 +775,10 @@ public class JenkinsServer {
     /**
      * Rename a job
      *
-     * @param FolderJob
-     *            The folder.
-     * @param oldJobName
-     *            existing job name.
-     * @param newJobName
-     *            The new job name.
-     * @throws IOException
-     *             In case of a failure.
+     * @param FolderJob The folder.
+     * @param oldJobName existing job name.
+     * @param newJobName The new job name.
+     * @throws IOException In case of a failure.
      */
     public void renameJob(FolderJob folder, String oldJobName, String newJobName) throws IOException {
         renameJob(folder, oldJobName, newJobName, false);
@@ -822,55 +787,51 @@ public class JenkinsServer {
     /**
      * Rename a job
      *
-     * @param FolderJob
-     *            The folder.
-     * @param oldJobName
-     *            existing job name.
-     * @param newJobName
-     *            The new job name.
-     * @param crumbFlag
-     *            <code>true</code> to add <b>crumbIssuer</b> <code>false</code>
-     *            otherwise.
-     * @throws IOException
-     *             In case of a failure.
+     * @param FolderJob The folder.
+     * @param oldJobName existing job name.
+     * @param newJobName The new job name.
+     * @param crumbFlag <code>true</code> to add <b>crumbIssuer</b>
+     *            <code>false</code> otherwise.
+     * @throws IOException In case of a failure.
      */
     public void renameJob(FolderJob folder, String oldJobName, String newJobName, Boolean crumbFlag)
             throws IOException {
-        client.post( toJobBaseUrl(folder, oldJobName) + "/doRename?newName=" + EncodingUtils.encodeParam(newJobName), crumbFlag);
+        client.post(toJobBaseUrl(folder, oldJobName) + "/doRename?newName=" + EncodingUtils.encodeParam(newJobName),
+                crumbFlag);
     }
 
-   /**
-    * Helper to create a base url in case a folder is given 
-    * @param folder the folder or {@code null}
-    * @return
-    */
-   private String toBaseUrl(FolderJob folder)
-   {
-     String path = "/";
-     if (folder != null) {
-         path = folder.getUrl();
-     }
-     return path;
-   }
+    /**
+     * Helper to create a base url in case a folder is given
+     * 
+     * @param folder the folder or {@code null}
+     * @return
+     */
+    private String toBaseUrl(FolderJob folder) {
+        String path = "/";
+        if (folder != null) {
+            path = folder.getUrl();
+        }
+        return path;
+    }
 
-   /**
-    * Helper to create the base url for a job, with or without a given folder 
-    * @param folder the folder or {@code null}
-    * @return
-    */
-   private String toJobBaseUrl(FolderJob folder, String jobName)
-   {
-     return toBaseUrl(folder) + "job/" + EncodingUtils.encode(jobName);
-   }
+    /**
+     * Helper to create the base url for a job, with or without a given folder
+     * 
+     * @param folder the folder or {@code null}
+     * @return
+     */
+    private String toJobBaseUrl(FolderJob folder, String jobName) {
+        return toBaseUrl(folder) + "job/" + EncodingUtils.encode(jobName);
+    }
 
-   /**
-    * Helper to create the base url for a view, with or without a given folder 
-    * @param folder the folder or {@code null}
-    * @return
-    */
-   private String toViewBaseUrl(FolderJob folder, String name)
-   {
-     return toBaseUrl(folder) + "view/" + EncodingUtils.encode(name);
-   }
+    /**
+     * Helper to create the base url for a view, with or without a given folder
+     * 
+     * @param folder the folder or {@code null}
+     * @return
+     */
+    private String toViewBaseUrl(FolderJob folder, String name) {
+        return toBaseUrl(folder) + "view/" + EncodingUtils.encode(name);
+    }
 
 }

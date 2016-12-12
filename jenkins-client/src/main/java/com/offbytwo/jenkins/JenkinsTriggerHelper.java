@@ -29,16 +29,13 @@ public class JenkinsTriggerHelper {
      * This method will trigger a build of the given job and will wait until the
      * builds is ended or if the build has been cancelled.
      * 
-     * @param jobName
-     *            The name of the job which should be triggered.
+     * @param jobName The name of the job which should be triggered.
      * @return In case of an cancelled job you will get
      *         {@link BuildWithDetails#getResult()}
      *         {@link BuildResult#CANCELLED}. So you have to check first if the
      *         build result is {@code CANCELLED}.
-     * @throws IOException
-     *             in case of errors.
-     * @throws InterruptedException
-     *             In case of interrupts.
+     * @throws IOException in case of errors.
+     * @throws InterruptedException In case of interrupts.
      */
     public BuildWithDetails triggerJobAndWaitUntilFinished(String jobName) throws IOException, InterruptedException {
         return triggerJobAndWaitUntilFinished(jobName, false);
@@ -48,18 +45,14 @@ public class JenkinsTriggerHelper {
      * This method will trigger a build of the given job and will wait until the
      * builds is ended or if the build has been cancelled.
      * 
-     * @param jobName
-     *            The name of the job which should be triggered.
-     * @param params
-     *            the job parameters
+     * @param jobName The name of the job which should be triggered.
+     * @param params the job parameters
      * @return In case of an cancelled job you will get
      *         {@link BuildWithDetails#getResult()}
      *         {@link BuildResult#CANCELLED}. So you have to check first if the
      *         build result is {@code CANCELLED}.
-     * @throws IOException
-     *             in case of errors.
-     * @throws InterruptedException
-     *             In case of interrupts.
+     * @throws IOException in case of errors.
+     * @throws InterruptedException In case of interrupts.
      */
     public BuildWithDetails triggerJobAndWaitUntilFinished(String jobName, Map<String, String> params)
             throws IOException, InterruptedException {
@@ -70,20 +63,15 @@ public class JenkinsTriggerHelper {
      * This method will trigger a build of the given job and will wait until the
      * builds is ended or if the build has been cancelled.
      * 
-     * @param jobName
-     *            The name of the job which should be triggered.
-     * @param params
-     *            the job parameters
-     * @param crumbFlag
-     *            set to <code>true</code> or <code>false</code>.
+     * @param jobName The name of the job which should be triggered.
+     * @param params the job parameters
+     * @param crumbFlag set to <code>true</code> or <code>false</code>.
      * @return In case of an cancelled job you will get
      *         {@link BuildWithDetails#getResult()}
      *         {@link BuildResult#CANCELLED}. So you have to check first if the
      *         build result is {@code CANCELLED}.
-     * @throws IOException
-     *             in case of errors.
-     * @throws InterruptedException
-     *             In case of interrupts.
+     * @throws IOException in case of errors.
+     * @throws InterruptedException In case of interrupts.
      */
     public BuildWithDetails triggerJobAndWaitUntilFinished(String jobName, Map<String, String> params,
             boolean crumbFlag) throws IOException, InterruptedException {
@@ -97,18 +85,14 @@ public class JenkinsTriggerHelper {
      * This method will trigger a build of the given job and will wait until the
      * builds is ended or if the build has been cancelled.
      * 
-     * @param jobName
-     *            The name of the job which should be triggered.
-     * @param crumbFlag
-     *            set to <code>true</code> or <code>false</code>.
+     * @param jobName The name of the job which should be triggered.
+     * @param crumbFlag set to <code>true</code> or <code>false</code>.
      * @return In case of an cancelled job you will get
      *         {@link BuildWithDetails#getResult()}
      *         {@link BuildResult#CANCELLED}. So you have to check first if the
      *         build result is {@code CANCELLED}.
-     * @throws IOException
-     *             in case of errors.
-     * @throws InterruptedException
-     *             In case of interrupts.
+     * @throws IOException in case of errors.
+     * @throws InterruptedException In case of interrupts.
      */
     public BuildWithDetails triggerJobAndWaitUntilFinished(String jobName, boolean crumbFlag)
             throws IOException, InterruptedException {
@@ -119,18 +103,14 @@ public class JenkinsTriggerHelper {
     }
 
     /**
-     * @param jobName
-     *            The name of the job.
-     * @param queueRef
-     *            {@link QueueReference}
+     * @param jobName The name of the job.
+     * @param queueRef {@link QueueReference}
      * @return In case of an cancelled job you will get
      *         {@link BuildWithDetails#getResult()}
      *         {@link BuildResult#CANCELLED}. So you have to check first if the
      *         build result is {@code CANCELLED}.
-     * @throws IOException
-     *             in case of errors.
-     * @throws InterruptedException
-     *             In case of interrupts.
+     * @throws IOException in case of errors.
+     * @throws InterruptedException In case of interrupts.
      */
     private BuildWithDetails triggerJobAndWaitUntilFinished(String jobName, QueueReference queueRef)
             throws IOException, InterruptedException {
