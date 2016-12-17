@@ -63,7 +63,7 @@ public class ComputerWithDetails extends Computer {
      * (node) name.
      * 
      * @return {@link LoadStatistics}
-     * @throws IOException
+     * @throws IOException in case of an error.
      */
     public LoadStatistics getLoadStatistics() throws IOException {
         // TODO: Think about the following handling, cause that has also being

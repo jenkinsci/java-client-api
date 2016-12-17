@@ -22,14 +22,14 @@ public class BuildChangeSet {
     private String kind;
 
     /**
-    *
-    */
+     * @param items {@link BuildChangeSet}
+     */
     public void setItems(List<BuildChangeSetItem> items) {
         this.items = items;
     }
 
     /**
-     * @return the items
+     * @return list of {@link BuildChangeSet}
      */
     public List<BuildChangeSetItem> getItems() {
         return items;
@@ -43,8 +43,8 @@ public class BuildChangeSet {
     }
 
     /**
-    *
-    */
+     * @param kind the kind of (usually svn, git).
+     */
     public void setKind(String kind) {
         this.kind = kind;
     }

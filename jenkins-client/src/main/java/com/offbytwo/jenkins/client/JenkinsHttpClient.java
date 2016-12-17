@@ -52,7 +52,7 @@ import com.offbytwo.jenkins.model.ExtractHeader;
 import net.sf.json.JSONObject;
 
 public class JenkinsHttpClient {
-    private final Logger LOGGER = LoggerFactory.getLogger( getClass() );
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private URI uri;
     private CloseableHttpClient client;
@@ -62,16 +62,14 @@ public class JenkinsHttpClient {
 
     private ObjectMapper mapper;
     private String context;
-    
+
     private String jenkinsVersion;
 
     /**
      * Create an unauthenticated Jenkins HTTP client
      *
-     * @param uri
-     *            Location of the jenkins server (ex. http://localhost:8080)
-     * @param client
-     *            Configured CloseableHttpClient to be used
+     * @param uri Location of the jenkins server (ex. http://localhost:8080)
+     * @param client Configured CloseableHttpClient to be used
      */
     public JenkinsHttpClient(URI uri, CloseableHttpClient client) {
         this.context = uri.getPath();
@@ -90,10 +88,8 @@ public class JenkinsHttpClient {
     /**
      * Create an unauthenticated Jenkins HTTP client
      *
-     * @param uri
-     *            Location of the jenkins server (ex. http://localhost:8080)
-     * @param builder
-     *            Configured HttpClientBuilder to be used
+     * @param uri Location of the jenkins server (ex. http://localhost:8080)
+     * @param builder Configured HttpClientBuilder to be used
      */
     public JenkinsHttpClient(URI uri, HttpClientBuilder builder) {
         this(uri, builder.build());
@@ -102,8 +98,7 @@ public class JenkinsHttpClient {
     /**
      * Create an unauthenticated Jenkins HTTP client
      *
-     * @param uri
-     *            Location of the jenkins server (ex. http://localhost:8080)
+     * @param uri Location of the jenkins server (ex. http://localhost:8080)
      */
     public JenkinsHttpClient(URI uri) {
         this(uri, HttpClientBuilder.create());
@@ -112,12 +107,9 @@ public class JenkinsHttpClient {
     /**
      * Create an authenticated Jenkins HTTP client
      *
-     * @param uri
-     *            Location of the jenkins server (ex. http://localhost:8080)
-     * @param username
-     *            Username to use when connecting
-     * @param password
-     *            Password or auth token to use when connecting
+     * @param uri Location of the jenkins server (ex. http://localhost:8080)
+     * @param username Username to use when connecting
+     * @param password Password or auth token to use when connecting
      */
     public JenkinsHttpClient(URI uri, String username, String password) {
         this(uri, addAuthentication(HttpClientBuilder.create(), uri, username, password));
@@ -130,19 +122,15 @@ public class JenkinsHttpClient {
     /**
      * Perform a GET request and parse the response to the given class
      *
-     * @param path
-     *            path to request, can be relative or absolute
-     * @param cls
-     *            class of the response
-     * @param <T>
-     *            type of the response
+     * @param path path to request, can be relative or absolute
+     * @param cls class of the response
+     * @param <T> type of the response
      * @return an instance of the supplied class
-     * @throws IOException,
-     *             HttpResponseException
+     * @throws IOException in case of an error.
      */
     public <T extends BaseModel> T get(String path, Class<T> cls) throws IOException {
         HttpGet getMethod = new HttpGet(api(path));
-        
+
         HttpResponse response = client.execute(getMethod, localContext);
         getJenkinsVersionFromHeader(response);
         try {
@@ -158,17 +146,16 @@ public class JenkinsHttpClient {
      * Perform a GET request and parse the response and return a simple string
      * of the content
      *
-     * @param path
-     *            path to request, can be relative or absolute
+     * @param path path to request, can be relative or absolute
      * @return the entity text
-     * @throws IOException,
-     *             HttpResponseException
+     * @throws IOException in case of an error.
      */
     public String get(String path) throws IOException {
         HttpGet getMethod = new HttpGet(api(path));
         HttpResponse response = client.execute(getMethod, localContext);
         getJenkinsVersionFromHeader(response);
-        LOGGER.debug("get({}), version={}, responseCode={}", path, this.jenkinsVersion, response.getStatusLine().getStatusCode());
+        LOGGER.debug("get({}), version={}, responseCode={}", path, this.jenkinsVersion,
+                response.getStatusLine().getStatusCode());
         try {
             httpResponseValidator.validateResponse(response);
             return IOUtils.toString(response.getEntity().getContent());
@@ -183,12 +170,9 @@ public class JenkinsHttpClient {
      * Perform a GET request and parse the response to the given class, logging
      * any IOException that is thrown rather than propagating it.
      *
-     * @param path
-     *            path to request, can be relative or absolute
-     * @param cls
-     *            class of the response
-     * @param <T>
-     *            type of the response
+     * @param path path to request, can be relative or absolute
+     * @param cls class of the response
+     * @param <T> type of the response
      * @return an instance of the supplied class
      */
     public <T extends BaseModel> T getQuietly(String path, Class<T> cls) {
@@ -198,7 +182,7 @@ public class JenkinsHttpClient {
             return value;
         } catch (IOException e) {
             LOGGER.debug("getQuietly({}, {})", path, cls.getName(), e);
-            //TODO: Is returing null a good idea?
+            // TODO: Is returing null a good idea?
             return null;
         }
     }
@@ -206,11 +190,9 @@ public class JenkinsHttpClient {
     /**
      * Perform a GET request and return the response as InputStream
      *
-     * @param path
-     *            path to request, can be relative or absolute
+     * @param path path to request, can be relative or absolute
      * @return the response stream
-     * @throws IOException,
-     *             HttpResponseException
+     * @throws IOException in case of an error.
      */
     public InputStream getFile(URI path) throws IOException {
         HttpGet getMethod = new HttpGet(path);
@@ -227,19 +209,14 @@ public class JenkinsHttpClient {
     /**
      * Perform a POST request and parse the response to the given class
      *
-     * @param path
-     *            path to request, can be relative or absolute
-     * @param data
-     *            data to post
-     * @param cls
-     *            class of the response
-     * @param <R>
-     *            type of the response
-     * @param <D>
-     *            type of the data
+     * @param path path to request, can be relative or absolute
+     * @param data data to post
+     * @param cls class of the response
+     * @param <R> type of the response
+     * @param <D> type of the data
+     * @param crumbFlag true / false.
      * @return an instance of the supplied class
-     * @throws IOException,
-     *             HttpResponseException
+     * @throws IOException in case of an error.
      */
     public <R extends BaseModel, D> R post(String path, D data, Class<R> cls, boolean crumbFlag) throws IOException {
         HttpPost request = new HttpPost(api(path));
@@ -293,12 +270,10 @@ public class JenkinsHttpClient {
      * call required. It is unclear if any other jenkins APIs operate in this
      * fashion.
      *
-     * @param path
-     *            path to request, can be relative or absolute
-     * @param data
-     *            data to post
-     * @throws IOException,
-     *             HttpResponseException
+     * @param path path to request, can be relative or absolute
+     * @param data data to post
+     * @param crumbFlag true / false.
+     * @throws IOException in case of an error.
      */
     public void post_form(String path, Map<String, String> data, boolean crumbFlag) throws IOException {
         HttpPost request;
@@ -341,13 +316,10 @@ public class JenkinsHttpClient {
      * Perform a POST request of XML (instead of using json mapper) and return a
      * string rendering of the response entity.
      *
-     * @param path
-     *            path to request, can be relative or absolute
-     * @param xml_data
-     *            data data to post
+     * @param path path to request, can be relative or absolute
+     * @param xml_data data data to post
      * @return A string containing the xml response (if present)
-     * @throws IOException,
-     *             HttpResponseException
+     * @throws IOException in case of an error.
      */
     public String post_xml(String path, String xml_data) throws IOException {
         return post_xml(path, xml_data, true);
@@ -379,11 +351,11 @@ public class JenkinsHttpClient {
     /**
      * Post a text entity to the given URL using the default content type
      *
-     * @param path
-     * @param textData
-     * @param crumbFlag
+     * @param path The path.
+     * @param textData data.
+     * @param crumbFlag true/false.
      * @return resulting response
-     * @throws IOException
+     * @throws IOException in case of an error.
      */
     public String post_text(String path, String textData, boolean crumbFlag) throws IOException {
         return post_text(path, textData, ContentType.DEFAULT_TEXT, crumbFlag);
@@ -392,11 +364,12 @@ public class JenkinsHttpClient {
     /**
      * Post a text entity to the given URL with the given content type
      *
-     * @param path
-     * @param textData
-     * @param crumbFlag
+     * @param path The path.
+     * @param textData The data.
+     * @param contentType {@link ContentType}
+     * @param crumbFlag true or false.
      * @return resulting response
-     * @throws IOException
+     * @throws IOException in case of an error.
      */
     public String post_text(String path, String textData, ContentType contentType, boolean crumbFlag)
             throws IOException {
@@ -425,10 +398,8 @@ public class JenkinsHttpClient {
     /**
      * Perform POST request that takes no parameters and returns no response
      *
-     * @param path
-     *            path to request
-     * @throws IOException,
-     *             HttpResponseException
+     * @param path path to request
+     * @throws IOException in case of an error.
      */
     public void post(String path) throws IOException {
         post(path, null, null, false);
@@ -458,7 +429,7 @@ public class JenkinsHttpClient {
             String[] components = path.split("\\?", 2);
             path = urlJoin(components[0], "api/json") + "?" + components[1];
         }
-        return uri.resolve("/").resolve(path.replace(" ","%20"));
+        return uri.resolve("/").resolve(path.replace(" ", "%20"));
     }
 
     private URI noapi(String path) {
@@ -495,7 +466,7 @@ public class JenkinsHttpClient {
         Header[] headers = response.getHeaders("X-Jenkins");
         if (headers.length == 1) {
             this.jenkinsVersion = headers[0].getValue();
-        } 
+        }
     }
 
     private void releaseConnection(HttpRequestBase httpRequestBase) {
@@ -517,10 +488,10 @@ public class JenkinsHttpClient {
     }
 
     protected HttpContext getLocalContext() {
-      return localContext;
+        return localContext;
     }
 
     protected void setLocalContext(HttpContext localContext) {
-      this.localContext = localContext;
+        this.localContext = localContext;
     }
 }

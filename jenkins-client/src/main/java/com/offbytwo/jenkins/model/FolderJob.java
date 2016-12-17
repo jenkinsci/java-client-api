@@ -43,7 +43,6 @@ public class FolderJob extends Job {
      * Get a list of all the defined jobs in this folder
      *
      * @return list of defined jobs (summary level, for details @see Job#details
-     * @throws IOException
      */
     public Map<String, Job> getJobs() {
         return Maps.uniqueIndex(jobs, new Function<Job, String>() {
@@ -58,8 +57,8 @@ public class FolderJob extends Job {
     /**
      * Get a job in this folder by name
      *
+     * @param name the name of the job.
      * @return the given job
-     * @throws IOException
      */
     public Job getJob(String name) {
         return Maps.uniqueIndex(jobs, new Function<Job, String>() {
@@ -74,22 +73,25 @@ public class FolderJob extends Job {
     /**
      * Create a folder on the server (as a subfolder of this folder)
      *
-     * @throws IOException
+     * @param folderName name of the folder to be created.
+     * @throws IOException in case of an error.
      */
-    public void createFolder(String jobName) throws IOException {
-        createFolder(jobName, false);
+    public void createFolder(String folderName) throws IOException {
+        createFolder(folderName, false);
     }
 
     /**
      * Create a folder on the server (as a subfolder of this folder)
      *
-     * @throws IOException
+     * @param folderName name of the folder to be created.
+     * @param crumbFlag true/false.
+     * @throws IOException in case of an error.
      */
-    public void createFolder(String jobName, Boolean crumbFlag) throws IOException {
+    public void createFolder(String folderName, Boolean crumbFlag) throws IOException {
         // https://gist.github.com/stuart-warren/7786892 was slightly helpful
         // here
         ImmutableMap<String, String> params = ImmutableMap.of("mode", "com.cloudbees.hudson.plugins.folder.Folder",
-                "name", EncodingUtils.encodeParam(jobName), "from", "", "Submit", "OK");
+                "name", EncodingUtils.encodeParam(folderName), "from", "", "Submit", "OK");
         client.post_form(this.getUrl() + "/createItem?", params, crumbFlag);
     }
 

@@ -48,11 +48,10 @@ public class Job extends BaseModel {
     /**
      * Get a file from workspace.
      * 
-     * @param fileName
-     *            The name of the file to download from workspace. You can also
-     *            access files which are in sub folders of the workspace.
+     * @param fileName The name of the file to download from workspace. You can
+     *            also access files which are in sub folders of the workspace.
      * @return The string which contains the content of the file.
-     * @throws IOException
+     * @throws IOException in case of an error.
      */
     public String getFileFromWorkspace(String fileName) throws IOException {
         InputStream is = client.getFile(URI.create(url + "/ws/" + fileName));
@@ -69,8 +68,7 @@ public class Job extends BaseModel {
      * Trigger a build without parameters
      * 
      * @return {@link QueueReference} for further analysis of the queued build.
-     * @throws IOException
-     *             in case of an error.
+     * @throws IOException in case of an error.
      */
     public QueueReference build() throws IOException {
         ExtractHeader location = client.post(url + "build", null, ExtractHeader.class, false);
@@ -81,11 +79,9 @@ public class Job extends BaseModel {
     /**
      * Trigger a build with crumbFlag.
      * 
-     * @param crumbFlag
-     *            true or false.
+     * @param crumbFlag true or false.
      * @return {@link QueueReference} for further analysis of the queued build.
-     * @throws IOException
-     *             in case of an error.
+     * @throws IOException in case of an error.
      */
     public QueueReference build(boolean crumbFlag) throws IOException {
         ExtractHeader location = client.post(url + "build", null, ExtractHeader.class, crumbFlag);
@@ -95,10 +91,9 @@ public class Job extends BaseModel {
     /**
      * Trigger a parameterized build
      *
-     * @param params
-     *            the job parameters
+     * @param params the job parameters
      * @return {@link QueueReference} for further analysis of the queued build.
-     * @throws IOException
+     * @throws IOException in case of an error.
      */
     public QueueReference build(Map<String, String> params) throws IOException {
         String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
@@ -110,12 +105,10 @@ public class Job extends BaseModel {
     /**
      * Trigger a parameterized build
      *
-     * @param params
-     *            the job parameters
-     * @param crumbFlag
-     *            determines whether crumb flag is used
+     * @param params the job parameters
+     * @param crumbFlag determines whether crumb flag is used
      * @return {@link QueueReference} for further analysis of the queued build.
-     * @throws IOException
+     * @throws IOException in case of an error.
      */
     public QueueReference build(Map<String, String> params, boolean crumbFlag) throws IOException {
         String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");

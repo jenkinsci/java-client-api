@@ -2,7 +2,9 @@ package com.offbytwo.jenkins.model;
 
 /**
  * This class is based on informations which can be extracted from an running
- * Jenkins instance like this: {@link http://jenkins-server/computer/api/schema}
+ * Jenkins instance via
+ * <a href="http://jenkins-server/computer/api/schema">http://jenkins-server/
+ * computer/api/schema</a>.
  * 
  * @author Karl Heinz Marbaise
  * 

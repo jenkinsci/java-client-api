@@ -1,7 +1,9 @@
 package com.offbytwo.jenkins.model;
 
 /**
- * @author Adrien Lecharpentier <adrien.lecharpentier@gmail.com>
+ * @author Adrien Lecharpentier
+ *         <a href="mailto:adrien.lecharpentier@gmail.com">adrien.
+ *         lecharpentier@gmail.com</a>
  */
 public class Crumb extends BaseModel {
 

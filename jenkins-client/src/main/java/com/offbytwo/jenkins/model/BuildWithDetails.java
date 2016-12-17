@@ -362,7 +362,7 @@ public class BuildWithDetails extends Build {
      * The console output with HTML.
      * 
      * @return The console output as HTML.
-     * @throws IOException
+     * @throws IOException in case of an error.
      */
     public String getConsoleOutputHtml() throws IOException {
         return client.get(getUrl() + "/logText/progressiveHtml");

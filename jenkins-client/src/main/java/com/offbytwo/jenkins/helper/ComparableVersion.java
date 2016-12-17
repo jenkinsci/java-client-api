@@ -30,7 +30,6 @@ import java.util.Stack;
 
 /**
  * This code is copied from Maven Core with slight modifications. Generic implementation of version comparison.
- * <p>
  * Features:
  * <ul>
  * <li>mixing of '<code>-</code>' (hyphen) and '<code>.</code>' (dot) separators,</li>
@@ -52,7 +51,6 @@ import java.util.Stack;
  * Unknown qualifiers are considered after known qualifiers, with lexical order (always case insensitive),</li>
  * <li>a hyphen usually precedes a qualifier, and is always less important than something preceded with a dot.</li>
  * </ul>
- * </p>
  *
  * @see <a href="https://cwiki.apache.org/confluence/display/MAVENOLD/Versioning">"Versioning" on Maven Wiki</a>
  * @author <a href="mailto:kenney@apache.org">Kenney Westerhof</a>

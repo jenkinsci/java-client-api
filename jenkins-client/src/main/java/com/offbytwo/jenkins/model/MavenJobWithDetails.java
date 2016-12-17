@@ -46,7 +46,8 @@ public class MavenJobWithDetails extends MavenJob {
     }
 
     /**
-     * This method will give you back the builds of a particular job.<br/>
+     * This method will give you back the builds of a particular job.
+     * 
      * <b>Note: Jenkins limits the number of results to a maximum of 100 builds
      * which you will get back.</b>. In case you have more than 100 build you
      * won't get back all builds via this method. In such cases you need to use
