@@ -11,7 +11,7 @@
   <parent>
     <groupId>com.offbytwo.jenkins</groupId>
     <artifactId>jenkins-client-parent</artifactId>
-    <version>0.3.7-SNAPSHOT</version>
+    <version>0.3.7</version>
   </parent>
 
   <artifactId>jenkins-client-it-docker</artifactId>
