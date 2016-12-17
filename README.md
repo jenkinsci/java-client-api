@@ -72,7 +72,7 @@ To run integration tests simply start
 mvn -Prun-its clean verify
 ```
 
-There is also a separate project which contains [integration tests][integration-tests] 
+There is also a sub project which contains [integration tests][integration-tests] 
 which are running with a special version of Jenkins
 within a Docker container to check several aspects of the API which can't be
 covered by the usual integration tests.
