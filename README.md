@@ -16,7 +16,7 @@ To get started add the following dependency to your project
 <dependency>
   <groupId>com.offbytwo.jenkins</groupId>
   <artifactId>jenkins-client</artifactId>
-  <version>0.3.6</version>
+  <version>0.3.7</version>
 </dependency>
 ```
 
@@ -81,6 +81,7 @@ covered by the usual integration tests.
 
 You can find details about the different releases in the [Release Notes](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md).
 
+ * [Release 0.3.8](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-038).
  * [Release 0.3.7](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-037).
  * [Release 0.3.6](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-036).
  * [Release 0.3.5](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-035).

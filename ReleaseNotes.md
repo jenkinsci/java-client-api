@@ -1,6 +1,14 @@
 # Release Notes
 
-## Release 0.3.7 (NOT RELEASED YET)
+## Release 0.3.8 (NOT RELEASED YET)
+
+ * ?
+
+### API Changes
+
+ * ?
+
+## Release 0.3.7
 
  * Changed Eclipse Formatting configuration.
 
