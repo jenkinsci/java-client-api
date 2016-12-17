@@ -171,7 +171,7 @@ public class JenkinsHttpClient {
         LOGGER.debug("get({}), version={}, responseCode={}", path, this.jenkinsVersion, response.getStatusLine().getStatusCode());
         try {
             httpResponseValidator.validateResponse(response);
-            return IOUtils.toString(response.getEntity().getContent());
+            return IOUtils.toString(response.getEntity().getContent(), "utf-8");
         } finally {
             EntityUtils.consume(response.getEntity());
             releaseConnection(getMethod);
@@ -365,13 +365,16 @@ public class JenkinsHttpClient {
         if (xml_data != null) {
             request.setEntity(new StringEntity(xml_data, ContentType.create("text/xml", "utf-8")));
         }
-        HttpResponse response = client.execute(request, localContext);
-        getJenkinsVersionFromHeader(response);
-        httpResponseValidator.validateResponse(response);
+        HttpResponse response = null;
         try {
+            response = client.execute(request, localContext);
+            getJenkinsVersionFromHeader(response);
+            httpResponseValidator.validateResponse(response);
             return IOUtils.toString(response.getEntity().getContent());
         } finally {
-            EntityUtils.consume(response.getEntity());
+            if (null != response) {
+                EntityUtils.consume(response.getEntity());
+            }
             releaseConnection(request);
         }
     }

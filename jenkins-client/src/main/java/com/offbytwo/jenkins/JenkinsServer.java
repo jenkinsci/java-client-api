@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.entity.ContentType;
@@ -40,7 +41,11 @@ import com.offbytwo.jenkins.model.PluginManager;
 import com.offbytwo.jenkins.model.Queue;
 import com.offbytwo.jenkins.model.QueueItem;
 import com.offbytwo.jenkins.model.QueueReference;
+import com.offbytwo.jenkins.model.Stage;
+import com.offbytwo.jenkins.model.StageFlowNodes;
+import com.offbytwo.jenkins.model.StageFlowNodesLog;
 import com.offbytwo.jenkins.model.View;
+import com.offbytwo.jenkins.model.WfWithDetails;
 
 /**
  * The main starting point for interacting with a Jenkins server.
@@ -870,5 +875,50 @@ public class JenkinsServer {
    {
      return toBaseUrl(folder) + "view/" + EncodingUtils.encode(name);
    }
+   
+   	/**
+	 * wfapi describe
+	 * @param jobName
+	 * @param buildNo
+	 */
+	public WfWithDetails getWfDescribe(String jobName, int buildNo) throws IOException {
+	    String path = "/";
+	    try {
+	        WfWithDetails wfWithDetails = client.get(path + "job/" + EncodingUtils.encode(jobName) + "/" + buildNo + "/wfapi/describe", WfWithDetails.class);
+	        wfWithDetails.setClient(client);
+
+            return wfWithDetails;
+        } catch (HttpResponseException e) {
+            LOGGER.debug("getWfDescribe(jobName={}) status={}", jobName, e.getStatusCode());
+            if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+                return null;
+            }
+            throw e;
+        }
+	}
+
+	public Stage getWfNodeDescribe(String jobName, int buildNo, int stageId) throws IOException {
+        String path = "/";
+        try {
+            Stage stage = client.get(path + "job/" + EncodingUtils.encode(jobName) + "/" + buildNo + "/execution/node/" + stageId + "/wfapi/describe", Stage.class);
+            if (null != stage && CollectionUtils.isNotEmpty(stage.getStageFlowNodes())) {
+                stage.setClient(client);
+                for (StageFlowNodes stageFlowNode : stage.getStageFlowNodes()) {
+                    String nodeId = stageFlowNode.getId();
+                    StageFlowNodesLog log = client.get(path + "job/" + EncodingUtils.encode(jobName) + "/" + buildNo + "/execution/node/" + nodeId + "/wfapi/log", StageFlowNodesLog.class);
+                    log.setClient(client);
+                    stageFlowNode.setLog(log);
+                }
+            }
+
+            return stage;
+        } catch (HttpResponseException e) {
+            LOGGER.debug("getWfDescribe(jobName={}) status={}", jobName, e.getStatusCode());
+            if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+                return null;
+            }
+            throw e;
+        }
+    }
 
 }
