@@ -15,10 +15,6 @@ Those plugins are needed for the integration tests.
 
 TODO
 ----
-  * I need to find a way to get the jar which is being built by
-    the [Jenkins API client for Java][1]. May be i need to move
-    the integration test part to the main project.
-
   * Create a docker image which contains [JaCoCo plugin installed][pr-99].
   * Create a docker image which contains [TestNG plugin installed][pr-99].
   
