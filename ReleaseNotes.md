@@ -2,6 +2,20 @@
 
 ## Release 0.3.8 (NOT RELEASED YET)
  
+ * [Fixed Issue 217][issue- 217]
+   
+   Added new api for streaming build logs
+
+   ```java
+    BuildWithDetails build = ...
+    // Get log with initial offset
+    int offset = 40;
+    String output = build.getConsoleOutputText(offset);
+    // Stream logs (when build is in progress)
+    BuildConsoleStreamListener buildListener = ...
+    build.streamConsoleOutput(listener, 3, 420);
+   ```
+
  * [Fixed Issue 222][issue-222]
    
    Fixed WARNING during build.
