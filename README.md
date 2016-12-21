@@ -8,9 +8,18 @@
 
 The Jenkins API Client For Java has now moved under the umbrella of the Jenkins GitHub Organization.
 
+## What is the "Jenkins API Client for Java"
+
+This library is a just a piece of java code which uses the REST API of jenkins.
+This means you can trigger builds, extract informations about jobs or builds
+etc. from jenkins. The information you can extract will be represented in java
+objects which you can reuse for other purposes or integrate this library into
+other parts for a higher level of integration.
+ 
 ## Getting Started
 
-To get started add the following dependency to your project
+If you like to use this library you need to add the library as a dependency
+to your project. This can be done by using a Maven dependency like the following: 
 
 ```xml
 <dependency>
@@ -19,6 +28,12 @@ To get started add the following dependency to your project
   <version>0.3.7</version>
 </dependency>
 ```
+
+This can also being done by defining a Gradle dependency like this:
+
+```
+compile 'com.offbytwo.jenkins:jenkins-client:0.3.7'
+``
 
 Starting with a future release 0.4.0 the groupId/artifactId will change (NOT YET DONE!)
 
@@ -72,7 +87,7 @@ To run integration tests simply start
 mvn -Prun-its clean verify
 ```
 
-There is also a sub project which contains [integration tests][integration-tests] 
+There is also a module which contains [integration tests][integration-tests] 
 which are running with a special version of Jenkins
 within a Docker container to check several aspects of the API which can't be
 covered by the usual integration tests.
@@ -126,7 +141,7 @@ create/add/fix several issues in one, cause otherwise the history is hard to
 read and to understand and makes the maintenance of the issues and pull request
 hard or to be honest impossible.
 
-Furthermore it is neccesary to create appropriate entries into the `ReleaseNotes.md`
+Furthermore it is necessary to create appropriate entries into the `ReleaseNotes.md`
 file as well.
 
 
