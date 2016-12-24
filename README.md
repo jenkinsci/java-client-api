@@ -8,13 +8,13 @@
 
 The Jenkins API Client For Java has now moved under the umbrella of the Jenkins GitHub Organization.
 
-## What is the "Jenkins API Client for Java"
+## What is the "Jenkins API Client for Java"?
 
 This library is a just a piece of java code which uses the REST API of jenkins.
 This means you can trigger builds, extract informations about jobs or builds
-etc. from jenkins. The information you can extract will be represented in java
-objects which you can reuse for other purposes or integrate this library into
-other parts for a higher level of integration.
+etc. The information you can extract will be represented in java objects which
+you can reuse for other purposes or integrate this library into other parts for
+a higher level of integration.
  
 ## Getting Started
 
