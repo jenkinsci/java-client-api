@@ -1,6 +1,10 @@
 # Release Notes
 
 ## Release 0.3.8 (NOT RELEASED YET)
+ 
+ * [Fixed Issue 222][issue-222]
+   
+   Fixed WARNING during build.
 
  * [Fixed Issue 220][issue-220]
    
@@ -953,6 +957,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-211]: https://github.com/jenkinsci/java-client-api/issues/211
 [issue-215]: https://github.com/jenkinsci/java-client-api/issues/215
 [issue-220]: https://github.com/jenkinsci/java-client-api/issues/220
+[issue-222]: https://github.com/jenkinsci/java-client-api/issues/222
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
