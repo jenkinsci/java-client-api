@@ -1,8 +1,12 @@
 package com.offbytwo.jenkins;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.offbytwo.jenkins.model.Build;
@@ -10,10 +14,11 @@ import com.offbytwo.jenkins.model.JobWithDetails;
 import com.offbytwo.jenkins.model.TestReport;
 import com.offbytwo.jenkins.model.TestResult;
 import com.offbytwo.jenkins.model.TestSuites;
+import com.offbytwo.jenkins.model.View;
 
 public class JenkinsTestManualTestReport {
 
-    @Test
+    @Ignore
     public void firstTest() throws Exception {
 
         JenkinsServer js = new JenkinsServer(URI.create("http://localhost:10090/buildserver/"), "admin", "admin");
@@ -36,5 +41,16 @@ public class JenkinsTestManualTestReport {
         System.out.println("   isEmpty: " + testResult.isEmpty());
         List<TestSuites> suites = testResult.getSuites();
 
+    }
+    
+    @Test
+    public void anotherTest() throws IOException {
+        JenkinsServer js = new JenkinsServer(URI.create("http://localhost:10090/buildserver/"), "admin", "admin");
+        Map<String, View> views = js.getViews();
+        for (Entry<String, View> item : views.entrySet()) {
+			View value = item.getValue();
+			System.out.println("URL: " + value.getUrl());
+		}
+    	
     }
 }

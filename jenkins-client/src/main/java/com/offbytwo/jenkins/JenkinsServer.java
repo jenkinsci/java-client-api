@@ -188,7 +188,7 @@ public class JenkinsServer {
      * @throws IOException in case of an error.
      */
     public Map<String, View> getViews(FolderJob folder) throws IOException {
-        List<View> views = client.get(toBaseUrl(folder) + "?depth=1", MainView.class).getViews();
+        List<View> views = client.get(toBaseUrl(folder), MainView.class).getViews();
         return Maps.uniqueIndex(views, new Function<View, String>() {
             @Override
             public String apply(View view) {
@@ -203,7 +203,6 @@ public class JenkinsServer {
                     item.setClient(client);
                 }
 
-                // return view.getName().toLowerCase();
                 return view.getName();
             }
         });
