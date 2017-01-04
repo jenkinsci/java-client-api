@@ -34,6 +34,8 @@ public class BuildCause {
     }
 
     public int getUpstreamBuild() {
+    	if(upstreamBuild == null) 
+    		return 0;
         return upstreamBuild;
     }
 
