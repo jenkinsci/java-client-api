@@ -968,6 +968,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [pull-163]: https://github.com/jenkinsci/java-client-api/pull/163
 [pull-204]: https://github.com/jenkinsci/java-client-api/pull/204
 [pull-206]: https://github.com/jenkinsci/java-client-api/pull/206
+[pull-229]: https://github.com/jenkinsci/java-client-api/pull/229
 [jissue-35002]: https://issues.jenkins-ci.org/browse/JENKINS-35002
 [jissue-35108]: https://issues.jenkins-ci.org/browse/JENKINS-35108
 [jissue-38787]: https://issues.jenkins-ci.org/browse/JENKINS-38787
