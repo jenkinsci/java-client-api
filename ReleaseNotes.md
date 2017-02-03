@@ -11,6 +11,10 @@
    `getViews()` Do not use `api/json?depth=1` cause timeout.
 
 
+ * [Pull Request #229][pull-229] Fix race condition in JenkinsTriggerHelper
+
+   Thanks for that to [Veske](https://github.com/Veske).
+
 ### API Changes
 
  * ?
