@@ -135,16 +135,13 @@ public class JenkinsTriggerHelper {
             return result;
         }
 
-        job = this.server.getJob(jobName);
-        Build lastBuild = job.getLastBuild();
-
-        boolean isBuilding = lastBuild.details().isBuilding();
+        Build build = server.getBuild(queueItem);
+        boolean isBuilding = build.details().isBuilding();
         while (isBuilding) {
-            // TODO: May be we should make this configurable?
             Thread.sleep(200);
-            isBuilding = lastBuild.details().isBuilding();
+            isBuilding = build.details().isBuilding();
         }
 
-        return lastBuild.details();
+        return build.details();
     }
 }
