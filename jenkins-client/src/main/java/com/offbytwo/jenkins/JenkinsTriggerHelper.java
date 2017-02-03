@@ -19,10 +19,18 @@ import com.offbytwo.jenkins.model.QueueReference;
  */
 public class JenkinsTriggerHelper {
 
-    private JenkinsServer server;
+    private final JenkinsServer server;
+    private final Long retryInterval;
+    private static final Long DEFAULT_RETRY_INTERVAL = 200L;
 
     public JenkinsTriggerHelper(JenkinsServer server) {
         this.server = server;
+        this.retryInterval = DEFAULT_RETRY_INTERVAL;
+    }
+
+    public JenkinsTriggerHelper(JenkinsServer server, Long retryInterval) {
+        this.server = server;
+        this.retryInterval = retryInterval;
     }
 
     /**
@@ -114,37 +122,26 @@ public class JenkinsTriggerHelper {
      */
     private BuildWithDetails triggerJobAndWaitUntilFinished(String jobName, QueueReference queueRef)
             throws IOException, InterruptedException {
-        JobWithDetails job;
-        job = this.server.getJob(jobName);
+        JobWithDetails job = this.server.getJob(jobName);
         QueueItem queueItem = this.server.getQueueItem(queueRef);
+
         while (!queueItem.isCancelled() && job.isInQueue()) {
-            // TODO: May be we should make this configurable?
-            Thread.sleep(200);
+            Thread.sleep(retryInterval);
             job = this.server.getJob(jobName);
             queueItem = this.server.getQueueItem(queueRef);
         }
 
+        Build build = server.getBuild(queueItem);
         if (queueItem.isCancelled()) {
-            // TODO: Check if this is ok?
-            // We will get the details of the last build. NOT of the cancelled
-            // build, cause there is no information about that available cause
-            // it does not exist.
-            BuildWithDetails result = new BuildWithDetails(job.getLastBuild().details());
-            // TODO: Should we add more information here?
-            result.setResult(BuildResult.CANCELLED);
-            return result;
+            return build.details();
         }
 
-        job = this.server.getJob(jobName);
-        Build lastBuild = job.getLastBuild();
-
-        boolean isBuilding = lastBuild.details().isBuilding();
+        boolean isBuilding = build.details().isBuilding();
         while (isBuilding) {
-            // TODO: May be we should make this configurable?
-            Thread.sleep(200);
-            isBuilding = lastBuild.details().isBuilding();
+            Thread.sleep(retryInterval);
+            isBuilding = build.details().isBuilding();
         }
 
-        return lastBuild.details();
+        return build.details();
     }
 }
