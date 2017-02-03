@@ -188,11 +188,12 @@ public class JenkinsServer {
      * @throws IOException in case of an error.
      */
     public Map<String, View> getViews(FolderJob folder) throws IOException {
-        List<View> views = client.get(toBaseUrl(folder), MainView.class).getViews();
+        // This is much better than using &depth=2
+        // http://localhost:8080/api/json?pretty&tree=views[name,url,jobs[name,url]]
+        List<View> views = client.get(toBaseUrl(folder) + "?tree=views[name,url,jobs[name,url]]", MainView.class).getViews();
         return Maps.uniqueIndex(views, new Function<View, String>() {
             @Override
             public String apply(View view) {
-
                 view.setClient(client);
                 // TODO: Think about the following? Does there exists a
                 // simpler/more elegant method?

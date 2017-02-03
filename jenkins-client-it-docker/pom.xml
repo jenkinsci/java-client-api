@@ -102,20 +102,7 @@
       </plugin>
     </plugins>
   </build>
-  <properties>
-    <docker.container.network>http://127.0.0.1:8080</docker.container.network>
-  </properties>
   <profiles>
-    <profile>
-      <activation>
-        <property>
-          <name>env.TRAVIS</name>
-        </property>
-      </activation>
-      <properties>
-        <docker.container.network>http://127.0.0.1:8080/</docker.container.network>
-      </properties>
-    </profile>
     <profile>
       <id>run-docker-its</id>
       <build>
