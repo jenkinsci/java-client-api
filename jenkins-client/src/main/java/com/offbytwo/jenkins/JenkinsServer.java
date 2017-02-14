@@ -574,6 +574,14 @@ public class JenkinsServer {
     public void updateView(String viewName, String viewXml, boolean crumbFlag) throws IOException {
         client.post_xml("/view/" + EncodingUtils.encode(viewName) + "/config.xml", viewXml, crumbFlag);
     }
+    
+    public void updateView(FolderJob folder, String viewName, String viewXml) throws IOException {
+        client.post_xml(toBaseUrl(folder) + "view/" + EncodingUtils.encode(viewName) + "/config.xml", viewXml, true);
+    }
+
+    public void updateView(FolderJob folder, String viewName, String viewXml, boolean crumbFlag) throws IOException {
+        client.post_xml(toBaseUrl(folder) + "view/" + EncodingUtils.encode(viewName) + "/config.xml", viewXml, crumbFlag);
+    }
 
     /**
      * Update the xml description of an existing job
