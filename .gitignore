@@ -5,3 +5,4 @@ target
 .project
 .settings
 test-output
+.DS_Store

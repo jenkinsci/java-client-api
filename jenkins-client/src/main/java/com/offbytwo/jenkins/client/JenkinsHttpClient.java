@@ -339,8 +339,8 @@ public class JenkinsHttpClient {
         }
         HttpResponse response = client.execute(request, localContext);
         getJenkinsVersionFromHeader(response);
-        httpResponseValidator.validateResponse(response);
         try {
+            httpResponseValidator.validateResponse(response);
             return IOUtils.toString(response.getEntity().getContent());
         } finally {
             EntityUtils.consume(response.getEntity());
@@ -386,8 +386,8 @@ public class JenkinsHttpClient {
         }
         HttpResponse response = client.execute(request, localContext);
         getJenkinsVersionFromHeader(response);
-        httpResponseValidator.validateResponse(response);
         try {
+            httpResponseValidator.validateResponse(response);
             return IOUtils.toString(response.getEntity().getContent());
         } finally {
             EntityUtils.consume(response.getEntity());
