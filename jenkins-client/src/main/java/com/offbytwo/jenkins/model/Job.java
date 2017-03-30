@@ -97,6 +97,9 @@ public class Job extends BaseModel {
      */
     public QueueReference build(Map<String, String> params) throws IOException {
         String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
+        /**
+        There are send twice post request and will build twice
+     */
        // client.post(url + "buildWithParameters?" + qs);
         ExtractHeader location = client.post(url + "buildWithParameters?" + qs, null, ExtractHeader.class, false);
         return new QueueReference(location.getLocation());
