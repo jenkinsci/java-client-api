@@ -96,9 +96,7 @@ public class Job extends BaseModel {
      * @throws IOException in case of an error.
      */
     public QueueReference build(Map<String, String> params) throws IOException {
-        String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
-        ExtractHeader location = client.post(url + "buildWithParameters?" + qs, null, ExtractHeader.class, false);
-        return new QueueReference(location.getLocation());
+        return build(params, false);
     }
 
     /**
