@@ -33,7 +33,7 @@ This can also being done by defining a Gradle dependency like this:
 
 ```
 compile 'com.offbytwo.jenkins:jenkins-client:0.3.7'
-``
+```
 
 Starting with a future release 0.4.0 the groupId/artifactId will change (NOT YET DONE!)
 
