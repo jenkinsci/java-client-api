@@ -6,15 +6,16 @@
 
 package com.offbytwo.jenkins.client;
 
-import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
+import com.google.common.io.ByteStreams;
+import com.offbytwo.jenkins.client.util.EncodingUtils;
+import com.offbytwo.jenkins.client.util.RequestReleasingInputStream;
+import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
+import com.offbytwo.jenkins.model.BaseModel;
+import com.offbytwo.jenkins.model.Crumb;
+import com.offbytwo.jenkins.model.ExtractHeader;
+import net.sf.json.JSONObject;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
@@ -22,6 +23,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -31,6 +33,8 @@ import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
@@ -38,23 +42,22 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
-import com.google.common.io.ByteStreams;
-import com.offbytwo.jenkins.client.util.EncodingUtils;
-import com.offbytwo.jenkins.client.util.RequestReleasingInputStream;
-//import com.offbytwo.jenkins.client.util.HttpResponseContentExtractor;
-import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
-import com.offbytwo.jenkins.model.BaseModel;
-import com.offbytwo.jenkins.model.Crumb;
-import com.offbytwo.jenkins.model.ExtractHeader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
 
-import net.sf.json.JSONObject;
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
+//import com.offbytwo.jenkins.client.util.HttpResponseContentExtractor;
 
 public class JenkinsHttpClient {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private URI uri;
+    private HttpClientBuilder httpClientBuilder;
     private CloseableHttpClient client;
     private HttpContext localContext;
     private HttpResponseValidator httpResponseValidator;
@@ -64,14 +67,62 @@ public class JenkinsHttpClient {
     private String context;
 
     private String jenkinsVersion;
+    private PoolingHttpClientConnectionManager cm;
+    private static final int MAX_TOTAL = 300;
+    private static final int MAX_PER_ROUTE = 30;
+
+    /**
+     * Create an unauthenticated Jenkins HTTP client
+     *
+     * @param uri    Location of the jenkins server (ex. http://localhost:8080)
+     * @param client Configured CloseableHttpClient to be used
+     */
+    public JenkinsHttpClient(URI uri, CloseableHttpClient client) {
+        initHttpClient(uri, client);
+    }
+
+    /**
+     * Create an unauthenticated Jenkins HTTP client
+     *
+     * @param uri     Location of the jenkins server (ex. http://localhost:8080)
+     * @param builder Configured HttpClientBuilder to be used
+     */
+    public JenkinsHttpClient(URI uri, HttpClientBuilder builder) {
+        this(uri, builder.build());
+    }
 
     /**
      * Create an unauthenticated Jenkins HTTP client
      *
      * @param uri Location of the jenkins server (ex. http://localhost:8080)
-     * @param client Configured CloseableHttpClient to be used
      */
-    public JenkinsHttpClient(URI uri, CloseableHttpClient client) {
+    public JenkinsHttpClient(URI uri) {
+        initHttpClientPool();
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setConnectionManager(this.cm)
+                .build();
+        initHttpClient(uri, httpClient);
+    }
+
+    /**
+     * Create an authenticated Jenkins HTTP client
+     *
+     * @param uri      Location of the jenkins server (ex. http://localhost:8080)
+     * @param username Username to use when connecting
+     * @param password Password or auth token to use when connecting
+     */
+    public JenkinsHttpClient(URI uri, String username, String password) {
+        initHttpClientPool();
+        HttpClientBuilder httpClientBuilder = HttpClients.custom()
+                .setConnectionManager(this.cm);
+        initHttpClient(uri, addAuthentication(httpClientBuilder, uri, username, password));
+        if (isNotBlank(username)) {
+            localContext = new BasicHttpContext();
+            localContext.setAttribute("preemptive-auth", new BasicScheme());
+        }
+    }
+
+    private void initHttpClient(URI uri, CloseableHttpClient client) {
         this.context = uri.getPath();
         if (!context.endsWith("/")) {
             context += "/";
@@ -85,60 +136,52 @@ public class JenkinsHttpClient {
         LOGGER.debug("uri={}", uri.toString());
     }
 
-    /**
-     * Create an unauthenticated Jenkins HTTP client
-     *
-     * @param uri Location of the jenkins server (ex. http://localhost:8080)
-     * @param builder Configured HttpClientBuilder to be used
-     */
-    public JenkinsHttpClient(URI uri, HttpClientBuilder builder) {
-        this(uri, builder.build());
-    }
-
-    /**
-     * Create an unauthenticated Jenkins HTTP client
-     *
-     * @param uri Location of the jenkins server (ex. http://localhost:8080)
-     */
-    public JenkinsHttpClient(URI uri) {
-        this(uri, HttpClientBuilder.create());
-    }
-
-    /**
-     * Create an authenticated Jenkins HTTP client
-     *
-     * @param uri Location of the jenkins server (ex. http://localhost:8080)
-     * @param username Username to use when connecting
-     * @param password Password or auth token to use when connecting
-     */
-    public JenkinsHttpClient(URI uri, String username, String password) {
-        this(uri, addAuthentication(HttpClientBuilder.create(), uri, username, password));
-        if (isNotBlank(username)) {
-            localContext = new BasicHttpContext();
-            localContext.setAttribute("preemptive-auth", new BasicScheme());
+    private void initHttpClientPool() {
+        if (this.cm == null) {
+            this.cm = new PoolingHttpClientConnectionManager();
+            this.cm.setMaxTotal(MAX_TOTAL);
+            this.cm.setDefaultMaxPerRoute(MAX_PER_ROUTE);
         }
+    }
+
+    private CloseableHttpClient getClient() {
+        CloseableHttpClient httpClient;
+        if (this.httpClientBuilder == null) {
+            httpClient = HttpClients.custom()
+                    .setConnectionManager(this.cm)
+                    .build();
+        } else {
+            httpClient = this.httpClientBuilder.build();
+        }
+        initHttpClient(uri, httpClient);
+        return httpClient;
+    }
+
+    private void initHttpClient(URI uri, HttpClientBuilder builder) {
+        this.httpClientBuilder =  builder;
+        initHttpClient(uri, builder.build());
     }
 
     /**
      * Perform a GET request and parse the response to the given class
      *
      * @param path path to request, can be relative or absolute
-     * @param cls class of the response
-     * @param <T> type of the response
+     * @param cls  class of the response
+     * @param <T>  type of the response
      * @return an instance of the supplied class
      * @throws IOException in case of an error.
      */
     public <T extends BaseModel> T get(String path, Class<T> cls) throws IOException {
         HttpGet getMethod = new HttpGet(api(path));
 
-        HttpResponse response = client.execute(getMethod, localContext);
+        CloseableHttpResponse response = getClient().execute(getMethod, localContext);
         getJenkinsVersionFromHeader(response);
         try {
             httpResponseValidator.validateResponse(response);
             return objectFromResponse(cls, response);
         } finally {
             EntityUtils.consume(response.getEntity());
-            releaseConnection(getMethod);
+            response.close();
         }
     }
 
@@ -152,7 +195,7 @@ public class JenkinsHttpClient {
      */
     public String get(String path) throws IOException {
         HttpGet getMethod = new HttpGet(api(path));
-        HttpResponse response = client.execute(getMethod, localContext);
+        CloseableHttpResponse response = getClient().execute(getMethod, localContext);
         getJenkinsVersionFromHeader(response);
         LOGGER.debug("get({}), version={}, responseCode={}", path, this.jenkinsVersion,
                 response.getStatusLine().getStatusCode());
@@ -161,7 +204,7 @@ public class JenkinsHttpClient {
             return IOUtils.toString(response.getEntity().getContent());
         } finally {
             EntityUtils.consume(response.getEntity());
-            releaseConnection(getMethod);
+            response.close();
         }
 
     }
@@ -171,8 +214,8 @@ public class JenkinsHttpClient {
      * any IOException that is thrown rather than propagating it.
      *
      * @param path path to request, can be relative or absolute
-     * @param cls class of the response
-     * @param <T> type of the response
+     * @param cls  class of the response
+     * @param <T>  type of the response
      * @return an instance of the supplied class
      */
     public <T extends BaseModel> T getQuietly(String path, Class<T> cls) {
@@ -196,7 +239,7 @@ public class JenkinsHttpClient {
      */
     public InputStream getFile(URI path) throws IOException {
         HttpGet getMethod = new HttpGet(path);
-        HttpResponse response = client.execute(getMethod, localContext);
+        HttpResponse response = getClient().execute(getMethod, localContext);
         getJenkinsVersionFromHeader(response);
         httpResponseValidator.validateResponse(response);
         return new RequestReleasingInputStream(response.getEntity().getContent(), getMethod);
@@ -209,11 +252,11 @@ public class JenkinsHttpClient {
     /**
      * Perform a POST request and parse the response to the given class
      *
-     * @param path path to request, can be relative or absolute
-     * @param data data to post
-     * @param cls class of the response
-     * @param <R> type of the response
-     * @param <D> type of the data
+     * @param path      path to request, can be relative or absolute
+     * @param data      data to post
+     * @param cls       class of the response
+     * @param <R>       type of the response
+     * @param <D>       type of the data
      * @param crumbFlag true / false.
      * @return an instance of the supplied class
      * @throws IOException in case of an error.
@@ -232,7 +275,7 @@ public class JenkinsHttpClient {
             StringEntity stringEntity = new StringEntity(value, ContentType.APPLICATION_JSON);
             request.setEntity(stringEntity);
         }
-        HttpResponse response = client.execute(request, localContext);
+        CloseableHttpResponse response = getClient().execute(request, localContext);
         getJenkinsVersionFromHeader(response);
 
         try {
@@ -253,16 +296,16 @@ public class JenkinsHttpClient {
             }
         } finally {
             EntityUtils.consume(response.getEntity());
-            releaseConnection(request);
+            response.close();
         }
     }
 
     /**
      * Perform a POST request using form url encoding.
-     * 
+     * <p>
      * This method was added for the purposes of creating folders, but may be
      * useful for other API calls as well.
-     * 
+     * <p>
      * Unlike post and post_xml, the path is *not* modified by adding
      * "/api/json". Additionally, the params in data are provided as both
      * request parameters including a json parameter, *and* in the
@@ -270,8 +313,8 @@ public class JenkinsHttpClient {
      * call required. It is unclear if any other jenkins APIs operate in this
      * fashion.
      *
-     * @param path path to request, can be relative or absolute
-     * @param data data to post
+     * @param path      path to request, can be relative or absolute
+     * @param data      data to post
      * @param crumbFlag true / false.
      * @throws IOException in case of an error.
      */
@@ -301,14 +344,14 @@ public class JenkinsHttpClient {
             }
         }
 
-        HttpResponse response = client.execute(request, localContext);
+        CloseableHttpResponse response = getClient().execute(request, localContext);
         getJenkinsVersionFromHeader(response);
 
         try {
             httpResponseValidator.validateResponse(response);
         } finally {
             EntityUtils.consume(response.getEntity());
-            releaseConnection(request);
+            response.close();
         }
     }
 
@@ -316,7 +359,7 @@ public class JenkinsHttpClient {
      * Perform a POST request of XML (instead of using json mapper) and return a
      * string rendering of the response entity.
      *
-     * @param path path to request, can be relative or absolute
+     * @param path     path to request, can be relative or absolute
      * @param xml_data data data to post
      * @return A string containing the xml response (if present)
      * @throws IOException in case of an error.
@@ -337,22 +380,22 @@ public class JenkinsHttpClient {
         if (xml_data != null) {
             request.setEntity(new StringEntity(xml_data, ContentType.create("text/xml", "utf-8")));
         }
-        HttpResponse response = client.execute(request, localContext);
+        CloseableHttpResponse response = getClient().execute(request, localContext);
         getJenkinsVersionFromHeader(response);
         try {
             httpResponseValidator.validateResponse(response);
             return IOUtils.toString(response.getEntity().getContent());
         } finally {
             EntityUtils.consume(response.getEntity());
-            releaseConnection(request);
+            response.close();
         }
     }
 
     /**
      * Post a text entity to the given URL using the default content type
      *
-     * @param path The path.
-     * @param textData data.
+     * @param path      The path.
+     * @param textData  data.
      * @param crumbFlag true/false.
      * @return resulting response
      * @throws IOException in case of an error.
@@ -364,10 +407,10 @@ public class JenkinsHttpClient {
     /**
      * Post a text entity to the given URL with the given content type
      *
-     * @param path The path.
-     * @param textData The data.
+     * @param path        The path.
+     * @param textData    The data.
      * @param contentType {@link ContentType}
-     * @param crumbFlag true or false.
+     * @param crumbFlag   true or false.
      * @return resulting response
      * @throws IOException in case of an error.
      */
@@ -384,14 +427,14 @@ public class JenkinsHttpClient {
         if (textData != null) {
             request.setEntity(new StringEntity(textData, contentType));
         }
-        HttpResponse response = client.execute(request, localContext);
+        CloseableHttpResponse response = getClient().execute(request, localContext);
         getJenkinsVersionFromHeader(response);
         try {
             httpResponseValidator.validateResponse(response);
             return IOUtils.toString(response.getEntity().getContent());
         } finally {
             EntityUtils.consume(response.getEntity());
-            releaseConnection(request);
+            response.close();
         }
     }
 
@@ -474,7 +517,7 @@ public class JenkinsHttpClient {
     }
 
     protected static HttpClientBuilder addAuthentication(HttpClientBuilder builder, URI uri, String username,
-            String password) {
+                                                         String password) {
         if (isNotBlank(username)) {
             CredentialsProvider provider = new BasicCredentialsProvider();
             AuthScope scope = new AuthScope(uri.getHost(), uri.getPort(), "realm");
