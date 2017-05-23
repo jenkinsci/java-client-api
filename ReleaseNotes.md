@@ -1,6 +1,10 @@
 # Release Notes
 
 ## Release 0.3.8 (NOT RELEASED YET)
+
+* [Fixed Issue 252][issue-252]
+   
+   Splitting fix made for jacoco reports from Jenkins #98.
  
  * [Fixed Issue 222][issue-222]
    
