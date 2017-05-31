@@ -349,6 +349,58 @@ public class JenkinsHttpClient {
     }
 
     /**
+     * Perform a POST request using form url encoding.
+     *
+     * This method was added for the purposes of creating credentials, but may be
+     * useful for other API calls as well.
+     *
+     * Unlike post and post_xml, the path is *not* modified by adding
+     * "/api/json". Additionally, the params in data are provided as both
+     * request parameters including a json parameter, *and* in the
+     * JSON-formatted StringEntity, because this is what the folder creation
+     * call required. It is unclear if any other jenkins APIs operate in this
+     * fashion.
+     *
+     * @param path path to request, can be relative or absolute
+     * @param data data to post
+     * @param crumbFlag true / false.
+     * @throws IOException in case of an error.
+     */
+    public void post_form_json(String path, Map<String, Object> data, boolean crumbFlag) throws IOException {
+        HttpPost request;
+        if (data != null) {
+            // https://gist.github.com/stuart-warren/7786892 was slightly
+            // helpful here
+            List<String> queryParams = Lists.newArrayList();
+            queryParams.add("json=" + EncodingUtils.encodeParam(JSONObject.fromObject(data).toString()));
+            String value = mapper.writeValueAsString(data);
+            StringEntity stringEntity = new StringEntity(value, ContentType.APPLICATION_FORM_URLENCODED);
+            request = new HttpPost(noapi(path) + StringUtils.join(queryParams, "&"));
+            request.setEntity(stringEntity);
+        } else {
+            request = new HttpPost(noapi(path));
+        }
+
+        if (crumbFlag == true) {
+            Crumb crumb = get("/crumbIssuer", Crumb.class);
+            if (crumb != null) {
+                request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+            }
+        }
+
+        HttpResponse response = client.execute(request, localContext);
+        getJenkinsVersionFromHeader(response);
+
+        try {
+            httpResponseValidator.validateResponse(response);
+        } finally {
+            EntityUtils.consume(response.getEntity());
+            releaseConnection(request);
+        }
+    }
+
+
+    /**
      * Perform a POST request of XML (instead of using json mapper) and return a
      * string rendering of the response entity.
      *
