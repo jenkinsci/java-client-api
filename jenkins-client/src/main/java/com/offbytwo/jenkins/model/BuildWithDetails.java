@@ -9,12 +9,26 @@ package com.offbytwo.jenkins.model;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
+import com.offbytwo.jenkins.helper.BuildConsoleStreamListener;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import static com.google.common.collect.Collections2.filter;
 
@@ -24,6 +38,11 @@ import static com.google.common.collect.Collections2.filter;
  *
  */
 public class BuildWithDetails extends Build {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+
+    public final static String TEXT_SIZE_HEADER = "x-text-size";
+    public final static String MORE_DATA_HEADER = "x-more-data";
 
     /**
      * This will be returned by the API in cases where the build has never run.
@@ -350,8 +369,11 @@ public class BuildWithDetails extends Build {
     }
 
     /**
-     * @return The console output of the build. The line separation is done by
+     * @return The full console output of the build. The line separation is done by
      *         {@code CR+LF}.
+     *
+     * @see streamConsoleOutput method for obtaining logs for running build
+     *
      * @throws IOException in case of a failure.
      */
     public String getConsoleOutputText() throws IOException {
@@ -359,14 +381,91 @@ public class BuildWithDetails extends Build {
     }
 
     /**
-     * The console output with HTML.
-     * 
+     * The full console output with HTML.
+     *
+     * @see streamConsoleOutput method for obtaining logs for running build
+     *
      * @return The console output as HTML.
      * @throws IOException in case of an error.
      */
     public String getConsoleOutputHtml() throws IOException {
         return client.get(getUrl() + "/logText/progressiveHtml");
     }
+
+
+    /**
+     * Stream build console output log as text using BuildConsoleStreamListener
+     * Method can be used to asynchronously obtain logs for running build.
+     *
+     * @param listener interface used to asynchronously obtain logs
+     * @param poolingInterval interval (seconds) used to pool jenkins for logs
+     * @param poolingTimeout pooling timeout (seconds) used to break pooling in case build stuck
+     *
+     */
+    public void streamConsoleOutput(final BuildConsoleStreamListener listener, final int poolingInterval, final int poolingTimeout) throws InterruptedException, IOException {
+        // Calculate start and timeout
+        final long startTime = System.currentTimeMillis();
+        final long timeoutTime = startTime + (poolingTimeout * 1000);
+
+        int bufferOffset = 0;
+        while (true) {
+            Thread.sleep(poolingInterval * 1000);
+
+            ConsoleLog consoleLog = null;
+            consoleLog = getConsoleOutputText(bufferOffset);
+            String logString = consoleLog.getConsoleLog();
+            if (logString != null && !logString.isEmpty()) {
+                listener.onData(logString);
+            }
+            if (consoleLog.getHasMoreData()) {
+                bufferOffset = consoleLog.getCurrentBufferSize();
+            } else {
+                listener.finished();
+                break;
+            }
+            long currentTime = System.currentTimeMillis();
+
+            if (currentTime > timeoutTime) {
+                LOGGER.warn("Pooling for build {0} for {2} timeout! Check if job stuck in jenkins",
+                        BuildWithDetails.this.getDisplayName(), BuildWithDetails.this.getNumber());
+                break;
+            }
+        }
+    }
+
+    /**
+     * Get build console output log as text.
+     * Use this method to periodically obtain logs from jenkins and skip chunks that were already received
+     *
+     * @param bufferOffset offset in console lo
+     * @return ConsoleLog object containing console output of the build. The line separation is done by
+     * {@code CR+LF}.
+     * @throws IOException in case of a failure.
+     */
+    public ConsoleLog getConsoleOutputText(int bufferOffset) throws IOException {
+        List<NameValuePair> formData = new ArrayList<>();
+        formData.add(new BasicNameValuePair("start", Integer.toString(bufferOffset)));
+        String path = getUrl() + "logText/progressiveText";
+        HttpResponse httpResponse = client.post_form_with_result(path, formData, false);
+
+        Header moreDataHeader = httpResponse.getFirstHeader(MORE_DATA_HEADER);
+        Header textSizeHeader = httpResponse.getFirstHeader(TEXT_SIZE_HEADER);
+        String response = EntityUtils.toString(httpResponse.getEntity());
+        boolean hasMoreData = false;
+        if (moreDataHeader != null) {
+            hasMoreData = Boolean.TRUE.toString().equals(moreDataHeader.getValue());
+        }
+        Integer currentBufferSize = bufferOffset;
+        if (textSizeHeader != null) {
+            try {
+                currentBufferSize = Integer.parseInt(textSizeHeader.getValue());
+            } catch (NumberFormatException e) {
+                LOGGER.warn("Cannot parse buffer size for job {0} build {1}. Using current offset!", this.getDisplayName(), this.getNumber());
+            }
+        }
+        return new ConsoleLog(response, hasMoreData, currentBufferSize);
+    }
+
 
     public BuildChangeSet getChangeSet() {
         return changeSet;

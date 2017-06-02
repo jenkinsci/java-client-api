@@ -6,20 +6,6 @@
 
 package com.offbytwo.jenkins;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.bind.JAXBException;
-
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.entity.ContentType;
-import org.dom4j.DocumentException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
@@ -27,21 +13,24 @@ import com.google.common.collect.Maps;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
 import com.offbytwo.jenkins.client.util.EncodingUtils;
 import com.offbytwo.jenkins.helper.JenkinsVersion;
-import com.offbytwo.jenkins.model.Build;
-import com.offbytwo.jenkins.model.Computer;
-import com.offbytwo.jenkins.model.ComputerSet;
-import com.offbytwo.jenkins.model.FolderJob;
-import com.offbytwo.jenkins.model.Job;
-import com.offbytwo.jenkins.model.JobConfiguration;
-import com.offbytwo.jenkins.model.JobWithDetails;
-import com.offbytwo.jenkins.model.LabelWithDetails;
-import com.offbytwo.jenkins.model.MainView;
-import com.offbytwo.jenkins.model.MavenJobWithDetails;
-import com.offbytwo.jenkins.model.PluginManager;
-import com.offbytwo.jenkins.model.Queue;
-import com.offbytwo.jenkins.model.QueueItem;
-import com.offbytwo.jenkins.model.QueueReference;
-import com.offbytwo.jenkins.model.View;
+import com.offbytwo.jenkins.model.*;
+import com.offbytwo.jenkins.model.credentials.Credential;
+import com.offbytwo.jenkins.model.credentials.CredentialManager;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpResponseException;
+import org.apache.http.entity.ContentType;
+import org.dom4j.DocumentException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.net.URI;
+import java.rmi.server.ExportException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The main starting point for interacting with a Jenkins server.
@@ -50,6 +39,8 @@ public class JenkinsServer {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private final JenkinsHttpClient client;
+
+    private CredentialManager credentialManager;
 
     /**
      * Create a new Jenkins server reference given only the server address
@@ -917,4 +908,83 @@ public class JenkinsServer {
         return toBaseUrl(folder) + "view/" + EncodingUtils.encode(name);
     }
 
+    /**
+     * List the credentials from the Jenkins server.
+     * @return a hash map of the credentials. The key is the id of each credential.
+     * @throws IOException
+     */
+    public Map<String, Credential> listCredentials() throws IOException {
+        return this.getCredentialManager().listCredentials();
+    }
+
+    /**
+     * Create the given credential
+     * @param credential a credential instance
+     * @param crumbFlag
+     * @throws IOException
+     */
+    public void createCredential(Credential credential, boolean crumbFlag) throws IOException {
+        this.getCredentialManager().createCredential(credential, crumbFlag);
+    }
+
+    /**
+     * Update an existing credential
+     * @param credentialId the id of the credential
+     * @param credential the updated credential instance
+     * @param crumbFlag
+     * @throws IOException
+     */
+    public void updateCredential(String credentialId, Credential credential, boolean crumbFlag) throws IOException {
+        this.getCredentialManager().updateCredential(credentialId, credential, crumbFlag);
+    }
+
+    /**
+     * Delete an existing credential
+     * @param credentialId the id of the credential to delete
+     * @param crumbFlag
+     * @throws IOException
+     */
+    public void deleteCredential(String credentialId, boolean crumbFlag) throws IOException {
+        this.getCredentialManager().deleteCredential(credentialId, crumbFlag);
+    }
+
+    /**
+     * Return the credentialManager instance. Will initialise it if it's never used before.
+     * @return the credentialManager instance
+     * @throws IOException
+     */
+    private CredentialManager getCredentialManager() throws IOException {
+        if (this.credentialManager == null) {
+            Plugin credentialPlugin = findPluginWithName("credentials");
+            if (credentialPlugin == null) {
+                throw new ExportException("credential plugin is not installed");
+            }
+            String version = credentialPlugin.getVersion();
+            this.credentialManager = new CredentialManager(version, this.client);
+        }
+        return this.credentialManager;
+    }
+
+    /**
+     * Find a plugin that matches the given short name
+     * @param pluginShortName the short name of the plugin to find
+     * @return the pluin object that is found. Can be null if no match found.
+     * @throws IOException
+     */
+    public Plugin findPluginWithName(final String pluginShortName) throws IOException {
+        List<Plugin> plugins = this.getPluginManager().getPlugins();
+        Object foundPlugin = CollectionUtils.find(plugins, new Predicate() {
+            @Override
+            public boolean evaluate(Object o) {
+                Plugin p = (Plugin) o;
+                if (p.getShortName().equalsIgnoreCase(pluginShortName)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+
+        return foundPlugin == null ? null : (Plugin) foundPlugin;
+    }
 }
