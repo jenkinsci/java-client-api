@@ -6,22 +6,25 @@
 
 package com.offbytwo.jenkins.client;
 
-import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
+import com.google.common.io.ByteStreams;
+import com.offbytwo.jenkins.client.util.EncodingUtils;
+import com.offbytwo.jenkins.client.util.RequestReleasingInputStream;
+import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
+import com.offbytwo.jenkins.model.BaseModel;
+import com.offbytwo.jenkins.model.Crumb;
+import com.offbytwo.jenkins.model.ExtractHeader;
+import net.sf.json.JSONObject;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -38,18 +41,16 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
-import com.google.common.io.ByteStreams;
-import com.offbytwo.jenkins.client.util.EncodingUtils;
-import com.offbytwo.jenkins.client.util.RequestReleasingInputStream;
-//import com.offbytwo.jenkins.client.util.HttpResponseContentExtractor;
-import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
-import com.offbytwo.jenkins.model.BaseModel;
-import com.offbytwo.jenkins.model.Crumb;
-import com.offbytwo.jenkins.model.ExtractHeader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
 
-import net.sf.json.JSONObject;
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
+//import com.offbytwo.jenkins.client.util.HttpResponseContentExtractor;
 
 public class JenkinsHttpClient {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
@@ -310,6 +311,39 @@ public class JenkinsHttpClient {
             EntityUtils.consume(response.getEntity());
             releaseConnection(request);
         }
+    }
+
+
+    /**
+     * Perform a POST request using form url encoding and return HttpResponse object
+     * This method is not performing validation and can be used for more generic queries to jenkins.
+     *
+     * @param path
+     *            path to request, can be relative or absolute
+     * @param data
+     *            data to post
+     * @throws IOException,
+     *             HttpResponseException
+     */
+    public HttpResponse post_form_with_result(String path, List<NameValuePair> data, boolean crumbFlag) throws IOException {
+        HttpPost request;
+        if (data != null) {
+            UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(data);
+            request = new HttpPost(noapi(path));
+            request.setEntity(urlEncodedFormEntity);
+        } else {
+            request = new HttpPost(noapi(path));
+        }
+
+        if (crumbFlag == true) {
+            Crumb crumb = get("/crumbIssuer", Crumb.class);
+            if (crumb != null) {
+                request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+            }
+        }
+        HttpResponse response = client.execute(request, localContext);
+        getJenkinsVersionFromHeader(response);
+        return response;
     }
 
     /**
