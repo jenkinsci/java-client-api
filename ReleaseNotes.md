@@ -52,6 +52,10 @@
 
    Thanks to aisuke-yoshimoto
 
+ * [Pull Request #262][pull-262] Fix typo.
+
+   Thanks for Alberto Scotto.
+
 ### API Changes
 
  * ?
@@ -1012,6 +1016,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [pull-239]: https://github.com/jenkinsci/java-client-api/pull/239
 [pull-240]: https://github.com/jenkinsci/java-client-api/pull/240
 [pull-247]: https://github.com/jenkinsci/java-client-api/pull/247
+[pull-262]: https://github.com/jenkinsci/java-client-api/pull/262
 [jissue-35002]: https://issues.jenkins-ci.org/browse/JENKINS-35002
 [jissue-35108]: https://issues.jenkins-ci.org/browse/JENKINS-35108
 [jissue-38787]: https://issues.jenkins-ci.org/browse/JENKINS-38787
