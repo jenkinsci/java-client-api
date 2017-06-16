@@ -882,6 +882,13 @@ public class JenkinsServer {
     }
 
     /**
+     * @return current JenkinsHttpClient instance
+     */
+    protected JenkinsHttpClient getClient() {
+        return client;
+    }
+
+    /**
      * Helper to create a base url in case a folder is given
      * 
      * @param folder the folder or {@code null}
