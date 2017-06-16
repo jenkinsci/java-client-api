@@ -7,16 +7,26 @@ package com.offbytwo.jenkins.model;
 public class BuildChangeSetPath {
 
     /**
-     * Usually {@code edit} etc.
+     * The SCM operation, <code>add</code> or <code>edit</code> or <code>delete</code>
+     * @see <a href="http://javadoc.jenkins.io/hudson/scm/EditType.html">EditType</a>
      */
-    // TODO: Think about it if its possible to use an enum type?
-    private String editType; // edit, ?
+    private String editType;
     private String file;
 
+    /**
+     * Return the SCM operation.
+     * @return the SCM operation, <code>add</code> or <code>edit</code> or <code>delete</code>
+     * @see <a href="http://javadoc.jenkins.io/hudson/scm/EditType.html">EditType</a>
+     */
     public String getEditType() {
         return editType;
     }
 
+    /**
+     * Sets the SCM operation.
+     * @param the SCM operation, <code>add</code> or <code>edit</code> or <code>delete</code>
+     * @see <a href="http://javadoc.jenkins.io/hudson/scm/EditType.html">EditType</a>
+     */
     public void setEditType(String editType) {
         this.editType = editType;
     }
