@@ -30,4 +30,8 @@ public class MavenBuild extends Build {
     public MavenModule getMavenModule() throws IOException {
         return client.get(this.getUrl() + "/mavenArtifacts/", MavenModule.class);
     }
+
+    public JacocoCoverageReport getJacocoCodeCoverageReport() throws IOException {
+        return client.get(this.getUrl() + "/jacoco/", JacocoCoverageReport.class);
+    }
 }
