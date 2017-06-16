@@ -2,9 +2,10 @@
 
 ## Release 0.3.8 (NOT RELEASED YET)
 
-* [Fixed Issue 252][issue-252]
+* [Fixed Issue 98][issue-98]
    
    Splitting fix made for jacoco reports from Jenkins #98.
+   Thanks to Shah, Prince.
  
  * [Fixed Issue 217][issue- 217]
    
@@ -949,6 +950,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-89]: https://github.com/jenkinsci/java-client-api/issues/89
 [issue-90]: https://github.com/jenkinsci/java-client-api/issues/90
 [issue-91]: https://github.com/jenkinsci/java-client-api/issues/91
+[issue-98]: https://github.com/jenkinsci/java-client-api/issues/98
 [issue-104]: https://github.com/jenkinsci/java-client-api/issues/104
 [issue-111]: https://github.com/jenkinsci/java-client-api/issues/111
 [issue-116]: https://github.com/jenkinsci/java-client-api/issues/116
