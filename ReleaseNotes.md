@@ -16,6 +16,8 @@
     build.streamConsoleOutput(listener, 3, 420);
    ```
 
+   Thanks to Wojciech Trocki.
+
  * [Fixed Issue 222][issue-222]
    
    Fixed WARNING during build.
@@ -24,9 +26,26 @@
    
    `getViews()` Do not use `api/json?depth=1` cause of timeout.
 
+ * [Fixed Issue 244][issue-244]
+   
+   README.md Code grammar typos; Thanks to <dwlee@woowahan.com>.
+
  * [Pull Request #229][pull-229] Fix race condition in JenkinsTriggerHelper
 
    Thanks for that to [Veske](https://github.com/Veske).
+
+ * [Pull Request #239][pull-239] Fixed Bug in build method to prevent
+   building twice.
+
+   Thanks for the pull request #239 from ladventure/master
+
+ * [Pull Request #240][pull-240] Fixed code duplication.
+
+   Thanks for the pull request #240 from Jonathan Bremer.
+
+ * [Pull Request #247][pull-247] Add JavaDoc.
+
+   Thanks to aisuke-yoshimoto
 
 ### API Changes
 
@@ -973,8 +992,10 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-209]: https://github.com/jenkinsci/java-client-api/issues/209
 [issue-211]: https://github.com/jenkinsci/java-client-api/issues/211
 [issue-215]: https://github.com/jenkinsci/java-client-api/issues/215
+[issue-217]: https://github.com/jenkinsci/java-client-api/issues/217
 [issue-220]: https://github.com/jenkinsci/java-client-api/issues/220
 [issue-222]: https://github.com/jenkinsci/java-client-api/issues/222
+[issue-244]: https://github.com/jenkinsci/java-client-api/issues/244
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
@@ -982,6 +1003,9 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [pull-204]: https://github.com/jenkinsci/java-client-api/pull/204
 [pull-206]: https://github.com/jenkinsci/java-client-api/pull/206
 [pull-229]: https://github.com/jenkinsci/java-client-api/pull/229
+[pull-239]: https://github.com/jenkinsci/java-client-api/pull/239
+[pull-240]: https://github.com/jenkinsci/java-client-api/pull/240
+[pull-247]: https://github.com/jenkinsci/java-client-api/pull/247
 [jissue-35002]: https://issues.jenkins-ci.org/browse/JENKINS-35002
 [jissue-35108]: https://issues.jenkins-ci.org/browse/JENKINS-35108
 [jissue-38787]: https://issues.jenkins-ci.org/browse/JENKINS-38787
