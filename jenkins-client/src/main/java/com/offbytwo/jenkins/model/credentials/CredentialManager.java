@@ -67,7 +67,11 @@ public class CredentialManager {
      */
     public void createCredential(Credential credential, Boolean crumbFlag) throws IOException {
         String url = String.format("%s/%s?", this.baseUrl, "createCredentials");
-        this.jenkinsClient.post_form_json(url, credential.dataForCreate(), crumbFlag);
+        if (credential.useMultipartForm()) {
+            this.jenkinsClient.post_multipart_form_json(url, credential.dataForCreate(), crumbFlag);
+        } else {
+            this.jenkinsClient.post_form_json(url, credential.dataForCreate(), crumbFlag);
+        }
     }
 
     /**
@@ -80,7 +84,11 @@ public class CredentialManager {
     public void updateCredential(String credentialId, Credential credential, Boolean crumbFlag) throws IOException {
         credential.setId(credentialId);
         String url = String.format("%s/%s/%s/%s?", this.baseUrl, "credential", credentialId, "updateSubmit");
-        this.jenkinsClient.post_form_json(url, credential.dataForUpdate(), crumbFlag);
+        if (credential.useMultipartForm()) {
+            this.jenkinsClient.post_multipart_form_json(url, credential.dataForUpdate(), crumbFlag);
+        } else {
+            this.jenkinsClient.post_form_json(url, credential.dataForUpdate(), crumbFlag);
+        }
     }
 
     /**

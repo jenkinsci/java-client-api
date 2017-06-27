@@ -72,7 +72,7 @@ public class NoExecutorStartedManageCredentialsIT extends AbstractJenkinsIntegra
 
         credentialOperations(jenkinsServer, sshCredential);
 
-        //test credential
+        //test certificate credential
         CertificateCredential certificateCredential = new CertificateCredential();
         certificateCredential.setId("certficateTest-" + RandomStringUtils.randomAlphanumeric(24));
         certificateCredential.setCertificateSourceType(CertificateCredential.CERTIFICATE_SOURCE_TYPES.FILE_ON_MASTER);
@@ -81,6 +81,13 @@ public class NoExecutorStartedManageCredentialsIT extends AbstractJenkinsIntegra
 
         credentialOperations(jenkinsServer, certificateCredential);
 
+        //test AppleDeveloperProfileCredential
+        AppleDeveloperProfileCredential appleDevProfile = new AppleDeveloperProfileCredential();
+        appleDevProfile.setId("appleProfileTest-" + RandomStringUtils.randomAlphanumeric(24));
+        appleDevProfile.setPassword(testPassword);
+        appleDevProfile.setDeveloperProfileContent("testprofile".getBytes());
+
+        credentialOperations(jenkinsServer, appleDevProfile);
     }
 
     private void credentialOperations(JenkinsServer jenkinsServer, Credential credential) throws IOException {

@@ -11,7 +11,8 @@ import java.util.Map;
 @JsonSubTypes({@JsonSubTypes.Type(value = UsernamePasswordCredential.class, name = UsernamePasswordCredential.TYPENAME),
         @JsonSubTypes.Type(value = SSHKeyCredential.class, name = SSHKeyCredential.TYPENAME),
         @JsonSubTypes.Type(value = SecretTextCredential.class, name = SecretTextCredential.TYPENAME),
-        @JsonSubTypes.Type(value = CertificateCredential.class, name = CertificateCredential.TYPENAME)})
+        @JsonSubTypes.Type(value = CertificateCredential.class, name = CertificateCredential.TYPENAME),
+        @JsonSubTypes.Type(value = AppleDeveloperProfileCredential.class, name = AppleDeveloperProfileCredential.TYPENAME)})
 /**
  * Base class for credentials. Should not be instantiated directly.
  */
@@ -99,4 +100,12 @@ public abstract class Credential extends BaseModel {
     public abstract Map<String, Object> dataForCreate();
 
     public abstract Map<String, Object> dataForUpdate();
+
+    /**
+     * Indicate if the request should be sent as multipart/form data
+     * @return
+     */
+    public boolean useMultipartForm() {
+        return false;
+    }
 }

@@ -8,3 +8,4 @@ job-dsl:1.41
 config-file-provider:2.10.0
 testng-plugin:1.10
 cloudbees-folder: 5.12
+xcode-plugin: 2.0.0

@@ -30,6 +30,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -41,6 +42,7 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -377,6 +379,67 @@ public class JenkinsHttpClient {
             StringEntity stringEntity = new StringEntity(value, ContentType.APPLICATION_FORM_URLENCODED);
             request = new HttpPost(noapi(path) + StringUtils.join(queryParams, "&"));
             request.setEntity(stringEntity);
+        } else {
+            request = new HttpPost(noapi(path));
+        }
+
+        if (crumbFlag == true) {
+            Crumb crumb = get("/crumbIssuer", Crumb.class);
+            if (crumb != null) {
+                request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+            }
+        }
+
+        HttpResponse response = client.execute(request, localContext);
+        getJenkinsVersionFromHeader(response);
+
+        try {
+            httpResponseValidator.validateResponse(response);
+        } finally {
+            EntityUtils.consume(response.getEntity());
+            releaseConnection(request);
+        }
+    }
+
+    /**
+     * Perform a POST request using multipart-form.
+     *
+     * This method was added for the purposes of creating some types of credentials, but may be
+     * useful for other API calls as well.
+     *
+     * Unlike post and post_xml, the path is *not* modified by adding
+     * "/api/json". Additionally, the params in data are provided as both
+     * request parameters including a json parameter, *and* in the
+     * JSON-formatted StringEntity, because this is what the folder creation
+     * call required. It is unclear if any other jenkins APIs operate in this
+     * fashion.
+     *
+     * @param path path to request, can be relative or absolute
+     * @param data data to post
+     * @param crumbFlag true / false.
+     * @throws IOException in case of an error.
+     */
+    public void post_multipart_form_json(String path, Map<String, Object> data, boolean crumbFlag) throws IOException {
+        HttpPost request;
+        if (data != null) {
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            for (Map.Entry<String, Object> entry : data.entrySet()) {
+                String fieldName = entry.getKey();
+                Object fieldValue = entry.getValue();
+                if (fieldValue instanceof String) {
+                    builder.addTextBody(fieldName, (String) fieldValue);
+                } else if (fieldValue instanceof byte[]) {
+                    builder.addBinaryBody(fieldName, (byte[]) fieldValue);
+                } else if (fieldValue instanceof File) {
+                    builder.addBinaryBody(fieldName, (File) fieldValue);
+                } else if (fieldValue instanceof InputStream) {
+                    builder.addBinaryBody(fieldName, (InputStream) fieldValue);
+                } else {
+                    throw new IllegalArgumentException("type of field " + fieldName + " is not String, byte[], File or InputStream");
+                }
+            }
+            request = new HttpPost(noapi(path));
+            request.setEntity(builder.build());
         } else {
             request = new HttpPost(noapi(path));
         }
