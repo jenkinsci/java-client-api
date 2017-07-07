@@ -1,5 +1,6 @@
 package com.offbytwo.jenkins.model.credentials;
 
+import com.offbytwo.jenkins.client.FormBinaryField;
 import net.sf.json.JSONObject;
 
 import java.util.HashMap;
@@ -16,6 +17,9 @@ public class AppleDeveloperProfileCredential extends Credential {
   private static final String BASECLASS = "au.com.rayh.DeveloperProfile";
   private static final String FILE_ZERO_FIELD_NAME = "file0";
   private static final String FILE_ONE_FIELD_NAME = "file1";
+
+  private static final String DEFAULT_DEV_PROFILE_NAME = "developerProfile.zip";
+  private static final String DEFAULT_DEV_PROFULE_CONTENT_TYPE = "application/zip";
 
   private String password;
   private byte[] developerProfileContent;
@@ -72,14 +76,14 @@ public class AppleDeveloperProfileCredential extends Credential {
     jsonData.put("credentials", credentialMap);
 
     Map<String, Object> formFields = new HashMap<String, Object>();
-    formFields.put(FILE_ZERO_FIELD_NAME, this.getDeveloperProfileContent());
+    formFields.put(FILE_ZERO_FIELD_NAME, new FormBinaryField(DEFAULT_DEV_PROFILE_NAME, DEFAULT_DEV_PROFULE_CONTENT_TYPE, this.getDeveloperProfileContent()));
     formFields.put("_.scope", SCOPE_GLOBAL);
     formFields.put("_.password", this.getPassword());
     formFields.put("_.id", this.getId());
     formFields.put("_.description", this.getDescription());
     formFields.put("stapler-class", BASECLASS);
     formFields.put("$class", BASECLASS);
-    formFields.put("json", JSONObject.fromObject(jsonData).toString());
+    formFields.put("json", jsonData);
     return formFields;
   }
 
@@ -95,7 +99,7 @@ public class AppleDeveloperProfileCredential extends Credential {
 
 
     Map<String, Object> formFields = new HashMap<String, Object>();
-    formFields.put(FILE_ONE_FIELD_NAME, this.getDeveloperProfileContent());
+    formFields.put(FILE_ONE_FIELD_NAME, new FormBinaryField(DEFAULT_DEV_PROFILE_NAME, DEFAULT_DEV_PROFULE_CONTENT_TYPE, this.getDeveloperProfileContent()));
     formFields.put("_.", "on");
     formFields.put("_.password", this.getPassword());
     formFields.put("_.id", this.getId());

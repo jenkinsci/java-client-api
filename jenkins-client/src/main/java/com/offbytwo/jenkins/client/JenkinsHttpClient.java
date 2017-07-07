@@ -30,6 +30,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicCredentialsProvider;
@@ -423,6 +424,7 @@ public class JenkinsHttpClient {
         HttpPost request;
         if (data != null) {
             MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
             for (Map.Entry<String, Object> entry : data.entrySet()) {
                 String fieldName = entry.getKey();
                 Object fieldValue = entry.getValue();
@@ -430,12 +432,15 @@ public class JenkinsHttpClient {
                     builder.addTextBody(fieldName, (String) fieldValue);
                 } else if (fieldValue instanceof byte[]) {
                     builder.addBinaryBody(fieldName, (byte[]) fieldValue);
+                } else if (fieldValue instanceof FormBinaryField) {
+                    FormBinaryField binaryField = (FormBinaryField) fieldValue;
+                    builder.addBinaryBody(fieldName, binaryField.getContent(), ContentType.create(binaryField.getContentType()), binaryField.getFileName());
                 } else if (fieldValue instanceof File) {
                     builder.addBinaryBody(fieldName, (File) fieldValue);
                 } else if (fieldValue instanceof InputStream) {
                     builder.addBinaryBody(fieldName, (InputStream) fieldValue);
                 } else {
-                    throw new IllegalArgumentException("type of field " + fieldName + " is not String, byte[], File or InputStream");
+                    builder.addTextBody(fieldName, JSONObject.fromObject(fieldValue).toString());
                 }
             }
             request = new HttpPost(noapi(path));
