@@ -8,6 +8,8 @@ package com.offbytwo.jenkins;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -260,7 +262,7 @@ public class JenkinsServer {
      * @throws IOException in case of an error.
      */
     public JobWithDetails getJob(String jobName) throws IOException {
-        return getJob(null, jobName);
+        return getJob(null, parseFullName(jobName));
     }
 
     /**
@@ -288,7 +290,7 @@ public class JenkinsServer {
     }
 
     public MavenJobWithDetails getMavenJob(String jobName) throws IOException {
-        return getMavenJob(null, jobName);
+        return getMavenJob(null, parseFullName(jobName));
     }
 
     public MavenJobWithDetails getMavenJob(FolderJob folder, String jobName) throws IOException {
@@ -562,7 +564,6 @@ public class JenkinsServer {
     /**
      * Update the xml description of an existing view
      *
-     * @throws IOException in case of an error.
      * @param viewName name of the view.
      * @param viewXml the view configuration.
      * @throws IOException in case of an error.
@@ -903,7 +904,18 @@ public class JenkinsServer {
      * @return converted base url.
      */
     private String toJobBaseUrl(FolderJob folder, String jobName) {
-        return toBaseUrl(folder) + "job/" + EncodingUtils.encode(jobName);
+        String jobBaseUrl = toBaseUrl(folder) + "job/";
+        
+        String[] jobNameParts = jobName.split("/");
+        for (int i = 0; i < jobNameParts.length; i++) {
+            jobBaseUrl += EncodingUtils.encode(jobNameParts[i]);
+            
+            if (i != jobNameParts.length - 1) {
+                jobBaseUrl += "/";
+            }
+        }
+        
+        return jobBaseUrl;
     }
 
     /**
@@ -917,4 +929,29 @@ public class JenkinsServer {
         return toBaseUrl(folder) + "view/" + EncodingUtils.encode(name);
     }
 
+    /**
+     * Parses the provided job name for folders to get the full path for the job.
+     * @param jobName the fullName of the job.
+     * @return the path of the job including folders if present.
+     */
+    private String parseFullName(String jobName)
+    {
+        if (!jobName.contains("/")) {
+            return jobName;
+        }
+        
+        List<String> foldersAndJob = Arrays.asList(jobName.split("/"));
+        
+        String foldersAndJobName = "";
+        
+        for (int i = 0; i < foldersAndJob.size(); i++) {
+            foldersAndJobName += foldersAndJob.get(i);
+            
+            if (i != foldersAndJob.size() -1) {
+                foldersAndJobName += "/job/";
+            }
+        }
+        
+        return foldersAndJobName;
+    }
 }
