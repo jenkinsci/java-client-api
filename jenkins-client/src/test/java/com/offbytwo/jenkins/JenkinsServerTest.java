@@ -34,16 +34,15 @@ import com.offbytwo.jenkins.model.MainView;
 import com.offbytwo.jenkins.model.View;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class JenkinsServerTest extends BaseUnitTest {
 
     private JenkinsHttpClient client = mock(JenkinsHttpClient.class);
     private JenkinsServer server = new JenkinsServer(client);
     private MainView mainView = new MainView(new Job("Hello", "http://localhost/job/Hello/"));
-
-    public JenkinsServerTest() throws Exception {
-    }
 
     @Before
     public void setUp() throws Exception {
@@ -314,6 +313,21 @@ public class JenkinsServerTest extends BaseUnitTest {
         shouldGetJobXml("HeLLo");
     }
 
+    @Test
+    public void getVersionShouldNotFailWithNPE()
+        throws Exception
+    {
+        when (client.get( "/" )).thenReturn( "TheAnswer");
+        when (client.getJenkinsVersion()).thenReturn( "1.23");
+        
+        JenkinsServer server = new JenkinsServer( client);
+        server.getVersion();
+        verify( client, times( 1 )).isJenkinsVersionSet();
+        verify( client, times( 1 )).get( "/" );
+        verify( client, times( 1 )).getJenkinsVersion();
+        
+    }
+    
     private void shouldGetFolderJobs(String... jobNames) throws IOException {
         // given
         String path = "http://localhost/jobs/someFolder/";

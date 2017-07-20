@@ -2,7 +2,11 @@
 
 ## Release 0.3.8 (NOT RELEASED YET)
 
-* [Fixed Issue 98][issue-98]
+ * [Fixed Issue 268][issue-268]
+  
+   NullPointerException is thrown unless isRunning() is called first.
+ 
+ * [Fixed Issue 98][issue-98]
    
    Splitting fix made for jacoco reports from Jenkins #98.
    Thanks to Shah, Prince.
@@ -1006,6 +1010,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-220]: https://github.com/jenkinsci/java-client-api/issues/220
 [issue-222]: https://github.com/jenkinsci/java-client-api/issues/222
 [issue-244]: https://github.com/jenkinsci/java-client-api/issues/244
+[issue-268]: https://github.com/jenkinsci/java-client-api/issues/268
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158

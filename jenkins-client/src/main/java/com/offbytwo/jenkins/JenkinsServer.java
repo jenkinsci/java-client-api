@@ -8,7 +8,6 @@ package com.offbytwo.jenkins;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -103,9 +102,10 @@ public class JenkinsServer {
      * @return {@link JenkinsVersion}
      */
     public JenkinsVersion getVersion() {
-        if (client.getJenkinsVersion().isEmpty()) {
+        if (!client.isJenkinsVersionSet()) {
             // Force a request to get at least once
-            // HttpHeader
+            // HttpHeader. The header contains the version
+            // information.
             isRunning();
         }
         JenkinsVersion jv = new JenkinsVersion(client.getJenkinsVersion());

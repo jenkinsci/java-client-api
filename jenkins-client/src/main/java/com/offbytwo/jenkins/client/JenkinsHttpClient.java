@@ -66,6 +66,8 @@ public class JenkinsHttpClient {
 
     private String jenkinsVersion;
 
+    public final static String EMPTY_VERSION = "UNKNOWN";
+    
     /**
      * Create an unauthenticated Jenkins HTTP client
      *
@@ -82,7 +84,7 @@ public class JenkinsHttpClient {
         this.client = client;
         this.httpResponseValidator = new HttpResponseValidator();
         // this.contentExtractor = new HttpResponseContentExtractor();
-        this.jenkinsVersion = null;
+        this.jenkinsVersion = EMPTY_VERSION;
         LOGGER.debug("uri={}", uri.toString());
     }
 
@@ -496,6 +498,16 @@ public class JenkinsHttpClient {
         return this.jenkinsVersion;
     }
 
+    /**
+     * Check to see if the jenkins version has been set
+     * to something different than the initialization value
+     * from the constructor. This means there has never been made
+     * a communication with the Jenkins server.
+     * @return true if jenkinsVersion has been set by communication, false otherwise. 
+     */
+    public boolean isJenkinsVersionSet() {
+        return !EMPTY_VERSION.equals( this.jenkinsVersion );
+    }
     private void getJenkinsVersionFromHeader(HttpResponse response) {
         Header[] headers = response.getHeaders("X-Jenkins");
         if (headers.length == 1) {
