@@ -11,7 +11,7 @@
    Splitting fix made for jacoco reports from Jenkins #98.
    Thanks to Shah, Prince.
  
- * [Fixed Issue 217][issue- 217]
+ * [Fixed Issue 217][issue-217]
    
    Added new api for streaming build logs
 
