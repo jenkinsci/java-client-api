@@ -19,6 +19,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
@@ -30,6 +31,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -41,6 +45,7 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -206,7 +211,7 @@ public class JenkinsHttpClient {
     }
 
     public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException {
-        return post(path, data, cls, true);
+        return post(path, data, cls, null, true);
     }
 
     /**
@@ -217,11 +222,12 @@ public class JenkinsHttpClient {
      * @param cls class of the response
      * @param <R> type of the response
      * @param <D> type of the data
+     * @param fileParams the job file parameters
      * @param crumbFlag true / false.
      * @return an instance of the supplied class
      * @throws IOException in case of an error.
      */
-    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls, boolean crumbFlag) throws IOException {
+    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls, Map<String, File> fileParams, boolean crumbFlag) throws IOException {
         HttpPost request = new HttpPost(api(path));
         if (crumbFlag == true) {
             Crumb crumb = getQuietly("/crumbIssuer", Crumb.class);
@@ -235,6 +241,21 @@ public class JenkinsHttpClient {
             StringEntity stringEntity = new StringEntity(value, ContentType.APPLICATION_JSON);
             request.setEntity(stringEntity);
         }
+
+        // Prepare file parameters
+        if(fileParams != null && !(fileParams.isEmpty())) {
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+            for (Map.Entry<String, File> entry : fileParams.entrySet()) {
+                FileBody fileBody = new FileBody(entry.getValue());
+                builder.addPart(entry.getKey(), fileBody);
+            }
+
+            HttpEntity entity = builder.build();
+            request.setEntity(entity);
+        }
+
         HttpResponse response = client.execute(request, localContext);
         getJenkinsVersionFromHeader(response);
 
@@ -438,11 +459,11 @@ public class JenkinsHttpClient {
      * @throws IOException in case of an error.
      */
     public void post(String path) throws IOException {
-        post(path, null, null, false);
+        post(path, null, null, null, false);
     }
 
     public void post(String path, boolean crumbFlag) throws IOException {
-        post(path, null, null, crumbFlag);
+        post(path, null, null,null, crumbFlag);
     }
 
     private String urlJoin(String path1, String path2) {
