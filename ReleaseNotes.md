@@ -2,6 +2,18 @@
 
 ## Release 0.3.8 (NOT RELEASED YET)
 
+ * [JENKINS-46472](https://issues.jenkins-ci.org/browse/JENKINS-46472)
+
+   Added ability to modify offline cause for offline computers.
+
+   ```java
+    ComputerWithDetails computer = ...
+    if (!computer.getOffline()){
+      computer.toggleOffline();
+      computer.changeOfflineCause("Scheduled for termination");
+    }
+   ```
+
  * [Fixed Issue 268][issue-268]
   
    NullPointerException is thrown unless isRunning() is called first.
