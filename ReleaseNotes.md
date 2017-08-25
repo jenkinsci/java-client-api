@@ -2,6 +2,17 @@
 
 ## Release 0.3.8 (NOT RELEASED YET)
 
+ * [JENKINS-46445](https://issues.jenkins-ci.org/browse/JENKINS-46445)
+
+   Add support for both client TLS and basic authentication.
+
+   ```java
+    HttpClientBuilder builder = HttpClientBuilder.create();
+    builder.setSslcontext(sslContext);
+    JenkinsHttpClient client = new JenkinsHttpClient(uri, builder, username, password);
+    JenkinsServer jenkins = new JenkinsServer(client);
+   ```
+
  * [Fixed Issue 268][issue-268]
   
    NullPointerException is thrown unless isRunning() is called first.
