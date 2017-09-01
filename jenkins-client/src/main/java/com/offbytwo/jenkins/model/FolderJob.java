@@ -20,6 +20,10 @@ public class FolderJob extends Job {
     public FolderJob(String name, String url) {
         super(name, url);
     }
+    
+    public FolderJob(String name, String url, String fullName) {
+        super(name, url, fullName);
+    }
 
     public String getDisplayName() {
         return displayName;

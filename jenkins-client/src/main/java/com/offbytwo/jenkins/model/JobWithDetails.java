@@ -59,7 +59,7 @@ public class JobWithDetails extends Job {
     private List<Job> downstreamProjects;
 
     private List<Job> upstreamProjects;
-
+    
     public String getDescription() {
         return description;
     }

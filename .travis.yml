@@ -1,6 +1,4 @@
 ---
-sudo: required
-
 services: 
   - docker
 
@@ -35,8 +33,10 @@ after_script:
   - docker rm -f -v jenkins-for-testing
   - docker rmi -f jenkins-with-plugins
 
+# http://www.webupd8.org/2017/06/why-oracle-java-7-and-6-installers-no.html
+# - oraclejdk8 is not supported anymore.
 jdk:
- - oraclejdk7
+ - openjdk7
 cache:
   directories:
   - $HOME/.m2/repository

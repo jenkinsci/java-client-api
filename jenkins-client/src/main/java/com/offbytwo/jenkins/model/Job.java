@@ -23,14 +23,23 @@ public class Job extends BaseModel {
 
     private String name;
     private String url;
+    private String fullName;
 
     public Job() {
     }
-
+    
     public Job(String name, String url) {
         this();
         this.name = name;
         this.url = url;
+        this.fullName = null;
+    }
+
+    public Job(String name, String url, String fullName) {
+        this();
+        this.name = name;
+        this.url = url;
+        this.fullName = fullName;
     }
 
     public String getName() {
@@ -39,6 +48,10 @@ public class Job extends BaseModel {
 
     public String getUrl() {
         return url;
+    }
+    
+    public String getFullName() {
+        return fullName;
     }
 
     public JobWithDetails details() throws IOException {
@@ -126,6 +139,8 @@ public class Job extends BaseModel {
             return false;
         if (url != null ? !url.equals(job.url) : job.url != null)
             return false;
+        if (fullName != null ? !fullName.equals(job.fullName) : job.fullName != null)
+            return false;
 
         return true;
     }
@@ -133,7 +148,7 @@ public class Job extends BaseModel {
     @Override
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (url != null ? url.hashCode() : 0);
+        result = 31 * result + (url != null ? url.hashCode() : 0) + (fullName != null ? fullName.hashCode() : 0);
         return result;
     }
 
