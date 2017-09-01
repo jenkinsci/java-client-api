@@ -2,6 +2,10 @@
 
 ## Release 0.3.8 (NOT RELEASED YET)
 
+* [Fixed Issue 45284][jissue-45284]
+
+   JenkinsTriggerHelper can wait for too long if job allows concurrent builds.
+
 * [Fixed Issue 98][issue-98]
    
    Splitting fix made for jacoco reports from Jenkins #98.
