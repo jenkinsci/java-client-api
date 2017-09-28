@@ -383,6 +383,19 @@ public class JenkinsServer {
     public void createJob(FolderJob folder, String jobName, String jobXml, Boolean crumbFlag) throws IOException {
         client.post_xml(toBaseUrl(folder) + "createItem?name=" + EncodingUtils.encodeParam(jobName), jobXml, crumbFlag);
     }
+    
+    /**
+     * Copy a job from onther already exists job
+     * 
+     * @param fromName from job name
+     * @param jobName target job name
+     * @throws IOException
+     */
+    public void copyJob(String fromName, String jobName) throws IOException {
+    	client.post(String.format("/createItem?mode=copy&from=%s&name=%s",
+    			EncodingUtils.encodeParam(fromName),
+    			EncodingUtils.encodeParam(jobName)));
+    }
 
     /**
      * Create a view on the server using the provided xml

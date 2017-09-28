@@ -14,6 +14,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -221,6 +222,12 @@ public class JenkinsServerTest extends BaseUnitTest {
         verify(client).post_xml(eq("/createItem?name=" + jobName), captureString.capture(), eq(false));
         String xmlReturn = captureString.getValue();
         assertEquals(xmlReturn, xmlString);
+    }
+    
+    @Test
+    public void testCopyJob() throws Exception {
+    	String oldName = "pipeline";
+    	server.copyJob(oldName, oldName + "_" + System.currentTimeMillis());
     }
 
     @Test
