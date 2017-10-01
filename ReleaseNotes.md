@@ -2,6 +2,11 @@
 
 ## Release 0.3.8 (NOT RELEASED YET)
 
+ * [Fixed Issue 282][issue-282]
+   
+   `NullPointerException` may be thrown if `upstreamUrl` is `null` when
+   converting cause to `BuildCause` object.
+
  * [Fixed Issue 268][issue-268]
   
    NullPointerException is thrown unless isRunning() is called first.
