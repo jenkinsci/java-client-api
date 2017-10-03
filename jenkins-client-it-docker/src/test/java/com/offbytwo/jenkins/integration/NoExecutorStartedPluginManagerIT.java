@@ -33,12 +33,12 @@ public class NoExecutorStartedPluginManagerIT extends AbstractJenkinsIntegration
     }
 
     @Test
-    public void getPluginsShouldReturn27ForJenkins1651() {
+    public void getPluginsShouldReturn28ForJenkins1651() {
         JenkinsVersion jv = jenkinsServer.getVersion();
         if (jv.isLessThan("1.651") && jv.isGreaterThan("1.651.3")) {
             throw new SkipException("Not Version 1.651 (" + jv.toString() + ")");
         }
-        assertThat(pluginManager.getPlugins()).hasSize(27);
+        assertThat(pluginManager.getPlugins()).hasSize(28);
     }
 
     private Plugin createPlugin(String shortName, String version) {
@@ -101,7 +101,7 @@ public class NoExecutorStartedPluginManagerIT extends AbstractJenkinsIntegration
         // instead of maintaining at two locations.
         //@formatter:off
         Plugin[] expectedPlugins = { 
-            createPlugin("token-macro", "1.12.1"), 
+            createPlugin("token-macro", "1.12.1"),
             createPlugin("translation", "1.10"),
             createPlugin("testng-plugin", "1.10"), 
             createPlugin("matrix-project", "1.4.1"),
@@ -127,7 +127,8 @@ public class NoExecutorStartedPluginManagerIT extends AbstractJenkinsIntegration
             createPlugin("throttle-concurrents", "1.9.0"),
             createPlugin("subversion", "1.54"), 
             createPlugin("ssh-slaves", "1.9"),
-            createPlugin("cloudbees-folder", "5.12"), 
+            createPlugin("cloudbees-folder", "5.12"),
+            createPlugin("xcode-plugin", "2.0.0"),
         };
         //@formatter:on
         List<Plugin> plugins = pluginManager.getPlugins();

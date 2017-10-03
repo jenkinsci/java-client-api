@@ -1,4 +1,9 @@
 ---
+sudo: required
+# Various issues have been logged aginst Travis-ci about Java 7 Support. Looks like it's broken on the latest Linux image.
+# For now we use the old version of the image. In the longer term, we should consider moving to Java 8
+group: deprecated-2017Q2
+
 services: 
   - docker
 
