@@ -2,6 +2,10 @@
 
 ## Release 0.3.8 (NOT RELEASED YET)
 
+ * [Refactor Issue 291][issue-291]
+   
+   Useful utility methods refactored into utility classes.
+
  * [Fixed Issue 282][issue-282]
    
    `NullPointerException` may be thrown if `upstreamUrl` is `null` when
