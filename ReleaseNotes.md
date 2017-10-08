@@ -2,6 +2,26 @@
 
 ## Release 0.3.8 (NOT RELEASED YET)
 
+
+ * [Fixed Issue 290][issue-290]
+   
+   Added support for retrieving build status with jobname and build number
+   directly avoiding intermediate server requests. Useful for other systems that
+   regularly monitor Jenkins builds.
+
+
+ * [JENKINS-46472](https://issues.jenkins-ci.org/browse/JENKINS-46472)
+
+   Added ability to modify offline cause for offline computers.
+
+   ```java
+    ComputerWithDetails computer = ...
+    if (!computer.getOffline()){
+      computer.toggleOffline();
+      computer.changeOfflineCause("Scheduled for termination");
+    }
+   ```
+
  * [JENKINS-46445](https://issues.jenkins-ci.org/browse/JENKINS-46445)
 
    Add support for both client TLS and basic authentication.

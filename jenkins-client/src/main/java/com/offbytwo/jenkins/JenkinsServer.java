@@ -29,6 +29,7 @@ import com.offbytwo.jenkins.client.util.EncodingUtils;
 import com.offbytwo.jenkins.client.util.UrlUtils;
 import com.offbytwo.jenkins.helper.JenkinsVersion;
 import com.offbytwo.jenkins.model.Build;
+import com.offbytwo.jenkins.model.BuildWithDetails;
 import com.offbytwo.jenkins.model.Computer;
 import com.offbytwo.jenkins.model.ComputerSet;
 import com.offbytwo.jenkins.model.FolderJob;
@@ -881,6 +882,52 @@ public class JenkinsServer {
         client.post(UrlUtils.toJobBaseUrl(folder, oldJobName) 
             + "/doRename?newName=" + EncodingUtils.encodeParam(newJobName),
                crumbFlag);
+    }
+    
+    
+    
+    
+    /**
+     * Get build details for a specific job and build number directly.
+     * This method makes a single call to the server 
+     * @param jobName the name of the job
+     * @param buildNum the build number
+     * @param treeProps any tree property query values
+     * @return details of build, null if not present
+     * @throws IOException In case of a failure.
+     * @see #getBuildDetails(com.offbytwo.jenkins.model.FolderJob, java.lang.String, int) 
+     */
+    public BuildWithDetails getBuildDetails(final String jobName, final int buildNum,
+            final String... treeProps) 
+            throws IOException {
+        return getBuildDetails(null, UrlUtils.toFullJobPath(jobName), buildNum, treeProps);
+    }
+
+    
+    
+    /**
+     * Get build details for a specific job and build number directly.
+     * This method makes a single call to the server 
+     * @param folder the folder where the given job is located if any
+     * @param jobName the name of the job
+     * @param buildNum the build number
+     * @param treeProps any tree property query values
+     * @return details of build, null if not present
+     * @throws IOException In case of a failure.
+     */
+    public BuildWithDetails getBuildDetails(final FolderJob folder, final String jobName, 
+            final int buildNum, final String... treeProps) throws IOException {
+        try {
+            final String path = UrlUtils.toBuildBaseUrl(folder, jobName, buildNum, treeProps);
+            final BuildWithDetails details = client.get(path, BuildWithDetails.class);
+            details.setClient(client);
+            return details;
+        } catch (final HttpResponseException e) {
+            LOGGER.debug("getBuildDetails(jobName={}, buildNum={}, treeProps={}) status={}", 
+                    jobName, buildNum, treeProps, e.getStatusCode());
+            if (e.getStatusCode() == HttpStatus.SC_NOT_FOUND) return null;
+            throw e;
+        }
     }
 
 
