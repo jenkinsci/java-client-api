@@ -290,7 +290,7 @@ public class BuildWithDetails extends Build {
         }
 
         String upstreamUrl = (String) cause.get("upstreamUrl");
-        if (!Strings.isNullOrEmpty(upstreamProject)) {
+        if (!Strings.isNullOrEmpty(upstreamUrl)) {
             cause_object.setUpstreamUrl(upstreamUrl);
         }
 
