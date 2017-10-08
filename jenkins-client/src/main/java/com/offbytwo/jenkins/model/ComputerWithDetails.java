@@ -97,6 +97,23 @@ public class ComputerWithDetails extends Computer {
         toggleOffline( false );
     }
 
+    public void changeOfflineCause(String cause, boolean crumbFlag) throws IOException {
+      String name;
+      if ("master".equals(displayName)) {
+        name = "(master)";
+      } else {
+        name = UrlEscapers.urlPathSegmentEscaper().escape(displayName);
+      }
+
+      Map<String, String> data = new HashMap<String, String>();
+      data.put( "offlineMessage", cause );
+      client.post_form("/computer/" + name + "/changeOfflineCause?", data, crumbFlag);
+    }
+
+    public void changeOfflineCause(String cause) throws IOException {
+      changeOfflineCause(cause, false);
+    }
+
     public Boolean getManualLaunchAllowed() {
         return manualLaunchAllowed;
     }
