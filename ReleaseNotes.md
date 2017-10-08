@@ -2,7 +2,18 @@
 
 ## Release 0.3.8 (NOT RELEASED YET)
 
- * [Refactor Issue 291][issue-291]
+ * [JENKINS-46445](https://issues.jenkins-ci.org/browse/JENKINS-46445)
+
+   Add support for both client TLS and basic authentication.
+
+   ```java
+    HttpClientBuilder builder = HttpClientBuilder.create();
+    builder.setSslcontext(sslContext);
+    JenkinsHttpClient client = new JenkinsHttpClient(uri, builder, username, password);
+    JenkinsServer jenkins = new JenkinsServer(client);
+   ```
+
+* [Refactor Issue 291][issue-291]
    
    Useful utility methods refactored into utility classes.
 

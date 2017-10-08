@@ -116,7 +116,19 @@ public class JenkinsHttpClient {
      * @param password Password or auth token to use when connecting
      */
     public JenkinsHttpClient(URI uri, String username, String password) {
-        this(uri, addAuthentication(HttpClientBuilder.create(), uri, username, password));
+        this(uri, HttpClientBuilder.create(), username, password);
+    }
+
+    /**
+     * Create an authenticated Jenkins HTTP client
+     *
+     * @param uri Location of the jenkins server (ex. http://localhost:8080)
+     * @param builder Configured HttpClientBuilder to be used
+     * @param username Username to use when connecting
+     * @param password Password or auth token to use when connecting
+     */
+    public JenkinsHttpClient(URI uri, HttpClientBuilder builder, String username, String password) {
+        this(uri, addAuthentication(builder, uri, username, password));
         if (isNotBlank(username)) {
             localContext = new BasicHttpContext();
             localContext.setAttribute("preemptive-auth", new BasicScheme());
