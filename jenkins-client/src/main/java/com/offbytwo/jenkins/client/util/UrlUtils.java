@@ -153,4 +153,29 @@ public final class UrlUtils {
     
     
     
+    /**
+     * Helper to create the base url for a build, with or without a given folder
+     * @param folder the folder or {@code null}
+     * @param jobName the name of the job.
+     * @param buildNum the build number of interest
+     * @param treeProps any tree property query values
+     * @return converted base url.
+     */
+    public static String toBuildBaseUrl(final FolderJob folder, final String jobName, 
+            final int buildNum, final String... treeProps) {
+        final String path = UrlUtils.toJobBaseUrl(folder, jobName);
+        final StringBuilder sb = new StringBuilder(DEFAULT_BUFFER_SIZE);
+        sb.append(path);
+        if (!path.endsWith("/")) sb.append('/');
+        sb.append(Integer.toString(buildNum));
+        if (treeProps != null && treeProps.length > 0) {
+            sb.append("?tree=");
+            for(int i=0; i<treeProps.length; i++) {
+                if (i>0) sb.append("%2C"); //comma
+                sb.append(EncodingUtils.encodeParam(treeProps[i]));
+            }
+        } 
+        return sb.toString();
+    }
+    
 }

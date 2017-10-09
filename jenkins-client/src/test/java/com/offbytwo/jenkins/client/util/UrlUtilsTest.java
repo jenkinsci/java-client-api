@@ -321,4 +321,46 @@ public class UrlUtilsTest {
         UrlUtils.toNoApiUri(new URI("http://localhost/jenkins"), null, "job/ajob");
     }
     
+    
+    
+    @Test
+    public void testToBuildBaseUrl_WithFolder_WithTreeProperties() {
+        final String fpath = "http://localhost/jobs/someFolder/";
+        final FolderJob folderJob = new FolderJob("someFolder", fpath);
+        final String expected = "http://localhost/jobs/someFolder/job/someJob/1234?tree=building%2Cculprits%5BfullName%5D";
+        final String[] treeProps = {"building", "culprits[fullName]"};
+        assertEquals(expected, UrlUtils.toBuildBaseUrl(folderJob, "someJob", 1234, treeProps));
+    }
+    
+    
+     @Test
+    public void testToBuildBaseUrl_NoTrailingFolderSlash() {
+        final String fpath = "http://localhost/jobs/someFolder";
+        final FolderJob folderJob = new FolderJob("someFolder", fpath);
+        final String expected = "http://localhost/jobs/someFolder/job/someJob/1234";
+        assertEquals(expected, UrlUtils.toBuildBaseUrl(folderJob, "someJob", 1234));
+    }
+    
+    
+    @Test
+    public void testToBuildBaseUrl_NullFolderJob() {
+        assertEquals("/job/someJob/1234", UrlUtils.toBuildBaseUrl(null, "someJob", 1234));
+    }
+    
+    
+    @Test
+    public void testToBuildBaseUrl_EmptyJobName() {
+        final String fpath = "http://localhost/jobs/someFolder";
+        final FolderJob folderJob = new FolderJob("someFolder", fpath);
+        final String expected = "http://localhost/jobs/someFolder/job/1234";
+        assertEquals(expected, UrlUtils.toBuildBaseUrl(folderJob, "", 1234));
+    }
+    
+    @Test(expected = NullPointerException.class)
+    public void testToBuildBaseUrl_NullJobName() {
+        final String fpath = "http://localhost/jobs/someFolder";
+        final FolderJob folderJob = new FolderJob("someFolder", fpath);
+        UrlUtils.toBuildBaseUrl(folderJob, null, 1234);
+    }
+    
 }

@@ -18,9 +18,12 @@ import com.offbytwo.jenkins.model.BuildWithDetails;
 import com.offbytwo.jenkins.model.JobWithDetails;
 
 import hudson.model.Cause;
+import hudson.model.FreeStyleBuild;
 import hudson.model.FreeStyleProject;
 import hudson.model.ParametersAction;
 import hudson.model.StringParameterValue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 public class BuildWithDetailsIT {
 
@@ -55,5 +58,34 @@ public class BuildWithDetailsIT {
 
         assertThat(build.getBuiltOn()).isEmpty();
     }
+    
+    
+    
+    @Test
+    public void testGetBuildDetails_FullDetails() throws Exception {
+        final FreeStyleProject proj = jenkinsRule.createFreeStyleProject();
+        final FreeStyleBuild build = proj.scheduleBuild2(0, new Cause.UserIdCause()).get();
+        final BuildWithDetails details = server.getBuildDetails(proj.getName(), build.number);
+        assertEquals(BuildResult.SUCCESS, details.getResult());
+        assertNotNull(details.getFullDisplayName());
+        assertNotNull(details.getActions());
+        assertNotNull(details.getUrl());
+    }
+    
+    
+    @Test
+    public void testGetBuildDetails_SomeDetails() throws Exception {
+        final FreeStyleProject proj = jenkinsRule.createFreeStyleProject();
+        final FreeStyleBuild build = proj.scheduleBuild2(0, new Cause.UserIdCause()).get();
+        final String[] treeProps = {"building", "result", "actions[causes]"};
+        BuildWithDetails details = server.getBuildDetails(proj.getName(), build.number, treeProps);
+        assertEquals(BuildResult.SUCCESS, details.getResult());
+        assertFalse(details.isBuilding());
+        assertNull(details.getFullDisplayName());
+        assertNotNull(details.getActions());
+        assertNull(details.getUrl());
+    }
+    
+
 
 }

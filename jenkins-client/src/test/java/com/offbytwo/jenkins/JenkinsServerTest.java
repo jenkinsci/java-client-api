@@ -27,11 +27,15 @@ import org.mockito.ArgumentCaptor;
 
 import com.google.common.base.Optional;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
+import com.offbytwo.jenkins.model.BuildWithDetails;
 import com.offbytwo.jenkins.model.FolderJob;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.JobWithDetails;
 import com.offbytwo.jenkins.model.MainView;
 import com.offbytwo.jenkins.model.View;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpResponseException;
+import static org.junit.Assert.assertNull;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -327,6 +331,57 @@ public class JenkinsServerTest extends BaseUnitTest {
         verify( client, times( 1 )).getJenkinsVersion();
         
     }
+    
+    
+    @Test
+    public void testGetBuildDetails_NotFound() throws IOException {
+        final HttpResponseException ex = new HttpResponseException(HttpStatus.SC_NOT_FOUND,"");
+        given(client.get(anyString(), eq(BuildWithDetails.class))).willThrow(ex);
+        assertNull(server.getBuildDetails("someJob", 1));
+    }
+    
+    @Test(expected=HttpResponseException.class)
+    public void testGetBuildDetails_ResponseException() throws IOException {
+        final HttpResponseException ex = new HttpResponseException(HttpStatus.SC_BAD_REQUEST,"");
+        given(client.get(anyString(), eq(BuildWithDetails.class))).willThrow(ex);
+        server.getBuildDetails("someJob", 1);
+    }
+    
+    
+    @Test
+    public void testGetBuildDetails_WithFolderJob() throws Exception {
+        final String expectedPath = "http://localhost/jobs/someFolder/job/someJob/1";
+        final FolderJob folderJob = new FolderJob("someFolder", "http://localhost/jobs/someFolder/");
+        final BuildWithDetails expected = new BuildWithDetails();
+        given(client.get(eq(expectedPath), eq(BuildWithDetails.class))).willReturn(expected);
+        final BuildWithDetails details = server.getBuildDetails(folderJob, "someJob", 1);
+        assertTrue(details == expected);
+    }
+    
+    
+    
+    
+    @Test
+    public void testGetBuildDetails_WithOutFolderJob() throws Exception {
+        final String expectedPath = "/job/someJob/1";
+        final BuildWithDetails expected = new BuildWithDetails();
+        given(client.get(eq(expectedPath), eq(BuildWithDetails.class))).willReturn(expected);
+        final BuildWithDetails details = server.getBuildDetails("someJob", 1);
+        assertTrue(details == expected);
+    }
+    
+    @Test
+    public void testGetBuildDetails_WithTreeProperties() throws Exception {
+        final String expectedPath = "/job/someJob/1?tree=building%2Cculprits%5BfullName%5D";
+        final BuildWithDetails expected = new BuildWithDetails();
+        given(client.get(eq(expectedPath), eq(BuildWithDetails.class))).willReturn(expected);
+        final String[] treeProps = {"building", "culprits[fullName]"};
+        final BuildWithDetails details = server.getBuildDetails("someJob", 1, treeProps);
+        assertTrue(details == expected);
+    }
+    
+   
+    
     
     private void shouldGetFolderJobs(String... jobNames) throws IOException {
         // given
