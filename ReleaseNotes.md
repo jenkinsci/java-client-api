@@ -2,6 +2,13 @@
 
 ## Release 0.3.8 (NOT RELEASED YET)
 
+=======
+
+ * [Fixed Issue 293][issue-293]
+  
+   Excluded Netbeans and direnv development files from being added to the repository.
+
+
  * [JENKINS-46472](https://issues.jenkins-ci.org/browse/JENKINS-46472)
 
    Added ability to modify offline cause for offline computers.
@@ -28,6 +35,7 @@
 * [Refactor Issue 291][issue-291]
    
    Useful utility methods refactored into utility classes.
+
 
  * [Fixed Issue 282][issue-282]
    
