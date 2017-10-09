@@ -6,3 +6,6 @@ target
 .settings
 test-output
 .DS_Store
+*/nbproject/*
+.envrc
+nb-configuration.xml
