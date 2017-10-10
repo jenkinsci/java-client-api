@@ -38,11 +38,14 @@ import com.offbytwo.jenkins.model.JobWithDetails;
 import com.offbytwo.jenkins.model.LabelWithDetails;
 import com.offbytwo.jenkins.model.MainView;
 import com.offbytwo.jenkins.model.MavenJobWithDetails;
+import com.offbytwo.jenkins.model.PipelineManager;
 import com.offbytwo.jenkins.model.PluginManager;
 import com.offbytwo.jenkins.model.Queue;
 import com.offbytwo.jenkins.model.QueueItem;
 import com.offbytwo.jenkins.model.QueueReference;
 import com.offbytwo.jenkins.model.View;
+
+import net.sf.json.JSONObject;
 
 /**
  * The main starting point for interacting with a Jenkins server.
@@ -499,7 +502,7 @@ public class JenkinsServer {
     }
 
     /**
-     * Get the xml description of an existing job.
+     * Get the xml description of an existing jobge.
      * 
      * @param jobName name of the job.
      * @param folder {@link FolderJob}
@@ -508,6 +511,17 @@ public class JenkinsServer {
      */
     public String getJobXml(FolderJob folder, String jobName) throws IOException {
         return client.get(UrlUtils.toJobBaseUrl(folder, jobName) + "/config.xml");
+    }
+    
+    /**
+     * Get the manager of pipeline for job
+     * @param viewName view name
+     * @param folderName folder name
+     * @param jobName name of the job.
+     * @return the new PipelineManager object
+     */
+    public PipelineManager getPipelineManager(String viewName, String folderName, String jobName) {
+    	return new PipelineManager(this.client, viewName, folderName, jobName);
     }
 
     /**
