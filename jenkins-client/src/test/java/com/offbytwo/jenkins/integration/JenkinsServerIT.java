@@ -183,4 +183,26 @@ public class JenkinsServerIT {
         String confirmXml = server.getJobXml(JENKINS_TEST_JOB);
         assertTrue(confirmXml.contains(description));
     }
+    
+    
+    @Test(expected=IllegalStateException.class)
+    public void testClose_ReuseAfterClosed() throws Exception {
+        final FreeStyleProject proj = jenkinsRule.getInstance().createProject(
+                FreeStyleProject.class, JENKINS_TEST_JOB);
+        final Map<String, Job> jobs = server.getJobs();
+        assertNotNull(jobs.get(proj.getName()));
+        server.close();
+        server.getJobs();        
+    }
+    
+    
+    @Test
+    public void testClose_CloseMultipleTimes() throws Exception {
+        final FreeStyleProject proj = jenkinsRule.getInstance().createProject(
+                FreeStyleProject.class, JENKINS_TEST_JOB);
+        final Map<String, Job> jobs = server.getJobs();
+        assertNotNull(jobs.get(proj.getName()));
+        server.close();
+        server.close();
+    }
 }

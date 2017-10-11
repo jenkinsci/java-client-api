@@ -2,6 +2,13 @@
 
 ## Release 0.3.8 (NOT RELEASED YET)
 
+
+ * [Fixed Issue 298][issue-298]
+   
+   Added Closeable support to JenkinsServer and JenkinsHttpClient so that
+   underlying resources can be cleaned up when instances no longer required
+
+
  * [JENKINS-46472](https://issues.jenkins-ci.org/browse/JENKINS-46472)
 
    Added ability to modify offline cause for offline computers.

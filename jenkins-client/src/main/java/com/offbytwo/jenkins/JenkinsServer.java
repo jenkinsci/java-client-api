@@ -43,11 +43,12 @@ import com.offbytwo.jenkins.model.Queue;
 import com.offbytwo.jenkins.model.QueueItem;
 import com.offbytwo.jenkins.model.QueueReference;
 import com.offbytwo.jenkins.model.View;
+import java.io.Closeable;
 
 /**
  * The main starting point for interacting with a Jenkins server.
  */
-public class JenkinsServer {
+public class JenkinsServer implements Closeable {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private final JenkinsHttpClient client;
@@ -881,6 +882,18 @@ public class JenkinsServer {
         client.post(UrlUtils.toJobBaseUrl(folder, oldJobName) 
             + "/doRename?newName=" + EncodingUtils.encodeParam(newJobName),
                crumbFlag);
+    }
+    
+    
+    
+    /**
+     * Closes underlying resources.
+     * Closed instances should no longer be used
+     * Closing an already closed instance has no side effects
+     */
+    @Override
+    public void close() {
+        client.close();
     }
 
 
