@@ -51,6 +51,16 @@ public class JenkinsHttpClientTest {
         final String s = jclient.get("job/someJob");
         assertEquals("someJson", s);
     }
+    
+    
+    
+    @Test(expected=IllegalStateException.class)
+    public void testClose() throws Exception {
+        final JenkinsHttpClient jclient = new JenkinsHttpClient(new URI(URI));
+        jclient.close();
+        jclient.close(); //check multiple calls yield no errors
+        jclient.get("job/someJob");       
+    }
 
 
 }

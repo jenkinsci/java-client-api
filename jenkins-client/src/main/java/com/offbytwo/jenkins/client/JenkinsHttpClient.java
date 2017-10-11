@@ -49,11 +49,12 @@ import java.util.Map;
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import com.offbytwo.jenkins.client.util.ResponseUtils;
 import com.offbytwo.jenkins.client.util.UrlUtils;
+import java.io.Closeable;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 //import com.offbytwo.jenkins.client.util.HttpResponseContentExtractor;
 
-public class JenkinsHttpClient {
+public class JenkinsHttpClient implements Closeable {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private URI uri;
@@ -498,7 +499,27 @@ public class JenkinsHttpClient {
         return !EMPTY_VERSION.equals( this.jenkinsVersion );
     }
     
+    
+    
+    
+    /**
+     * Closes underlying resources.
+     * Any I/O errors whilst closing are logged with debug log level
+     * Closed instances should no longer be used
+     * Closing an already closed instance has no side effects
+     */
+    @Override
+    public void close() {
+        try {
+            client.close();
+        } catch (final IOException ex) {
+            LOGGER.debug("I/O exception closing client", ex);
+        }        
+    }
+    
 
+    
+    
     private void releaseConnection(HttpRequestBase httpRequestBase) {
         httpRequestBase.releaseConnection();
     }
@@ -524,4 +545,6 @@ public class JenkinsHttpClient {
     protected void setLocalContext(HttpContext localContext) {
         this.localContext = localContext;
     }
+
+    
 }

@@ -32,6 +32,7 @@ import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.JobWithDetails;
 import com.offbytwo.jenkins.model.MainView;
 import com.offbytwo.jenkins.model.View;
+import java.net.URI;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -327,6 +328,20 @@ public class JenkinsServerTest extends BaseUnitTest {
         verify( client, times( 1 )).getJenkinsVersion();
         
     }
+    
+    
+    @Test(expected=IllegalStateException.class)
+    public void testClose() throws Exception {
+        final String uri = "http://localhost/jenkins";
+        JenkinsServer srv = new JenkinsServer(new URI(uri));
+        srv.close();
+        srv.close(); //check multiple calls yield no errors
+        srv.getComputers();
+    }
+    
+    
+  
+    
     
     private void shouldGetFolderJobs(String... jobNames) throws IOException {
         // given
