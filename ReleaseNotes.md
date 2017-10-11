@@ -2,6 +2,38 @@
 
 ## Release 0.3.8 (NOT RELEASED YET)
 
+ * [JENKINS-46472](https://issues.jenkins-ci.org/browse/JENKINS-46472)
+
+   Added ability to modify offline cause for offline computers.
+
+   ```java
+    ComputerWithDetails computer = ...
+    if (!computer.getOffline()){
+      computer.toggleOffline();
+      computer.changeOfflineCause("Scheduled for termination");
+    }
+   ```
+
+ * [JENKINS-46445](https://issues.jenkins-ci.org/browse/JENKINS-46445)
+
+   Add support for both client TLS and basic authentication.
+
+   ```java
+    HttpClientBuilder builder = HttpClientBuilder.create();
+    builder.setSslcontext(sslContext);
+    JenkinsHttpClient client = new JenkinsHttpClient(uri, builder, username, password);
+    JenkinsServer jenkins = new JenkinsServer(client);
+   ```
+
+* [Refactor Issue 291][issue-291]
+   
+   Useful utility methods refactored into utility classes.
+
+ * [Fixed Issue 282][issue-282]
+   
+   `NullPointerException` may be thrown if `upstreamUrl` is `null` when
+   converting cause to `BuildCause` object.
+
  * [Fixed Issue 268][issue-268]
   
    NullPointerException is thrown unless isRunning() is called first.
