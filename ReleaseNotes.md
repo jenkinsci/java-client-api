@@ -3,6 +3,13 @@
 ## Release 0.3.8 (NOT RELEASED YET)
 
 
+ * [Fixed Issue 301][issue-301]
+   
+   Decoupled JenkinsServer and JenkinsHttpClient by extracting JenkinsHttpClient 
+   methods into public interface so that different implementations can be plugged
+   into JenkinsServer if required
+
+
  * [Fixed Issue 298][issue-298]
    
    Added Closeable support to JenkinsServer and JenkinsHttpClient so that
