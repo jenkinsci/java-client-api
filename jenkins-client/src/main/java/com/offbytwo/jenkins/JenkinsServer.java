@@ -25,6 +25,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
+import com.offbytwo.jenkins.client.JenkinsHttpConnection;
 import com.offbytwo.jenkins.client.util.EncodingUtils;
 import com.offbytwo.jenkins.client.util.UrlUtils;
 import com.offbytwo.jenkins.helper.JenkinsVersion;
@@ -51,7 +52,10 @@ import java.io.Closeable;
 public class JenkinsServer implements Closeable {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
-    private final JenkinsHttpClient client;
+    /**
+     * The transport client instance to use.
+     */
+    private final JenkinsHttpConnection client;
 
     /**
      * Create a new Jenkins server reference given only the server address
@@ -80,7 +84,7 @@ public class JenkinsServer implements Closeable {
      *
      * @param client Specialized client to use.
      */
-    public JenkinsServer(JenkinsHttpClient client) {
+    public JenkinsServer(final JenkinsHttpConnection client) {
         this.client = client;
     }
 

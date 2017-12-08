@@ -2,6 +2,7 @@ package com.offbytwo.jenkins.model;
 
 import com.offbytwo.jenkins.BaseUnitTest;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
+import com.offbytwo.jenkins.client.JenkinsHttpConnection;
 import com.offbytwo.jenkins.helper.BuildConsoleStreamListener;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.mock;
  */
 public class BuildWithDetailsTest extends BaseUnitTest {
 
-    private JenkinsHttpClient client;
+    private JenkinsHttpConnection client;
     private BuildWithDetails buildWithDetails;
 
     @Before

@@ -27,6 +27,7 @@ import org.mockito.ArgumentCaptor;
 
 import com.google.common.base.Optional;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
+import com.offbytwo.jenkins.client.JenkinsHttpConnection;
 import com.offbytwo.jenkins.model.FolderJob;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.JobWithDetails;
@@ -41,7 +42,7 @@ import static org.mockito.Mockito.when;
 
 public class JenkinsServerTest extends BaseUnitTest {
 
-    private JenkinsHttpClient client = mock(JenkinsHttpClient.class);
+    private JenkinsHttpConnection client = mock(JenkinsHttpClient.class);
     private JenkinsServer server = new JenkinsServer(client);
     private MainView mainView = new MainView(new Job("Hello", "http://localhost/job/Hello/"));
 
