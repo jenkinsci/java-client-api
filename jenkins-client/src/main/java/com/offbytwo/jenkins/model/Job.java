@@ -6,18 +6,21 @@
 
 package com.offbytwo.jenkins.model;
 
-import static org.apache.commons.lang.StringUtils.join;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import com.google.common.escape.Escaper;
-import com.google.common.net.UrlEscapers;
 
 public class Job extends BaseModel {
 
@@ -27,7 +30,7 @@ public class Job extends BaseModel {
 
     public Job() {
     }
-    
+
     public Job(String name, String url) {
         this();
         this.name = name;
@@ -49,7 +52,7 @@ public class Job extends BaseModel {
     public String getUrl() {
         return url;
     }
-    
+
     public String getFullName() {
         return fullName;
     }
@@ -60,9 +63,9 @@ public class Job extends BaseModel {
 
     /**
      * Get a file from workspace.
-     * 
+     *
      * @param fileName The name of the file to download from workspace. You can
-     *            also access files which are in sub folders of the workspace.
+     *                 also access files which are in sub folders of the workspace.
      * @return The string which contains the content of the file.
      * @throws IOException in case of an error.
      */
@@ -79,7 +82,7 @@ public class Job extends BaseModel {
 
     /**
      * Trigger a build without parameters
-     * 
+     *
      * @return {@link QueueReference} for further analysis of the queued build.
      * @throws IOException in case of an error.
      */
@@ -91,7 +94,7 @@ public class Job extends BaseModel {
 
     /**
      * Trigger a build with crumbFlag.
-     * 
+     *
      * @param crumbFlag true or false.
      * @return {@link QueueReference} for further analysis of the queued build.
      * @throws IOException in case of an error.
@@ -115,15 +118,19 @@ public class Job extends BaseModel {
     /**
      * Trigger a parameterized build
      *
-     * @param params the job parameters
+     * @param params    the job parameters
      * @param crumbFlag determines whether crumb flag is used
      * @return {@link QueueReference} for further analysis of the queued build.
      * @throws IOException in case of an error.
      */
     public QueueReference build(Map<String, String> params, boolean crumbFlag) throws IOException {
-        String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
-        ExtractHeader location = client.post(url + "buildWithParameters?" + qs, null, ExtractHeader.class, crumbFlag);
-        return new QueueReference(location.getLocation());
+        List<NameValuePair> paramsList = new ArrayList<>(Collections2.transform(params.entrySet(),
+                new MapEntryToNameValuePair()));
+        HttpResponse response = this.client
+                .post_form_with_result(this.url + "buildWithParameters", paramsList, crumbFlag);
+        String location = response.getFirstHeader("Location").getValue();
+        EntityUtils.consume(response.getEntity());
+        return new QueueReference(location);
     }
 
     @Override
@@ -152,11 +159,10 @@ public class Job extends BaseModel {
         return result;
     }
 
-    private static class MapEntryToQueryStringPair implements Function<Map.Entry<String, String>, String> {
+    private static class MapEntryToNameValuePair implements Function<Map.Entry<String, String>, NameValuePair> {
         @Override
-        public String apply(Map.Entry<String, String> entry) {
-            Escaper escaper = UrlEscapers.urlFormParameterEscaper();
-            return escaper.escape(entry.getKey()) + "=" + escaper.escape(entry.getValue());
+        public NameValuePair apply(Map.Entry<String, String> entry) {
+            return new BasicNameValuePair(entry.getKey(), entry.getValue());
         }
     }
 }
