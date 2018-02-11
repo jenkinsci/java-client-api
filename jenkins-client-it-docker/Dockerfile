@@ -1,5 +1,5 @@
-FROM jenkins:1.651.3
+FROM jenkins:2.60.3-alpine
 MAINTAINER "docker@soebes.de"
+COPY ./config.xml /usr/share/jenkins/config.xml
 COPY ./plugins.txt /usr/share/jenkins/ref/plugins.txt
-COPY ./config.xml /usr/share/jenkins/ref/config.xml
-RUN /usr/local/bin/plugins.sh /usr/share/jenkins/ref/plugins.txt
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
