@@ -1,4 +1,4 @@
-FROM jenkins:2.60.3-alpine
+FROM jenkins/jenkins:2.89.3-alpine
 MAINTAINER "docker@soebes.de"
 COPY ./config.xml /usr/share/jenkins/config.xml
 COPY ./plugins.txt /usr/share/jenkins/ref/plugins.txt
