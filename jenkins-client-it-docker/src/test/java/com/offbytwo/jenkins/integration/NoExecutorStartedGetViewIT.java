@@ -30,7 +30,7 @@ public class NoExecutorStartedGetViewIT extends AbstractJenkinsIntegrationCase {
     @Test
     public void viewNameShouldBeTestView() {
         assertThat(views.containsKey("Test-View")).isTrue();
-        assertThat(views.containsKey("All")).isTrue();
+        assertThat(views.containsKey("all")).isTrue();
     }
 
     @Test

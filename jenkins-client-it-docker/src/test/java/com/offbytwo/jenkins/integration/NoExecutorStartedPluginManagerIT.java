@@ -13,86 +13,110 @@ import com.offbytwo.jenkins.helper.JenkinsVersion;
 import com.offbytwo.jenkins.model.Plugin;
 import com.offbytwo.jenkins.model.PluginManager;
 
-@Test(groups = { Groups.NO_EXECUTOR_GROUP })
-public class NoExecutorStartedPluginManagerIT extends AbstractJenkinsIntegrationCase {
+@Test( groups = { Groups.NO_EXECUTOR_GROUP } )
+public class NoExecutorStartedPluginManagerIT
+    extends AbstractJenkinsIntegrationCase
+{
 
     private PluginManager pluginManager;
 
     @BeforeMethod
-    public void beforeMethod() throws IOException {
+    public void beforeMethod()
+        throws IOException
+    {
         pluginManager = jenkinsServer.getPluginManager();
     }
 
     @Test
-    public void getPluginsShouldReturn9ForJenkins20() {
+    public void getPluginsShouldReturn9ForJenkins20()
+    {
         // TODO: Check why there is such a difference in the number of Plugins?
-        if (jenkinsServer.getVersion().isLessThan("2.0")) {
-            throw new SkipException("Not Version 2.0 (" + jenkinsServer.getVersion() + ")");
+        if ( jenkinsServer.getVersion().isLessThan( "2.0" ) )
+        {
+            throw new SkipException( "Not Version 2.0 (" + jenkinsServer.getVersion() + ")" );
         }
-        assertThat(pluginManager.getPlugins()).hasSize(9);
+        assertThat( pluginManager.getPlugins() ).hasSize( 21 );
     }
 
     @Test
-    public void getPluginsShouldReturn27ForJenkins1651() {
+    public void getPluginsShouldReturn27ForJenkins1651()
+    {
         JenkinsVersion jv = jenkinsServer.getVersion();
-        if (jv.isLessThan("1.651") && jv.isGreaterThan("1.651.3")) {
-            throw new SkipException("Not Version 1.651 (" + jv.toString() + ")");
+        if ( jv.isLessThan( "1.651" ) && jv.isGreaterThan( "1.651.3" ) )
+        {
+            throw new SkipException( "Not Version 1.651 (" + jv.toString() + ")" );
         }
-        assertThat(pluginManager.getPlugins()).hasSize(27);
+        assertThat( pluginManager.getPlugins() ).hasSize( 21 );
     }
 
-    private Plugin createPlugin(String shortName, String version) {
+    private Plugin createPlugin( String shortName, String version )
+    {
         Plugin result = new Plugin();
-        result.setShortName(shortName);
-        result.setVersion(version);
+        result.setShortName( shortName );
+        result.setVersion( version );
         return result;
     }
 
     @Test
-    public void getPluginsShouldReturnTheListOfInstalledPluginsForJenkins20() {
+    public void getPluginsShouldReturnTheListOfInstalledPluginsForJenkins20()
+    {
 
-        if (jenkinsServer.getVersion().isLessThan("2.0")) {
-            throw new SkipException("Not Version 2.0 (" + jenkinsServer.getVersion() + ")");
+        if ( jenkinsServer.getVersion().isLessThan( "2.0" ) )
+        {
+            throw new SkipException( "Not Version 2.0 (" + jenkinsServer.getVersion() + ")" );
         }
 
         // TODO: The list of plugins is contained in the plugin.txt
         // which should be read and used as base of comparison.
         // instead of maintaining at two locations.
         //@formatter:off
-        Plugin[] expectedPlugins = { 
-            createPlugin("token-macro", "1.12.1"), 
-            createPlugin("testng-plugin", "1.10"),
-            createPlugin("job-dsl", "1.41"), 
-            createPlugin("junit", "1.10"), 
-            createPlugin("jacoco", "1.0.19"),
-            createPlugin("config-file-provider", "2.10.0"), 
-            createPlugin("timestamper", "1.7.2"),
-            createPlugin("credentials", "1.24"), 
-            createPlugin("throttle-concurrents", "1.9.0"),
-            createPlugin("cloudbees-folder", "5.12"), 
+        Plugin[] expectedPlugins = {
+            createPlugin("workflow-support", "2.18"), 
+            createPlugin("token-macro", "2.3"), 
+            createPlugin("testng-plugin", "1.14"),
+            createPlugin("job-dsl", "1.68"), 
+            createPlugin("junit", "1.24"), 
+            createPlugin("jacoco", "2.2.1"),
+            createPlugin("config-file-provider", "2.17"), 
+            createPlugin("timestamper", "1.8.9"),
+            createPlugin("credentials", "2.1.6"), 
+            createPlugin("durable-task", "1.17"),
+            createPlugin("throttle-concurrents", "2.0.1"),
+            createPlugin("cloudbees-folder", "6.3"),
+            createPlugin("workflow-durable-task-step", "2.18"),
+            createPlugin("scm-api", "2.2.6"),
+            createPlugin("workflow-job", "2.17"), 
+            createPlugin("structs", "1.14"),
+            createPlugin("ssh-credentials", "1.13"),
+            createPlugin("workflow-api", "2.25")
         };
         //@formatter:on
         List<Plugin> plugins = pluginManager.getPlugins();
 
-        for (Plugin plugin : plugins) {
+        for ( Plugin plugin : plugins )
+        {
             boolean found = false;
-            for (int i = 0; i < expectedPlugins.length; i++) {
-                if (plugin.getShortName().equals(expectedPlugins[i].getShortName())
-                        && plugin.getVersion().equals(expectedPlugins[i].getVersion())) {
+            for ( int i = 0; i < expectedPlugins.length; i++ )
+            {
+                if ( plugin.getShortName().equals( expectedPlugins[i].getShortName() )
+                    && plugin.getVersion().equals( expectedPlugins[i].getVersion() ) )
+                {
                     found = true;
                 }
             }
-            assertThat(found).isTrue().as("Plugin shortName:{} version:{} couldn't be found.", plugin.getShortName(),
-                    plugin.getVersion());
+            assertThat( found ).as( "Plugin shortName:%s version:%s couldn't be found.", plugin.getShortName(),
+                                    plugin.getVersion() ).isTrue();
         }
 
     }
 
     @Test
-    public void getPluginsShouldReturnTheListOfInstalledPluginsFor1651() {
+    public void getPluginsShouldReturnTheListOfInstalledPluginsFor1651()
+    {
         JenkinsVersion jv = jenkinsServer.getVersion();
-        if (jv.isLessThan("1.651") && jv.isGreaterThan("1.651.3")) {
-            throw new SkipException("Not Version 1.651 (" + jv + ")");
+        if ( jv.isLessThan( "1.651" ) && jv.isGreaterThan( "1.651.3" ) )
+        {
+            throw new SkipException( "Not Version 1.651 (" + jv + ")" );
         }
 
         // TODO: Check why there is such a difference in the number of Plugins?
@@ -101,6 +125,7 @@ public class NoExecutorStartedPluginManagerIT extends AbstractJenkinsIntegration
         // instead of maintaining at two locations.
         //@formatter:off
         Plugin[] expectedPlugins = { 
+            createPlugin("workflow-support", "2.18"), 
             createPlugin("token-macro", "1.12.1"), 
             createPlugin("translation", "1.10"),
             createPlugin("testng-plugin", "1.10"), 
@@ -132,16 +157,19 @@ public class NoExecutorStartedPluginManagerIT extends AbstractJenkinsIntegration
         //@formatter:on
         List<Plugin> plugins = pluginManager.getPlugins();
 
-        for (Plugin plugin : plugins) {
+        for ( Plugin plugin : plugins )
+        {
             boolean found = false;
-            for (int i = 0; i < expectedPlugins.length; i++) {
-                if (plugin.getShortName().equals(expectedPlugins[i].getShortName())
-                        && plugin.getVersion().equals(expectedPlugins[i].getVersion())) {
+            for ( int i = 0; i < expectedPlugins.length; i++ )
+            {
+                if ( plugin.getShortName().equals( expectedPlugins[i].getShortName() )
+                    && plugin.getVersion().equals( expectedPlugins[i].getVersion() ) )
+                {
                     found = true;
                 }
             }
-            assertThat(found).isTrue().as("Plugin shortName:{} version:{} couldn't be found.", plugin.getShortName(),
-                    plugin.getVersion());
+            assertThat( found ).as( "Plugin shortName:%s version:%s couldn't be found.", plugin.getShortName(),
+                                             plugin.getVersion() ).isTrue();
         }
     }
 
