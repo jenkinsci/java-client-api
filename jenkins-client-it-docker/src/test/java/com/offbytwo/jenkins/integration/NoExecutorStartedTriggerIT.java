@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 import com.offbytwo.jenkins.model.Job;
 
 @Test(groups = { Groups.NO_EXECUTOR_GROUP })
-public class NoExecutorStartedTrigger extends AbstractJenkinsIntegrationCase {
+public class NoExecutorStartedTriggerIT extends AbstractJenkinsIntegrationCase {
 
     private Job pluginManager;
 
