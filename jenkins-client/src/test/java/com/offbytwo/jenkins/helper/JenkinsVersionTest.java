@@ -136,4 +136,12 @@ public class JenkinsVersionTest {
         assertThat(a.isLessThan(b)).isFalse();
     }
 
+    @Test
+    public void xTest() {
+        JenkinsVersion a = new JenkinsVersion("2.89.3");
+        JenkinsVersion b = new JenkinsVersion("1.651.3");
+        assertThat(a.isGreaterThan( b )).isTrue();
+        assertThat(a.isLessThan( b )).isFalse();
+        assertThat(a.isEqualTo( b )).isFalse();
+    }
 }
