@@ -76,7 +76,7 @@ public class NoExecutorStartedPluginManagerIT
             createPlugin("workflow-support", "2.18"), 
             createPlugin("workflow-step-api", "2.14"), 
             createPlugin("workflow-durable-task", "2.18"), 
-            createPlugin("workflow-durable-task-step", "2.18"), 
+            createPlugin("workflow-durable-task-step", "2.19"), 
             createPlugin("token-macro", "2.3"), 
             createPlugin("translation", "1.10"),
             createPlugin("testng-plugin", "1.14"), 
@@ -104,7 +104,7 @@ public class NoExecutorStartedPluginManagerIT
             createPlugin("ssh-slaves", "1.9"),
             createPlugin("ssh-credentials", "1.13"), 
             createPlugin("cloudbees-folder", "6.3"), 
-            createPlugin("durable-task", "1.17"), 
+            createPlugin("durable-task", "1.18"), 
             createPlugin("scm-api", "2.2.6"), 
             createPlugin("structs", "1.14"), 
 
