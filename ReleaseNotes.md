@@ -2,6 +2,10 @@
 
 ## Release 0.3.8 (NOT RELEASED YET)
 
+ * [Fixed Issue 289][issue-289]
+   
+   Added a build.stop() method which takes in a crumbFlag
+
 
  * [Fixed Issue 301][issue-301]
    

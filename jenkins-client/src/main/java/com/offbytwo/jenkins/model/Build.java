@@ -149,6 +149,33 @@ public class Build extends BaseModel {
         return "";
     }
 
+    /** Stops the build which is currently in progress.  This version takes in
+     * a crumbFlag.  In some cases , an error is thrown which reads
+     * "No valid crumb was included in the request".  This stop method is used incase
+     * those issues occur
+     *
+     * @param crumbFlag flag used to specify if a crumb is passed into for the request
+     * @return the client url
+     * @throws HttpResponseException
+     * @throws IOException
+     */
+    public String Stop(boolean crumbFlag) throws HttpResponseException, IOException {
+        try {
+
+            return client.get(url + "stop");
+        } catch (IOException ex) {
+            if (((HttpResponseException) ex).getStatusCode() == 405) {
+                stopPost(crumbFlag);
+                return "";
+            }
+        }
+        return "";
+    }
+
+    private void stopPost(boolean crumbFlag) throws HttpResponseException, IOException {
+        client.post(url + "stop", crumbFlag);
+    }
+
     private void stopPost() throws HttpResponseException, IOException {
         client.post(url + "stop");
     }
