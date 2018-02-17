@@ -700,7 +700,7 @@ public class JenkinsServer implements Closeable {
      * @throws IOException in case of an error.
      */
     public void deleteJob(String jobName) throws IOException {
-        client.post("/job/" + EncodingUtils.encode(jobName) + "/doDelete");
+        deleteJob(jobName, false);
     }
 
     /**
@@ -722,7 +722,7 @@ public class JenkinsServer implements Closeable {
      * @throws IOException in case of an error.
      */
     public void disableJob(String jobName) throws IOException {
-        client.post("/job/" + EncodingUtils.encode(jobName) + "/disable");
+        disableJob(jobName, false);
     }
 
     /**
@@ -744,7 +744,7 @@ public class JenkinsServer implements Closeable {
      * @throws IOException In case of an failure.
      */
     public void enableJob(String jobName) throws IOException {
-        client.post("/job/" + EncodingUtils.encode(jobName) + "/enable");
+        enableJob( jobName, false );
     }
 
     /**
