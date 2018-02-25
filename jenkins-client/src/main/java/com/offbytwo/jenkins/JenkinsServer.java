@@ -887,7 +887,13 @@ public class JenkinsServer implements Closeable {
             + "/doRename?newName=" + EncodingUtils.encodeParam(newJobName),
                crumbFlag);
     }
-    
+
+    /**
+     * @return current JenkinsHttpClient instance
+     */
+    protected JenkinsHttpClient getClient() {
+        return client;
+    }
     
     
     /**
