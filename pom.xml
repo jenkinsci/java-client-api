@@ -5,7 +5,8 @@
   ~ Distributed under the MIT license: http://opensource.org/licenses/MIT
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -169,7 +170,7 @@
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.5.2</version>
+        <version>5.7.0</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
@@ -213,6 +214,12 @@
         <artifactId>xmlParserAPIs</artifactId>
         <version>2.6.1</version>
       </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -240,9 +247,11 @@
           <version>3.1.0</version>
           <executions>
             <!--
-              ! here we override the super-pom attach-sources execution id which
+              ! here we override the super-pom attach-sources execution id 
+              which
               ! calls sources:jar goal. That goals forks the lifecycle,
-              ! causing the generate-sources phase to be called twice for the install goal.
+              ! causing the generate-sources phase to be called twice for 
+              the install goal.
               ! With Maven 3.4.0 this will become superfluous.
             -->
             <execution>
