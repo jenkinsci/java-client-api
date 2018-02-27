@@ -6,6 +6,7 @@
 
 package com.offbytwo.jenkins.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
@@ -124,6 +125,8 @@ public class BuildWithDetails extends Build {
     private String consoleOutputText;
     private String consoleOutputHtml;
     private BuildChangeSet changeSet;
+    @JsonProperty("changeSets")
+    private List<BuildChangeSet> changeSets;
     private String builtOn;
     private List<BuildChangeSetAuthor> culprits;
 
@@ -467,12 +470,54 @@ public class BuildWithDetails extends Build {
     }
 
 
+  /**
+   * Returns the change set of a build if available.
+   * 
+   * If a build performs several scm checkouts (i.e. pipeline builds), the change set of the first
+   * checkout is returned. To get the complete list of change sets for all checkouts, use
+   * {@link #getChangeSets()}
+   * 
+   * If no checkout is performed, null is returned.
+   * 
+   * @return The change set of the build.
+   * 
+   */
     public BuildChangeSet getChangeSet() {
-        return changeSet;
+        BuildChangeSet result;
+        if (changeSet != null) {
+            result = changeSet;
+        } else if (changeSets != null && !changeSets.isEmpty()) {
+            result = changeSets.get(0);
+        } else {
+            result = null;
+        }
+        return result;
     }
 
     public void setChangeSet(BuildChangeSet changeSet) {
         this.changeSet = changeSet;
+    }
+
+  /**
+   * Returns the complete list of change sets for all checkout the build has performed. If no
+   * checkouts have been performed, returns null.
+   * 
+   * @return The complete list of change sets of the build.
+   */
+    public List<BuildChangeSet> getChangeSets() {
+        List<BuildChangeSet> result;
+        if (changeSets != null) {
+            result = changeSets;
+        } else if (changeSet != null) {
+            result = Collections.singletonList(changeSet);
+        } else {
+            result = null;
+	}
+        return result;
+    }
+
+    public void setChangeSets(List<BuildChangeSet> changeSets) {
+        this.changeSets = changeSets;
     }
 
     public List<BuildChangeSetAuthor> getCulprits() {
@@ -527,6 +572,11 @@ public class BuildWithDetails extends Build {
             if (other.changeSet != null)
                 return false;
         } else if (!changeSet.equals(other.changeSet))
+            return false;
+        if (changeSets == null) {
+            if (other.changeSets != null)
+                return false;
+        } else if (!changeSets.equals(other.changeSets))
             return false;
         if (consoleOutputHtml == null) {
             if (other.consoleOutputHtml != null)
@@ -583,6 +633,7 @@ public class BuildWithDetails extends Build {
         result = prime * result + (building ? 1231 : 1237);
         result = prime * result + ((builtOn == null) ? 0 : builtOn.hashCode());
         result = prime * result + ((changeSet == null) ? 0 : changeSet.hashCode());
+        result = prime * result + ((changeSets == null) ? 0 : changeSets.hashCode());
         result = prime * result + ((consoleOutputHtml == null) ? 0 : consoleOutputHtml.hashCode());
         result = prime * result + ((consoleOutputText == null) ? 0 : consoleOutputText.hashCode());
         result = prime * result + ((culprits == null) ? 0 : culprits.hashCode());
