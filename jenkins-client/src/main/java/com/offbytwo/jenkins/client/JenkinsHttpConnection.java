@@ -7,6 +7,7 @@ package com.offbytwo.jenkins.client;
 
 import com.offbytwo.jenkins.model.BaseModel;
 import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -108,6 +109,21 @@ public interface JenkinsHttpConnection extends Closeable {
      * @throws IOException in case of an error.
      */
     <R extends BaseModel, D> R post(String path, D data, Class<R> cls, boolean crumbFlag) throws IOException;
+
+    /**
+     * Perform a POST request and parse the response to the given class
+     *
+     * @param path path to request, can be relative or absolute
+     * @param data data to post
+     * @param cls class of the response
+     * @param fileParams file parameters
+     * @param <R> type of the response
+     * @param <D> type of the data
+     * @param crumbFlag true / false.
+     * @return an instance of the supplied class
+     * @throws IOException in case of an error.
+     */
+    <R extends BaseModel, D> R post(String path, D data, Class<R> cls, Map<String, File> fileParams, boolean crumbFlag) throws IOException;
 
     /**
      * Perform POST request that takes no parameters and returns no response

@@ -215,7 +215,14 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
 
     /**
      * {@inheritDoc}
-     * @param fileParams the job file parameters
+     */
+    @Override
+    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls, boolean crumbFlag) throws IOException {
+        return post(path, data, cls, null, crumbFlag);
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public <R extends BaseModel, D> R post(String path, D data, Class<R> cls, Map<String, File> fileParams, boolean crumbFlag) throws IOException {
