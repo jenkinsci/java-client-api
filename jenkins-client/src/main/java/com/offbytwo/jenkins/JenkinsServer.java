@@ -25,6 +25,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
+import com.offbytwo.jenkins.client.JenkinsHttpConnection;
 import com.offbytwo.jenkins.client.util.EncodingUtils;
 import com.offbytwo.jenkins.client.util.UrlUtils;
 import com.offbytwo.jenkins.helper.JenkinsVersion;
@@ -43,14 +44,18 @@ import com.offbytwo.jenkins.model.Queue;
 import com.offbytwo.jenkins.model.QueueItem;
 import com.offbytwo.jenkins.model.QueueReference;
 import com.offbytwo.jenkins.model.View;
+import java.io.Closeable;
 
 /**
  * The main starting point for interacting with a Jenkins server.
  */
-public class JenkinsServer {
+public class JenkinsServer implements Closeable {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
-    private final JenkinsHttpClient client;
+    /**
+     * The transport client instance to use.
+     */
+    private final JenkinsHttpConnection client;
 
     /**
      * Create a new Jenkins server reference given only the server address
@@ -79,7 +84,7 @@ public class JenkinsServer {
      *
      * @param client Specialized client to use.
      */
-    public JenkinsServer(JenkinsHttpClient client) {
+    public JenkinsServer(final JenkinsHttpConnection client) {
         this.client = client;
     }
 
@@ -695,7 +700,7 @@ public class JenkinsServer {
      * @throws IOException in case of an error.
      */
     public void deleteJob(String jobName) throws IOException {
-        client.post("/job/" + EncodingUtils.encode(jobName) + "/doDelete");
+        deleteJob(jobName, false);
     }
 
     /**
@@ -717,7 +722,7 @@ public class JenkinsServer {
      * @throws IOException in case of an error.
      */
     public void disableJob(String jobName) throws IOException {
-        client.post("/job/" + EncodingUtils.encode(jobName) + "/disable");
+        disableJob(jobName, false);
     }
 
     /**
@@ -739,7 +744,7 @@ public class JenkinsServer {
      * @throws IOException In case of an failure.
      */
     public void enableJob(String jobName) throws IOException {
-        client.post("/job/" + EncodingUtils.encode(jobName) + "/enable");
+        enableJob( jobName, false );
     }
 
     /**
@@ -881,6 +886,18 @@ public class JenkinsServer {
         client.post(UrlUtils.toJobBaseUrl(folder, oldJobName) 
             + "/doRename?newName=" + EncodingUtils.encodeParam(newJobName),
                crumbFlag);
+    }
+    
+    
+    
+    /**
+     * Closes underlying resources.
+     * Closed instances should no longer be used
+     * Closing an already closed instance has no side effects
+     */
+    @Override
+    public void close() {
+        client.close();
     }
 
 

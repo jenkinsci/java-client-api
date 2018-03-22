@@ -172,7 +172,7 @@
       <dependency>
         <groupId>org.testng</groupId>
         <artifactId>testng</artifactId>
-        <version>6.8.21</version>
+        <version>6.14.2</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -291,7 +291,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.6.0</version>
+        <version>3.7.0</version>
       </plugin>
         <!--
           ! We define a newer version than in parent.

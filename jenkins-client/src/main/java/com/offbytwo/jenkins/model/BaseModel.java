@@ -6,28 +6,44 @@
 
 package com.offbytwo.jenkins.model;
 
-import com.offbytwo.jenkins.client.JenkinsHttpClient;
+import com.offbytwo.jenkins.client.JenkinsHttpConnection;
 
 /**
  * The base model.
- *
  */
 public class BaseModel {
 
+    /**
+     * The class.
+     */
     private String _class;
     
+    
+    /**
+     * Get the class.
+     * @return class
+     */
     public String get_class() {
         return _class;
     }
 
     //TODO: We should make this private
-    protected JenkinsHttpClient client;
+    protected JenkinsHttpConnection client;
 
-    public JenkinsHttpClient getClient() {
+    
+    /**
+     * Get the HTTP client.
+     * @return client
+     */
+    public JenkinsHttpConnection getClient() {
         return client;
     }
 
-    public void setClient(JenkinsHttpClient client) {
+    /**
+     * Set the HTTP client.
+     * @param client 
+     */
+    public void setClient(final JenkinsHttpConnection client) {
         this.client = client;
     }
 }

@@ -27,11 +27,13 @@ import org.mockito.ArgumentCaptor;
 
 import com.google.common.base.Optional;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
+import com.offbytwo.jenkins.client.JenkinsHttpConnection;
 import com.offbytwo.jenkins.model.FolderJob;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.JobWithDetails;
 import com.offbytwo.jenkins.model.MainView;
 import com.offbytwo.jenkins.model.View;
+import java.net.URI;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -40,7 +42,7 @@ import static org.mockito.Mockito.when;
 
 public class JenkinsServerTest extends BaseUnitTest {
 
-    private JenkinsHttpClient client = mock(JenkinsHttpClient.class);
+    private JenkinsHttpConnection client = mock(JenkinsHttpClient.class);
     private JenkinsServer server = new JenkinsServer(client);
     private MainView mainView = new MainView(new Job("Hello", "http://localhost/job/Hello/"));
 
@@ -327,6 +329,20 @@ public class JenkinsServerTest extends BaseUnitTest {
         verify( client, times( 1 )).getJenkinsVersion();
         
     }
+    
+    
+    @Test(expected=IllegalStateException.class)
+    public void testClose() throws Exception {
+        final String uri = "http://localhost/jenkins";
+        JenkinsServer srv = new JenkinsServer(new URI(uri));
+        srv.close();
+        srv.close(); //check multiple calls yield no errors
+        srv.getComputers();
+    }
+    
+    
+  
+    
     
     private void shouldGetFolderJobs(String... jobNames) throws IOException {
         // given
