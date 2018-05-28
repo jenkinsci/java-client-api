@@ -1,5 +1,6 @@
 package com.offbytwo.jenkins;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -87,6 +88,49 @@ public class JenkinsTriggerHelper {
         QueueReference queueRef = job.build(params, crumbFlag);
 
         return triggerJobAndWaitUntilFinished(jobName, queueRef);
+    }
+
+    /**
+     * This method will trigger a build of the given job and will wait until the
+     * builds is ended or if the build has been cancelled.
+     *
+     * @param jobName The name of the job which should be triggered.
+     * @param params the job parameters
+     * @param fileParams the job file parameters
+     * @param crumbFlag set to <code>true</code> or <code>false</code>.
+     * @return In case of an cancelled job you will get
+     *         {@link BuildWithDetails#getResult()}
+     *         {@link BuildResult#CANCELLED}. So you have to check first if the
+     *         build result is {@code CANCELLED}.
+     * @throws IOException in case of errors.
+     * @throws InterruptedException In case of interrupts.
+     */
+    public BuildWithDetails triggerJobAndWaitUntilFinished(String jobName, Map<String, String> params,
+                                                           Map<String, File> fileParams,
+                                                           boolean crumbFlag) throws IOException, InterruptedException {
+        JobWithDetails job = this.server.getJob(jobName);
+        QueueReference queueRef = job.build(params, fileParams, crumbFlag);
+
+        return triggerJobAndWaitUntilFinished(jobName, queueRef);
+    }
+
+    /**
+     * This method will trigger a build of the given job and will wait until the
+     * builds is ended or if the build has been cancelled.
+     *
+     * @param jobName The name of the job which should be triggered.
+     * @param params the job parameters
+     * @param fileParams the job file parameters
+     * @return In case of an cancelled job you will get
+     *         {@link BuildWithDetails#getResult()}
+     *         {@link BuildResult#CANCELLED}. So you have to check first if the
+     *         build result is {@code CANCELLED}.
+     * @throws IOException in case of errors.
+     * @throws InterruptedException In case of interrupts.
+     */
+    public BuildWithDetails triggerJobAndWaitUntilFinished(String jobName, Map<String, String> params,
+                                                           Map<String, File> fileParams) throws IOException, InterruptedException {
+        return triggerJobAndWaitUntilFinished(jobName, params, fileParams, false);
     }
 
     /**

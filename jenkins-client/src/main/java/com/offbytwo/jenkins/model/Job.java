@@ -9,6 +9,7 @@ package com.offbytwo.jenkins.model;
 import static org.apache.commons.lang.StringUtils.join;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -102,27 +103,52 @@ public class Job extends BaseModel {
     }
 
     /**
-     * Trigger a parameterized build
+     * Trigger a parameterized build with string parameters only
      *
      * @param params the job parameters
      * @return {@link QueueReference} for further analysis of the queued build.
      * @throws IOException in case of an error.
      */
     public QueueReference build(Map<String, String> params) throws IOException {
-        return build(params, false);
+        return build(params, null,false);
     }
 
     /**
-     * Trigger a parameterized build
+     * Trigger a parameterized build with string parameters only
      *
      * @param params the job parameters
-     * @param crumbFlag determines whether crumb flag is used
+     * @param crumbFlag true or false.
      * @return {@link QueueReference} for further analysis of the queued build.
      * @throws IOException in case of an error.
      */
     public QueueReference build(Map<String, String> params, boolean crumbFlag) throws IOException {
+        return build(params,null,crumbFlag);
+    }
+
+    /**
+     * Trigger a parameterized build with file parameters
+     *
+     * @param params the job parameters
+     * @param fileParams the job file parameters
+     * @return {@link QueueReference} for further analysis of the queued build.
+     * @throws IOException in case of an error.
+     */
+    public QueueReference build(Map<String, String> params, Map<String, File> fileParams) throws IOException {
+        return build(params,fileParams,false);
+    }
+
+    /**
+     * Trigger a parameterized build with file parameters and crumbFlag
+     *
+     * @param params the job parameters
+     * @param fileParams the job file parameters
+     * @param crumbFlag determines whether crumb flag is used
+     * @return {@link QueueReference} for further analysis of the queued build.
+     * @throws IOException in case of an error.
+     */
+    public QueueReference build(Map<String, String> params, Map<String, File> fileParams, boolean crumbFlag) throws IOException {
         String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
-        ExtractHeader location = client.post(url + "buildWithParameters?" + qs, null, ExtractHeader.class, crumbFlag);
+        ExtractHeader location = client.post(url + "buildWithParameters?" + qs,null, ExtractHeader.class, fileParams, crumbFlag);
         return new QueueReference(location.getLocation());
     }
 
