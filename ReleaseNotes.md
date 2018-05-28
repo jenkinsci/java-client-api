@@ -112,8 +112,12 @@
 
 ### API Changes
 
- * ?
-
+ * [Fixed Issue 243](https://github.com/jenkinsci/java-client-api/issues/243) 
+ 
+    Added new methods to JenkinsServer for stopping and restarting Jenkins. The methods are restart(Boolean crumbFlag), safeRestart(Boolean crumbFlag), exit(Boolean crumbFlag) and safeExit(Boolean crumbFlag)
+	
+	Thanks for that to [Chids](https://github.com/Chids-gs).
+	
 ## Release 0.3.7
 
  * Changed Eclipse Formatting configuration.

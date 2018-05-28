@@ -901,4 +901,74 @@ public class JenkinsServer implements Closeable {
     }
 
 
+	/**
+	 * Restart Jenkins without waiting for any existing build to complete
+	 * 
+	 * @param crumbFlag
+	 *            <code>true</code> to add <b>crumbIssuer</b> <code>false</code>
+	 *            otherwise.
+	 * @throws IOException
+	 *             in case of an error.
+	 */
+	public void restart(Boolean crumbFlag) throws IOException {
+		try {
+			client.post("/restart", crumbFlag);
+		} catch (org.apache.http.client.ClientProtocolException e) {
+			LOGGER.error("restart()", e);
+		}
+	}
+
+	/**
+	 * safeRestart: Puts Jenkins into the quiet mode, wait for existing builds
+	 * to be completed, and then restart Jenkins
+	 * 
+	 * @param crumbFlag
+	 *            <code>true</code> to add <b>crumbIssuer</b> <code>false</code>
+	 *            otherwise.
+	 * @throws IOException
+	 *             in case of an error.
+	 */
+	public void safeRestart(Boolean crumbFlag) throws IOException {
+		try {
+			client.post("/safeRestart", crumbFlag);
+		} catch (org.apache.http.client.ClientProtocolException e) {
+			LOGGER.error("safeRestart()", e);
+		}
+	}
+
+	/**
+	 * Shutdown Jenkins without waiting for any existing build to complete
+	 * 
+	 * @param crumbFlag
+	 *            <code>true</code> to add <b>crumbIssuer</b> <code>false</code>
+	 *            otherwise.
+	 * @throws IOException
+	 *             in case of an error.
+	 */
+	//
+	public void exit(Boolean crumbFlag) throws IOException {
+		try {
+			client.post("/exit", crumbFlag);
+		} catch (org.apache.http.client.ClientProtocolException e) {
+			LOGGER.error("exit()", e);
+		}
+	}
+
+	/**
+	 * safeExit: Puts Jenkins into the quiet mode, wait for existing builds to
+	 * be completed, and then shut down Jenkins
+	 * 
+	 * @param crumbFlag
+	 *            <code>true</code> to add <b>crumbIssuer</b> <code>false</code>
+	 *            otherwise.
+	 * @throws IOException
+	 *             in case of an error.
+	 */
+	public void safeExit(Boolean crumbFlag) throws IOException {
+		try {
+			client.post("/safeExit", crumbFlag);
+		} catch (org.apache.http.client.ClientProtocolException e) {
+			LOGGER.error("safeExit()", e);
+		}
+	}
 }
