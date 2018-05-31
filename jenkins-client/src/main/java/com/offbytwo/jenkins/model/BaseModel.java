@@ -7,6 +7,7 @@
 package com.offbytwo.jenkins.model;
 
 import com.offbytwo.jenkins.client.JenkinsHttpConnection;
+import java.util.function.Predicate;
 
 /**
  * The base model.
@@ -17,8 +18,7 @@ public class BaseModel {
      * The class.
      */
     private String _class;
-    
-    
+
     /**
      * Get the class.
      * @return class
@@ -47,4 +47,9 @@ public class BaseModel {
         this.client = client;
         return this;
     }
+
+    protected static Predicate<? super Build> isBuildNumberEqualTo(int buildNumber) {
+        return build -> build.getNumber() == buildNumber;
+    }
+
 }

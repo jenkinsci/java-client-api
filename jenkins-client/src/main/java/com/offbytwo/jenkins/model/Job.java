@@ -6,16 +6,13 @@
 
 package com.offbytwo.jenkins.model;
 
-import static org.apache.commons.lang.StringUtils.join;
-
+import com.offbytwo.jenkins.client.util.EncodingUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Map;
-
-import com.offbytwo.jenkins.client.util.EncodingUtils;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -186,4 +183,6 @@ public class Job extends BaseModel {
             return EncodingUtils.formParameter(entry.getKey()) + "=" + EncodingUtils.formParameter(entry.getValue());
         }
     }
+
+
 }

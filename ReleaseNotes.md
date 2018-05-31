@@ -2,6 +2,12 @@
 
 ## Release 0.4.0 (NOT RELEASED YET)
 
+ * [Fixed Issue 309][issue-309]
+ 
+   * Added possibility to get mode detailed data from Maven Modules from Jobs/Builds
+	
+     Thanks for that to [Jakub Zacek](https://github.com/dawon).
+	
  * [Fixed Issue 395][issue-395]
    
    * Remove google guava lib
@@ -187,7 +193,7 @@
     Added new methods to JenkinsServer for stopping and restarting Jenkins. The methods are restart(Boolean crumbFlag), safeRestart(Boolean crumbFlag), exit(Boolean crumbFlag) and safeExit(Boolean crumbFlag)
 	
 	Thanks for that to [Chids](https://github.com/Chids-gs).
-	
+
 ## Release 0.3.7
 
  * Changed Eclipse Formatting configuration.
@@ -1140,6 +1146,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-291]: https://github.com/jenkinsci/java-client-api/issues/291
 [issue-298]: https://github.com/jenkinsci/java-client-api/issues/298
 [issue-301]: https://github.com/jenkinsci/java-client-api/issues/301
+[issue-309]: https://github.com/jenkinsci/java-client-api/issues/309
 [issue-394]: https://github.com/jenkinsci/java-client-api/issues/394
 [issue-395]: https://github.com/jenkinsci/java-client-api/issues/395
 [issue-396]: https://github.com/jenkinsci/java-client-api/issues/396

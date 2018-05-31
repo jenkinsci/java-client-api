@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 import static com.offbytwo.jenkins.helper.FunctionalHelper.SET_CLIENT;
 import static java.util.stream.Collectors.toList;
@@ -31,7 +30,7 @@ public class JobWithDetails extends Job {
 
     private boolean buildable;
 
-    private List<Build> builds;
+    private List<Build> builds = Collections.emptyList();
 
     private Build firstBuild;
 
@@ -438,10 +437,6 @@ public class JobWithDetails extends Job {
         }
     }
 
-    private static Predicate<? super Build> isBuildNumberEqualTo(int buildNumber) {
-        return build -> build.getNumber() == buildNumber;
-    }
-
     public QueueItem getQueueItem() {
         return this.queueItem;
     }
@@ -456,6 +451,18 @@ public class JobWithDetails extends Job {
     public Optional<Build> getBuildByNumber(final int buildNumber) {
         return builds.stream().filter(isBuildNumberEqualTo(buildNumber)).findFirst();
     }
+    
+    /**
+     * Get a module of a {@link Job}
+     * 
+     * @param moduleName name of the {@link MavenModule}
+     * @return The {@link MavenModuleWithDetails} selected by the given module name
+     * @throws java.io.IOException in case of errors.
+     * 
+     */    
+    public MavenModuleWithDetails getModule(String moduleName) throws IOException {
+        return client.get(getUrl() + moduleName, MavenModuleWithDetails.class);
+    }    
 
     /**
      * Empty description to be used for {@link #updateDescription(String)} or

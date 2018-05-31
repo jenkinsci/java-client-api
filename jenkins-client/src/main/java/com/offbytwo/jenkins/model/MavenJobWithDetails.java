@@ -1,7 +1,6 @@
 package com.offbytwo.jenkins.model;
 
 import com.offbytwo.jenkins.client.util.EncodingUtils;
-import com.offbytwo.jenkins.helper.FunctionalHelper;
 import com.offbytwo.jenkins.helper.Range;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
@@ -10,7 +9,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 import static com.offbytwo.jenkins.helper.FunctionalHelper.SET_CLIENT;
 import static java.util.stream.Collectors.toList;
@@ -276,11 +274,7 @@ public class MavenJobWithDetails extends MavenJob {
         }
     }
 
-    private static Predicate<MavenBuild> isBuildNumberEqualTo(int buildNumber) {
-        return build -> build.getNumber() == buildNumber;
-    }
-
-    /**
+  /**
      * @param buildNumber The build you would like to select.
      * @return Optional which contains the {@link MavenBuild}.
      */
