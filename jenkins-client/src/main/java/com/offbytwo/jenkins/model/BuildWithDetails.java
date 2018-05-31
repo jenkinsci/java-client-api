@@ -541,6 +541,17 @@ public class BuildWithDetails extends Build {
                 "");
         return client.getFile(artifactUri);
     }
+    
+    /**
+     * Returns {@link MavenModuleWithDetails} based on its name
+     * 
+     * @param name module name
+     * @return {@link MavenModuleWithDetails}
+     * @throws IOException in case of error.
+     */
+    public MavenModuleWithDetails getModule(String name) throws IOException {
+        return client.get(getUrl() + name, MavenModuleWithDetails.class);
+    }    
 
     @Override
     public boolean equals(Object obj) {
