@@ -24,7 +24,7 @@ public class BuildChangeSetPath {
 
     /**
      * Sets the SCM operation.
-     * @param the SCM operation, <code>add</code> or <code>edit</code> or <code>delete</code>
+     * @param editType the SCM operation, <code>add</code> or <code>edit</code> or <code>delete</code>
      * @see <a href="http://javadoc.jenkins.io/hudson/scm/EditType.html">EditType</a>
      */
     public void setEditType(String editType) {

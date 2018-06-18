@@ -170,7 +170,7 @@ public interface JenkinsHttpConnection extends Closeable {
      * @param data data to post
      * @param crumbFlag true / false.
      * @return resulting response
-     * @throws IOException, HttpResponseException
+     * @throws IOException in case of an error.
      */
     HttpResponse post_form_with_result(String path, List<NameValuePair> data, boolean crumbFlag) throws IOException;
 

@@ -156,8 +156,8 @@ public class Build extends BaseModel {
      *
      * @param crumbFlag flag used to specify if a crumb is passed into for the request
      * @return the client url
-     * @throws HttpResponseException
-     * @throws IOException
+     * @throws HttpResponseException in case of an error.
+     * @throws IOException in case of an error.
      */
     public String Stop(boolean crumbFlag) throws HttpResponseException, IOException {
         try {

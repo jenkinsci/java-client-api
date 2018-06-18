@@ -403,6 +403,8 @@ public class BuildWithDetails extends Build {
      * @param listener interface used to asynchronously obtain logs
      * @param poolingInterval interval (seconds) used to pool jenkins for logs
      * @param poolingTimeout pooling timeout (seconds) used to break pooling in case build stuck
+     * @throws InterruptedException in case of an error.
+     * @throws IOException in case of an error.
      *
      */
     public void streamConsoleOutput(final BuildConsoleStreamListener listener, final int poolingInterval, final int poolingTimeout) throws InterruptedException, IOException {
