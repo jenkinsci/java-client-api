@@ -25,14 +25,14 @@ to your project. This can be done by using a Maven dependency like the following
 <dependency>
   <groupId>com.offbytwo.jenkins</groupId>
   <artifactId>jenkins-client</artifactId>
-  <version>0.3.7</version>
+  <version>0.3.8</version>
 </dependency>
 ```
 
 This can also being done by defining a Gradle dependency like this:
 
 ```
-compile 'com.offbytwo.jenkins:jenkins-client:0.3.7'
+compile 'com.offbytwo.jenkins:jenkins-client:0.3.8'
 ```
 
 Starting with a future release 0.4.0 the groupId/artifactId will change (NOT YET DONE!)
@@ -96,7 +96,8 @@ covered by the usual integration tests.
 
 You can find details about the different releases in the [Release Notes](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md).
 
- * [Release 0.3.8 NOT RELEASED YET](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-038).
+ * [Release 0.3.9 NOT RELEASED YET](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-039).
+ * [Release 0.3.8](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-038).
  * [Release 0.3.7](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-037).
  * [Release 0.3.6](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-036).
  * [Release 0.3.5](https://github.com/jenkinsci/java-client-api/blob/master/ReleaseNotes.md#release-035).

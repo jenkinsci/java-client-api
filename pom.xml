@@ -32,7 +32,7 @@
   <distributionManagement>
     <site>
       <id>github</id>
-      <url>scm:git:https://github.com/jenkinsci/java-client-api.git</url>
+      <url>scm:git:ssh://git@github.com/jenkinsci/java-client-api.git</url>
     </site>
   </distributionManagement>
   <ciManagement>
