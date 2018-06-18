@@ -1,6 +1,10 @@
 # Release Notes
 
-## Release 0.3.8 (NOT RELEASED YET)
+## Release 0.3.9 (NOT RELEASED YET)
+
+ * ...
+
+## Release 0.3.8
 
  * [Fixed Issue 289][issue-289]
    
