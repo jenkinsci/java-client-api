@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.google.common.net.UrlEscapers;
+import com.offbytwo.jenkins.JenkinsServer;
 
 /**
  * @author Kelly Plummer
@@ -28,6 +29,7 @@ public class Computer extends BaseModel {
     }
 
     List<Computer> computer;
+    private JenkinsServer jenkinsServer;
 
     public Computer() {
     }
@@ -39,6 +41,15 @@ public class Computer extends BaseModel {
 
     public String getDisplayName() {
         return this.displayName;
+    }
+
+    public Computer setJenkinsServer(JenkinsServer jenkinsServer) {
+        this.jenkinsServer = jenkinsServer;
+        return this;
+    }
+
+    public JenkinsServer getJenkinsServer() {
+        return jenkinsServer;
     }
 
     public ComputerWithDetails details() throws IOException {
