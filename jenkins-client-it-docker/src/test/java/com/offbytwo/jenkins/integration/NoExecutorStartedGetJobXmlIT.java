@@ -39,8 +39,17 @@ public class NoExecutorStartedGetJobXmlIT extends AbstractJenkinsIntegrationCase
         "      <command>echo &quot;test&quot;</command>", 
         "    </hudson.tasks.Shell>", 
         "  </builders>",
-        "  <publishers/>", 
-        "  <buildWrappers/>", 
+        "  <publishers>",
+        "    <hudson.tasks.ArtifactArchiver>",
+        "      <artifacts>**/*.txt</artifacts>",
+        "      <allowEmptyArchive>false</allowEmptyArchive>",
+        "      <onlyIfSuccessful>true</onlyIfSuccessful>",
+        "      <fingerprint>false</fingerprint>",
+        "      <defaultExcludes>true</defaultExcludes>",
+        "      <caseSensitive>true</caseSensitive>",
+        "    </hudson.tasks.ArtifactArchiver>",
+        "  </publishers>",
+        "  <buildWrappers/>",
         "</project>" 
     };
     //@formatter:on
