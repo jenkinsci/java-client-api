@@ -25,6 +25,10 @@ public class NoExecutorStartedGetJobDetailsIT extends AbstractJenkinsIntegration
     @Test
     public void shouldCheckTheBuildCause() throws IOException {
         BuildWithDetails details = job.getFirstBuild().details();
+        assertThat(details.getArtifacts()).isNotNull();
+        assertThat(details.getArtifacts().size()).isEqualTo(2);
+        details.getArtifacts().forEach(a -> assertThat(a.getClient()).isNotNull());
+
         List<BuildCause> causes = details.getCauses();
         assertThat(causes).hasSize(1);
         BuildCause buildCause = causes.get(0);

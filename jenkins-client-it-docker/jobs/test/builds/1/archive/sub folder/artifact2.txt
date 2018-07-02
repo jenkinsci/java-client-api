@@ -1,0 +1,1 @@
+this is artifact2 in the "sub folder"

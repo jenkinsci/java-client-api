@@ -36,7 +36,7 @@ after_script:
 # http://www.webupd8.org/2017/06/why-oracle-java-7-and-6-installers-no.html
 # - oraclejdk8 is not supported anymore.
 jdk:
- - openjdk7
+ - openjdk8
 cache:
   directories:
   - $HOME/.m2/repository

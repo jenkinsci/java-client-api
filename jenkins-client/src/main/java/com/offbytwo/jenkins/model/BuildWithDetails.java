@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
+import com.offbytwo.jenkins.client.JenkinsHttpConnection;
 import com.offbytwo.jenkins.helper.BuildConsoleStreamListener;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -152,6 +153,14 @@ public class BuildWithDetails extends Build {
         this.builtOn = details.builtOn;
         this.culprits = details.culprits;
         this.setClient(details.getClient());
+    }
+
+    @Override
+    public void setClient(JenkinsHttpConnection client) {
+        super.setClient(client);
+        if (this.artifacts != null) {
+            this.artifacts.stream().forEach(a -> a.setClient(client));
+        }
     }
 
     public List<Artifact> getArtifacts() {
