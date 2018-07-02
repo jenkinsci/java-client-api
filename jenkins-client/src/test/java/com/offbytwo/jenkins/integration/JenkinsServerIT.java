@@ -99,6 +99,8 @@ public class JenkinsServerIT {
     @Test
     public void shouldReturnDetailOfComputer() throws Exception {
         Map<String, Computer> computers = server.getComputers();
+        assertNotNull(computers);
+        assertTrue(computers.size() > 0);
         assertTrue(computers.get(JENKINS_MASTER).details().getDisplayName().equals(JENKINS_MASTER));
     }
 

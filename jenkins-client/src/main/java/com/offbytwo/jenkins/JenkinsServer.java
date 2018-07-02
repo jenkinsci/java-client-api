@@ -220,6 +220,7 @@ public class JenkinsServer implements Closeable {
         try {
             View resultView = client.get(UrlUtils.toViewBaseUrl(folder, name) + "/", View.class);
             resultView.setClient(client);
+            resultView.setJenkinsServer(this);
             return resultView;
         } catch (HttpResponseException e) {
             LOGGER.debug("getView(folder={}, name={}) status={}", folder, name, e.getStatusCode());
@@ -254,7 +255,7 @@ public class JenkinsServer implements Closeable {
         try {
             JobWithDetails job = client.get(UrlUtils.toJobBaseUrl(folder, jobName), JobWithDetails.class);
             job.setClient(client);
-
+            job.setJenkinsServer(this);
             return job;
         } catch (HttpResponseException e) {
             LOGGER.debug("getJob(folder={}, jobName={}) status={}", folder, jobName, e.getStatusCode());
@@ -274,7 +275,7 @@ public class JenkinsServer implements Closeable {
         try {
             MavenJobWithDetails job = client.get(UrlUtils.toJobBaseUrl(folder, jobName), MavenJobWithDetails.class);
             job.setClient(client);
-
+            job.setJenkinsServer(this);
             return job;
         } catch (HttpResponseException e) {
             LOGGER.debug("getMavenJob(jobName={}) status={}", jobName, e.getStatusCode());
@@ -292,7 +293,7 @@ public class JenkinsServer implements Closeable {
                 return Optional.absent();
             }
             folder.setClient(client);
-
+            folder.setJenkinsServer(this);
             return Optional.of(folder);
         } catch (HttpResponseException e) {
             LOGGER.debug("getForlderJob(job={}) status={}", job, e.getStatusCode());
@@ -507,6 +508,7 @@ public class JenkinsServer implements Closeable {
      */
     public Map<String, Computer> getComputers() throws IOException {
         List<Computer> computers = client.get("computer/", Computer.class).getComputers();
+        computers.forEach(j -> j.setJenkinsServer(this).setClient(client));
         return computers.stream().collect(Collectors.toMap(c -> c.getDisplayName().toLowerCase(), Function.identity()));
     }
 
