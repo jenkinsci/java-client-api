@@ -10,11 +10,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.offbytwo.jenkins.JenkinsServer;
+import com.offbytwo.jenkins.client.JenkinsHttpConnection;
 
 public class MainView extends BaseModel {
 
     private List<Job> jobs;
     private List<View> views;
+    private JenkinsServer jenkinsServer;
 
     /* default constructor needed for Jackson */
     public MainView() {
@@ -45,4 +48,21 @@ public class MainView extends BaseModel {
     public void setViews(List<View> views) {
         this.views = views;
     }
+
+    @Override
+    public void setClient(JenkinsHttpConnection client) {
+        super.setClient(client);
+        getJobs().forEach(j -> j.setClient(client));
+        getViews().forEach(j -> j.setClient(client));
+    }
+
+    public MainView setJenkinsServer(JenkinsServer jenkinsServer) {
+        this.jenkinsServer = jenkinsServer;
+        return this;
+    }
+
+    public JenkinsServer getJenkinsServer() {
+        return jenkinsServer;
+    }
+
 }

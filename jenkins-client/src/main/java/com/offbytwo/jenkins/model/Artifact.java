@@ -11,6 +11,7 @@ public class Artifact extends BaseModel {
     private String displayPath;
     private String fileName;
     private String relativePath;
+    private BuildWithDetails buildWithDetails;
 
     public String getDisplayPath() {
         return displayPath;
@@ -34,6 +35,15 @@ public class Artifact extends BaseModel {
 
     public void setRelativePath(String relativePath) {
         this.relativePath = relativePath;
+    }
+
+    public Artifact setBuildWithDetails(BuildWithDetails buildWithDetails) {
+        this.buildWithDetails = buildWithDetails;
+        return this;
+    }
+
+    public BuildWithDetails getBuildWithDetails() {
+        return buildWithDetails;
     }
 
     @Override

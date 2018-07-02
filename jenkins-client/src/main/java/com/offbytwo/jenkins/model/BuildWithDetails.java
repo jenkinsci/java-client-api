@@ -129,6 +129,7 @@ public class BuildWithDetails extends Build {
     private List<BuildChangeSet> changeSets;
     private String builtOn;
     private List<BuildChangeSetAuthor> culprits;
+    private Build build;
 
     public BuildWithDetails() {
         // Default ctor is needed to jackson.
@@ -151,7 +152,11 @@ public class BuildWithDetails extends Build {
         this.changeSet = details.changeSet;
         this.builtOn = details.builtOn;
         this.culprits = details.culprits;
+
         this.setClient(details.getClient());
+        if (this.artifacts != null) {
+            this.artifacts.forEach(a -> a.setBuildWithDetails(this));
+        }
     }
 
     public List<Artifact> getArtifacts() {
@@ -532,6 +537,15 @@ public class BuildWithDetails extends Build {
 
     public void setResult(BuildResult result) {
         this.result = result;
+    }
+
+    public BuildWithDetails setBuild(Build build) {
+        this.build = build;
+        return this;
+    }
+
+    public Build getBuild() {
+        return build;
     }
 
     public InputStream downloadArtifact(Artifact a) throws IOException, URISyntaxException {

@@ -6,10 +6,13 @@
 
 package com.offbytwo.jenkins;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.xml.bind.JAXBException;
 
@@ -20,10 +23,8 @@ import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
 import com.offbytwo.jenkins.client.JenkinsHttpConnection;
 import com.offbytwo.jenkins.client.util.EncodingUtils;
@@ -44,7 +45,6 @@ import com.offbytwo.jenkins.model.Queue;
 import com.offbytwo.jenkins.model.QueueItem;
 import com.offbytwo.jenkins.model.QueueReference;
 import com.offbytwo.jenkins.model.View;
-import java.io.Closeable;
 
 /**
  * The main starting point for interacting with a Jenkins server.
@@ -167,13 +167,8 @@ public class JenkinsServer implements Closeable {
             viewClass = View.class;
         }
         List<Job> jobs = client.get(path, viewClass).getJobs();
-        return Maps.uniqueIndex(jobs, new Function<Job, String>() {
-            @Override
-            public String apply(Job job) {
-                job.setClient(client);
-                return job.getName();
-            }
-        });
+        jobs.forEach(j -> j.setJenkinsServer(this).setClient(client));
+        return jobs.stream().collect(Collectors.toMap(Job::getName, Function.identity()));
     }
 
     /**
@@ -198,22 +193,8 @@ public class JenkinsServer implements Closeable {
         // This is much better than using &depth=2
         // http://localhost:8080/api/json?pretty&tree=views[name,url,jobs[name,url]]
         List<View> views = client.get(UrlUtils.toBaseUrl(folder) + "?tree=views[name,url,jobs[name,url]]", MainView.class).getViews();
-        return Maps.uniqueIndex(views, new Function<View, String>() {
-            @Override
-            public String apply(View view) {
-                view.setClient(client);
-                // TODO: Think about the following? Does there exists a
-                // simpler/more elegant method?
-                for (Job job : view.getJobs()) {
-                    job.setClient(client);
-                }
-                for (View item : view.getViews()) {
-                    item.setClient(client);
-                }
-
-                return view.getName();
-            }
-        });
+        views.forEach(v -> v.setJenkinsServer(this).setClient(client));
+        return views.stream().collect(Collectors.toMap(View::getName, Function.identity()));
     }
 
     /**
@@ -239,15 +220,6 @@ public class JenkinsServer implements Closeable {
         try {
             View resultView = client.get(UrlUtils.toViewBaseUrl(folder, name) + "/", View.class);
             resultView.setClient(client);
-
-            // TODO: Think about the following? Does there exists a simpler/more
-            // elegant method?
-            for (Job job : resultView.getJobs()) {
-                job.setClient(client);
-            }
-            for (View view : resultView.getViews()) {
-                view.setClient(client);
-            }
             return resultView;
         } catch (HttpResponseException e) {
             LOGGER.debug("getView(folder={}, name={}) status={}", folder, name, e.getStatusCode());
@@ -535,13 +507,7 @@ public class JenkinsServer implements Closeable {
      */
     public Map<String, Computer> getComputers() throws IOException {
         List<Computer> computers = client.get("computer/", Computer.class).getComputers();
-        return Maps.uniqueIndex(computers, new Function<Computer, String>() {
-            @Override
-            public String apply(Computer computer) {
-                computer.setClient(client);
-                return computer.getDisplayName().toLowerCase();
-            }
-        });
+        return computers.stream().collect(Collectors.toMap(c -> c.getDisplayName().toLowerCase(), Function.identity()));
     }
 
     /**

@@ -50,6 +50,7 @@ public class Build extends BaseModel {
     private int number;
     private int queueId;
     private String url;
+    private JobWithDetails jobWithDetails;
 
     private Build(int number, int queueId, String url) {
         super();
@@ -94,6 +95,15 @@ public class Build extends BaseModel {
         this.url = url;
     }
 
+    public Build setJobWithDetails(JobWithDetails jobWithDetails) {
+        this.jobWithDetails = jobWithDetails;
+        return this;
+    }
+
+    public JobWithDetails getJobWithDetails() {
+        return jobWithDetails;
+    }
+
     /**
      * 
      * @return The information from Jenkins. In cases the build has never run
@@ -102,7 +112,9 @@ public class Build extends BaseModel {
      *             in case of an error.
      */
     public BuildWithDetails details() throws IOException {
-        return client.get(url, BuildWithDetails.class);
+        BuildWithDetails buildWithDetails = client.get(url, BuildWithDetails.class);
+        buildWithDetails.setBuild(this);
+        return buildWithDetails;
     }
 
     /**

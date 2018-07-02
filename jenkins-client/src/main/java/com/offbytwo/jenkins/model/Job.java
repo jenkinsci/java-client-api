@@ -19,12 +19,14 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
+import com.offbytwo.jenkins.JenkinsServer;
 
 public class Job extends BaseModel {
 
     private String name;
     private String url;
     private String fullName;
+    private JenkinsServer jenkinsServer;
 
     public Job() {
     }
@@ -55,8 +57,19 @@ public class Job extends BaseModel {
         return fullName;
     }
 
+    public Job setJenkinsServer(JenkinsServer jenkinsServer) {
+        this.jenkinsServer = jenkinsServer;
+        return this;
+    }
+
+    public JenkinsServer getJenkinsServer() {
+        return jenkinsServer;
+    }
+
     public JobWithDetails details() throws IOException {
-        return client.get(url, JobWithDetails.class);
+        JobWithDetails jobWithDetails = client.get(url, JobWithDetails.class);
+        jobWithDetails.setJob(this);
+        return jobWithDetails;
     }
 
     /**

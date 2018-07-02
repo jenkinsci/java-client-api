@@ -59,6 +59,8 @@ public class JobWithDetails extends Job {
     private List<Job> downstreamProjects;
 
     private List<Job> upstreamProjects;
+
+    private Job job;
     
     public String getDescription() {
         return description;
@@ -78,6 +80,15 @@ public class JobWithDetails extends Job {
 
     public boolean isInQueue() {
         return inQueue;
+    }
+
+    public JobWithDetails setJob(Job job) {
+        this.job = job;
+        return this;
+    }
+
+    public Job getJob() {
+        return job;
     }
 
     /**
@@ -201,6 +212,7 @@ public class JobWithDetails extends Job {
         if (from != null) {
             ret = new Build(from);
             ret.setClient(client);
+            ret.setJobWithDetails(this);
         }
         return ret;
     }
