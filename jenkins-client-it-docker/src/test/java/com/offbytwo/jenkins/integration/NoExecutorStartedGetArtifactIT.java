@@ -29,12 +29,11 @@ public class NoExecutorStartedGetArtifactIT extends AbstractJenkinsIntegrationCa
     public void traverseFromArtifactToJenkinsServerShouldNotFail() throws IOException {
         Artifact artifact = build.details().getArtifacts().get(0);
         assertThat(artifact).isNotNull();
-        assertThat(artifact.getBuildWithDetails()
-                           .getBuild()
-                           .getJobWithDetails()
-                           .getJob()
-                           .getJenkinsServer())
-                    .isNotNull();
+        assertThat(artifact.getBuildWithDetails()).isNotNull();
+        assertThat(artifact.getBuildWithDetails().getBuild()).isNotNull();
+        assertThat(artifact.getBuildWithDetails().getBuild().getJobWithDetails()).isNotNull();
+        assertThat(artifact.getBuildWithDetails().getBuild().getJobWithDetails().getJob()).isNotNull();
+        assertThat(artifact.getBuildWithDetails().getBuild().getJobWithDetails().getJob().getJenkinsServer()).isNotNull();
     }
 
 }
