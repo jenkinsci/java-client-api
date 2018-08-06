@@ -88,7 +88,7 @@ public class JobWithDetails extends Job {
     }
 
     public Job getJob() {
-        return job;
+        return job == null ? this : job;
     }
 
     /**

@@ -154,9 +154,6 @@ public class BuildWithDetails extends Build {
         this.culprits = details.culprits;
 
         this.setClient(details.getClient());
-        if (this.artifacts != null) {
-            this.artifacts.forEach(a -> a.setBuildWithDetails(this));
-        }
     }
 
     public List<Artifact> getArtifacts() {
@@ -541,11 +538,14 @@ public class BuildWithDetails extends Build {
 
     public BuildWithDetails setBuild(Build build) {
         this.build = build;
+        if (this.artifacts != null) {
+            this.artifacts.forEach(a -> a.setBuildWithDetails(this));
+        }
         return this;
     }
 
     public Build getBuild() {
-        return build;
+        return build == null ? this : build;
     }
 
     public InputStream downloadArtifact(Artifact a) throws IOException, URISyntaxException {

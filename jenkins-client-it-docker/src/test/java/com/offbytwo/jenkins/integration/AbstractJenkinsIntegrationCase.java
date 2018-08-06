@@ -23,7 +23,7 @@ public class AbstractJenkinsIntegrationCase {
     public void waitUntilJenkinsHasBeenStartedUp() throws TimeoutException {
         final long start = System.currentTimeMillis();
         jenkinsServer = new JenkinsServer(Constant.JENKINS_URI);
-        System.out.print("Wait until Jenkins is started...");
+        System.out.print("Wait until Jenkins is started at " + Constant.JENKINS_URI + " ...");
         while (!jenkinsServer.isRunning() && !timeOut(start)) {
             try {
                 System.out.print(".");
