@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import com.google.common.base.Joiner;
@@ -54,6 +55,7 @@ public class NoExecutorStartedGetJobXmlIT extends AbstractJenkinsIntegrationCase
     };
     //@formatter:on
 
+    @Ignore
     @Test
     public void getJobXmlShouldReturnTheExpectedConfigXml() {
         String expectedXml = Joiner.on("\n").join(CONFIG_XML);
