@@ -1,8 +1,10 @@
 package com.offbytwo.jenkins.integration;
 
+import java.net.URI;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.apache.commons.lang.StringUtils;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Listeners;
 
@@ -10,6 +12,9 @@ import com.offbytwo.jenkins.JenkinsServer;
 
 @Listeners({ MethodListener.class })
 public class AbstractJenkinsIntegrationCase {
+
+    // use mvn -Prun-its,run-docker-its clean verify --batch-mode -DjenkinsUrl=http://192.168.99.100:8080/
+    private static final String JENKINS_URL_PROPERTY = "jenkinsUrl";
 
     protected static JenkinsServer jenkinsServer;
 
@@ -21,9 +26,10 @@ public class AbstractJenkinsIntegrationCase {
 
     @BeforeSuite
     public void waitUntilJenkinsHasBeenStartedUp() throws TimeoutException {
+        URI jenkinsURI = getJenkinsURI();
+        jenkinsServer = new JenkinsServer(jenkinsURI);
+        System.out.print("Wait until Jenkins is started at [" + jenkinsURI + "]...");
         final long start = System.currentTimeMillis();
-        jenkinsServer = new JenkinsServer(Constant.JENKINS_URI);
-        System.out.print("Wait until Jenkins is started...");
         while (!jenkinsServer.isRunning() && !timeOut(start)) {
             try {
                 System.out.print(".");
@@ -39,6 +45,11 @@ public class AbstractJenkinsIntegrationCase {
         }
 
         System.out.println("done.");
+    }
+
+    private URI getJenkinsURI() {
+        String jenkinsUrlProperty = System.getProperty(JENKINS_URL_PROPERTY);
+        return StringUtils.isEmpty(jenkinsUrlProperty) ? Constant.JENKINS_URI : URI.create(jenkinsUrlProperty);
     }
 
     /**
