@@ -19,23 +19,26 @@ public class ConsoleLog {
         return consoleLog;
     }
 
-    public void setConsoleLog(String consoleLog) {
+    public ConsoleLog setConsoleLog(String consoleLog) {
         this.consoleLog = consoleLog;
+        return this;
     }
 
     public Boolean getHasMoreData() {
         return hasMoreData;
     }
 
-    public void setHasMoreData(Boolean hasMoreData) {
+    public ConsoleLog setHasMoreData(Boolean hasMoreData) {
         this.hasMoreData = hasMoreData;
+        return this;
     }
 
     public Integer getCurrentBufferSize() {
         return currentBufferSize;
     }
 
-    public void setCurrentBufferSize(Integer currentBufferSize) {
+    public ConsoleLog setCurrentBufferSize(Integer currentBufferSize) {
         this.currentBufferSize = currentBufferSize;
+        return this;
     }
 }

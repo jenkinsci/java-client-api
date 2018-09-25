@@ -17,6 +17,16 @@ public class OfflineCause extends BaseModel {
         return description;
     }
 
+    public OfflineCause setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+        return this;
+    }
+
+    public OfflineCause setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -46,14 +56,6 @@ public class OfflineCause extends BaseModel {
         } else if (!timestamp.equals(other.timestamp))
             return false;
         return true;
-    }
-
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
 }

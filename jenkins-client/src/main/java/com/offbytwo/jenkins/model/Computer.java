@@ -19,17 +19,18 @@ public class Computer extends BaseModel {
 
     private String displayName;
 
-    public List<Computer> getComputers() {
-        return computer;
-    }
-
-    public void setComputer(List<Computer> computer) {
-        this.computer = computer;
-    }
-
-    List<Computer> computer;
+    private List<Computer> computers;
 
     public Computer() {
+    }
+
+    public List<Computer> getComputers() {
+        return computers;
+    }
+
+    public Computer setComputers(List<Computer> computers) {
+        this.computers = computers;
+        return this;
     }
 
     public Computer(String displayName) {
@@ -65,10 +66,10 @@ public class Computer extends BaseModel {
         if (getClass() != obj.getClass())
             return false;
         Computer other = (Computer) obj;
-        if (computer == null) {
-            if (other.computer != null)
+        if (computers == null) {
+            if (other.computers != null)
                 return false;
-        } else if (!computer.equals(other.computer))
+        } else if (!computers.equals(other.computers))
             return false;
         if (displayName == null) {
             if (other.displayName != null)
@@ -82,7 +83,7 @@ public class Computer extends BaseModel {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((computer == null) ? 0 : computer.hashCode());
+        result = prime * result + ((computers == null) ? 0 : computers.hashCode());
         result = prime * result + ((displayName == null) ? 0 : displayName.hashCode());
         return result;
     }

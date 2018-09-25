@@ -199,7 +199,7 @@ public class BuildWithDetails extends Build {
      * @param crumbFlag <code>true</code> or <code>false</code>.
      * @throws IOException in case of errors.
      */
-    public void updateDisplayNameAndDescription(String displayName, String description, boolean crumbFlag)
+    public BuildWithDetails updateDisplayNameAndDescription(String displayName, String description, boolean crumbFlag)
             throws IOException {
         Objects.requireNonNull(displayName, "displayName is not allowed to be null.");
         Objects.requireNonNull(description, "description is not allowed to be null.");
@@ -207,6 +207,7 @@ public class BuildWithDetails extends Build {
         ImmutableMap<String, String> params = ImmutableMap.of("displayName", displayName, "description", description,
                 "core:apply", "", "Submit", "Save");
         client.post_form(this.getUrl() + "/configSubmit?", params, crumbFlag);
+        return this;
     }
 
     /**
@@ -217,8 +218,8 @@ public class BuildWithDetails extends Build {
      * @param description The description which should be set.
      * @throws IOException in case of errors.
      */
-    public void updateDisplayNameAndDescription(String displayName, String description) throws IOException {
-        updateDisplayNameAndDescription(displayName, description, false);
+    public BuildWithDetails updateDisplayNameAndDescription(String displayName, String description) throws IOException {
+        return updateDisplayNameAndDescription(displayName, description, false);
     }
 
     /**
@@ -228,13 +229,14 @@ public class BuildWithDetails extends Build {
      * @param crumbFlag <code>true</code> or <code>false</code>.
      * @throws IOException in case of errors.
      */
-    public void updateDisplayName(String displayName, boolean crumbFlag) throws IOException {
+    public BuildWithDetails updateDisplayName(String displayName, boolean crumbFlag) throws IOException {
         Objects.requireNonNull(displayName, "displayName is not allowed to be null.");
         String description = getDescription() == null ? "" : getDescription();
         // TODO: Check what the "core:apply" means?
         ImmutableMap<String, String> params = ImmutableMap.of("displayName", displayName, "description", description,
                 "core:apply", "", "Submit", "Save");
         client.post_form(this.getUrl() + "/configSubmit?", params, crumbFlag);
+        return this;
     }
 
     /**
@@ -243,8 +245,8 @@ public class BuildWithDetails extends Build {
      * @param displayName The new displayName which should be set.
      * @throws IOException in case of errors.
      */
-    public void updateDisplayName(String displayName) throws IOException {
-        updateDisplayName(displayName, false);
+    public BuildWithDetails updateDisplayName(String displayName) throws IOException {
+        return updateDisplayName(displayName, false);
     }
 
     /**
@@ -254,13 +256,14 @@ public class BuildWithDetails extends Build {
      * @param crumbFlag <code>true</code> or <code>false</code>.
      * @throws IOException in case of errors.
      */
-    public void updateDescription(String description, boolean crumbFlag) throws IOException {
+    public BuildWithDetails updateDescription(String description, boolean crumbFlag) throws IOException {
         Objects.requireNonNull(description, "description is not allowed to be null.");
         String displayName = getDisplayName() == null ? "" : getDisplayName();
         // TODO: Check what the "core:apply" means?
         ImmutableMap<String, String> params = ImmutableMap.of("displayName", displayName, "description", description,
                 "core:apply", "", "Submit", "Save");
         client.post_form(this.getUrl() + "/configSubmit?", params, crumbFlag);
+        return this;
     }
 
     /**
@@ -269,8 +272,8 @@ public class BuildWithDetails extends Build {
      * @param description The description which should be set.
      * @throws IOException in case of errors.
      */
-    public void updateDescription(String description) throws IOException {
-        updateDescription(description, false);
+    public BuildWithDetails updateDescription(String description) throws IOException {
+        return updateDescription(description, false);
     }
 
     private BuildCause convertToBuildCause(Map<String, Object> cause) {
@@ -407,7 +410,8 @@ public class BuildWithDetails extends Build {
      * @throws IOException in case of an error.
      *
      */
-    public void streamConsoleOutput(final BuildConsoleStreamListener listener, final int poolingInterval, final int poolingTimeout) throws InterruptedException, IOException {
+    public void streamConsoleOutput(final BuildConsoleStreamListener listener, final int poolingInterval,
+            final int poolingTimeout) throws InterruptedException, IOException {
         // Calculate start and timeout
         final long startTime = System.currentTimeMillis();
         final long timeoutTime = startTime + (poolingTimeout * 1000);
@@ -496,8 +500,9 @@ public class BuildWithDetails extends Build {
         return result;
     }
 
-    public void setChangeSet(BuildChangeSet changeSet) {
+    public BuildWithDetails setChangeSet(BuildChangeSet changeSet) {
         this.changeSet = changeSet;
+        return this;
     }
 
   /**
@@ -518,20 +523,23 @@ public class BuildWithDetails extends Build {
         return result;
     }
 
-    public void setChangeSets(List<BuildChangeSet> changeSets) {
+    public BuildWithDetails setChangeSets(List<BuildChangeSet> changeSets) {
         this.changeSets = changeSets;
+        return this;
     }
 
     public List<BuildChangeSetAuthor> getCulprits() {
         return culprits;
     }
 
-    public void setCulprits(List<BuildChangeSetAuthor> culprits) {
+    public BuildWithDetails setCulprits(List<BuildChangeSetAuthor> culprits) {
         this.culprits = culprits;
+        return this;
     }
 
-    public void setResult(BuildResult result) {
+    public BuildWithDetails setResult(BuildResult result) {
         this.result = result;
+        return this;
     }
 
     public InputStream downloadArtifact(Artifact a) throws IOException, URISyntaxException {

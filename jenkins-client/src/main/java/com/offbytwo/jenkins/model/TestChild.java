@@ -12,16 +12,18 @@ public class TestChild {
         return number;
     }
 
-    public void setNumber(int number) {
+    public TestChild setNumber(int number) {
         this.number = number;
+        return this;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public TestChild setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     @Override

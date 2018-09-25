@@ -14,8 +14,9 @@ public class PluginManager extends BaseModel
         return plugins;
     }
     
-    public void setPlugins(List<Plugin> plugins) {
+    public PluginManager setPlugins(List<Plugin> plugins) {
         this.plugins = plugins;
+        return this;
     }
 
     @Override

@@ -18,24 +18,27 @@ public class LoadStatistics extends BaseModel {
         return busyExecutors;
     }
 
-    public void setBusyExecutors(HourMinSec10 busyExecutors) {
+    public LoadStatistics setBusyExecutors(HourMinSec10 busyExecutors) {
         this.busyExecutors = busyExecutors;
+        return this;
     }
 
     public HourMinSec10 getQueueLength() {
         return queueLength;
     }
 
-    public void setQueueLength(HourMinSec10 queueLength) {
+    public LoadStatistics setQueueLength(HourMinSec10 queueLength) {
         this.queueLength = queueLength;
+        return this;
     }
 
     public HourMinSec10 getTotalExecutors() {
         return totalExecutors;
     }
 
-    public void setTotalExecutors(HourMinSec10 totalExecutors) {
+    public LoadStatistics setTotalExecutors(HourMinSec10 totalExecutors) {
         this.totalExecutors = totalExecutors;
+        return this;
     }
 
     @Override

@@ -20,40 +20,54 @@ public class TestResult extends BaseModel {
         return duration;
     }
 
-    public void setDuration(double duration) {
+    public TestResult setDuration(double duration) {
         this.duration = duration;
+        return this;
     }
 
     public boolean isEmpty() {
         return empty;
     }
 
-    public void setEmpty(boolean empty) {
+    public TestResult setEmpty(boolean empty) {
         this.empty = empty;
+        return this;
     }
 
     public int getFailCount() {
         return failCount;
     }
 
-    public void setFailCount(int failCount) {
+    public TestResult setFailCount(int failCount) {
         this.failCount = failCount;
+        return this;
     }
 
     public int getPassCount() {
         return passCount;
     }
 
-    public void setPassCount(int passCount) {
+    public TestResult setPassCount(int passCount) {
         this.passCount = passCount;
+        return this;
     }
 
     public int getSkipCount() {
         return skipCount;
     }
 
-    public void setSkipCount(int skipCount) {
+    public TestResult setSkipCount(int skipCount) {
         this.skipCount = skipCount;
+        return this;
+    }
+
+    public List<TestSuites> getSuites() {
+        return suites;
+    }
+
+    public TestResult setSuites(List<TestSuites> suites) {
+        this.suites = suites;
+        return this;
     }
 
     @Override
@@ -96,13 +110,5 @@ public class TestResult extends BaseModel {
         } else if (!suites.equals(other.suites))
             return false;
         return true;
-    }
-
-    public List<TestSuites> getSuites() {
-        return suites;
-    }
-
-    public void setSuites(List<TestSuites> suites) {
-        this.suites = suites;
     }
 }

@@ -15,8 +15,9 @@ public class QueueItemActions extends BaseModel {
         return causes;
     }
 
-    public void setCauses(List<CauseAction> causes) {
+    public QueueItemActions setCauses(List<CauseAction> causes) {
         this.causes = causes;
+        return this;
     }
 
 }

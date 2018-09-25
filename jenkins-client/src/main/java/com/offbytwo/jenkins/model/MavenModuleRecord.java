@@ -17,39 +17,44 @@ public class MavenModuleRecord extends BaseModel {
         return attachedArtifacts;
     }
 
-    public void setAttachedArtifacts(List<MavenArtifact> attachedArtifacts) {
+    public MavenModuleRecord setAttachedArtifacts(List<MavenArtifact> attachedArtifacts) {
         this.attachedArtifacts = attachedArtifacts;
+        return this;
     }
 
     public Build getParent() {
         return parent;
     }
 
-    public void setParent(Build parent) {
+    public MavenModuleRecord setParent(Build parent) {
         this.parent = parent;
+        return this;
     }
 
     public MavenArtifact getMainArtifact() {
         return mainArtifact;
     }
 
-    public void setMainArtifact(MavenArtifact mainArtifact) {
+    public MavenModuleRecord setMainArtifact(MavenArtifact mainArtifact) {
         this.mainArtifact = mainArtifact;
+        return this;
     }
 
     public MavenArtifact getPomArtifact() {
         return pomArtifact;
     }
 
-    public void setPomArtifact(MavenArtifact pomArtifact) {
+    public MavenModuleRecord setPomArtifact(MavenArtifact pomArtifact) {
         this.pomArtifact = pomArtifact;
+        return this;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public MavenModuleRecord setUrl(String url) {
         this.url = url;
+        return this;
     }
 }
