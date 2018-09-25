@@ -13,16 +13,18 @@ public class BuildChangeSetAuthor {
         return absoluteUrl;
     }
 
-    public void setAbsoluteUrl(String absoluteUrl) {
+    public BuildChangeSetAuthor setAbsoluteUrl(String absoluteUrl) {
         this.absoluteUrl = absoluteUrl;
+        return this;
     }
 
     public String getFullName() {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
+    public BuildChangeSetAuthor setFullName(String fullName) {
         this.fullName = fullName;
+        return this;
     }
 
     @Override

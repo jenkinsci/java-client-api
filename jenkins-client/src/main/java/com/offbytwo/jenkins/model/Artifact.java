@@ -16,24 +16,27 @@ public class Artifact extends BaseModel {
         return displayPath;
     }
 
-    public void setDisplayPath(String displayPath) {
+    public Artifact setDisplayPath(String displayPath) {
         this.displayPath = displayPath;
+        return this;
     }
 
     public String getFileName() {
         return fileName;
     }
 
-    public void setFileName(String fileName) {
+    public Artifact setFileName(String fileName) {
         this.fileName = fileName;
+        return this;
     }
 
     public String getRelativePath() {
         return relativePath;
     }
 
-    public void setRelativePath(String relativePath) {
+    public Artifact setRelativePath(String relativePath) {
         this.relativePath = relativePath;
+        return this;
     }
 
     @Override

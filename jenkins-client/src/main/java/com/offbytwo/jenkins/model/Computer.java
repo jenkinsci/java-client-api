@@ -19,17 +19,18 @@ public class Computer extends BaseModel {
 
     private String displayName;
 
+    List<Computer> computer;
+
+    public Computer() {
+    }
+
     public List<Computer> getComputers() {
         return computer;
     }
 
-    public void setComputer(List<Computer> computer) {
+    public Computer setComputer(List<Computer> computer) {
         this.computer = computer;
-    }
-
-    List<Computer> computer;
-
-    public Computer() {
+        return this;
     }
 
     public Computer(String displayName) {

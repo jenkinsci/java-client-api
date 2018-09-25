@@ -38,48 +38,54 @@ public class QueueItem extends BaseModel {
         return actions;
     }
 
-    public void setActions(List<QueueItemActions> actions) {
+    public QueueItem setActions(List<QueueItemActions> actions) {
         this.actions = actions;
+        return this;
     }
 
     public boolean isBlocked() {
         return blocked;
     }
 
-    public void setBlocked(boolean blocked) {
+    public QueueItem setBlocked(boolean blocked) {
         this.blocked = blocked;
+        return this;
     }
 
     public boolean isBuildable() {
         return buildable;
     }
 
-    public void setBuildable(boolean buildable) {
+    public QueueItem setBuildable(boolean buildable) {
         this.buildable = buildable;
+        return this;
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public QueueItem setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public Long getInQueueSince() {
         return inQueueSince;
     }
 
-    public void setInQueueSince(Long inQueueSince) {
+    public QueueItem setInQueueSince(Long inQueueSince) {
         this.inQueueSince = inQueueSince;
+        return this;
     }
 
     public String getParams() {
         return params;
     }
 
-    public void setParams(String params) {
+    public QueueItem setParams(String params) {
         this.params = params;
+        return this;
     }
 
     public boolean isStuck() {
@@ -90,44 +96,50 @@ public class QueueItem extends BaseModel {
         return task;
     }
 
-    public void setTask(QueueTask task) {
+    public QueueItem setTask(QueueTask task) {
         this.task = task;
+        return this;
     }
 
-    public void setStuck(boolean stuck) {
+    public QueueItem setStuck(boolean stuck) {
         this.stuck = stuck;
+        return this;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public QueueItem setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     public String getWhy() {
         return why;
     }
 
-    public void setWhy(String why) {
+    public QueueItem setWhy(String why) {
         this.why = why;
+        return this;
     }
 
     public boolean isCancelled() {
         return cancelled;
     }
 
-    public void setCancelled(boolean cancelled) {
+    public QueueItem setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
+        return this;
     }
 
     public Executable getExecutable() {
         return executable;
     }
 
-    public void setExecutable(Executable executable) {
+    public QueueItem setExecutable(Executable executable) {
         this.executable = executable;
+        return this;
     }
 
     @Override
