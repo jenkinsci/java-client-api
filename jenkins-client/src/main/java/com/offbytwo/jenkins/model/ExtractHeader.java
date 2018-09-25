@@ -4,8 +4,9 @@ public class ExtractHeader extends BaseModel {
 
     private String location;
 
-    public void setLocation(String value) {
+    public ExtractHeader setLocation(String value) {
         location = value;
+        return this;
     }
 
     public String getLocation() {

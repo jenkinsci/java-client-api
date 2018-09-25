@@ -27,16 +27,18 @@ public class BuildChangeSetPath {
      * @param editType the SCM operation, <code>add</code> or <code>edit</code> or <code>delete</code>
      * @see <a href="http://javadoc.jenkins.io/hudson/scm/EditType.html">EditType</a>
      */
-    public void setEditType(String editType) {
+    public BuildChangeSetPath setEditType(String editType) {
         this.editType = editType;
+        return this;
     }
 
     public String getFile() {
         return file;
     }
 
-    public void setFile(String file) {
+    public BuildChangeSetPath setFile(String file) {
         this.file = file;
+        return this;
     }
 
     @Override

@@ -47,40 +47,45 @@ public class TestReport extends BaseModel {
         return failCount;
     }
 
-    public void setFailCount(int failCount) {
+    public TestReport setFailCount(int failCount) {
         this.failCount = failCount;
+        return this;
     }
 
     public int getSkipCount() {
         return skipCount;
     }
 
-    public void setSkipCount(int skipCount) {
+    public TestReport setSkipCount(int skipCount) {
         this.skipCount = skipCount;
+        return this;
     }
 
     public int getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(int totalCount) {
+    public TestReport setTotalCount(int totalCount) {
         this.totalCount = totalCount;
+        return this;
     }
 
     public String getUrlName() {
         return urlName;
     }
 
-    public void setUrlName(String urlName) {
+    public TestReport setUrlName(String urlName) {
         this.urlName = urlName;
+        return this;
     }
 
     public List<TestChildReport> getChildReports() {
         return childReports;
     }
 
-    public void setChildReports(List<TestChildReport> childReports) {
+    public TestReport setChildReports(List<TestChildReport> childReports) {
         this.childReports = childReports;
+        return this;
     }
 
     @Override

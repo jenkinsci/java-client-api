@@ -21,9 +21,10 @@ public class TestCase
         return age;
     }
 
-    public void setAge( int age )
+    public TestCase setAge(int age)
     {
         this.age = age;
+        return this;
     }
 
     public String getClassName()
@@ -31,9 +32,10 @@ public class TestCase
         return className;
     }
 
-    public void setClassName( String className )
+    public TestCase setClassName(String className)
     {
         this.className = className;
+        return this;
     }
 
     public double getDuration()
@@ -41,9 +43,10 @@ public class TestCase
         return duration;
     }
 
-    public void setDuration( double duration )
+    public TestCase setDuration(double duration)
     {
         this.duration = duration;
+        return this;
     }
 
     public int getFailedSince()
@@ -51,9 +54,10 @@ public class TestCase
         return failedSince;
     }
 
-    public void setFailedSince( int failedSince )
+    public TestCase setFailedSince(int failedSince)
     {
         this.failedSince = failedSince;
+        return this;
     }
 
     public String getName()
@@ -61,9 +65,10 @@ public class TestCase
         return name;
     }
 
-    public void setName( String name )
+    public TestCase setName(String name)
     {
         this.name = name;
+        return this;
     }
 
     public boolean isSkipped()
@@ -71,9 +76,10 @@ public class TestCase
         return skipped;
     }
 
-    public void setSkipped( boolean skipped )
+    public TestCase setSkipped(boolean skipped)
     {
         this.skipped = skipped;
+        return this;
     }
 
     public String getStatus()
@@ -81,9 +87,10 @@ public class TestCase
         return status;
     }
 
-    public void setStatus( String status )
+    public TestCase setStatus(String status)
     {
         this.status = status;
+        return this;
     }
 
     public String getErrorDetails()
@@ -91,9 +98,10 @@ public class TestCase
         return errorDetails;
     }
 
-    public void setErrorDetails( String errorDetails )
+    public TestCase setErrorDetails(String errorDetails)
     {
         this.errorDetails = errorDetails;
+        return this;
     }
 
     public String getErrorStackTrace()
@@ -101,9 +109,10 @@ public class TestCase
         return errorStackTrace;
     }
 
-    public void setErrorStackTrace( String errorStackTrace )
+    public TestCase setErrorStackTrace(String errorStackTrace)
     {
         this.errorStackTrace = errorStackTrace;
+        return this;
     }
 
     @Override

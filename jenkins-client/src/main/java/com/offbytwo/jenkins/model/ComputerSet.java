@@ -26,24 +26,27 @@ public class ComputerSet extends BaseModel {
         return busyExecutors;
     }
 
-    public void setBusyExecutors(int busyExecutors) {
+    public ComputerSet setBusyExecutors(int busyExecutors) {
         this.busyExecutors = busyExecutors;
+        return this;
     }
 
     public String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName) {
+    public ComputerSet setDisplayName(String displayName) {
         this.displayName = displayName;
+        return this;
     }
 
     public int getTotalExecutors() {
         return totalExecutors;
     }
 
-    public void setTotalExecutors(int totalExecutors) {
+    public ComputerSet setTotalExecutors(int totalExecutors) {
         this.totalExecutors = totalExecutors;
+        return this;
     }
 
     public List<ComputerWithDetails> getComputers() {
@@ -56,8 +59,9 @@ public class ComputerSet extends BaseModel {
         });
     }
 
-    public void setComputer(List<ComputerWithDetails> computers) {
+    public ComputerSet setComputer(List<ComputerWithDetails> computers) {
         this.computer = computers;
+        return this;
     }
 
     @Override

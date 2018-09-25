@@ -29,48 +29,54 @@ public class BuildCause {
         return shortDescription;
     }
 
-    public void setShortDescription(String shortDescription) {
+    public BuildCause setShortDescription(String shortDescription) {
         this.shortDescription = shortDescription;
+        return this;
     }
 
     public int getUpstreamBuild() {
         return upstreamBuild;
     }
 
-    public void setUpstreamBuild(Integer upstreamBuild) {
+    public BuildCause setUpstreamBuild(Integer upstreamBuild) {
         this.upstreamBuild = upstreamBuild;
+        return this;
     }
 
     public String getUpstreamProject() {
         return upstreamProject;
     }
 
-    public void setUpstreamProject(String upstreamProject) {
+    public BuildCause setUpstreamProject(String upstreamProject) {
         this.upstreamProject = upstreamProject;
+        return this;
     }
 
     public String getUpstreamUrl() {
         return upstreamUrl;
     }
 
-    public void setUpstreamUrl(String upstreamUrl) {
+    public BuildCause setUpstreamUrl(String upstreamUrl) {
         this.upstreamUrl = upstreamUrl;
+        return this;
     }
 
     public String getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public BuildCause setUserId(String userId) {
         this.userId = userId;
+        return this;
     }
 
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
+    public BuildCause setUserName(String userName) {
         this.userName = userName;
+        return this;
     }
 
     @Override

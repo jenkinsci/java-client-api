@@ -43,7 +43,8 @@ public class BaseModel {
      * Set the HTTP client.
      * @param client {@link JenkinsHttpConnection}.
      */
-    public void setClient(final JenkinsHttpConnection client) {
+    public BaseModel setClient(final JenkinsHttpConnection client) {
         this.client = client;
+        return this;
     }
 }

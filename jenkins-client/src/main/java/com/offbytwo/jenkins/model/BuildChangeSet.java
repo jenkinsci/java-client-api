@@ -24,8 +24,9 @@ public class BuildChangeSet {
     /**
      * @param items {@link BuildChangeSet}
      */
-    public void setItems(List<BuildChangeSetItem> items) {
+    public BuildChangeSet setItems(List<BuildChangeSetItem> items) {
         this.items = items;
+        return this;
     }
 
     /**
@@ -45,8 +46,9 @@ public class BuildChangeSet {
     /**
      * @param kind the kind of (usually svn, git).
      */
-    public void setKind(String kind) {
+    public BuildChangeSet setKind(String kind) {
         this.kind = kind;
+        return this;
     }
 
     @Override
