@@ -340,9 +340,13 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
                 request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
             }
         }
-        HttpResponse response = client.execute(request, localContext);
-        jenkinsVersion = ResponseUtils.getJenkinsVersion(response);
-        return response;
+        try {
+            HttpResponse response = client.execute(request, localContext);
+            jenkinsVersion = ResponseUtils.getJenkinsVersion(response);
+            return response;
+        } finally {
+            releaseConnection(request);
+        }
     }
 
     /**
