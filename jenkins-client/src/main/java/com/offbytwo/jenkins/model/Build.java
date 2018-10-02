@@ -140,13 +140,13 @@ public class Build extends BaseModel {
         try {
 
             return client.get(url + "stop");
-        } catch (HttpResponseException ex) {
-            if (ex.getStatusCode() == 405) {
+        } catch (IOException ex) {
+            if (((HttpResponseException) ex).getStatusCode() == 405) {
                 stopPost();
                 return "";
             }
-            throw ex;
         }
+        return "";
     }
 
     /** Stops the build which is currently in progress.  This version takes in
@@ -163,13 +163,13 @@ public class Build extends BaseModel {
         try {
 
             return client.get(url + "stop");
-        } catch (HttpResponseException ex) {
-            if (ex.getStatusCode() == 405) {
+        } catch (IOException ex) {
+            if (((HttpResponseException) ex).getStatusCode() == 405) {
                 stopPost(crumbFlag);
                 return "";
             }
-            throw ex;
         }
+        return "";
     }
 
     private void stopPost(boolean crumbFlag) throws HttpResponseException, IOException {
