@@ -19,12 +19,13 @@ How to run the Docker ITs on Windows (w/o Hyper-V)
   * open Docker QuickStart Terminal and execute 
     * `cd jenkins-client-it-docker`
     * `docker build --no-cache -t jenkins-with-plugins .`
+    * note the IP address assigned to your "default" machine
   * edit the configuration of the VirtualBox machine and add a new shared 
     folder in the VirtualBox instance with the name "jobs" that points to 
     "java-client-api\jenkins-client-it-docker\jobs"
   * open Docker QuickStart Terminal and execute 
     * `docker run --name jenkins-for-testing -v /jobs:/var/jenkins_home/jobs -d -p 8080:8080 -p 50000:50000  --env JENKINS_OPTS=--httpPort=8080 jenkins-with-plugins`
-    * `mvn -Prun-its,run-docker-its clean verify --batch-mode -DjenkinsUrl=http://192.168.99.100:8080/`
+    * `mvn -Prun-its,run-docker-its clean verify --batch-mode -DjenkinsUrl=http://[IP-address-of-the-docker-default-machine]:8080/`
 
 
 TODO
