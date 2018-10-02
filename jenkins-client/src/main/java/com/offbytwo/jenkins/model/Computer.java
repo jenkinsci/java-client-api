@@ -9,6 +9,7 @@ package com.offbytwo.jenkins.model;
 import java.io.IOException;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.net.UrlEscapers;
 
 /**
@@ -24,10 +25,12 @@ public class Computer extends BaseModel {
     public Computer() {
     }
 
+    @JsonProperty("computer")
     public List<Computer> getComputers() {
         return computers;
     }
 
+    @JsonProperty("computer")
     public Computer setComputers(List<Computer> computers) {
         this.computers = computers;
         return this;
