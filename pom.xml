@@ -181,7 +181,11 @@
         <version>${mockito-core.version}</version>
         <scope>test</scope>
       </dependency>
-
+	<dependency>
+		<groupId>org.testcontainers</groupId>
+		<artifactId>testcontainers</artifactId>
+		<version>1.9.1</version>
+	</dependency>
       <dependency>
         <groupId>org.jenkins-ci.main</groupId>
         <artifactId>jenkins-test-harness</artifactId>
@@ -485,6 +489,7 @@
 
   <modules>
     <module>jenkins-client</module>
+    <module>jenkins-client-it</module>
     <module>jenkins-client-it-docker</module>
   </modules>
 

@@ -1,0 +1,10 @@
+timestamper:1.7.2
+credentials:1.24
+junit:1.10
+token-macro:1.12.1
+throttle-concurrents:1.9.0
+jacoco:1.0.19
+job-dsl:1.41
+config-file-provider:2.10.0
+testng-plugin:1.10
+cloudbees-folder: 5.12
