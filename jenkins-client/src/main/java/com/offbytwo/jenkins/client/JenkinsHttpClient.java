@@ -24,6 +24,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -201,8 +202,13 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
         HttpGet getMethod = new HttpGet(path);
         HttpResponse response = client.execute(getMethod, localContext);
         jenkinsVersion = ResponseUtils.getJenkinsVersion(response);
-        httpResponseValidator.validateResponse(response);
-        return new RequestReleasingInputStream(response.getEntity().getContent(), getMethod);
+        try {
+            httpResponseValidator.validateResponse(response);
+            return new RequestReleasingInputStream(response.getEntity().getContent(), getMethod);
+        }catch (HttpResponseException e){
+            getMethod.releaseConnection();
+        }
+        return null;
     }
 
     /**
