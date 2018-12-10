@@ -5,14 +5,16 @@
  */
 package com.offbytwo.jenkins.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.offbytwo.jenkins.client.util.EncodingUtils;
-import com.offbytwo.jenkins.client.util.RequestReleasingInputStream;
-import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
-import com.offbytwo.jenkins.model.BaseModel;
-import com.offbytwo.jenkins.model.Crumb;
-import com.offbytwo.jenkins.model.ExtractHeader;
-import net.sf.json.JSONObject;
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
@@ -51,9 +53,20 @@ import java.util.List;
 import java.util.Map;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
+import com.google.common.io.ByteStreams;
+import com.offbytwo.jenkins.client.util.EncodingUtils;
+import com.offbytwo.jenkins.client.util.RequestReleasingInputStream;
 import com.offbytwo.jenkins.client.util.ResponseUtils;
 import com.offbytwo.jenkins.client.util.UrlUtils;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
+import com.offbytwo.jenkins.model.BaseModel;
+import com.offbytwo.jenkins.model.Crumb;
+import com.offbytwo.jenkins.model.ExtractHeader;
+
+import net.sf.json.JSONObject;
 
 public class JenkinsHttpClient implements JenkinsHttpConnection {
 
@@ -86,6 +99,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
         this.uri = uri;
         this.mapper = getDefaultMapper();
         this.client = client;
+        
         this.httpResponseValidator = new HttpResponseValidator();
         // this.contentExtractor = new HttpResponseContentExtractor();
         this.jenkinsVersion = EMPTY_VERSION;

@@ -13,7 +13,7 @@ import org.testcontainers.images.builder.ImageFromDockerfile;
 import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.View;
 
-public class FirstContainerTest {
+class FirstContainerTest {
 
 //	public static GenericContainer<?> jenkins = new GenericContainer("jenkins/jenkins:2.142-slim")
 //			.withExposedPorts(8080);
