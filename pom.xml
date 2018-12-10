@@ -57,7 +57,7 @@
     <commons-io.version>2.4</commons-io.version>
     <xstream.version>1.4.7-jenkins-1</xstream.version>
     <dom4j.version>1.6.1</dom4j.version>
-    <commons-lang.version>2.6</commons-lang.version>
+    <commons-lang.version>3.8.1</commons-lang.version>
     <guava.version>17.0</guava.version>
     <json-lib.version>2.4</json-lib.version>
     <httpclient.version>4.3.6</httpclient.version>
@@ -133,8 +133,8 @@
       </dependency>
 
       <dependency>
-        <groupId>commons-lang</groupId>
-        <artifactId>commons-lang</artifactId>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
         <version>${commons-lang.version}</version>
       </dependency>
 
