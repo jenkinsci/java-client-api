@@ -34,23 +34,26 @@ public class StringParameterDefinition {
         return name;
     }
 
-    public void setName(String name) {
+    public StringParameterDefinition setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public StringParameterDefinition setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public String getDefaultValue() {
         return defaultValue;
     }
 
-    public void setDefaultValue(String defaultValue) {
+    public StringParameterDefinition setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+        return this;
     }
 }

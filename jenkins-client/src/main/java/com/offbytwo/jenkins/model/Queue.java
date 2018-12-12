@@ -8,8 +8,7 @@ package com.offbytwo.jenkins.model;
 
 import java.util.List;
 
-public class Queue
-    extends BaseModel
+public class Queue extends BaseModel
 {
     private List<String> discoverableItems;
 
@@ -24,9 +23,10 @@ public class Queue
         return discoverableItems;
     }
 
-    public void setDiscoverableItems( List<String> discoverableItems )
+    public Queue setDiscoverableItems(List<String> discoverableItems)
     {
         this.discoverableItems = discoverableItems;
+        return this;
     }
 
     @Override
@@ -44,9 +44,10 @@ public class Queue
         return items;
     }
 
-    public void setItems( List<QueueItem> items )
+    public Queue setItems(List<QueueItem> items)
     {
         this.items = items;
+        return this;
     }
 
     @Override

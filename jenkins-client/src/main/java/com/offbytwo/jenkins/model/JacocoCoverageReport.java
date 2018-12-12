@@ -11,32 +11,46 @@ public class JacocoCoverageReport extends BaseModel {
     public JacocoCoverageResult getLineCoverage() {
         return lineCoverage;
     }
-    public void setLineCoverage(JacocoCoverageResult lineCoverage) {
+
+    public JacocoCoverageReport setLineCoverage(JacocoCoverageResult lineCoverage) {
         this.lineCoverage = lineCoverage;
+        return this;
     }
+
     public JacocoCoverageResult getClassCoverage() {
         return classCoverage;
     }
-    public void setClassCoverage(JacocoCoverageResult classCoverage) {
+
+    public JacocoCoverageReport setClassCoverage(JacocoCoverageResult classCoverage) {
         this.classCoverage = classCoverage;
+        return this;
     }
+
     public JacocoCoverageResult getComplexityScore() {
         return complexityScore;
     }
-    public void setComplexityScore(JacocoCoverageResult complexityScore) {
+
+    public JacocoCoverageReport setComplexityScore(JacocoCoverageResult complexityScore) {
         this.complexityScore = complexityScore;
+        return this;
     }
+
     public JacocoCoverageResult getInstructionCoverage() {
         return instructionCoverage;
     }
-    public void setInstructionCoverage(JacocoCoverageResult instructionCoverage) {
+
+    public JacocoCoverageReport setInstructionCoverage(JacocoCoverageResult instructionCoverage) {
         this.instructionCoverage = instructionCoverage;
+        return this;
     }
+
     public JacocoCoverageResult getBranchCoverage() {
         return branchCoverage;
     }
-    public void setBranchCoverage(JacocoCoverageResult branchCoverage) {
+
+    public JacocoCoverageReport setBranchCoverage(JacocoCoverageResult branchCoverage) {
         this.branchCoverage = branchCoverage;
+        return this;
     }
 
 }

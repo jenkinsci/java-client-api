@@ -13,8 +13,18 @@ public class TestChildReport {
         return child;
     }
 
-    public void setChild(TestChild child) {
+    public TestChildReport setChild(TestChild child) {
         this.child = child;
+        return this;
+    }
+
+    public TestResult getResult() {
+        return result;
+    }
+
+    public TestChildReport setResult(TestResult result) {
+        this.result = result;
+        return this;
     }
 
     @Override
@@ -46,14 +56,6 @@ public class TestChildReport {
         } else if (!result.equals(other.result))
             return false;
         return true;
-    }
-
-    public TestResult getResult() {
-        return result;
-    }
-
-    public void setResult(TestResult result) {
-        this.result = result;
     }
 
 }

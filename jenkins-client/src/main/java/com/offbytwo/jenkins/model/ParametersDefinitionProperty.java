@@ -26,7 +26,8 @@ public class ParametersDefinitionProperty {
         return pd;
     }
 
-    public void setPd(ParameterDefinitions pd) {
+    public ParametersDefinitionProperty setPd(ParameterDefinitions pd) {
         this.pd = pd;
+        return this;
     }
 }

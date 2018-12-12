@@ -30,11 +30,13 @@ public class ParameterDefinitions {
         return stringParams;
     }
 
-    public void setStringParams(List<StringParameterDefinition> stringParams) {
+    public ParameterDefinitions setStringParams(List<StringParameterDefinition> stringParams) {
         this.stringParams = stringParams;
+        return this;
     }
 
-    public void addParam(StringParameterDefinition spd) {
+    public ParameterDefinitions addParam(StringParameterDefinition spd) {
         stringParams.add(spd);
+        return this;
     }
 }

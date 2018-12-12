@@ -19,40 +19,45 @@ public class TestSuites {
         return duration;
     }
 
-    public void setDuration(double duration) {
+    public TestSuites setDuration(double duration) {
         this.duration = duration;
+        return this;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public TestSuites setId(String id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public TestSuites setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public TestSuites setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+        return this;
     }
 
     public List<TestCase> getCases() {
         return cases;
     }
 
-    public void setCases(List<TestCase> cases) {
+    public TestSuites setCases(List<TestCase> cases) {
         this.cases = cases;
+        return this;
     }
 
     @Override

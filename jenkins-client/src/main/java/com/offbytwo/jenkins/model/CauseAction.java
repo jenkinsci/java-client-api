@@ -9,24 +9,27 @@ public class CauseAction extends BaseModel {
         return shortDescription;
     }
 
-    public void setShortDescription(String shortDescription) {
+    public CauseAction setShortDescription(String shortDescription) {
         this.shortDescription = shortDescription;
+        return this;
     }
 
     public String getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public CauseAction setUserId(String userId) {
         this.userId = userId;
+        return this;
     }
 
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
+    public CauseAction setUserName(String userName) {
         this.userName = userName;
+        return this;
     }
 
     @Override

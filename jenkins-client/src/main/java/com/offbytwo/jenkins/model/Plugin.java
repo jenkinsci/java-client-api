@@ -27,9 +27,10 @@ public class Plugin extends BaseModel
         return active;
     }
 
-    public void setActive( boolean active )
+    public Plugin setActive(boolean active)
     {
         this.active = active;
+        return this;
     }
 
     public String getBackupVersion()
@@ -37,9 +38,10 @@ public class Plugin extends BaseModel
         return backupVersion;
     }
 
-    public void setBackupVersion( String backupVersion )
+    public Plugin setBackupVersion(String backupVersion)
     {
         this.backupVersion = backupVersion;
+        return this;
     }
 
     public boolean isBundled()
@@ -47,9 +49,10 @@ public class Plugin extends BaseModel
         return bundled;
     }
 
-    public void setBundled( boolean bundled )
+    public Plugin setBundled(boolean bundled)
     {
         this.bundled = bundled;
+        return this;
     }
 
     public boolean isDowngradable()
@@ -57,9 +60,10 @@ public class Plugin extends BaseModel
         return downgradable;
     }
 
-    public void setDowngradable( boolean downgradable )
+    public Plugin setDowngradable(boolean downgradable)
     {
         this.downgradable = downgradable;
+        return this;
     }
 
     public boolean isEnabled()
@@ -67,9 +71,10 @@ public class Plugin extends BaseModel
         return enabled;
     }
 
-    public void setEnabled( boolean enabled )
+    public Plugin setEnabled(boolean enabled)
     {
         this.enabled = enabled;
+        return this;
     }
 
     public boolean isHasUpdate()
@@ -77,9 +82,10 @@ public class Plugin extends BaseModel
         return hasUpdate;
     }
 
-    public void setHasUpdate( boolean hasUpdate )
+    public Plugin setHasUpdate(boolean hasUpdate)
     {
         this.hasUpdate = hasUpdate;
+        return this;
     }
 
     public String getLongName()
@@ -87,9 +93,10 @@ public class Plugin extends BaseModel
         return longName;
     }
 
-    public void setLongName( String longName )
+    public Plugin setLongName(String longName)
     {
         this.longName = longName;
+        return this;
     }
 
     public boolean isPinned()
@@ -97,9 +104,10 @@ public class Plugin extends BaseModel
         return pinned;
     }
 
-    public void setPinned( boolean pinned )
+    public Plugin setPinned(boolean pinned)
     {
         this.pinned = pinned;
+        return this;
     }
 
     public String getShortName()
@@ -107,9 +115,10 @@ public class Plugin extends BaseModel
         return shortName;
     }
 
-    public void setShortName( String shortName )
+    public Plugin setShortName(String shortName)
     {
         this.shortName = shortName;
+        return this;
     }
 
     public String getSupportsDynamicLoad()
@@ -117,9 +126,10 @@ public class Plugin extends BaseModel
         return supportsDynamicLoad;
     }
 
-    public void setSupportsDynamicLoad( String supportsDynamicLoad )
+    public Plugin setSupportsDynamicLoad(String supportsDynamicLoad)
     {
         this.supportsDynamicLoad = supportsDynamicLoad;
+        return this;
     }
 
     public String getUrl()
@@ -127,9 +137,10 @@ public class Plugin extends BaseModel
         return url;
     }
 
-    public void setUrl( String url )
+    public Plugin setUrl(String url)
     {
         this.url = url;
+        return this;
     }
 
     public String getVersion()
@@ -137,9 +148,10 @@ public class Plugin extends BaseModel
         return version;
     }
 
-    public void setVersion( String version )
+    public Plugin setVersion(String version)
     {
         this.version = version;
+        return this;
     }
 
     public List<PluginDependency> getDependencies()
@@ -147,9 +159,10 @@ public class Plugin extends BaseModel
         return dependencies;
     }
 
-    public void setDependencies( List<PluginDependency> dependencies )
+    public Plugin setDependencies(List<PluginDependency> dependencies)
     {
         this.dependencies = dependencies;
+        return this;
     }
 
     @Override
@@ -246,7 +259,5 @@ public class Plugin extends BaseModel
             return false;
         return true;
     }
-    
-    
     
 }

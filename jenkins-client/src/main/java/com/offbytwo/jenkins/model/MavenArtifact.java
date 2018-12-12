@@ -18,63 +18,71 @@ public class MavenArtifact extends BaseModel {
         return artifactId;
     }
 
-    public void setArtifactId(String artifactId) {
+    public MavenArtifact setArtifactId(String artifactId) {
         this.artifactId = artifactId;
+        return this;
     }
 
     public String getCanonicalName() {
         return canonicalName;
     }
 
-    public void setCanonicalName(String canonicalName) {
+    public MavenArtifact setCanonicalName(String canonicalName) {
         this.canonicalName = canonicalName;
+        return this;
     }
 
     public String getClassifier() {
         return classifier;
     }
 
-    public void setClassifier(String classifier) {
+    public MavenArtifact setClassifier(String classifier) {
         this.classifier = classifier;
+        return this;
     }
 
     public String getFileName() {
         return fileName;
     }
 
-    public void setFileName(String fileName) {
+    public MavenArtifact setFileName(String fileName) {
         this.fileName = fileName;
+        return this;
     }
 
     public String getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(String groupId) {
+    public MavenArtifact setGroupId(String groupId) {
         this.groupId = groupId;
+        return this;
     }
 
     public String getMd5sum() {
         return md5sum;
     }
 
-    public void setMd5sum(String md5sum) {
+    public MavenArtifact setMd5sum(String md5sum) {
         this.md5sum = md5sum;
+        return this;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public MavenArtifact setType(String type) {
         this.type = type;
+        return this;
     }
 
     public String getVersion() {
         return version;
     }
 
-    public void setVersion(String version) {
+    public MavenArtifact setVersion(String version) {
         this.version = version;
+        return this;
     }
 }

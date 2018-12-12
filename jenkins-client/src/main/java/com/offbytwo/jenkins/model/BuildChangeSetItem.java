@@ -27,72 +27,81 @@ public class BuildChangeSetItem {
         return affectedPaths;
     }
 
-    public void setAffectedPaths(List<String> affectedPaths) {
+    public BuildChangeSetItem setAffectedPaths(List<String> affectedPaths) {
         this.affectedPaths = affectedPaths;
+        return this;
     }
 
     public String getCommitId() {
         return commitId;
     }
 
-    public void setCommitId(String commitId) {
+    public BuildChangeSetItem setCommitId(String commitId) {
         this.commitId = commitId;
+        return this;
     }
 
     public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timeStamp) {
+    public BuildChangeSetItem setTimestamp(String timeStamp) {
         this.timestamp = timeStamp;
+        return this;
     }
 
     public String getComment() {
         return comment;
     }
 
-    public void setComment(String comment) {
+    public BuildChangeSetItem setComment(String comment) {
         this.comment = comment;
+        return this;
     }
 
     public String getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public BuildChangeSetItem setDate(String date) {
         this.date = date;
+        return this;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public BuildChangeSetItem setId(String id) {
         this.id = id;
+        return this;
     }
 
     public String getMsg() {
         return msg;
     }
 
-    public void setMsg(String msg) {
+    public BuildChangeSetItem setMsg(String msg) {
         this.msg = msg;
+        return this;
     }
 
     public List<BuildChangeSetPath> getPaths() {
         return paths;
     }
 
-    public void setPaths(List<BuildChangeSetPath> paths) {
+    public BuildChangeSetItem setPaths(List<BuildChangeSetPath> paths) {
         this.paths = paths;
+        return this;
     }
 
     public BuildChangeSetAuthor getAuthor() {
         return author;
     }
 
-    public void setAuthor(BuildChangeSetAuthor author) {
+    public BuildChangeSetItem setAuthor(BuildChangeSetAuthor author) {
         this.author = author;
+        return this;
     }
 
     @Override

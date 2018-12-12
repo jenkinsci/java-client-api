@@ -13,8 +13,9 @@ public class View extends MainView {
         return name;
     }
 
-    public void setName(String name) {
+    public View setName(String name) {
         this.name = name;
+        return this;
     }
 
     public View() {
@@ -24,16 +25,18 @@ public class View extends MainView {
         return description;
     }
 
-    public void setDescription(String description) {
+    public View setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public View setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     @Override

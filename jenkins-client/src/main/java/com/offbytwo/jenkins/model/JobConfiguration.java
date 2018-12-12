@@ -77,7 +77,8 @@ public class JobConfiguration {
         return configXml;
     }
 
-    public void setConfigXml(String configXml) {
+    public JobConfiguration setConfigXml(String configXml) {
         this.configXml = configXml;
+        return this;
     }
 }
