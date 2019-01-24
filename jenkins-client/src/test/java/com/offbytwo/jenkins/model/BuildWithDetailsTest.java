@@ -52,7 +52,7 @@ public class BuildWithDetailsTest extends BaseUnitTest {
             given(response.getFirstHeader(BuildWithDetails.MORE_DATA_HEADER)).willReturn(moreDataHeader);
             given(response.getFirstHeader(BuildWithDetails.TEXT_SIZE_HEADER)).willReturn(textSizeHeader);
             given(client.post_form_with_result(anyString(),anyListOf(NameValuePair.class),anyBoolean())).willReturn(response);
-            ConsoleLog consoleOutputText = buildWithDetails.getConsoleOutputText(500);
+            ConsoleLog consoleOutputText = buildWithDetails.getConsoleOutputText(500, false);
             assertThat(consoleOutputText.getConsoleLog()).isEqualTo(text);
             assertThat(consoleOutputText.getCurrentBufferSize()).isEqualTo(textLength);
             assertThat(consoleOutputText.getHasMoreData()).isFalse();
@@ -86,7 +86,7 @@ public class BuildWithDetailsTest extends BaseUnitTest {
                 public void finished() {
                     assertThat(buffer.toString()).isEqualTo(text);
                 }
-            },1,2);
+            },1,2, false);
         } catch (IOException e) {
             fail("Should not return exception",e);
         }
@@ -114,7 +114,7 @@ public class BuildWithDetailsTest extends BaseUnitTest {
                 public void finished() {
                     fail("Should timeout");
                 }
-            },1,2);
+            },1,2, false);
         } catch (IOException e) {
             fail("Should not return exception",e);
         }
