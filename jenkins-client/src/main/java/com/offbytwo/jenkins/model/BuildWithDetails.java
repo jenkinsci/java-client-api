@@ -407,7 +407,7 @@ public class BuildWithDetails extends Build {
      * @throws IOException in case of an error.
      *
      */
-    public void streamConsoleOutput(final BuildConsoleStreamListener listener, final int poolingInterval, final int poolingTimeout) throws InterruptedException, IOException {
+    public void streamConsoleOutput(final BuildConsoleStreamListener listener, final int poolingInterval, final int poolingTimeout, boolean crumbFlag) throws InterruptedException, IOException {
         // Calculate start and timeout
         final long startTime = System.currentTimeMillis();
         final long timeoutTime = startTime + (poolingTimeout * 1000);
@@ -417,7 +417,7 @@ public class BuildWithDetails extends Build {
             Thread.sleep(poolingInterval * 1000);
 
             ConsoleLog consoleLog = null;
-            consoleLog = getConsoleOutputText(bufferOffset);
+            consoleLog = getConsoleOutputText(bufferOffset, crumbFlag);
             String logString = consoleLog.getConsoleLog();
             if (logString != null && !logString.isEmpty()) {
                 listener.onData(logString);
@@ -447,11 +447,11 @@ public class BuildWithDetails extends Build {
      * {@code CR+LF}.
      * @throws IOException in case of a failure.
      */
-    public ConsoleLog getConsoleOutputText(int bufferOffset) throws IOException {
+    public ConsoleLog getConsoleOutputText(int bufferOffset, boolean crumbFlag) throws IOException {
         List<NameValuePair> formData = new ArrayList<>();
         formData.add(new BasicNameValuePair("start", Integer.toString(bufferOffset)));
         String path = getUrl() + "logText/progressiveText";
-        HttpResponse httpResponse = client.post_form_with_result(path, formData, false);
+        HttpResponse httpResponse = client.post_form_with_result(path, formData, crumbFlag);
 
         Header moreDataHeader = httpResponse.getFirstHeader(MORE_DATA_HEADER);
         Header textSizeHeader = httpResponse.getFirstHeader(TEXT_SIZE_HEADER);
