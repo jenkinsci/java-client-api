@@ -2,7 +2,9 @@
 
 ## Release 0.3.9 (NOT RELEASED YET)
 
- * ...
+ * [Fixed Issue 394][issue-394]
+   
+   Replace `Strings.isNullOrEmpty()` with self implemented code. 
 
  * [Pull Request #386][pull-386] 
 

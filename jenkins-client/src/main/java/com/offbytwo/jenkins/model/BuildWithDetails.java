@@ -273,12 +273,16 @@ public class BuildWithDetails extends Build {
         updateDescription(description, false);
     }
 
+    private boolean isNullOrEmpty(String value) {
+        return value == null || value.isEmpty();
+    }
+
     private BuildCause convertToBuildCause(Map<String, Object> cause) {
         BuildCause cause_object = new BuildCause();
 
         // TODO: Think about it. Can this be done more simpler?
         String description = (String) cause.get("shortDescription");
-        if (!Strings.isNullOrEmpty(description)) {
+        if (!isNullOrEmpty(description)) {
             cause_object.setShortDescription(description);
         }
 
@@ -288,22 +292,22 @@ public class BuildWithDetails extends Build {
         }
 
         String upstreamProject = (String) cause.get("upstreamProject");
-        if (!Strings.isNullOrEmpty(upstreamProject)) {
+        if (!isNullOrEmpty(upstreamProject)) {
             cause_object.setUpstreamProject(upstreamProject);
         }
 
         String upstreamUrl = (String) cause.get("upstreamUrl");
-        if (!Strings.isNullOrEmpty(upstreamUrl)) {
+        if (!isNullOrEmpty(upstreamUrl)) {
             cause_object.setUpstreamUrl(upstreamUrl);
         }
 
         String userId = (String) cause.get("userId");
-        if (!Strings.isNullOrEmpty(userId)) {
+        if (!isNullOrEmpty(userId)) {
             cause_object.setUserId(userId);
         }
 
         String userName = (String) cause.get("userName");
-        if (!Strings.isNullOrEmpty(userName)) {
+        if (!isNullOrEmpty(userName)) {
             cause_object.setUserName(userName);
         }
         return cause_object;
