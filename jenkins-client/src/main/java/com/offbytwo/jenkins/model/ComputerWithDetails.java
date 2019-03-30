@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Function;
-import com.google.common.net.UrlEscapers;
+import com.offbytwo.jenkins.client.util.EncodingUtils;
 
 public class ComputerWithDetails extends Computer {
 
@@ -72,7 +72,7 @@ public class ComputerWithDetails extends Computer {
         if ("master".equals(displayName)) {
             name = "(master)";
         } else {
-            name = UrlEscapers.urlPathSegmentEscaper().escape(displayName);
+            name = EncodingUtils.encode(displayName);
         }
 
         // TODO: ?depth=2 good idea or could this being done better?
@@ -85,7 +85,7 @@ public class ComputerWithDetails extends Computer {
         if ("master".equals(displayName)) {
             name = "(master)";
         } else {
-            name = UrlEscapers.urlPathSegmentEscaper().escape(displayName);
+            name = EncodingUtils.encode(displayName);
         }
         
         Map<String, String> data = new HashMap<String, String>();
@@ -102,7 +102,7 @@ public class ComputerWithDetails extends Computer {
       if ("master".equals(displayName)) {
         name = "(master)";
       } else {
-        name = UrlEscapers.urlPathSegmentEscaper().escape(displayName);
+        name = EncodingUtils.encode(displayName);
       }
 
       Map<String, String> data = new HashMap<String, String>();

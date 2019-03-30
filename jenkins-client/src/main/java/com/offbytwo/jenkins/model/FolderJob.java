@@ -95,7 +95,7 @@ public class FolderJob extends Job {
         // https://gist.github.com/stuart-warren/7786892 was slightly helpful
         // here
         ImmutableMap<String, String> params = ImmutableMap.of("mode", "com.cloudbees.hudson.plugins.folder.Folder",
-                "name", EncodingUtils.encodeParam(folderName), "from", "", "Submit", "OK");
+                "name", EncodingUtils.formParameter(folderName), "from", "", "Submit", "OK");
         client.post_form(this.getUrl() + "/createItem?", params, crumbFlag);
     }
 

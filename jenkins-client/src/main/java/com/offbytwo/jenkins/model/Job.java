@@ -17,8 +17,7 @@ import java.util.Map;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import com.google.common.escape.Escaper;
-import com.google.common.net.UrlEscapers;
+import com.offbytwo.jenkins.client.util.EncodingUtils;
 
 public class Job extends BaseModel {
 
@@ -181,8 +180,7 @@ public class Job extends BaseModel {
     private static class MapEntryToQueryStringPair implements Function<Map.Entry<String, String>, String> {
         @Override
         public String apply(Map.Entry<String, String> entry) {
-            Escaper escaper = UrlEscapers.urlFormParameterEscaper();
-            return escaper.escape(entry.getKey()) + "=" + escaper.escape(entry.getValue());
+            return EncodingUtils.formParameter(entry.getKey()) + "=" + EncodingUtils.formParameter(entry.getValue());
         }
     }
 }

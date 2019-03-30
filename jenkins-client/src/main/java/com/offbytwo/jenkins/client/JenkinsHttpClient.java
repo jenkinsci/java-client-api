@@ -17,7 +17,6 @@ import com.offbytwo.jenkins.model.ExtractHeader;
 import net.sf.json.JSONObject;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -290,10 +289,10 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
             // helpful here
             List<String> queryParams = Lists.newArrayList();
             for (String param : data.keySet()) {
-                queryParams.add(param + "=" + EncodingUtils.encodeParam(data.get(param)));
+                queryParams.add(param + "=" + EncodingUtils.formParameter(data.get(param)));
             }
 
-            queryParams.add("json=" + EncodingUtils.encodeParam(JSONObject.fromObject(data).toString()));
+            queryParams.add("json=" + EncodingUtils.formParameter(JSONObject.fromObject(data).toString()));
             String value = mapper.writeValueAsString(data);
             StringEntity stringEntity = new StringEntity(value, ContentType.APPLICATION_FORM_URLENCODED);
             request = new HttpPost(UrlUtils.toNoApiUri(uri, context, path) + StringUtils.join(queryParams, "&"));

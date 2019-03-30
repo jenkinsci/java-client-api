@@ -9,7 +9,7 @@ package com.offbytwo.jenkins.model;
 import java.io.IOException;
 import java.util.List;
 
-import com.google.common.net.UrlEscapers;
+import com.offbytwo.jenkins.client.util.EncodingUtils;
 
 /**
  * @author Kelly Plummer
@@ -46,7 +46,7 @@ public class Computer extends BaseModel {
         if ("master".equals(displayName)) {
             name = "(master)";
         } else {
-            name = UrlEscapers.urlPathSegmentEscaper().escape(displayName);
+            name = EncodingUtils.encode(displayName);
         }
         // TODO: Check if depth=2 is a good idea or if it could be solved
         // better.

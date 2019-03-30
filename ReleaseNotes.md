@@ -2,6 +2,10 @@
 
 ## Release 0.3.9 (NOT RELEASED YET)
 
+ * [Fixed Issue 397][issue-397]
+   
+   Refactored Code Replaced UrlEscapers calls with EncodingUtils.
+
  * [Fixed Issue 396][issue-396]
    
    Add Unit Test for EncodingUtils.

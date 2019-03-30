@@ -150,7 +150,7 @@ public interface JenkinsHttpConnection extends Closeable {
      * useful for other API calls as well. Unlike post and post_xml, the path is
      * *not* modified by adding "/toJsonApiUri/json". Additionally, the params
      * in data are provided as both request parameters including a json
-     * parameter, *and* in the JSON-formatted StringEntity, because this is what
+     * formParameter, *and* in the JSON-formatted StringEntity, because this is what
      * the folder creation call required. It is unclear if any other jenkins
      * APIs operate in this fashion.
      *

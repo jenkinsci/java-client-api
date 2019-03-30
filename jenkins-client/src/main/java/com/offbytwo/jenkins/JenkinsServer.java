@@ -386,7 +386,7 @@ public class JenkinsServer implements Closeable {
      * @throws IOException in case of an error.
      */
     public void createJob(FolderJob folder, String jobName, String jobXml, Boolean crumbFlag) throws IOException {
-        client.post_xml(UrlUtils.toBaseUrl(folder) + "createItem?name=" + EncodingUtils.encodeParam(jobName), jobXml, crumbFlag);
+        client.post_xml(UrlUtils.toBaseUrl(folder) + "createItem?name=" + EncodingUtils.formParameter(jobName), jobXml, crumbFlag);
     }
 
     /**
@@ -438,7 +438,7 @@ public class JenkinsServer implements Closeable {
      * @throws IOException in case of an error.
      */
     public void createView(FolderJob folder, String viewName, String viewXml, Boolean crumbFlag) throws IOException {
-        client.post_xml(UrlUtils.toBaseUrl(folder) + "createView?name=" + EncodingUtils.encodeParam(viewName), viewXml,
+        client.post_xml(UrlUtils.toBaseUrl(folder) + "createView?name=" + EncodingUtils.formParameter(viewName), viewXml,
                 crumbFlag);
     }
 
@@ -488,7 +488,7 @@ public class JenkinsServer implements Closeable {
         // https://gist.github.com/stuart-warren/7786892 was slightly helpful
         // here
         ImmutableMap<String, String> params = ImmutableMap.of("mode", "com.cloudbees.hudson.plugins.folder.Folder",
-                "name", EncodingUtils.encodeParam(jobName), "from", "", "Submit", "OK");
+                "name", EncodingUtils.formParameter(jobName), "from", "", "Submit", "OK");
         client.post_form(UrlUtils.toBaseUrl(folder) + "createItem?", params, crumbFlag);
     }
 
@@ -627,7 +627,7 @@ public class JenkinsServer implements Closeable {
 
     /**
      * @param jobName name of the job.
-     * @param name name of the parameter.
+     * @param name name of the formParameter.
      * @param description of the parameters.
      * @param defaultValue the defaultValue for the parameters.
      * @throws IOException in case of an error.
@@ -884,7 +884,7 @@ public class JenkinsServer implements Closeable {
     public void renameJob(FolderJob folder, String oldJobName, String newJobName, Boolean crumbFlag)
             throws IOException {
         client.post(UrlUtils.toJobBaseUrl(folder, oldJobName) 
-            + "/doRename?newName=" + EncodingUtils.encodeParam(newJobName),
+            + "/doRename?newName=" + EncodingUtils.formParameter(newJobName),
                crumbFlag);
     }
     
