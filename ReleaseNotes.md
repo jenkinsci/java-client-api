@@ -4,6 +4,12 @@
 
  * ...
 
+ * [Pull Request #386][pull-386] 
+
+   Add the crumbFlag as the 2nd parameter of getConsoleOutputText method 
+
+https://github.com/jenkinsci/java-client-api/pull/386
+
 ## Release 0.3.8
 
  * [Fixed Issue 289][issue-289]
@@ -1083,6 +1089,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [pull-240]: https://github.com/jenkinsci/java-client-api/pull/240
 [pull-247]: https://github.com/jenkinsci/java-client-api/pull/247
 [pull-262]: https://github.com/jenkinsci/java-client-api/pull/262
+[pull-386]: https://github.com/jenkinsci/java-client-api/pull/386
 [jissue-35002]: https://issues.jenkins-ci.org/browse/JENKINS-35002
 [jissue-35108]: https://issues.jenkins-ci.org/browse/JENKINS-35108
 [jissue-38787]: https://issues.jenkins-ci.org/browse/JENKINS-38787
