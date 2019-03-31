@@ -226,7 +226,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
     @Override
     public <R extends BaseModel, D> R post(String path, D data, Class<R> cls, Map<String, File> fileParams, boolean crumbFlag) throws IOException {
         HttpPost request = new HttpPost(UrlUtils.toJsonApiUri(uri, context, path));
-        if (crumbFlag == true) {
+        if (crumbFlag) {
             Crumb crumb = getQuietly("/crumbIssuer", Crumb.class);
             if (crumb != null) {
                 request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
@@ -301,7 +301,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
             request = new HttpPost(UrlUtils.toNoApiUri(uri, context, path));
         }
 
-        if (crumbFlag == true) {
+        if (crumbFlag) {
             Crumb crumb = get("/crumbIssuer", Crumb.class);
             if (crumb != null) {
                 request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
@@ -333,7 +333,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
             request = new HttpPost(UrlUtils.toNoApiUri(uri, context, path));
         }
 
-        if (crumbFlag == true) {
+        if (crumbFlag) {
             Crumb crumb = get("/crumbIssuer", Crumb.class);
             if (crumb != null) {
                 request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
@@ -358,7 +358,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
     @Override
     public String post_xml(String path, String xml_data, boolean crumbFlag) throws IOException {
         HttpPost request = new HttpPost(UrlUtils.toJsonApiUri(uri, context, path));
-        if (crumbFlag == true) {
+        if (crumbFlag) {
             Crumb crumb = getQuietly("/crumbIssuer", Crumb.class);
             if (crumb != null) {
                 request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
@@ -394,7 +394,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
     public String post_text(String path, String textData, ContentType contentType, boolean crumbFlag)
             throws IOException {
         HttpPost request = new HttpPost(UrlUtils.toJsonApiUri(uri, context, path));
-        if (crumbFlag == true) {
+        if (crumbFlag) {
             Crumb crumb = get("/crumbIssuer", Crumb.class);
             if (crumb != null) {
                 request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
