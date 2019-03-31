@@ -226,12 +226,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
     @Override
     public <R extends BaseModel, D> R post(String path, D data, Class<R> cls, Map<String, File> fileParams, boolean crumbFlag) throws IOException {
         HttpPost request = new HttpPost(UrlUtils.toJsonApiUri(uri, context, path));
-        if (crumbFlag) {
-            Crumb crumb = getQuietly("/crumbIssuer", Crumb.class);
-            if (crumb != null) {
-                request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
-            }
-        }
+        handleCrumbFlag(crumbFlag, request);
 
         if (data != null) {
             String value = mapper.writeValueAsString(data);
@@ -278,6 +273,15 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
         }
     }
 
+    private void handleCrumbFlag(boolean crumbFlag, HttpPost request) {
+        if (crumbFlag) {
+            Crumb crumb = getQuietly("/crumbIssuer", Crumb.class);
+            if (crumb != null) {
+                request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+            }
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -301,12 +305,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
             request = new HttpPost(UrlUtils.toNoApiUri(uri, context, path));
         }
 
-        if (crumbFlag) {
-            Crumb crumb = get("/crumbIssuer", Crumb.class);
-            if (crumb != null) {
-                request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
-            }
-        }
+        handleCrumbFlag(crumbFlag, request);
 
         HttpResponse response = client.execute(request, localContext);
         jenkinsVersion = ResponseUtils.getJenkinsVersion(response);
@@ -333,12 +332,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
             request = new HttpPost(UrlUtils.toNoApiUri(uri, context, path));
         }
 
-        if (crumbFlag) {
-            Crumb crumb = get("/crumbIssuer", Crumb.class);
-            if (crumb != null) {
-                request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
-            }
-        }
+        handleCrumbFlag(crumbFlag, request);
         HttpResponse response = client.execute(request, localContext);
         jenkinsVersion = ResponseUtils.getJenkinsVersion(response);
         return response;
@@ -358,12 +352,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
     @Override
     public String post_xml(String path, String xml_data, boolean crumbFlag) throws IOException {
         HttpPost request = new HttpPost(UrlUtils.toJsonApiUri(uri, context, path));
-        if (crumbFlag) {
-            Crumb crumb = getQuietly("/crumbIssuer", Crumb.class);
-            if (crumb != null) {
-                request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
-            }
-        }
+        handleCrumbFlag(crumbFlag, request);
 
         if (xml_data != null) {
             request.setEntity(new StringEntity(xml_data, ContentType.create("text/xml", "utf-8")));
@@ -394,12 +383,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
     public String post_text(String path, String textData, ContentType contentType, boolean crumbFlag)
             throws IOException {
         HttpPost request = new HttpPost(UrlUtils.toJsonApiUri(uri, context, path));
-        if (crumbFlag) {
-            Crumb crumb = get("/crumbIssuer", Crumb.class);
-            if (crumb != null) {
-                request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
-            }
-        }
+        handleCrumbFlag(crumbFlag, request);
 
         if (textData != null) {
             request.setEntity(new StringEntity(textData, contentType));
