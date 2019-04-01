@@ -8,6 +8,7 @@ package com.offbytwo.jenkins.model;
 
 import java.io.IOException;
 
+import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 
 public class Build extends BaseModel {
@@ -122,6 +123,7 @@ public class Build extends BaseModel {
      * @throws IOException in case of an error.
      */
     public TestResult getTestResult() throws IOException {
+
         return client.get(this.getUrl() + "/testReport/?depth=1", TestResult.class);
     }
 
@@ -141,7 +143,7 @@ public class Build extends BaseModel {
 
             return client.get(url + "stop");
         } catch (HttpResponseException ex) {
-            if (ex.getStatusCode() == 405) {
+            if (ex.getStatusCode() == HttpStatus.SC_METHOD_NOT_ALLOWED) {
                 stopPost();
                 return "";
             }
@@ -164,7 +166,7 @@ public class Build extends BaseModel {
 
             return client.get(url + "stop");
         } catch (HttpResponseException ex) {
-            if (ex.getStatusCode() == 405) {
+            if (ex.getStatusCode() == HttpStatus.SC_METHOD_NOT_ALLOWED) {
                 stopPost(crumbFlag);
                 return "";
             }
