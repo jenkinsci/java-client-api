@@ -2,6 +2,10 @@
 
 ## Release 0.3.9 (NOT RELEASED YET)
 
+ * [Fixed Issue 399][issue-399]
+   
+   Upgrade Maven Plugins
+
  * [Fixed Issue 397][issue-397]
    
    Refactored Code Replaced UrlEscapers calls with EncodingUtils.
@@ -1090,6 +1094,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-301]: https://github.com/jenkinsci/java-client-api/issues/301
 [issue-394]: https://github.com/jenkinsci/java-client-api/issues/394
 [issue-396]: https://github.com/jenkinsci/java-client-api/issues/396
+[issue-399]: https://github.com/jenkinsci/java-client-api/issues/399
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
