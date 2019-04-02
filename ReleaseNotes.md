@@ -2,6 +2,10 @@
 
 ## Release 0.3.9 (NOT RELEASED YET)
 
+ * [Fixed Issue 402][issue-402]
+   
+   Upgrade httpclient/httpmine/httpcore.
+
  * [Fixed Issue 401][issue-401]
    
    Upgrade JUnit
@@ -1105,6 +1109,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-399]: https://github.com/jenkinsci/java-client-api/issues/399
 [issue-400]: https://github.com/jenkinsci/java-client-api/issues/400
 [issue-401]: https://github.com/jenkinsci/java-client-api/issues/401
+[issue-402]: https://github.com/jenkinsci/java-client-api/issues/402
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
