@@ -5,6 +5,7 @@ import hudson.PluginWrapper;
 import hudson.model.UpdateCenter;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Vector;
 
 import jenkins.model.Jenkins;
@@ -19,7 +20,6 @@ import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
 import org.mockito.Mockito;
 
-import com.google.common.base.Optional;
 import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.FolderJob;
 import com.offbytwo.jenkins.model.JobWithDetails;
@@ -67,7 +67,7 @@ public class FolderTestsIT {
         JobWithDetails root = server.getJob("root");
         Assert.assertNotNull(root);
 
-        Optional<FolderJob> rootFolder = server.getFolderJob(root);
+        java.util.Optional<FolderJob> rootFolder = server.getFolderJob(root);
         Assert.assertTrue(rootFolder.isPresent());
 
         server.createFolder(rootFolder.get(), "subfolder");

@@ -1,13 +1,15 @@
 package com.offbytwo.jenkins.model;
 
+import com.offbytwo.jenkins.helper.FunctionalHelper;
+
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-import com.offbytwo.jenkins.client.util.EncodingUtils;
+import static com.offbytwo.jenkins.helper.FunctionalHelper.SET_CLIENT;
 
 public class FolderJob extends Job {
 
@@ -46,16 +48,13 @@ public class FolderJob extends Job {
     /**
      * Get a list of all the defined jobs in this folder
      *
-     * @return list of defined jobs (summary level, for details @see Job#details
+     * @return list of defined jobs (summary level, for details {@link Job#details()}.
      */
     public Map<String, Job> getJobs() {
-        return Maps.uniqueIndex(jobs, new Function<Job, String>() {
-            @Override
-            public String apply(Job job) {
-                job.setClient(client);
-                return job.getName();
-            }
-        });
+        //FIXME: Check for null of jobs? Can that happen?
+        return jobs.stream()
+                .map(SET_CLIENT(this.client))
+                .collect(Collectors.toMap(k -> k.getName(), Function.identity()));
     }
 
     /**
@@ -63,15 +62,15 @@ public class FolderJob extends Job {
      *
      * @param name the name of the job.
      * @return the given job
+     * @throws IllegalArgumentException in case if the {@code name} does not exist.
      */
     public Job getJob(String name) {
-        return Maps.uniqueIndex(jobs, new Function<Job, String>() {
-            @Override
-            public String apply(Job job) {
-                job.setClient(client);
-                return job.getName();
-            }
-        }).get(name);
+        //FIXME: Check for null of jobs? Can that happen?
+        return jobs.stream()
+            .map(SET_CLIENT(this.client))
+            .filter(item -> item.getName().equals(name))
+            .findAny()
+            .orElseThrow(() -> new IllegalArgumentException("Job with name " + name + " does not exist."));
     }
 
     /**
@@ -94,8 +93,12 @@ public class FolderJob extends Job {
     public void createFolder(String folderName, Boolean crumbFlag) throws IOException {
         // https://gist.github.com/stuart-warren/7786892 was slightly helpful
         // here
-        ImmutableMap<String, String> params = ImmutableMap.of("mode", "com.cloudbees.hudson.plugins.folder.Folder",
-                "name", EncodingUtils.formParameter(folderName), "from", "", "Submit", "OK");
+        //TODO: JDK9+: Map.of(...)
+        Map<String, String> params = new HashMap<>();
+        params.put("mode", "com.cloudbees.hudson.plugins.folder.Folder");
+        params.put("name", folderName);
+        params.put("from", "");
+        params.put("Submit", "OK");
         client.post_form(this.getUrl() + "/createItem?", params, crumbFlag);
     }
 

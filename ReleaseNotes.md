@@ -1,6 +1,16 @@
 # Release Notes
 
-## Release 0.3.9 (NOT RELEASED YET)
+## Release 0.4.0 (NOT RELEASED YET)
+
+ * [Fixed Issue 395][issue-395]
+   
+   * Remove google guava lib
+   * Removed also the creation of the shaded artifact `stash`
+     cause we do not rely on Guava anymore. So you 
+     can use the original artifact directly.
+   * This results in a bumping of the version
+     number cause it a change which is breaking 
+     with previous version 0.3.8.
 
  * [Fixed Issue 405][issue-405]
    
@@ -1113,6 +1123,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-298]: https://github.com/jenkinsci/java-client-api/issues/298
 [issue-301]: https://github.com/jenkinsci/java-client-api/issues/301
 [issue-394]: https://github.com/jenkinsci/java-client-api/issues/394
+[issue-395]: https://github.com/jenkinsci/java-client-api/issues/395
 [issue-396]: https://github.com/jenkinsci/java-client-api/issues/396
 [issue-397]: https://github.com/jenkinsci/java-client-api/issues/397
 [issue-399]: https://github.com/jenkinsci/java-client-api/issues/399

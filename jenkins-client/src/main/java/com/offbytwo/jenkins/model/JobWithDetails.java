@@ -6,23 +6,22 @@
 
 package com.offbytwo.jenkins.model;
 
-import static com.google.common.collect.Lists.transform;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
+import com.offbytwo.jenkins.client.util.EncodingUtils;
+import com.offbytwo.jenkins.helper.Range;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
-import com.offbytwo.jenkins.client.util.EncodingUtils;
-import com.offbytwo.jenkins.helper.Range;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+import static com.offbytwo.jenkins.helper.FunctionalHelper.SET_CLIENT;
+import static java.util.stream.Collectors.toList;
 
 public class JobWithDetails extends Job {
 
@@ -95,12 +94,9 @@ public class JobWithDetails extends Job {
         if (builds == null) {
             return Collections.emptyList();
         } else {
-            return transform(builds, new Function<Build, Build>() {
-                @Override
-                public Build apply(Build from) {
-                    return buildWithClient(from);
-                }
-            });
+            return builds.stream()
+                    .map(s -> buildWithClient(s))
+                    .collect(toList());
         }
     }
 
@@ -129,12 +125,9 @@ public class JobWithDetails extends Job {
             if (builds == null) {
                 return Collections.emptyList();
             } else {
-                return transform(builds, new Function<Build, Build>() {
-                    @Override
-                    public Build apply(Build from) {
-                        return buildWithClient(from);
-                    }
-                });
+                return builds.stream()
+                        .map(s -> buildWithClient(s))
+                        .collect(toList());
             }
         } catch (HttpResponseException e) {
             // TODO: Thinks about a better handling if the job does not exist?
@@ -178,12 +171,9 @@ public class JobWithDetails extends Job {
             if (builds == null) {
                 return Collections.emptyList();
             } else {
-                return transform(builds, new Function<Build, Build>() {
-                    @Override
-                    public Build apply(Build from) {
-                        return buildWithClient(from);
-                    }
-                });
+                return builds.stream()
+                        .map(s -> buildWithClient(s))
+                        .collect(toList());
             }
         } catch (HttpResponseException e) {
             // TODO: Thinks about a better handline if the job does not exist?
@@ -428,7 +418,9 @@ public class JobWithDetails extends Job {
         if (downstreamProjects == null) {
             return Collections.emptyList();
         } else {
-            return transform(downstreamProjects, new JobWithClient());
+            return downstreamProjects.stream()
+                    .map(SET_CLIENT(this.client))
+                    .collect(toList());
         }
     }
 
@@ -440,8 +432,14 @@ public class JobWithDetails extends Job {
         if (upstreamProjects == null) {
             return Collections.emptyList();
         } else {
-            return transform(upstreamProjects, new JobWithClient());
+            return upstreamProjects.stream()
+                    .map(SET_CLIENT(this.client))
+                    .collect(toList());
         }
+    }
+
+    private static Predicate<? super Build> isBuildNumberEqualTo(int buildNumber) {
+        return build -> build.getNumber() == buildNumber;
     }
 
     public QueueItem getQueueItem() {
@@ -452,30 +450,11 @@ public class JobWithDetails extends Job {
      * Get a build by the given buildNumber.
      * 
      * @param buildNumber The number to select the build by.
-     * @return The {@link Build} selected by the given buildnumber
-     * 
+     * @return The an Optional with the {@link Build} selected by the given buildnumber
+     *
      */
-    public Build getBuildByNumber(final int buildNumber) {
-
-        Predicate<Build> isMatchingBuildNumber = new Predicate<Build>() {
-
-            @Override
-            public boolean apply(Build input) {
-                return input.getNumber() == buildNumber;
-            }
-        };
-
-        Optional<Build> optionalBuild = Iterables.tryFind(builds, isMatchingBuildNumber);
-        // TODO: Check if we could use Build#NO...instead of Null?
-        return optionalBuild.orNull() == null ? null : buildWithClient(optionalBuild.orNull());
-    }
-
-    private class JobWithClient implements Function<Job, Job> {
-        @Override
-        public Job apply(Job job) {
-            job.setClient(client);
-            return job;
-        }
+    public Optional<Build> getBuildByNumber(final int buildNumber) {
+        return builds.stream().filter(isBuildNumberEqualTo(buildNumber)).findFirst();
     }
 
     /**
@@ -507,7 +486,10 @@ public class JobWithDetails extends Job {
      */
     public void updateDescription(String description, boolean crumbFlag) throws IOException {
         Objects.requireNonNull(description, "description is not allowed to be null.");
-        ImmutableMap<String, String> params = ImmutableMap.of("description", description);
+        //JDK9+
+        // Map.of(...);
+        Map<String, String> params = new HashMap<>();
+        params.put("description", description);
         client.post_form(this.getUrl() + "/submitDescription?", params, crumbFlag);
     }
 

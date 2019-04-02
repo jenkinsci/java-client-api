@@ -15,9 +15,9 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Map;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
 import com.offbytwo.jenkins.client.util.EncodingUtils;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Job extends BaseModel {
 
@@ -146,7 +146,10 @@ public class Job extends BaseModel {
      * @throws IOException in case of an error.
      */
     public QueueReference build(Map<String, String> params, Map<String, File> fileParams, boolean crumbFlag) throws IOException {
-        String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
+        String qs = params.entrySet().stream()
+                .map(s -> s.getKey() + "=" + s.getValue())
+                .collect(Collectors.joining("&"));
+//        String qs = join(Collections2.transform(params.entrySet(), new MapEntryToQueryStringPair()), "&");
         ExtractHeader location = client.post(url + "buildWithParameters?" + qs,null, ExtractHeader.class, fileParams, crumbFlag);
         return new QueueReference(location.getLocation());
     }

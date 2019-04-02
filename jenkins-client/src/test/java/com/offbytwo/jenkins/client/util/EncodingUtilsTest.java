@@ -1,21 +1,31 @@
+/*
+ * Copyright (c) 2019 Karl Heinz Marbaise, and contributors.
+ *
+ * Distributed under the MIT license: http://opensource.org/licenses/MIT
+ */
 package com.offbytwo.jenkins.client.util;
 
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * This class is a unit test for the helper class {@link EncodingUtils}.
+ *
+ *  @author Karl Heinz Marbaise
+ */
 public class EncodingUtilsTest {
 
     @Test
     public void encodeShouldReturnEncodedDoubleQuoteAndSpace() {
         String result = EncodingUtils.encode("!\"& ");
-        assertThat(result).isEqualTo("!%22&%20");
+        assertThat(result).isEqualTo("%21%22%26+");
     }
 
     @Test
     public void encodeShouldReturnNotEncodeSafeChars() {
         String result = EncodingUtils.encode("-._~!$'()*,;&=@:+");
-        assertThat(result).isEqualTo("-._~!$'()*,;&=@:+");
+        assertThat(result).isEqualTo("-._%7E%21%24%27%28%29*%2C%3B%26%3D%40%3A%2B");
     }
     @Test
     public void encodeShouldReturnNotEncodeAlpha() {

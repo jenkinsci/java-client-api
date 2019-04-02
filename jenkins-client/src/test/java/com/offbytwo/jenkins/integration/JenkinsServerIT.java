@@ -88,7 +88,7 @@ public class JenkinsServerIT {
 
         JobWithDetails job = server.getJobs().get(JENKINS_TEST_JOB).details();
         BuildWithDetails build = job.getBuilds().get(0).details();
-        assertEquals("true", build.getParameters().get("someValue"));
+        assertEquals(Boolean.TRUE, build.getParameters().get("someValue"));
     }
 
     @Test

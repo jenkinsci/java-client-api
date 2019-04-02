@@ -6,8 +6,6 @@
 package com.offbytwo.jenkins.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
-import com.google.common.io.ByteStreams;
 import com.offbytwo.jenkins.client.util.EncodingUtils;
 import com.offbytwo.jenkins.client.util.RequestReleasingInputStream;
 import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
@@ -47,6 +45,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -291,7 +291,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
         if (data != null) {
             // https://gist.github.com/stuart-warren/7786892 was slightly
             // helpful here
-            List<String> queryParams = Lists.newArrayList();
+            List<String> queryParams = new ArrayList<>();
             for (String param : data.keySet()) {
                 queryParams.add(param + "=" + EncodingUtils.formParameter(data.get(param)));
             }
@@ -493,7 +493,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
     
     private <T extends BaseModel> T objectFromResponse(Class<T> cls, HttpResponse response) throws IOException {
         InputStream content = response.getEntity().getContent();
-        byte[] bytes = ByteStreams.toByteArray(content);
+        byte[] bytes = IOUtils.toByteArray(content);
         T result = mapper.readValue(bytes, cls);
         // TODO: original:
         // T result = mapper.readValue(content, cls);

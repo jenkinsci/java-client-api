@@ -8,11 +8,14 @@ package com.offbytwo.jenkins;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
+import com.offbytwo.jenkins.helper.FunctionalHelper;
+import com.offbytwo.jenkins.model.BaseModel;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.entity.ContentType;
@@ -20,10 +23,6 @@ import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
 import com.offbytwo.jenkins.client.JenkinsHttpConnection;
 import com.offbytwo.jenkins.client.util.EncodingUtils;
@@ -45,6 +44,12 @@ import com.offbytwo.jenkins.model.QueueItem;
 import com.offbytwo.jenkins.model.QueueReference;
 import com.offbytwo.jenkins.model.View;
 import java.io.Closeable;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static com.offbytwo.jenkins.helper.FunctionalHelper.SET_CLIENT;
+import static java.util.stream.Collectors.toMap;
 
 /**
  * The main starting point for interacting with a Jenkins server.
@@ -167,13 +172,10 @@ public class JenkinsServer implements Closeable {
             viewClass = View.class;
         }
         List<Job> jobs = client.get(path, viewClass).getJobs();
-        return Maps.uniqueIndex(jobs, new Function<Job, String>() {
-            @Override
-            public String apply(Job job) {
-                job.setClient(client);
-                return job.getName();
-            }
-        });
+
+        return jobs.stream()
+                .map(SET_CLIENT(this.client))
+                .collect(toMap(s -> s.getName(), s -> s));
     }
 
     /**
@@ -198,22 +200,23 @@ public class JenkinsServer implements Closeable {
         // This is much better than using &depth=2
         // http://localhost:8080/api/json?pretty&tree=views[name,url,jobs[name,url]]
         List<View> views = client.get(UrlUtils.toBaseUrl(folder) + "?tree=views[name,url,jobs[name,url]]", MainView.class).getViews();
-        return Maps.uniqueIndex(views, new Function<View, String>() {
-            @Override
-            public String apply(View view) {
-                view.setClient(client);
-                // TODO: Think about the following? Does there exists a
-                // simpler/more elegant method?
+
+        //TODO: Think about this Lambda. It's too large? Make it smaller!
+        return views.stream().map(view -> {
+                SET_CLIENT(this.client);
+
+                // TODO: Think about the following? Does there exists a simpler/more
+                // elegant method?
                 for (Job job : view.getJobs()) {
-                    job.setClient(client);
+                    SET_CLIENT(this.client);
                 }
-                for (View item : view.getViews()) {
-                    item.setClient(client);
+                for (View viewView : view.getViews()) {
+                    SET_CLIENT(this.client);
                 }
 
-                return view.getName();
-            }
-        });
+                return view;
+            })
+            .collect(Collectors.toMap(s -> s.getName(), v -> v));
     }
 
     /**
@@ -317,10 +320,9 @@ public class JenkinsServer implements Closeable {
         try {
             FolderJob folder = client.get(job.getUrl(), FolderJob.class);
             if (!folder.isFolder()) {
-                return Optional.absent();
+                return Optional.empty();
             }
             folder.setClient(client);
-
             return Optional.of(folder);
         } catch (HttpResponseException e) {
             LOGGER.debug("getForlderJob(job={}) status={}", job, e.getStatusCode());
@@ -487,8 +489,12 @@ public class JenkinsServer implements Closeable {
     public void createFolder(FolderJob folder, String jobName, Boolean crumbFlag) throws IOException {
         // https://gist.github.com/stuart-warren/7786892 was slightly helpful
         // here
-        ImmutableMap<String, String> params = ImmutableMap.of("mode", "com.cloudbees.hudson.plugins.folder.Folder",
-                "name", EncodingUtils.formParameter(jobName), "from", "", "Submit", "OK");
+        //TODO: JDK9+: Map.of(...)
+        Map<String, String> params = new HashMap<>();
+        params.put("mode", "com.cloudbees.hudson.plugins.folder.Folder");
+        params.put("name", jobName);
+        params.put("from", "");
+        params.put("Submit", "OK");
         client.post_form(UrlUtils.toBaseUrl(folder) + "createItem?", params, crumbFlag);
     }
 
@@ -535,13 +541,9 @@ public class JenkinsServer implements Closeable {
      */
     public Map<String, Computer> getComputers() throws IOException {
         List<Computer> computers = client.get("computer/", Computer.class).getComputers();
-        return Maps.uniqueIndex(computers, new Function<Computer, String>() {
-            @Override
-            public String apply(Computer computer) {
-                computer.setClient(client);
-                return computer.getDisplayName().toLowerCase();
-            }
-        });
+        return computers.stream()
+                .map(SET_CLIENT(this.client))
+                .collect(Collectors.toMap(s -> s.getDisplayName().toLowerCase(), Function.identity()));
     }
 
     /**
