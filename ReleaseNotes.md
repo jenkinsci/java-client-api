@@ -1106,6 +1106,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-301]: https://github.com/jenkinsci/java-client-api/issues/301
 [issue-394]: https://github.com/jenkinsci/java-client-api/issues/394
 [issue-396]: https://github.com/jenkinsci/java-client-api/issues/396
+[issue-397]: https://github.com/jenkinsci/java-client-api/issues/397
 [issue-399]: https://github.com/jenkinsci/java-client-api/issues/399
 [issue-400]: https://github.com/jenkinsci/java-client-api/issues/400
 [issue-401]: https://github.com/jenkinsci/java-client-api/issues/401
@@ -1127,5 +1128,5 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [jissue-38787]: https://issues.jenkins-ci.org/browse/JENKINS-38787
 [jissue-38816]: https://issues.jenkins-ci.org/browse/JENKINS-38816
 [jissue-38823]: https://issues.jenkins-ci.org/browse/JENKINS-38823
-[jissue-46445]: https://issues.jenkins-ci.org/browse/JENKINS-46445)
-[jissue-46472]: https://issues.jenkins-ci.org/browse/JENKINS-46472)
+[jissue-46445]: https://issues.jenkins-ci.org/browse/JENKINS-46445
+[jissue-46472]: https://issues.jenkins-ci.org/browse/JENKINS-46472
