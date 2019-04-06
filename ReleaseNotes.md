@@ -34,8 +34,6 @@
 
    Add the crumbFlag as the 2nd parameter of getConsoleOutputText method 
 
-https://github.com/jenkinsci/java-client-api/pull/386
-
 ## Release 0.3.8
 
  * [Fixed Issue 289][issue-289]
