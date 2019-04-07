@@ -14,8 +14,6 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
-import com.offbytwo.jenkins.helper.FunctionalHelper;
-import com.offbytwo.jenkins.model.BaseModel;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.entity.ContentType;

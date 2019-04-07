@@ -406,43 +406,18 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
       </plugin>
-      <!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.5</version>
-        <configuration>
-          <targetJdk>${maven.compiler.target}</targetJdk>
-        </configuration>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>javadoc-no-fork</report>
+              <report>aggregate-no-fork</report>
+            </reports>
+          </reportSet>
+        </reportSets>
       </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.7</version>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>2.5.2</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jxr-plugin</artifactId>
-        <version>2.5</version>
-      </plugin>
-      -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-						<reportSets>
-							<reportSet>
-								<reports>
-									<report>javadoc-no-fork</report>
-									<report>aggregate-no-fork</report>
-								</reports>
-							</reportSet>
-						</reportSets>
-          </plugin>
     </plugins>
   </reporting>
 
@@ -490,7 +465,8 @@
               <execution>
                 <id>attach-javadocs</id>
                 <goals>
-                  <goal>jar</goal>
+                  <goal>javadoc-no-fork</goal>
+                  <goal>test-javadoc-no-fork</goal>
                 </goals>
               </execution>
             </executions>

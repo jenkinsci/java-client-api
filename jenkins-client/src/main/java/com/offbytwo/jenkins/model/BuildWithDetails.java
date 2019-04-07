@@ -21,17 +21,12 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
-
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
@@ -362,7 +357,7 @@ public class BuildWithDetails extends Build {
      * @return The full console output of the build. The line separation is done by
      *         {@code CR+LF}.
      *
-     * @see {@link #streamConsoleOutput(BuildConsoleStreamListener, int, int, boolean)} method for obtaining logs for running build
+     * @see #streamConsoleOutput(BuildConsoleStreamListener, int, int, boolean) method for obtaining logs for running build
      *
      * @throws IOException in case of a failure.
      */
@@ -373,7 +368,7 @@ public class BuildWithDetails extends Build {
     /**
      * The full console output with HTML.
      *
-     * @see {@link #streamConsoleOutput(BuildConsoleStreamListener, int, int, boolean)} method for obtaining logs for running build
+     * @see #streamConsoleOutput(BuildConsoleStreamListener, int, int, boolean) method for obtaining logs for running build
      *
      * @return The console output as HTML.
      * @throws IOException in case of an error.
@@ -430,6 +425,7 @@ public class BuildWithDetails extends Build {
      * Use this method to periodically obtain logs from jenkins and skip chunks that were already received
      *
      * @param bufferOffset offset in console lo
+     * @param crumbFlag <code>true</code> or <code>false</code>.
      * @return ConsoleLog object containing console output of the build. The line separation is done by
      * {@code CR+LF}.
      * @throws IOException in case of a failure.
