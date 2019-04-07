@@ -2,6 +2,16 @@
 
 ## Release 0.3.9 (NOT RELEASED YET)
 
+ * [Fixed Issue 405][issue-405]
+   
+	* CVE-2018-14718
+	* CVE-2018-14719
+	* CVE-2018-14720
+	* CVE-2018-14721
+	* CVE-2018-19360
+	* CVE-2018-19361
+	* CVE-2018-19362
+
  * [Fixed Issue 402][issue-402]
    
    Upgrade httpclient/httpmine/httpcore.
@@ -1109,6 +1119,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-400]: https://github.com/jenkinsci/java-client-api/issues/400
 [issue-401]: https://github.com/jenkinsci/java-client-api/issues/401
 [issue-402]: https://github.com/jenkinsci/java-client-api/issues/402
+[issue-405]: https://github.com/jenkinsci/java-client-api/issues/405
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
