@@ -22,16 +22,18 @@ public class Statis {
         return history;
     }
 
-    public void setHistory(List<Double> history) {
+    public Statis setHistory(List<Double> history) {
         this.history = history;
+        return this;
     }
 
     public Double getLatest() {
         return latest;
     }
 
-    public void setLatest(Double latest) {
+    public Statis setLatest(Double latest) {
         this.latest = latest;
+        return this;
     }
 
     @Override

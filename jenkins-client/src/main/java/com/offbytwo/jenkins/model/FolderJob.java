@@ -79,8 +79,8 @@ public class FolderJob extends Job {
      * @param folderName name of the folder to be created.
      * @throws IOException in case of an error.
      */
-    public void createFolder(String folderName) throws IOException {
-        createFolder(folderName, false);
+    public FolderJob createFolder(String folderName) throws IOException {
+        return createFolder(folderName, false);
     }
 
     /**
@@ -88,9 +88,10 @@ public class FolderJob extends Job {
      *
      * @param folderName name of the folder to be created.
      * @param crumbFlag true/false.
+     * @return
      * @throws IOException in case of an error.
      */
-    public void createFolder(String folderName, Boolean crumbFlag) throws IOException {
+    public FolderJob createFolder(String folderName, Boolean crumbFlag) throws IOException {
         // https://gist.github.com/stuart-warren/7786892 was slightly helpful
         // here
         //TODO: JDK9+: Map.of(...)
@@ -100,6 +101,7 @@ public class FolderJob extends Job {
         params.put("from", "");
         params.put("Submit", "OK");
         client.post_form(this.getUrl() + "/createItem?", params, crumbFlag);
+        return this;
     }
 
     /*

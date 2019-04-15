@@ -9,16 +9,18 @@ public class Executable {
         return number;
     }
 
-    public void setNumber(Long number) {
+    public Executable setNumber(Long number) {
         this.number = number;
+        return this;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public Executable setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     @Override

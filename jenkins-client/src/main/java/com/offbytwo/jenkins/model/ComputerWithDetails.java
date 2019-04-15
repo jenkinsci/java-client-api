@@ -33,6 +33,7 @@ public class ComputerWithDetails extends Computer {
     public ComputerWithDetails()
     {
     }
+    @Override
     public String getDisplayName() {
         return displayName;
     }
@@ -78,7 +79,7 @@ public class ComputerWithDetails extends Computer {
         return client.get("/computer/" + name + "/" + "loadStatistics/?depth=2", LoadStatistics.class);
     }
 
-    public void toggleOffline(boolean crumbFlag) throws IOException {
+    public ComputerWithDetails toggleOffline(boolean crumbFlag) throws IOException {
         // curl --data "json=init" -X POST "http://192.168.99.100:8080/computer/(master)/toggleOffline"
         String name;
         if ("master".equals(displayName)) {
@@ -88,27 +89,28 @@ public class ComputerWithDetails extends Computer {
         }
         
         client.post( "/computer/" + name + "/toggleOffline", crumbFlag);
+        return this;
     }
 
-    public void toggleOffline() throws IOException {
-        toggleOffline( false );
+    public ComputerWithDetails toggleOffline() throws IOException {
+        return toggleOffline(false);
     }
 
-    public void changeOfflineCause(String cause, boolean crumbFlag) throws IOException {
+    public ComputerWithDetails changeOfflineCause(String cause, boolean crumbFlag) throws IOException {
       String name;
       if ("master".equals(displayName)) {
         name = "(master)";
       } else {
         name = EncodingUtils.encode(displayName);
       }
-
-      Map<String, String> data = new HashMap<String, String>();
-      data.put( "offlineMessage", cause );
-      client.post_form("/computer/" + name + "/changeOfflineCause?", data, crumbFlag);
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("offlineMessage", cause);
+        client.post_form("/computer/" + name + "/changeOfflineCause?", data, crumbFlag);
+        return this;
     }
 
-    public void changeOfflineCause(String cause) throws IOException {
-      changeOfflineCause(cause, false);
+    public ComputerWithDetails changeOfflineCause(String cause) throws IOException {
+        return changeOfflineCause(cause, false);
     }
 
     public Boolean getManualLaunchAllowed() {

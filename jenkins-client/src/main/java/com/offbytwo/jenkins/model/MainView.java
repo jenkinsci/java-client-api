@@ -33,15 +33,17 @@ public class MainView extends BaseModel {
         return jobs;
     }
 
-    public void setJobs(List<Job> jobs) {
+    public MainView setJobs(List<Job> jobs) {
         this.jobs = jobs;
+        return this;
     }
 
     public List<View> getViews() {
         return views;
     }
 
-    public void setViews(List<View> views) {
+    public MainView setViews(List<View> views) {
         this.views = views;
+        return this;
     }
 }

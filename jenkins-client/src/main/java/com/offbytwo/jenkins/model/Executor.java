@@ -23,48 +23,54 @@ public class Executor {
         return currentExecutable;
     }
 
-    public void setCurrentExecutable(Job currentExecutable) {
+    public Executor setCurrentExecutable(Job currentExecutable) {
         this.currentExecutable = currentExecutable;
+        return this;
     }
 
     public Job getCurrentWorkUnit() {
         return currentWorkUnit;
     }
 
-    public void setCurrentWorkUnit(Job currentWorkUnit) {
+    public Executor setCurrentWorkUnit(Job currentWorkUnit) {
         this.currentWorkUnit = currentWorkUnit;
+        return this;
     }
 
     public Boolean getIdle() {
         return idle;
     }
 
-    public void setIdle(Boolean idle) {
+    public Executor setIdle(Boolean idle) {
         this.idle = idle;
+        return this;
     }
 
     public Boolean getLikelyStuck() {
         return likelyStuck;
     }
 
-    public void setLikelyStuck(Boolean likelyStuck) {
+    public Executor setLikelyStuck(Boolean likelyStuck) {
         this.likelyStuck = likelyStuck;
+        return this;
     }
 
     public int getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public Executor setNumber(int number) {
         this.number = number;
+        return this;
     }
 
     public int getProgress() {
         return progress;
     }
 
-    public void setProgress(int progress) {
+    public Executor setProgress(int progress) {
         this.progress = progress;
+        return this;
     }
 
     @Override

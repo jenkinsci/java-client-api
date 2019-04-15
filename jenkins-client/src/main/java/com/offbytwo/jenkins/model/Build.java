@@ -83,16 +83,19 @@ public class Build extends BaseModel {
         return url;
     }
 
-    protected void setNumber(int number) {
+    protected Build setNumber(int number) {
         this.number = number;
+        return this;
     }
 
-    protected void setQueueId(int queueId) {
+    protected Build setQueueId(int queueId) {
         this.queueId = queueId;
+        return this;
     }
 
-    protected void setUrl(String url) {
+    protected Build setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     /**

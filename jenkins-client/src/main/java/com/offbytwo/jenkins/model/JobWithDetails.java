@@ -471,8 +471,8 @@ public class JobWithDetails extends Job {
      *            {@link #EMPTY_DESCRIPTION}.
      * @throws IOException in case of errors.
      */
-    public void updateDescription(String description) throws IOException {
-        updateDescription(description, false);
+    public JobWithDetails updateDescription(String description) throws IOException {
+        return updateDescription(description, false);
     }
 
     /**
@@ -484,13 +484,14 @@ public class JobWithDetails extends Job {
      * @param crumbFlag <code>true</code> or <code>false</code>.
      * @throws IOException in case of errors.
      */
-    public void updateDescription(String description, boolean crumbFlag) throws IOException {
+    public JobWithDetails updateDescription(String description, boolean crumbFlag) throws IOException {
         Objects.requireNonNull(description, "description is not allowed to be null.");
         //JDK9+
         // Map.of(...);
         Map<String, String> params = new HashMap<>();
         params.put("description", description);
         client.post_form(this.getUrl() + "/submitDescription?", params, crumbFlag);
+        return this;
     }
 
     /**
@@ -498,8 +499,8 @@ public class JobWithDetails extends Job {
      * 
      * @throws IOException in case of errors.
      */
-    public void clearDescription() throws IOException {
-        updateDescription(EMPTY_DESCRIPTION);
+    public JobWithDetails clearDescription() throws IOException {
+        return updateDescription(EMPTY_DESCRIPTION);
     }
 
     /**
@@ -508,8 +509,8 @@ public class JobWithDetails extends Job {
      * @param crumbFlag <code>true</code> or <code>false</code>.
      * @throws IOException in case of errors.
      */
-    public void clearDescription(boolean crumbFlag) throws IOException {
-        updateDescription(EMPTY_DESCRIPTION, crumbFlag);
+    public JobWithDetails clearDescription(boolean crumbFlag) throws IOException {
+        return updateDescription(EMPTY_DESCRIPTION, crumbFlag);
     }
 
     @Override
