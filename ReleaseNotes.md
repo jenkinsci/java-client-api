@@ -54,6 +54,17 @@
 
    Add the crumbFlag as the 2nd parameter of getConsoleOutputText method 
 
+ * [JENKINS-56186][jissue-56186]
+
+   Added labels to computers
+
+   ```java
+    ComputerWithDetails computer = ...
+    for (ComputerLabel assignedLabel : computer.getAssignedLabels()) {
+      assignedLabel.getName()
+    }
+   ```
+
 ## Release 0.3.8
 
  * [Fixed Issue 289][issue-289]

@@ -18,6 +18,7 @@ public class ComputerWithDetails extends Computer {
     private String displayName;
     private List actions; //TODO: What kind of List?
     private List<Executor> executors;
+    private List<ComputerLabel> assignedLabels;
     private Boolean idle;
     private Boolean jnlp;
     private Boolean launchSupported;
@@ -44,6 +45,10 @@ public class ComputerWithDetails extends Computer {
 
     public List<Executor> getExecutors() {
         return executors;
+    }
+
+    public List<ComputerLabel> getAssignedLabels() {
+        return assignedLabels;
     }
 
     public Boolean getIdle() {
@@ -168,6 +173,11 @@ public class ComputerWithDetails extends Computer {
             if (other.executors != null)
                 return false;
         } else if (!executors.equals(other.executors))
+            return false;
+        if (assignedLabels == null) {
+            if (other.assignedLabels != null)
+                return false;
+        } else if (!assignedLabels.equals(other.assignedLabels))
             return false;
         if (idle == null) {
             if (other.idle != null)
