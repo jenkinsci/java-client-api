@@ -64,6 +64,11 @@
       assignedLabel.getName()
     }
    ```
+   
+ * [JENKINS-56585][jissue-56585]
+ 
+   Change request method of `QuietDown()` to POST
+
 
 ## Release 0.3.8
 
@@ -1164,3 +1169,4 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [jissue-46445]: https://issues.jenkins-ci.org/browse/JENKINS-46445
 [jissue-46472]: https://issues.jenkins-ci.org/browse/JENKINS-46472
 [jissue-56186]: https://issues.jenkins-ci.org/browse/JENKINS-56186
+[jissue-56585]: https://issues.jenkins-ci.org/browse/JENKINS-56585
