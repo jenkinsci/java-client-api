@@ -7,8 +7,6 @@ import java.io.IOException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Joiner;
-
 @Test(groups = { Groups.NO_EXECUTOR_GROUP })
 public class NoExecutorStartedGetJobXmlIT extends AbstractJenkinsIntegrationCase {
 
@@ -47,7 +45,7 @@ public class NoExecutorStartedGetJobXmlIT extends AbstractJenkinsIntegrationCase
 
     @Test
     public void getJobXmlShouldReturnTheExpectedConfigXml() {
-        String expectedXml = Joiner.on("\n").join(CONFIG_XML);
+        String expectedXml = String.join("\n", CONFIG_XML);
         assertThat(jobXml).isEqualTo(expectedXml);
     }
 

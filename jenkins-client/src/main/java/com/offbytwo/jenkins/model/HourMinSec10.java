@@ -15,24 +15,27 @@ public class HourMinSec10 {
         return hour;
     }
 
-    public void setHour(Statis hour) {
+    public HourMinSec10 setHour(Statis hour) {
         this.hour = hour;
+        return this;
     }
 
     public Statis getMin() {
         return min;
     }
 
-    public void setMin(Statis min) {
+    public HourMinSec10 setMin(Statis min) {
         this.min = min;
+        return this;
     }
 
     public Statis getSec10() {
         return sec10;
     }
 
-    public void setSec10(Statis sec10) {
+    public HourMinSec10 setSec10(Statis sec10) {
         this.sec10 = sec10;
+        return this;
     }
 
     @Override

@@ -11,6 +11,33 @@ public class PluginDependency extends BaseModel
 
     private String version;
 
+    public boolean isOptional() {
+        return optional;
+    }
+
+    public PluginDependency setOptional(boolean optional) {
+        this.optional = optional;
+        return this;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public PluginDependency setShortName(String shortName) {
+        this.shortName = shortName;
+        return this;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public PluginDependency setVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
     @Override
     public int hashCode()
     {
@@ -49,36 +76,6 @@ public class PluginDependency extends BaseModel
         else if ( !version.equals( other.version ) )
             return false;
         return true;
-    }
-
-    public boolean isOptional()
-    {
-        return optional;
-    }
-
-    public void setOptional( boolean optional )
-    {
-        this.optional = optional;
-    }
-
-    public String getShortName()
-    {
-        return shortName;
-    }
-
-    public void setShortName( String shortName )
-    {
-        this.shortName = shortName;
-    }
-
-    public String getVersion()
-    {
-        return version;
-    }
-
-    public void setVersion( String version )
-    {
-        this.version = version;
     }
 
 }

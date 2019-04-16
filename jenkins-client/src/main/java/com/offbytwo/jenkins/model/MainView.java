@@ -6,10 +6,9 @@
 
 package com.offbytwo.jenkins.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.google.common.collect.Lists;
 
 public class MainView extends BaseModel {
 
@@ -18,7 +17,7 @@ public class MainView extends BaseModel {
 
     /* default constructor needed for Jackson */
     public MainView() {
-        this(Lists.<Job>newArrayList(), Lists.<View>newArrayList());
+        this(new ArrayList<>(), new ArrayList<>());
     }
 
     public MainView(List<Job> jobs, List<View> views) {
@@ -27,22 +26,24 @@ public class MainView extends BaseModel {
     }
 
     public MainView(Job... jobs) {
-        this(Arrays.asList(jobs), Lists.<View>newArrayList());
+        this(Arrays.asList(jobs), new ArrayList<>());
     }
 
     public List<Job> getJobs() {
         return jobs;
     }
 
-    public void setJobs(List<Job> jobs) {
+    public MainView setJobs(List<Job> jobs) {
         this.jobs = jobs;
+        return this;
     }
 
     public List<View> getViews() {
         return views;
     }
 
-    public void setViews(List<View> views) {
+    public MainView setViews(List<View> views) {
         this.views = views;
+        return this;
     }
 }

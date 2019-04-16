@@ -11,34 +11,46 @@ public class JacocoCoverageResult {
     public int getCovered() {
         return covered;
     }
-    public void setCovered(int covered) {
+
+    public JacocoCoverageResult setCovered(int covered) {
         this.covered = covered;
+        return this;
     }
+
     public int getMissed() {
         return missed;
     }
-    public void setMissed(int missed) {
+
+    public JacocoCoverageResult setMissed(int missed) {
         this.missed = missed;
+        return this;
     }
+
     public int getPercentage() {
         return percentage;
     }
-    public void setPercentage(int percentage) {
+
+    public JacocoCoverageResult setPercentage(int percentage) {
         this.percentage = percentage;
+        return this;
     }
+
     public int getPercentageFloat() {
         return percentageFloat;
     }
-    public void setPercentageFloat(int percentageFloat) {
+
+    public JacocoCoverageResult setPercentageFloat(int percentageFloat) {
         this.percentageFloat = percentageFloat;
+        return this;
     }
+
     public int getTotal() {
         return total;
     }
-    public void setTotal(int total) {
+
+    public JacocoCoverageResult setTotal(int total) {
         this.total = total;
+        return this;
     }
-
-
 
 }

@@ -7,7 +7,6 @@ import java.io.IOException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Joiner;
 import com.offbytwo.jenkins.model.Build;
 import com.offbytwo.jenkins.model.BuildResult;
 import com.offbytwo.jenkins.model.BuildWithDetails;
@@ -50,7 +49,7 @@ public class NoExecutorStartedGetJobIT extends AbstractJenkinsIntegrationCase {
                 "Building in workspace /var/jenkins_home/jobs/test/workspace",
                 "[workspace] $ /bin/sh -xe /tmp/hudson2556403647634111927.sh", "+ echo test", "test",
                 "Finished: SUCCESS", "" };
-        String expectedOutput = Joiner.on("\r\n").join(expectedOutputLines);
+        String expectedOutput = String.join("\r\n", expectedOutputLines);
         // Hint: It looks like the consoleOutputText contains CR+LF
         String resultingOutput = details.getConsoleOutputText();
         assertThat(resultingOutput).isEqualTo(expectedOutput);

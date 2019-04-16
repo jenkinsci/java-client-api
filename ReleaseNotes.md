@@ -1,8 +1,69 @@
 # Release Notes
 
-## Release 0.3.9 (NOT RELEASED YET)
+## Release 0.4.0 (NOT RELEASED YET)
 
- * ...
+ * [Fixed Issue 395][issue-395]
+   
+   * Remove google guava lib
+   * Removed also the creation of the shaded artifact `stash`
+     cause we do not rely on Guava anymore. So you 
+     can use the original artifact directly.
+   * This results in a bumping of the version
+     number cause it a change which is breaking 
+     with previous version 0.3.8.
+
+ * [Fixed Issue 405][issue-405]
+   
+	* CVE-2018-14718
+	* CVE-2018-14719
+	* CVE-2018-14720
+	* CVE-2018-14721
+	* CVE-2018-19360
+	* CVE-2018-19361
+	* CVE-2018-19362
+
+ * [Fixed Issue 402][issue-402]
+   
+   Upgrade httpclient/httpmine/httpcore.
+
+ * [Fixed Issue 401][issue-401]
+   
+   Upgrade JUnit
+
+ * [Fixed Issue 400][issue-400]
+   
+   Upgrade assertj-core.
+
+ * [Fixed Issue 399][issue-399]
+   
+   Upgrade Maven Plugins
+
+ * [Fixed Issue 397][issue-397]
+   
+   Refactored Code Replaced UrlEscapers calls with EncodingUtils.
+
+ * [Fixed Issue 396][issue-396]
+   
+   Add Unit Test for EncodingUtils.
+
+ * [Fixed Issue 394][issue-394]
+   
+   Replace `Strings.isNullOrEmpty()` with self implemented code. 
+
+ * [Pull Request #386][pull-386] 
+
+   Add the crumbFlag as the 2nd parameter of getConsoleOutputText method 
+
+ * [JENKINS-56186][jissue-56186]
+
+   Added labels to computers
+
+   ```java
+    ComputerWithDetails computer = ...
+    for (ComputerLabel assignedLabel : computer.getAssignedLabels()) {
+      assignedLabel.getName()
+    }
+   ```
 
 ## Release 0.3.8
 
@@ -1070,8 +1131,19 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-244]: https://github.com/jenkinsci/java-client-api/issues/244
 [issue-268]: https://github.com/jenkinsci/java-client-api/issues/268
 [issue-289]: https://github.com/jenkinsci/java-client-api/issues/289
+[issue-282]: https://github.com/jenkinsci/java-client-api/issues/282
+[issue-291]: https://github.com/jenkinsci/java-client-api/issues/291
 [issue-298]: https://github.com/jenkinsci/java-client-api/issues/298
 [issue-301]: https://github.com/jenkinsci/java-client-api/issues/301
+[issue-394]: https://github.com/jenkinsci/java-client-api/issues/394
+[issue-395]: https://github.com/jenkinsci/java-client-api/issues/395
+[issue-396]: https://github.com/jenkinsci/java-client-api/issues/396
+[issue-397]: https://github.com/jenkinsci/java-client-api/issues/397
+[issue-399]: https://github.com/jenkinsci/java-client-api/issues/399
+[issue-400]: https://github.com/jenkinsci/java-client-api/issues/400
+[issue-401]: https://github.com/jenkinsci/java-client-api/issues/401
+[issue-402]: https://github.com/jenkinsci/java-client-api/issues/402
+[issue-405]: https://github.com/jenkinsci/java-client-api/issues/405
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
@@ -1083,10 +1155,12 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [pull-240]: https://github.com/jenkinsci/java-client-api/pull/240
 [pull-247]: https://github.com/jenkinsci/java-client-api/pull/247
 [pull-262]: https://github.com/jenkinsci/java-client-api/pull/262
+[pull-386]: https://github.com/jenkinsci/java-client-api/pull/386
 [jissue-35002]: https://issues.jenkins-ci.org/browse/JENKINS-35002
 [jissue-35108]: https://issues.jenkins-ci.org/browse/JENKINS-35108
 [jissue-38787]: https://issues.jenkins-ci.org/browse/JENKINS-38787
 [jissue-38816]: https://issues.jenkins-ci.org/browse/JENKINS-38816
 [jissue-38823]: https://issues.jenkins-ci.org/browse/JENKINS-38823
-[jissue-46445]: https://issues.jenkins-ci.org/browse/JENKINS-46445)
-[jissue-46472]: https://issues.jenkins-ci.org/browse/JENKINS-46472)
+[jissue-46445]: https://issues.jenkins-ci.org/browse/JENKINS-46445
+[jissue-46472]: https://issues.jenkins-ci.org/browse/JENKINS-46472
+[jissue-56186]: https://issues.jenkins-ci.org/browse/JENKINS-56186

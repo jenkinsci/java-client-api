@@ -7,9 +7,6 @@
 package com.offbytwo.jenkins.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
 import com.offbytwo.jenkins.helper.BuildConsoleStreamListener;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -24,14 +21,15 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.google.common.collect.Collections2.filter;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 /**
  * This class represents build information with details about what has been done
@@ -111,7 +109,7 @@ public class BuildWithDetails extends Build {
 
     };
 
-    private List actions; // TODO: Should be improved.
+    private List<LinkedHashMap<String, List<LinkedHashMap<String, Object>>>> actions; // TODO: Should be improved.
     private boolean building;
     private String description;
     private String displayName;
@@ -163,31 +161,12 @@ public class BuildWithDetails extends Build {
     }
 
     public List<BuildCause> getCauses() {
-        // actions is a List<Map<String, List<Map<String, String ..
-        // we have a List[i]["causes"] -> List[BuildCause]
-        Collection causes = filter(actions, new Predicate<Map<String, Object>>() {
-            @Override
-            public boolean apply(Map<String, Object> action) {
-                return action.containsKey("causes");
-            }
-        });
-
-        List<BuildCause> result = new ArrayList<BuildCause>();
-
-        if (causes != null && !causes.isEmpty()) {
-            // The underlying key-value can be either a <String, Integer> or a
-            // <String, String>.
-            List<Map<String, Object>> causes_blob = ((Map<String, List<Map<String, Object>>>) causes.toArray()[0])
-                    .get("causes");
-            for (Map<String, Object> cause : causes_blob) {
-
-                BuildCause convertToBuildCause = convertToBuildCause(cause);
-
-                result.add(convertToBuildCause);
-            }
-        }
-
-        return result;
+        return actions.stream()
+                .filter(item -> item.containsKey("causes"))
+                .flatMap(item -> item.entrySet().stream())
+                .flatMap(sub -> sub.getValue().stream())
+                .map(item -> convertToBuildCause(item))
+                .collect(toList());
     }
 
     /**
@@ -199,14 +178,19 @@ public class BuildWithDetails extends Build {
      * @param crumbFlag <code>true</code> or <code>false</code>.
      * @throws IOException in case of errors.
      */
-    public void updateDisplayNameAndDescription(String displayName, String description, boolean crumbFlag)
+    public BuildWithDetails updateDisplayNameAndDescription(String displayName, String description, boolean crumbFlag)
             throws IOException {
         Objects.requireNonNull(displayName, "displayName is not allowed to be null.");
         Objects.requireNonNull(description, "description is not allowed to be null.");
+        //TODO:JDK9+ Map.of()...
+        Map<String, String> params = new HashMap<>();
+        params.put("displayName", displayName);
+        params.put("description", description);
         // TODO: Check what the "core:apply" means?
-        ImmutableMap<String, String> params = ImmutableMap.of("displayName", displayName, "description", description,
-                "core:apply", "", "Submit", "Save");
+        params.put("core:apply", "");
+        params.put("Submit", "Save");
         client.post_form(this.getUrl() + "/configSubmit?", params, crumbFlag);
+        return this;
     }
 
     /**
@@ -217,8 +201,8 @@ public class BuildWithDetails extends Build {
      * @param description The description which should be set.
      * @throws IOException in case of errors.
      */
-    public void updateDisplayNameAndDescription(String displayName, String description) throws IOException {
-        updateDisplayNameAndDescription(displayName, description, false);
+    public BuildWithDetails updateDisplayNameAndDescription(String displayName, String description) throws IOException {
+        return updateDisplayNameAndDescription(displayName, description, false);
     }
 
     /**
@@ -228,13 +212,17 @@ public class BuildWithDetails extends Build {
      * @param crumbFlag <code>true</code> or <code>false</code>.
      * @throws IOException in case of errors.
      */
-    public void updateDisplayName(String displayName, boolean crumbFlag) throws IOException {
+    public BuildWithDetails updateDisplayName(String displayName, boolean crumbFlag) throws IOException {
         Objects.requireNonNull(displayName, "displayName is not allowed to be null.");
         String description = getDescription() == null ? "" : getDescription();
+        Map<String, String> params = new HashMap<>();
+        params.put("displayName", displayName);
+        params.put("description", description);
         // TODO: Check what the "core:apply" means?
-        ImmutableMap<String, String> params = ImmutableMap.of("displayName", displayName, "description", description,
-                "core:apply", "", "Submit", "Save");
+        params.put("core:apply", "");
+        params.put("Submit", "Save");
         client.post_form(this.getUrl() + "/configSubmit?", params, crumbFlag);
+        return this;
     }
 
     /**
@@ -243,8 +231,8 @@ public class BuildWithDetails extends Build {
      * @param displayName The new displayName which should be set.
      * @throws IOException in case of errors.
      */
-    public void updateDisplayName(String displayName) throws IOException {
-        updateDisplayName(displayName, false);
+    public BuildWithDetails updateDisplayName(String displayName) throws IOException {
+        return updateDisplayName(displayName, false);
     }
 
     /**
@@ -254,13 +242,18 @@ public class BuildWithDetails extends Build {
      * @param crumbFlag <code>true</code> or <code>false</code>.
      * @throws IOException in case of errors.
      */
-    public void updateDescription(String description, boolean crumbFlag) throws IOException {
+    public BuildWithDetails updateDescription(String description, boolean crumbFlag) throws IOException {
         Objects.requireNonNull(description, "description is not allowed to be null.");
         String displayName = getDisplayName() == null ? "" : getDisplayName();
+        //JDK9+: Map.of(..)
+        Map<String, String> params = new HashMap<>();
+        params.put("displayName", displayName);
+        params.put("description", description);
         // TODO: Check what the "core:apply" means?
-        ImmutableMap<String, String> params = ImmutableMap.of("displayName", displayName, "description", description,
-                "core:apply", "", "Submit", "Save");
+        params.put("core:apply", "");
+        params.put("Submit", "Save");
         client.post_form(this.getUrl() + "/configSubmit?", params, crumbFlag);
+        return this;
     }
 
     /**
@@ -269,8 +262,12 @@ public class BuildWithDetails extends Build {
      * @param description The description which should be set.
      * @throws IOException in case of errors.
      */
-    public void updateDescription(String description) throws IOException {
-        updateDescription(description, false);
+    public BuildWithDetails updateDescription(String description) throws IOException {
+        return updateDescription(description, false);
+    }
+
+    private boolean isNullOrEmpty(String value) {
+        return value == null || value.isEmpty();
     }
 
     private BuildCause convertToBuildCause(Map<String, Object> cause) {
@@ -278,7 +275,7 @@ public class BuildWithDetails extends Build {
 
         // TODO: Think about it. Can this be done more simpler?
         String description = (String) cause.get("shortDescription");
-        if (!Strings.isNullOrEmpty(description)) {
+        if (!isNullOrEmpty(description)) {
             cause_object.setShortDescription(description);
         }
 
@@ -288,22 +285,22 @@ public class BuildWithDetails extends Build {
         }
 
         String upstreamProject = (String) cause.get("upstreamProject");
-        if (!Strings.isNullOrEmpty(upstreamProject)) {
+        if (!isNullOrEmpty(upstreamProject)) {
             cause_object.setUpstreamProject(upstreamProject);
         }
 
         String upstreamUrl = (String) cause.get("upstreamUrl");
-        if (!Strings.isNullOrEmpty(upstreamUrl)) {
+        if (!isNullOrEmpty(upstreamUrl)) {
             cause_object.setUpstreamUrl(upstreamUrl);
         }
 
         String userId = (String) cause.get("userId");
-        if (!Strings.isNullOrEmpty(userId)) {
+        if (!isNullOrEmpty(userId)) {
             cause_object.setUserId(userId);
         }
 
         String userName = (String) cause.get("userName");
-        if (!Strings.isNullOrEmpty(userName)) {
+        if (!isNullOrEmpty(userName)) {
             cause_object.setUserName(userName);
         }
         return cause_object;
@@ -349,33 +346,21 @@ public class BuildWithDetails extends Build {
         return actions;
     }
 
-    public Map<String, String> getParameters() {
-        Collection parameters = filter(actions, new Predicate<Map<String, Object>>() {
-            @Override
-            public boolean apply(Map<String, Object> action) {
-                return action.containsKey("parameters");
-            }
-        });
+    public Map<String, Object> getParameters() {
+        Map<String, Object> parameters = actions.stream()
+                .filter(item -> item.containsKey("parameters"))
+                .flatMap(item -> item.entrySet().stream())
+                .flatMap(sub -> sub.getValue().stream())
+                .collect(toMap(k -> (String) k.get("name"), v -> v.get("value")));
 
-        Map<String, String> params = new HashMap<String, String>();
-
-        if (parameters != null && !parameters.isEmpty()) {
-            for (Map<String, Object> param : ((Map<String, List<Map<String, Object>>>) parameters.toArray()[0])
-                    .get("parameters")) {
-                String key = (String) param.get("name");
-                Object value = param.get("value");
-                params.put(key, String.valueOf(value));
-            }
-        }
-
-        return params;
+        return parameters;
     }
 
     /**
      * @return The full console output of the build. The line separation is done by
      *         {@code CR+LF}.
      *
-     * @see streamConsoleOutput method for obtaining logs for running build
+     * @see #streamConsoleOutput(BuildConsoleStreamListener, int, int, boolean) method for obtaining logs for running build
      *
      * @throws IOException in case of a failure.
      */
@@ -386,7 +371,7 @@ public class BuildWithDetails extends Build {
     /**
      * The full console output with HTML.
      *
-     * @see streamConsoleOutput method for obtaining logs for running build
+     * @see #streamConsoleOutput(BuildConsoleStreamListener, int, int, boolean) method for obtaining logs for running build
      *
      * @return The console output as HTML.
      * @throws IOException in case of an error.
@@ -443,6 +428,7 @@ public class BuildWithDetails extends Build {
      * Use this method to periodically obtain logs from jenkins and skip chunks that were already received
      *
      * @param bufferOffset offset in console lo
+     * @param crumbFlag <code>true</code> or <code>false</code>.
      * @return ConsoleLog object containing console output of the build. The line separation is done by
      * {@code CR+LF}.
      * @throws IOException in case of a failure.
@@ -496,8 +482,9 @@ public class BuildWithDetails extends Build {
         return result;
     }
 
-    public void setChangeSet(BuildChangeSet changeSet) {
+    public BuildWithDetails setChangeSet(BuildChangeSet changeSet) {
         this.changeSet = changeSet;
+        return this;
     }
 
   /**
@@ -518,20 +505,23 @@ public class BuildWithDetails extends Build {
         return result;
     }
 
-    public void setChangeSets(List<BuildChangeSet> changeSets) {
+    public BuildWithDetails setChangeSets(List<BuildChangeSet> changeSets) {
         this.changeSets = changeSets;
+        return this;
     }
 
     public List<BuildChangeSetAuthor> getCulprits() {
         return culprits;
     }
 
-    public void setCulprits(List<BuildChangeSetAuthor> culprits) {
+    public BuildWithDetails setCulprits(List<BuildChangeSetAuthor> culprits) {
         this.culprits = culprits;
+        return this;
     }
 
-    public void setResult(BuildResult result) {
+    public BuildWithDetails setResult(BuildResult result) {
         this.result = result;
+        return this;
     }
 
     public InputStream downloadArtifact(Artifact a) throws IOException, URISyntaxException {

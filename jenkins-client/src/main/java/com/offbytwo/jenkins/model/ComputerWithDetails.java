@@ -10,15 +10,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.base.Function;
-import com.google.common.net.UrlEscapers;
+import com.offbytwo.jenkins.client.util.EncodingUtils;
+import java.util.function.Function;
 
 public class ComputerWithDetails extends Computer {
 
     private String displayName;
     private List actions; //TODO: What kind of List?
     private List<Executor> executors;
+    private List<ComputerLabel> assignedLabels;
     private Boolean idle;
     private Boolean jnlp;
     private Boolean launchSupported;
@@ -34,6 +34,7 @@ public class ComputerWithDetails extends Computer {
     public ComputerWithDetails()
     {
     }
+    @Override
     public String getDisplayName() {
         return displayName;
     }
@@ -44,6 +45,10 @@ public class ComputerWithDetails extends Computer {
 
     public List<Executor> getExecutors() {
         return executors;
+    }
+
+    public List<ComputerLabel> getAssignedLabels() {
+        return assignedLabels;
     }
 
     public Boolean getIdle() {
@@ -72,46 +77,45 @@ public class ComputerWithDetails extends Computer {
         if ("master".equals(displayName)) {
             name = "(master)";
         } else {
-            name = UrlEscapers.urlPathSegmentEscaper().escape(displayName);
+            name = EncodingUtils.encode(displayName);
         }
 
         // TODO: ?depth=2 good idea or could this being done better?
         return client.get("/computer/" + name + "/" + "loadStatistics/?depth=2", LoadStatistics.class);
     }
 
-    public void toggleOffline(boolean crumbFlag) throws IOException {
+    public ComputerWithDetails toggleOffline(boolean crumbFlag) throws IOException {
         // curl --data "json=init" -X POST "http://192.168.99.100:8080/computer/(master)/toggleOffline"
         String name;
         if ("master".equals(displayName)) {
             name = "(master)";
         } else {
-            name = UrlEscapers.urlPathSegmentEscaper().escape(displayName);
+            name = EncodingUtils.encode(displayName);
         }
         
-        Map<String, String> data = new HashMap<String, String>();
-        data.put( "json", "init" );
         client.post( "/computer/" + name + "/toggleOffline", crumbFlag);
+        return this;
     }
 
-    public void toggleOffline() throws IOException {
-        toggleOffline( false );
+    public ComputerWithDetails toggleOffline() throws IOException {
+        return toggleOffline(false);
     }
 
-    public void changeOfflineCause(String cause, boolean crumbFlag) throws IOException {
+    public ComputerWithDetails changeOfflineCause(String cause, boolean crumbFlag) throws IOException {
       String name;
       if ("master".equals(displayName)) {
         name = "(master)";
       } else {
-        name = UrlEscapers.urlPathSegmentEscaper().escape(displayName);
+        name = EncodingUtils.encode(displayName);
       }
-
-      Map<String, String> data = new HashMap<String, String>();
-      data.put( "offlineMessage", cause );
-      client.post_form("/computer/" + name + "/changeOfflineCause?", data, crumbFlag);
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("offlineMessage", cause);
+        client.post_form("/computer/" + name + "/changeOfflineCause?", data, crumbFlag);
+        return this;
     }
 
-    public void changeOfflineCause(String cause) throws IOException {
-      changeOfflineCause(cause, false);
+    public ComputerWithDetails changeOfflineCause(String cause) throws IOException {
+        return changeOfflineCause(cause, false);
     }
 
     public Boolean getManualLaunchAllowed() {
@@ -169,6 +173,11 @@ public class ComputerWithDetails extends Computer {
             if (other.executors != null)
                 return false;
         } else if (!executors.equals(other.executors))
+            return false;
+        if (assignedLabels == null) {
+            if (other.assignedLabels != null)
+                return false;
+        } else if (!assignedLabels.equals(other.assignedLabels))
             return false;
         if (idle == null) {
             if (other.idle != null)
@@ -249,11 +258,4 @@ public class ComputerWithDetails extends Computer {
         return result;
     }
 
-    private class ComputerWithClient implements Function<Computer, Computer> {
-        @Override
-        public Computer apply(Computer computer) {
-            computer.setClient(client);
-            return computer;
-        }
-    }
 }

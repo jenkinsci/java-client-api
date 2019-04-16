@@ -7,9 +7,7 @@
 package com.offbytwo.jenkins.model;
 
 import java.util.List;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
+import java.util.stream.Collectors;
 
 public class ComputerSet extends BaseModel {
     private int busyExecutors;
@@ -26,38 +24,39 @@ public class ComputerSet extends BaseModel {
         return busyExecutors;
     }
 
-    public void setBusyExecutors(int busyExecutors) {
+    public ComputerSet setBusyExecutors(int busyExecutors) {
         this.busyExecutors = busyExecutors;
+        return this;
     }
 
     public String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName) {
+    public ComputerSet setDisplayName(String displayName) {
         this.displayName = displayName;
+        return this;
     }
 
     public int getTotalExecutors() {
         return totalExecutors;
     }
 
-    public void setTotalExecutors(int totalExecutors) {
+    public ComputerSet setTotalExecutors(int totalExecutors) {
         this.totalExecutors = totalExecutors;
+        return this;
     }
 
     public List<ComputerWithDetails> getComputers() {
-        return Lists.transform( computer, new Function<ComputerWithDetails, ComputerWithDetails>() {
-            @Override
-            public ComputerWithDetails apply(ComputerWithDetails computerWithDetails) {
-                computerWithDetails.setClient(client);
-                return computerWithDetails;
-            }
-        });
+        return computer.stream().map(s -> {
+            s.setClient(this.client);
+            return s;
+        }).collect(Collectors.toList());
     }
 
-    public void setComputer(List<ComputerWithDetails> computers) {
+    public ComputerSet setComputer(List<ComputerWithDetails> computers) {
         this.computer = computers;
+        return this;
     }
 
     @Override
