@@ -5,16 +5,16 @@
  */
 package com.offbytwo.jenkins.client;
 
-import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.offbytwo.jenkins.client.util.EncodingUtils;
+import com.offbytwo.jenkins.client.util.RequestReleasingInputStream;
+import com.offbytwo.jenkins.client.util.ResponseUtils;
+import com.offbytwo.jenkins.client.util.UrlUtils;
+import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
+import com.offbytwo.jenkins.model.BaseModel;
+import com.offbytwo.jenkins.model.Crumb;
+import com.offbytwo.jenkins.model.ExtractHeader;
+import net.sf.json.JSONObject;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
@@ -47,26 +47,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
-import com.google.common.io.ByteStreams;
-import com.offbytwo.jenkins.client.util.EncodingUtils;
-import com.offbytwo.jenkins.client.util.RequestReleasingInputStream;
-import com.offbytwo.jenkins.client.util.ResponseUtils;
-import com.offbytwo.jenkins.client.util.UrlUtils;
-import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
-import com.offbytwo.jenkins.model.BaseModel;
-import com.offbytwo.jenkins.model.Crumb;
-import com.offbytwo.jenkins.model.ExtractHeader;
-
-import net.sf.json.JSONObject;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 public class JenkinsHttpClient implements JenkinsHttpConnection {
 
