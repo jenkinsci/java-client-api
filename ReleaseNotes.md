@@ -9,7 +9,7 @@
      cause we do not rely on Guava anymore. So you 
      can use the original artifact directly.
    * This results in a bumping of the version
-     number cause it a change which is breaking 
+     number cause it is a change which is breaking 
      with previous version 0.3.8.
 
  * [Fixed Issue 405][issue-405]
