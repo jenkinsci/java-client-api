@@ -56,7 +56,7 @@
     <mockito-core.version>3.0.0</mockito-core.version>
     <commons-io.version>2.4</commons-io.version>
     <xstream.version>1.4.7-jenkins-1</xstream.version>
-    <commons-lang.version>3.9</commons-lang.version>
+    <dom4j.version>1.6.1</dom4j.version>
     <json-lib.version>2.4</json-lib.version>
     <httpclient.version>4.5.8</httpclient.version>
     <httpcore.version>4.4.11</httpcore.version>
@@ -124,12 +124,6 @@
       </dependency>
 
       <!-- Musties -->
-      <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-lang3</artifactId>
-        <version>${commons-lang.version}</version>
-      </dependency>
-
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>

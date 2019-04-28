@@ -14,7 +14,6 @@ import com.offbytwo.jenkins.model.Crumb;
 import com.offbytwo.jenkins.model.ExtractHeader;
 import net.sf.json.JSONObject;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -299,7 +298,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
             queryParams.add("json=" + EncodingUtils.formParameter(JSONObject.fromObject(data).toString()));
             String value = mapper.writeValueAsString(data);
             StringEntity stringEntity = new StringEntity(value, ContentType.APPLICATION_FORM_URLENCODED);
-            request = new HttpPost(UrlUtils.toNoApiUri(uri, context, path) + StringUtils.join(queryParams, "&"));
+            request = new HttpPost(UrlUtils.toNoApiUri(uri, context, path) + String.join( "&", queryParams));
             request.setEntity(stringEntity);
         } else {
             request = new HttpPost(UrlUtils.toNoApiUri(uri, context, path));
