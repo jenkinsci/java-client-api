@@ -660,7 +660,7 @@ public class JenkinsServer implements Closeable {
      */
     public JenkinsServer quietDown() throws IOException {
         try {
-            client.get("/quietDown/");
+            client.post("/quietDown/");
         } catch (org.apache.http.client.ClientProtocolException e) {
             LOGGER.error("quietDown()", e);
         }
