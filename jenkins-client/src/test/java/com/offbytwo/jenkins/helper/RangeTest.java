@@ -6,13 +6,10 @@
 
 package com.offbytwo.jenkins.helper;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import com.offbytwo.jenkins.helper.Range;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * <ul>
@@ -23,7 +20,7 @@ import com.offbytwo.jenkins.helper.Range;
  * The same as {0,N}.</li>
  * <li>{N}: Just retrieve the N-th element. The same as {N,N+1}.</li>
  * </ul>
- * 
+ *
  * @author Karl Heinz Marbaise
  */
 public class RangeTest {
@@ -56,27 +53,24 @@ public class RangeTest {
         assertThat(r.getRangeString()).isEqualTo(getEscaped("3,4"));
     }
 
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-
     @Test
     public void toIsGivenLargerThanFromShouldResultInIllegalArgumentException() {
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("to must be greater than from");
-        Range.build().from(5).to(1);
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> Range.build().from(5).to(1))
+                .withMessage("to must be greater than from");
     }
 
     @Test
     public void fromGivenNegativeValueShouldResultInIllegalArgumentException() {
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("from value must be greater or equal null.");
-        Range.build().from(-1);
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> Range.build().from(-1))
+                .withMessage("from value must be greater or equal null.");
     }
 
     @Test
     public void fromGivenPositiveToNegativeValueShouldResultInIllegalArgumentException() {
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("to must be greater or equal null.");
-        Range.build().from(5).to(-1);
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> Range.build().from(5).to(-1))
+                .withMessage("to must be greater or equal null.");
     }
 }
