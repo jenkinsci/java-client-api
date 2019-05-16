@@ -8,13 +8,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Vector;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import jenkins.model.Jenkins;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
@@ -23,6 +21,9 @@ import org.mockito.Mockito;
 import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.FolderJob;
 import com.offbytwo.jenkins.model.JobWithDetails;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class FolderTestsIT {
 
@@ -65,20 +66,20 @@ public class FolderTestsIT {
     public void testFolderPluginAPIs() throws Exception {
         server.createFolder("root");
         JobWithDetails root = server.getJob("root");
-        Assert.assertNotNull(root);
+        assertThat( root).isNotNull();
 
         java.util.Optional<FolderJob> rootFolder = server.getFolderJob(root);
-        Assert.assertTrue(rootFolder.isPresent());
+        assertThat( rootFolder).isPresent();
 
         server.createFolder(rootFolder.get(), "subfolder");
         JobWithDetails subfolder = server.getJob(rootFolder.get(), "subfolder");
-        Assert.assertNotNull(subfolder);
+        assertThat( subfolder).isNotNull();
 
         Optional<FolderJob> subfolderFolder = server.getFolderJob(subfolder);
-        Assert.assertTrue(subfolderFolder.isPresent());
+        assertThat( subfolderFolder).isPresent();
 
         server.deleteJob("root");
         root = server.getJob("root");
-        Assert.assertNull(root);
+        assertThat( root ).isNull();
     }
 }

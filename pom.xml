@@ -49,7 +49,7 @@
     <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
     <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
 
-    <asciidoctor-maven-plugin.version>2.0.0</asciidoctor-maven-plugin.version>
+    <asciidoctor-maven-plugin.version>1.5.3</asciidoctor-maven-plugin.version>
 
     <!-- Version of Jenkins to use for Integration Tests -->
     <jenkins-version>1.644</jenkins-version>
@@ -57,7 +57,8 @@
     <mockito-core.version>3.0.0</mockito-core.version>
     <commons-io.version>2.4</commons-io.version>
     <xstream.version>1.4.7-jenkins-1</xstream.version>
-    <commons-lang.version>3.9</commons-lang.version>
+    <dom4j.version>1.6.1</dom4j.version>
+    <commons-lang.version>3.8.1</commons-lang.version>
     <json-lib.version>2.4</json-lib.version>
     <httpclient.version>4.5.8</httpclient.version>
     <httpcore.version>4.4.11</httpcore.version>
@@ -210,9 +211,10 @@
         <type>pom</type>
       </dependency>
       <dependency>
-        <groupId>xerces</groupId>
-        <artifactId>xmlParserAPIs</artifactId>
-        <version>2.6.1</version>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>${junit.jupiter.version}</version>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
@@ -244,7 +246,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>3.0.1</version>
           <executions>
             <!--
               ! here we override the super-pom attach-sources execution id 
@@ -268,22 +270,22 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.22.2</version>
+          <version>2.22.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-report-plugin</artifactId>
-          <version>2.22.2</version>
+          <version>2.22.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>3.2.1</version>
+          <version>2.4.3</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.1.2</version>
+          <version>3.1.1</version>
           <configuration>
             <archive>
               <manifest>
@@ -296,7 +298,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>3.8.0</version>
       </plugin>
         <!--
           ! We define a newer version than in parent.
@@ -309,12 +311,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.0.0-M1</version>
+          <version>2.8.2</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>
-          <version>3.0.0-M1</version>
+          <version>2.5.2</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -347,12 +349,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.1.1</version>
+          <version>3.1.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.8.2</version>
+          <version>3.7.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -467,7 +469,7 @@
   <repositories>
     <repository>
       <id>repo.jenkins-ci.org</id>
-      <url>https://repo.jenkins-ci.org/public/</url>
+      <url>http://repo.jenkins-ci.org/public/</url>
     </repository>
   </repositories>
 

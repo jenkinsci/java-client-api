@@ -7,8 +7,8 @@ package com.offbytwo.jenkins.client.util;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.mock;
  *
  * @author Dell Green
  */
-public class ResponseUtilsTest {
+class ResponseUtilsTest {
 
     
 
