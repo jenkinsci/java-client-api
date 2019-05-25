@@ -187,6 +187,12 @@
     Added new methods to JenkinsServer for stopping and restarting Jenkins. The methods are restart(Boolean crumbFlag), safeRestart(Boolean crumbFlag), exit(Boolean crumbFlag) and safeExit(Boolean crumbFlag)
 	
 	Thanks for that to [Chids](https://github.com/Chids-gs).
+
+ * [Fixed Issue 309](https://github.com/jenkinsci/java-client-api/issues/309) 
+ 
+    Added possibility to get mode detailed data from Maven Modules from Jobs/Builds
+	
+	Thanks for that to [Jakub Zacek](https://github.com/dawon).
 	
 ## Release 0.3.7
 

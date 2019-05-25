@@ -456,6 +456,18 @@ public class JobWithDetails extends Job {
     public Optional<Build> getBuildByNumber(final int buildNumber) {
         return builds.stream().filter(isBuildNumberEqualTo(buildNumber)).findFirst();
     }
+    
+    /**
+     * Get a module of a {@link Job}
+     * 
+     * @param moduleName name of the {@link MavenModule}
+     * @return The {@link MavenModuleWithDetails} selected by the given module name
+     * @throws java.io.IOException in case of errors.
+     * 
+     */    
+    public MavenModuleWithDetails getModule(String moduleName) throws IOException {
+        return client.get(getUrl() + moduleName, MavenModuleWithDetails.class);
+    }    
 
     /**
      * Empty description to be used for {@link #updateDescription(String)} or
