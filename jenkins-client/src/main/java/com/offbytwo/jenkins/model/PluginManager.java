@@ -1,5 +1,6 @@
 package com.offbytwo.jenkins.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +18,10 @@ public class PluginManager extends BaseModel
     public PluginManager setPlugins(List<Plugin> plugins) {
         this.plugins = plugins;
         return this;
+    }
+
+    public PluginManager(List<Plugin> plugins) {
+        this.plugins = new ArrayList<>();
     }
 
     @Override

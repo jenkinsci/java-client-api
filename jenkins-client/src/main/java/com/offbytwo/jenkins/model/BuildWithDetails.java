@@ -6,16 +6,11 @@
 
 package com.offbytwo.jenkins.model;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.offbytwo.jenkins.helper.BuildConsoleStreamListener;
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -27,9 +22,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class represents build information with details about what has been done
@@ -162,11 +161,11 @@ public class BuildWithDetails extends Build {
 
     public List<BuildCause> getCauses() {
         return actions.stream()
-                .filter(item -> item.containsKey("causes"))
-                .flatMap(item -> item.entrySet().stream())
-                .flatMap(sub -> sub.getValue().stream())
-                .map(item -> convertToBuildCause(item))
-                .collect(toList());
+            .filter(item2 -> item2.containsKey("causes"))
+            .flatMap(item1 -> item1.entrySet().stream())
+            .flatMap(sub -> sub.getValue().stream())
+            .map(item -> convertToBuildCause(item))
+            .collect(toList());
     }
 
     /**
