@@ -20,25 +20,29 @@
 
   <groupId>com.offbytwo.jenkins</groupId>
   <artifactId>jenkins-client-parent</artifactId>
-  <version>0.3.9-SNAPSHOT</version>
+  <version>0.3.9.2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <scm>
-    <connection>scm:git:https://github.com/jenkinsci/java-client-api.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/jenkinsci/java-client-api.git</developerConnection>
-    <url>https://github.com/jenkinsci/java-client-api</url>
-    <tag>HEAD</tag>
-  </scm>
+  <!--<scm>-->
+    <!--<connection>scm:git:https://github.com/jenkinsci/java-client-api.git</connection>-->
+    <!--<developerConnection>scm:git:ssh://git@github.com/jenkinsci/java-client-api.git</developerConnection>-->
+    <!--<url>https://github.com/jenkinsci/java-client-api</url>-->
+    <!--<tag>HEAD</tag>-->
+  <!--</scm>-->
   <distributionManagement>
-    <site>
-      <id>github</id>
-      <url>scm:git:ssh://git@github.com/jenkinsci/java-client-api.git</url>
-    </site>
+    <repository>
+      <id>fraudmetrixRepo</id>
+      <url>http://maven.fraudmetrix.cn/nexus/content/repositories/releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>fraudmetrixRepo</id>
+      <url>http://maven.fraudmetrix.cn/nexus/content/repositories/snapshots/</url>
+    </snapshotRepository>
   </distributionManagement>
-  <ciManagement>
-    <system>Travis-CI</system>
-    <url>https://travis-ci.org/jenkinsci/java-client-api/</url>
-  </ciManagement>
+  <!--<ciManagement>-->
+    <!--<system>Travis-CI</system>-->
+    <!--<url>https://travis-ci.org/jenkinsci/java-client-api/</url>-->
+  <!--</ciManagement>-->
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
