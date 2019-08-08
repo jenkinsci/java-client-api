@@ -64,10 +64,10 @@
     <commons-lang.version>2.6</commons-lang.version>
     <guava.version>17.0</guava.version>
     <json-lib.version>2.4</json-lib.version>
-    <httpclient.version>4.3.6</httpclient.version>
-    <httpcore.version>4.3.3</httpcore.version>
-    <httpmime.version>4.3.6</httpmime.version>
     <jackson-databind.version>2.3.4</jackson-databind.version>
+    <httpclient.version>4.5.8</httpclient.version>
+    <httpcore.version>4.4.11</httpcore.version>
+    <httpmime.version>4.5.8</httpmime.version>
   </properties>
 
   <licenses>
