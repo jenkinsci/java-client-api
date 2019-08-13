@@ -48,7 +48,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
   public final static String EMPTY_VERSION = "UNKNOWN";
   private final static int DEFAULT_TIME_OUT = 10000;
   private final static int MAX_CONN_TOTAL = 100;
-  private final static int MAX_CONN_PER_ROUTE = 100;
+  private final static int MAX_CONN_PER_ROUTE = 20;
   private final Logger LOGGER = LoggerFactory.getLogger(getClass());
   // private HttpResponseContentExtractor contentExtractor;
   private URI uri;
