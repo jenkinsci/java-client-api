@@ -55,7 +55,7 @@ public class JenkinsServer implements Closeable {
     /**
      * The transport client instance to use.
      */
-    private final JenkinsHttpConnection client;
+    protected final JenkinsHttpConnection client;
 
     /**
      * Create a new Jenkins server reference given only the server address
