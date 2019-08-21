@@ -227,4 +227,10 @@ public interface JenkinsHttpConnection extends Closeable {
      */
     String getJenkinsVersion();
 
+    /**
+     * get URI
+     * @return
+     */
+    URI getUri();
+
 }

@@ -533,4 +533,8 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
     httpRequestBase.releaseConnection();
   }
 
+  @Override
+  public URI getUri() {
+    return uri;
+  }
 }
