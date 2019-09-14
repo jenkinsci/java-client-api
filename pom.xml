@@ -56,7 +56,6 @@
     <mockito-core.version>3.0.0</mockito-core.version>
     <commons-io.version>2.4</commons-io.version>
     <xstream.version>1.4.7-jenkins-1</xstream.version>
-    <dom4j.version>1.6.1</dom4j.version>
     <commons-lang.version>3.9</commons-lang.version>
     <json-lib.version>2.4</json-lib.version>
     <httpclient.version>4.5.8</httpclient.version>
@@ -105,9 +104,9 @@
       </dependency>
 
       <dependency>
-        <groupId>dom4j</groupId>
+        <groupId>org.dom4j</groupId>
         <artifactId>dom4j</artifactId>
-        <version>${dom4j.version}</version>
+        <version>2.1.1</version>
       </dependency>
 
       <dependency>
