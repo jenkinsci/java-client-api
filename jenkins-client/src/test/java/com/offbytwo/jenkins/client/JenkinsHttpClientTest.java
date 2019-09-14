@@ -5,6 +5,12 @@
  */
 package com.offbytwo.jenkins.client;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+
 import java.io.ByteArrayInputStream;
 import java.net.URI;
 import org.apache.http.Header;
@@ -15,12 +21,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.protocol.HttpContext;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
 
 
 
@@ -30,7 +31,7 @@ import static org.mockito.Mockito.mock;
  */
 public class JenkinsHttpClientTest {
     private static final String URI = "http://localhost/jenkins";
-    
+
 
 
     @Test
@@ -40,8 +41,8 @@ public class JenkinsHttpClientTest {
         final Header versionHeader = mock(Header.class);
         final StatusLine statusLine = mock(StatusLine.class);
         final HttpEntity entity = mock(HttpEntity.class);
-        given(client.execute(any(HttpUriRequest.class), any(HttpContext.class))).willReturn(response);
-        given(response.getHeaders(anyString())).willReturn(new Header[]{versionHeader});
+        given(client.execute(any(HttpUriRequest.class), eq((HttpContext)null))).willReturn(response);
+        given(response.getHeaders("X-Jenkins")).willReturn(new Header[]{versionHeader});
         given(response.getStatusLine()).willReturn(statusLine);
         given(versionHeader.getValue()).willReturn("1.234");
         given(statusLine.getStatusCode()).willReturn(HttpStatus.SC_OK);
@@ -51,15 +52,15 @@ public class JenkinsHttpClientTest {
         final String s = jclient.get("job/someJob");
         assertEquals("someJson", s);
     }
-    
-    
-    
+
+
+
     @Test(expected=IllegalStateException.class)
     public void testClose() throws Exception {
         final JenkinsHttpConnection jclient = new JenkinsHttpClient(new URI(URI));
         jclient.close();
         jclient.close(); //check multiple calls yield no errors
-        jclient.get("job/someJob");       
+        jclient.get("job/someJob");
     }
 
 
