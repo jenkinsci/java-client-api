@@ -74,6 +74,10 @@
  * [JENKINS-56585][jissue-56585]
  
    Change request method of `QuietDown()` to POST
+ 
+ * [JENKINS-48782][jissue-48782]
+   
+   Added constructors with custom `ObjectMapper`
 
 
 ## Release 0.3.8
