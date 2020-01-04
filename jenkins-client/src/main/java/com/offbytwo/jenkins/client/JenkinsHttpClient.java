@@ -356,7 +356,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
         handleCrumbFlag(crumbFlag, request);
 
         if (xml_data != null) {
-            request.setEntity(new StringEntity(xml_data, ContentType.create(ContentType.TEXT_PLAIN.getMimeType(), StandardCharsets.UTF_8)));
+            request.setEntity(new StringEntity(xml_data, ContentType.create(ContentType.TEXT_XML.getMimeType(), StandardCharsets.UTF_8)));
         }
         HttpResponse response = client.execute(request, localContext);
         jenkinsVersion = ResponseUtils.getJenkinsVersion(response);
