@@ -54,6 +54,17 @@ public interface JenkinsHttpConnection extends Closeable {
     String get(String path) throws IOException;
 
     /**
+     * Perform a GET request and return a string of the page content without parse,
+     * the main purpose of this method is to provide convenience for users to parse the page by themselves,
+     * such as parse the job's workspace cause Jenkins doesn't provide REST api to access it
+     *
+     * @param path path to request, can be relative or absolute
+     * @return the content of the page
+     * @throws IOException in case of an error.
+     */
+    String getHtml(String path) throws IOException;
+
+    /**
      * Perform a GET request and return the response as InputStream
      *
      * @param path path to request, can be relative or absolute

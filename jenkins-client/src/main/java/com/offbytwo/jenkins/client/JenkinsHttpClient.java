@@ -176,6 +176,22 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
 
     }
 
+    @Override
+    public String getHtml(String path) throws IOException {
+        HttpGet getMethod = new HttpGet(UrlUtils.toNoApiUri(uri, context, path));
+        HttpResponse response = client.execute(getMethod, localContext);
+        jenkinsVersion = ResponseUtils.getJenkinsVersion(response);
+        LOGGER.debug("get({}), version={}, responseCode={}", path, this.jenkinsVersion,
+                response.getStatusLine().getStatusCode());
+        try {
+            httpResponseValidator.validateResponse(response);
+            return IOUtils.toString(response.getEntity().getContent());
+        } finally {
+            EntityUtils.consume(response.getEntity());
+            releaseConnection(getMethod);
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
