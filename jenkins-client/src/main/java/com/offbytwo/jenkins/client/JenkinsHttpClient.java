@@ -446,7 +446,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
         }
     }
 
-
+    
     /**
      * Add authentication to supplied builder.
      * @param builder the builder to configure
@@ -470,7 +470,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
         return builder;
     }
 
-
+    
     /**
      * Get the local context.
      * @return context
@@ -479,7 +479,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
         return localContext;
     }
 
-
+    
     /**
      * Set the local context.
      * @param localContext the context
@@ -488,10 +488,10 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
         this.localContext = localContext;
     }
 
-
-
-
-
+    
+    
+    
+    
     private <T extends BaseModel> T objectFromResponse(Class<T> cls, HttpResponse response) throws IOException {
         InputStream content = response.getEntity().getContent();
         byte[] bytes = IOUtils.toByteArray(content);
