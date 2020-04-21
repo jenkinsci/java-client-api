@@ -15,6 +15,7 @@
   </parent>
 
   <artifactId>jenkins-client</artifactId>
+  <version>0.4.0-HACKED</version>
   <name>Jenkins API client for Java :: The Client.</name>
 
   <dependencies>
