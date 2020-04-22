@@ -20,21 +20,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
+import java.util.*;
 
 /**
  * This class represents build information with details about what has been done
  * like duration start and of course the build result.
- *
  */
 public class BuildWithDetails extends Build {
 
@@ -109,7 +99,7 @@ public class BuildWithDetails extends Build {
 
     };
 
-    private List<LinkedHashMap<String, List<LinkedHashMap<String, Object>>>> actions; // TODO: Should be improved.
+    private List<HashMap<String, Object>> actions; // TODO: Should be improved.
     private boolean building;
     private String description;
     private String displayName;
@@ -161,21 +151,22 @@ public class BuildWithDetails extends Build {
     }
 
     public List<BuildCause> getCauses() {
-        return actions.stream()
-                .filter(item -> item.containsKey("causes"))
-                .flatMap(item -> item.entrySet().stream())
-                .flatMap(sub -> sub.getValue().stream())
-                .map(item -> convertToBuildCause(item))
-                .collect(toList());
+        return null;
+//        return actions.stream()
+//                .filter(item -> item.containsKey("causes"))
+//                .flatMap(item -> item.entrySet().stream())
+//                .flatMap(sub -> sub.getValue().stream())
+//                .map(item -> convertToBuildCause(item))
+//                .collect(toList());
     }
 
     /**
      * Update <code>displayName</code> and the <code>description</code> of a
      * build.
-     * 
+     *
      * @param displayName The new displayName which should be set.
      * @param description The description which should be set.
-     * @param crumbFlag <code>true</code> or <code>false</code>.
+     * @param crumbFlag   <code>true</code> or <code>false</code>.
      * @throws IOException in case of errors.
      */
     public BuildWithDetails updateDisplayNameAndDescription(String displayName, String description, boolean crumbFlag)
@@ -196,7 +187,7 @@ public class BuildWithDetails extends Build {
     /**
      * Update <code>displayName</code> and the <code>description</code> of a
      * build.
-     * 
+     *
      * @param displayName The new displayName which should be set.
      * @param description The description which should be set.
      * @throws IOException in case of errors.
@@ -207,9 +198,9 @@ public class BuildWithDetails extends Build {
 
     /**
      * Update <code>displayName</code> of a build.
-     * 
+     *
      * @param displayName The new displayName which should be set.
-     * @param crumbFlag <code>true</code> or <code>false</code>.
+     * @param crumbFlag   <code>true</code> or <code>false</code>.
      * @throws IOException in case of errors.
      */
     public BuildWithDetails updateDisplayName(String displayName, boolean crumbFlag) throws IOException {
@@ -227,7 +218,7 @@ public class BuildWithDetails extends Build {
 
     /**
      * Update <code>displayName</code> of a build.
-     * 
+     *
      * @param displayName The new displayName which should be set.
      * @throws IOException in case of errors.
      */
@@ -237,9 +228,9 @@ public class BuildWithDetails extends Build {
 
     /**
      * Update the <code>description</code> of a build.
-     * 
+     *
      * @param description The description which should be set.
-     * @param crumbFlag <code>true</code> or <code>false</code>.
+     * @param crumbFlag   <code>true</code> or <code>false</code>.
      * @throws IOException in case of errors.
      */
     public BuildWithDetails updateDescription(String description, boolean crumbFlag) throws IOException {
@@ -258,7 +249,7 @@ public class BuildWithDetails extends Build {
 
     /**
      * Update the <code>description</code> of a build.
-     * 
+     *
      * @param description The description which should be set.
      * @throws IOException in case of errors.
      */
@@ -347,22 +338,20 @@ public class BuildWithDetails extends Build {
     }
 
     public Map<String, Object> getParameters() {
-        Map<String, Object> parameters = actions.stream()
-                .filter(item -> item.containsKey("parameters"))
-                .flatMap(item -> item.entrySet().stream())
-                .flatMap(sub -> sub.getValue().stream())
-                .collect(toMap(k -> (String) k.get("name"), v -> v.get("value")));
+//        Map<String, Object> parameters = actions.stream()
+//                .filter(item -> item.containsKey("parameters"))
+//                .flatMap(item -> item.entrySet().stream())
+//                .flatMap(sub -> sub.getValue().stream())
+//                .collect(toMap(k -> (String) k.get("name"), v -> v.get("value")));
 
-        return parameters;
+        return null;
     }
 
     /**
      * @return The full console output of the build. The line separation is done by
-     *         {@code CR+LF}.
-     *
-     * @see #streamConsoleOutput(BuildConsoleStreamListener, int, int, boolean) method for obtaining logs for running build
-     *
+     * {@code CR+LF}.
      * @throws IOException in case of a failure.
+     * @see #streamConsoleOutput(BuildConsoleStreamListener, int, int, boolean) method for obtaining logs for running build
      */
     public String getConsoleOutputText() throws IOException {
         return client.get(getUrl() + "/logText/progressiveText");
@@ -371,10 +360,9 @@ public class BuildWithDetails extends Build {
     /**
      * The full console output with HTML.
      *
-     * @see #streamConsoleOutput(BuildConsoleStreamListener, int, int, boolean) method for obtaining logs for running build
-     *
      * @return The console output as HTML.
      * @throws IOException in case of an error.
+     * @see #streamConsoleOutput(BuildConsoleStreamListener, int, int, boolean) method for obtaining logs for running build
      */
     public String getConsoleOutputHtml() throws IOException {
         return client.get(getUrl() + "/logText/progressiveHtml");
@@ -385,12 +373,11 @@ public class BuildWithDetails extends Build {
      * Stream build console output log as text using BuildConsoleStreamListener
      * Method can be used to asynchronously obtain logs for running build.
      *
-     * @param listener interface used to asynchronously obtain logs
+     * @param listener        interface used to asynchronously obtain logs
      * @param poolingInterval interval (seconds) used to pool jenkins for logs
-     * @param poolingTimeout pooling timeout (seconds) used to break pooling in case build stuck
+     * @param poolingTimeout  pooling timeout (seconds) used to break pooling in case build stuck
      * @throws InterruptedException in case of an error.
-     * @throws IOException in case of an error.
-     *
+     * @throws IOException          in case of an error.
      */
     public void streamConsoleOutput(final BuildConsoleStreamListener listener, final int poolingInterval, final int poolingTimeout, boolean crumbFlag) throws InterruptedException, IOException {
         // Calculate start and timeout
@@ -428,7 +415,7 @@ public class BuildWithDetails extends Build {
      * Use this method to periodically obtain logs from jenkins and skip chunks that were already received
      *
      * @param bufferOffset offset in console lo
-     * @param crumbFlag <code>true</code> or <code>false</code>.
+     * @param crumbFlag    <code>true</code> or <code>false</code>.
      * @return ConsoleLog object containing console output of the build. The line separation is done by
      * {@code CR+LF}.
      * @throws IOException in case of a failure.
@@ -458,18 +445,17 @@ public class BuildWithDetails extends Build {
     }
 
 
-  /**
-   * Returns the change set of a build if available.
-   * 
-   * If a build performs several scm checkouts (i.e. pipeline builds), the change set of the first
-   * checkout is returned. To get the complete list of change sets for all checkouts, use
-   * {@link #getChangeSets()}
-   * 
-   * If no checkout is performed, null is returned.
-   * 
-   * @return The change set of the build.
-   * 
-   */
+    /**
+     * Returns the change set of a build if available.
+     * <p>
+     * If a build performs several scm checkouts (i.e. pipeline builds), the change set of the first
+     * checkout is returned. To get the complete list of change sets for all checkouts, use
+     * {@link #getChangeSets()}
+     * <p>
+     * If no checkout is performed, null is returned.
+     *
+     * @return The change set of the build.
+     */
     public BuildChangeSet getChangeSet() {
         BuildChangeSet result;
         if (changeSet != null) {
@@ -487,12 +473,12 @@ public class BuildWithDetails extends Build {
         return this;
     }
 
-  /**
-   * Returns the complete list of change sets for all checkout the build has performed. If no
-   * checkouts have been performed, returns null.
-   * 
-   * @return The complete list of change sets of the build.
-   */
+    /**
+     * Returns the complete list of change sets for all checkout the build has performed. If no
+     * checkouts have been performed, returns null.
+     *
+     * @return The complete list of change sets of the build.
+     */
     public List<BuildChangeSet> getChangeSets() {
         List<BuildChangeSet> result;
         if (changeSets != null) {
@@ -501,7 +487,7 @@ public class BuildWithDetails extends Build {
             result = Collections.singletonList(changeSet);
         } else {
             result = null;
-	}
+        }
         return result;
     }
 
@@ -533,17 +519,17 @@ public class BuildWithDetails extends Build {
                 "");
         return client.getFile(artifactUri);
     }
-    
+
     /**
      * Returns {@link MavenModuleWithDetails} based on its name
-     * 
+     *
      * @param name module name
      * @return {@link MavenModuleWithDetails}
      * @throws IOException in case of error.
      */
     public MavenModuleWithDetails getModule(String name) throws IOException {
         return client.get(getUrl() + name, MavenModuleWithDetails.class);
-    }    
+    }
 
     @Override
     public boolean equals(Object obj) {
