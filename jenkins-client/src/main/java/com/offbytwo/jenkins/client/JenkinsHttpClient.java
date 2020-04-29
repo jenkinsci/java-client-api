@@ -455,7 +455,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
      * @param password the password
      * @return the passed in builder
      */
-    protected static HttpClientBuilder addAuthentication(final HttpClientBuilder builder,
+    protected static HttpClientBuilder addAuthentication(final HttpClientBuilder builder, 
             final URI uri, final String username,
             String password) {
         if (isNotBlank(username)) {
