@@ -6,24 +6,25 @@
 package com.offbytwo.jenkins.client.util;
 
 import com.offbytwo.jenkins.model.FolderJob;
-import java.net.URI;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import org.junit.Test;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
 
+import java.net.URI;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
  *
  * @author Dell Green
  */
-public class UrlUtilsTest {
+class UrlUtilsTest {
 
     
 
     @Test
-    public void testToBaseUrl_NullFolderJob() {
-        assertEquals("/", UrlUtils.toBaseUrl(null));
+    void testToBaseUrl_NullFolderJob() {
+        assertThat(UrlUtils.toBaseUrl(null)).isEqualTo("/");
     }
 
     @Test
