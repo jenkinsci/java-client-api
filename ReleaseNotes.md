@@ -2,6 +2,11 @@
 
 ## Release 0.4.0 (NOT RELEASED YET)
 
+ * [Fixed Issue 465][issue-465]
+   
+   * Remove asciidoctor site parts
+     * AS preparation for user guide.
+
  * [Fixed Issue 464][issue-464]
    
    * Replaced xml-apis with xerces-xmlParserAPI.

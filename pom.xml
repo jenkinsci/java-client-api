@@ -48,7 +48,7 @@
     <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
     <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
 
-    <asciidoctor-maven-plugin.version>1.6.0</asciidoctor-maven-plugin.version>
+    <asciidoctor-maven-plugin.version>2.0.0</asciidoctor-maven-plugin.version>
 
     <!-- Version of Jenkins to use for Integration Tests -->
     <jenkins-version>1.644</jenkins-version>
@@ -362,26 +362,7 @@
             <artifactId>doxia-module-markdown</artifactId>
             <version>1.9</version>
           </dependency>
-          <dependency>
-            <groupId>org.asciidoctor</groupId>
-            <artifactId>asciidoctor-maven-plugin</artifactId>
-            <version>${asciidoctor-maven-plugin.version}</version>
-          </dependency>
         </dependencies>
-        <configuration>
-          <asciidoc>
-                  <!-- optional site-wide AsciiDoc attributes -->
-            <attributes>
-              <icons>font</icons>
-              <source-highlighter>coderay</source-highlighter>
-              <coderay-css>style</coderay-css>
-              <toclevels>2</toclevels>
-              <project-version>${project.version}</project-version>
-              <sectnums>true</sectnums>
-              <preserveDirectories>true</preserveDirectories>
-            </attributes>
-          </asciidoc>
-        </configuration>
       </plugin>
     </plugins>
   </build>
