@@ -109,10 +109,9 @@
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
-
     <dependency>
-      <groupId>xml-apis</groupId>
-      <artifactId>xml-apis</artifactId>
+      <groupId>xerces</groupId>
+      <artifactId>xmlParserAPIs</artifactId>
     </dependency>
   </dependencies>
 

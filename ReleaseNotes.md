@@ -2,6 +2,10 @@
 
 ## Release 0.4.0 (NOT RELEASED YET)
 
+ * [Fixed Issue 464][issue-464]
+   
+   * Replaced xml-apis with xerces-xmlParserAPI.
+   
  * [Fixed Issue 309][issue-309]
  
    * Added possibility to get mode detailed data from Maven Modules from Jobs/Builds
@@ -1156,6 +1160,7 @@ TestReport testReport = mavenJob.getLastSuccessfulBuild().getTestReport();
 [issue-401]: https://github.com/jenkinsci/java-client-api/issues/401
 [issue-402]: https://github.com/jenkinsci/java-client-api/issues/402
 [issue-405]: https://github.com/jenkinsci/java-client-api/issues/405
+[issue-464]: https://github.com/jenkinsci/java-client-api/issues/464
 [pull-123]: https://github.com/jenkinsci/java-client-api/pull/123
 [pull-149]: https://github.com/jenkinsci/java-client-api/pull/149
 [pull-158]: https://github.com/jenkinsci/java-client-api/pull/158
