@@ -57,7 +57,7 @@ public final class UrlUtils {
             sb.append(EncodingUtils.encode(jobNameParts[i]));
             if (i != jobNameParts.length - 1) sb.append('/');
         }
-        return sb.toString();
+        return sb.toString().replace("+","%20");
     }
     
     
@@ -74,7 +74,7 @@ public final class UrlUtils {
         if (!base.endsWith("/")) sb.append('/');
         sb.append("view/")
           .append(EncodingUtils.encode(name));
-        return sb.toString();
+        return sb.toString().replace("+","%20");
     }
     
     
@@ -92,7 +92,7 @@ public final class UrlUtils {
             sb.append(parts[i]);
             if (i != parts.length -1) sb.append("/job/");
         }
-        return sb.toString();
+        return sb.toString().replace(" ","%20");
     }
     
     
@@ -148,7 +148,7 @@ public final class UrlUtils {
      */
     public static URI toNoApiUri(final URI uri, final String context, final String path) {
         final String p = path.matches("(?i)https?://.*") ? path : join(context, path);
-        return uri.resolve("/").resolve(p);
+        return uri.resolve("/").resolve(p.replace(" ", "%20"));
     }
     
     

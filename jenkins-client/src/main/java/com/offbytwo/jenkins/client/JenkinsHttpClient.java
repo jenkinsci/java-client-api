@@ -46,6 +46,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -176,6 +177,22 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
 
     }
 
+    @Override
+    public String getHtml(String path) throws IOException {
+        HttpGet getMethod = new HttpGet(UrlUtils.toNoApiUri(uri, context, path));
+        HttpResponse response = client.execute(getMethod, localContext);
+        jenkinsVersion = ResponseUtils.getJenkinsVersion(response);
+        LOGGER.debug("get({}), version={}, responseCode={}", path, this.jenkinsVersion,
+                response.getStatusLine().getStatusCode());
+        try {
+            httpResponseValidator.validateResponse(response);
+            return IOUtils.toString(response.getEntity().getContent());
+        } finally {
+            EntityUtils.consume(response.getEntity());
+            releaseConnection(getMethod);
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -298,7 +315,8 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
 
             queryParams.add("json=" + EncodingUtils.formParameter(JSONObject.fromObject(data).toString()));
             String value = mapper.writeValueAsString(data);
-            StringEntity stringEntity = new StringEntity(value, ContentType.APPLICATION_FORM_URLENCODED);
+            StringEntity stringEntity = new StringEntity(value,
+                    ContentType.create(ContentType.APPLICATION_FORM_URLENCODED.getMimeType(),StandardCharsets.UTF_8));
             request = new HttpPost(UrlUtils.toNoApiUri(uri, context, path) + StringUtils.join(queryParams, "&"));
             request.setEntity(stringEntity);
         } else {
@@ -325,7 +343,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
     public HttpResponse post_form_with_result(String path, List<NameValuePair> data, boolean crumbFlag) throws IOException {
         HttpPost request;
         if (data != null) {
-            UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(data);
+            UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(data,StandardCharsets.UTF_8);
             request = new HttpPost(UrlUtils.toNoApiUri(uri, context, path));
             request.setEntity(urlEncodedFormEntity);
         } else {
@@ -355,7 +373,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
         handleCrumbFlag(crumbFlag, request);
 
         if (xml_data != null) {
-            request.setEntity(new StringEntity(xml_data, ContentType.create("text/xml", "utf-8")));
+            request.setEntity(new StringEntity(xml_data, ContentType.create(ContentType.TEXT_XML.getMimeType(), StandardCharsets.UTF_8)));
         }
         HttpResponse response = client.execute(request, localContext);
         jenkinsVersion = ResponseUtils.getJenkinsVersion(response);
@@ -373,7 +391,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
      */
     @Override
     public String post_text(String path, String textData, boolean crumbFlag) throws IOException {
-        return post_text(path, textData, ContentType.DEFAULT_TEXT, crumbFlag);
+        return post_text(path, textData, ContentType.create(ContentType.TEXT_PLAIN.getMimeType(),StandardCharsets.UTF_8), crumbFlag);
     }
 
     /**

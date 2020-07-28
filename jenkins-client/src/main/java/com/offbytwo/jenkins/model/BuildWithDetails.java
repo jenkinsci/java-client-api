@@ -109,7 +109,7 @@ public class BuildWithDetails extends Build {
 
     };
 
-    private List<LinkedHashMap<String, List<LinkedHashMap<String, Object>>>> actions; // TODO: Should be improved.
+    private List<Map<String, Object>> actions; // TODO: Should be improved.
     private boolean building;
     private String description;
     private String displayName;
@@ -161,12 +161,7 @@ public class BuildWithDetails extends Build {
     }
 
     public List<BuildCause> getCauses() {
-        return actions.stream()
-                .filter(item -> item.containsKey("causes"))
-                .flatMap(item -> item.entrySet().stream())
-                .flatMap(sub -> sub.getValue().stream())
-                .map(item -> convertToBuildCause(item))
-                .collect(toList());
+        return new ArrayList<>();
     }
 
     /**
@@ -347,13 +342,7 @@ public class BuildWithDetails extends Build {
     }
 
     public Map<String, Object> getParameters() {
-        Map<String, Object> parameters = actions.stream()
-                .filter(item -> item.containsKey("parameters"))
-                .flatMap(item -> item.entrySet().stream())
-                .flatMap(sub -> sub.getValue().stream())
-                .collect(toMap(k -> (String) k.get("name"), v -> v.get("value")));
-
-        return parameters;
+        return new HashMap<>();
     }
 
     /**
