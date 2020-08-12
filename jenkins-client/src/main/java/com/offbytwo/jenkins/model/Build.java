@@ -106,7 +106,9 @@ public class Build extends BaseModel {
      *             in case of an error.
      */
     public BuildWithDetails details() throws IOException {
-        return client.get(url, BuildWithDetails.class);
+        BuildWithDetails buildWithDetails = client.get(url, BuildWithDetails.class);
+        buildWithDetails.setClient(this.client);
+        return buildWithDetails;
     }
 
     /**

@@ -5,11 +5,13 @@
  */
 package com.offbytwo.jenkins.client;
 
+import com.alibaba.fastjson.JSONArray;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.offbytwo.jenkins.client.util.EncodingUtils;
 import com.offbytwo.jenkins.client.util.RequestReleasingInputStream;
 import com.offbytwo.jenkins.client.validator.HttpResponseValidator;
 import com.offbytwo.jenkins.model.BaseModel;
+import com.offbytwo.jenkins.model.BuildWithDetails;
 import com.offbytwo.jenkins.model.Crumb;
 import com.offbytwo.jenkins.model.ExtractHeader;
 import net.sf.json.JSONObject;
@@ -45,11 +47,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import com.offbytwo.jenkins.client.util.ResponseUtils;
@@ -511,6 +510,19 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
     
     private <T extends BaseModel> T objectFromResponse(Class<T> cls, HttpResponse response) throws IOException {
         InputStream content = response.getEntity().getContent();
+        if (BuildWithDetails.class.equals(cls)) {
+            String jsonStr = IOUtils.toString(content);
+            com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(jsonStr);
+            JSONArray actions = jsonObject.getJSONArray("actions");
+            actions.forEach(item -> {
+                com.alibaba.fastjson.JSONObject jsonObj = (com.alibaba.fastjson.JSONObject) item;
+                if (jsonObj.get("_class")!=null) {
+                    jsonObj.remove("_class");
+                }
+            });
+            T result = mapper.readValue(jsonObject.toString(), cls);
+            return result;
+        }
         byte[] bytes = IOUtils.toByteArray(content);
         T result = mapper.readValue(bytes, cls);
         // TODO: original:

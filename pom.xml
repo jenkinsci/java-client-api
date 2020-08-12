@@ -234,23 +234,23 @@
           <artifactId>maven-resources-plugin</artifactId>
           <version>3.1.0</version>
         </plugin>
-        <plugin>
+        <!--<plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
           <version>3.1.0</version>
           <executions>
-            <!--
+            &lt;!&ndash;
               ! here we override the super-pom attach-sources execution id which
               ! calls sources:jar goal. That goals forks the lifecycle,
               ! causing the generate-sources phase to be called twice for the install goal.
               ! With Maven 3.4.0 this will become superfluous.
-            -->
+            &ndash;&gt;
             <execution>
               <id>attach-sources</id>
               <phase>DISABLE_FORKED_LIFECYCLE_MSOURCES-13</phase>
             </execution>
           </executions>
-        </plugin>
+        </plugin>-->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
@@ -353,7 +353,7 @@
       </plugins>
     </pluginManagement>
     <plugins>
-      <plugin>
+      <!--<plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
         <dependencies>
@@ -370,7 +370,7 @@
         </dependencies>
         <configuration>
           <asciidoc>
-                  <!-- optional site-wide AsciiDoc attributes -->
+                  &lt;!&ndash; optional site-wide AsciiDoc attributes &ndash;&gt;
             <attributes>
               <icons>font</icons>
               <source-highlighter>coderay</source-highlighter>
@@ -382,11 +382,11 @@
             </attributes>
           </asciidoc>
         </configuration>
-      </plugin>
+      </plugin>-->
     </plugins>
   </build>
 
-  <reporting>
+  <!--<reporting>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -443,7 +443,7 @@
               </execution>
             </executions>
           </plugin>
-          <!-- MSOURCES-13 related workaround overriding super-pom -->
+          &lt;!&ndash; MSOURCES-13 related workaround overriding super-pom &ndash;&gt;
           <plugin>
             <inherited>true</inherited>
             <artifactId>maven-source-plugin</artifactId>
@@ -472,7 +472,7 @@
         </plugins>
       </build>
     </profile>
-  </profiles>
+  </profiles>-->
 
   <repositories>
     <repository>
