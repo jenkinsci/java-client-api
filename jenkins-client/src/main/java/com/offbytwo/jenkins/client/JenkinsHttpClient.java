@@ -79,12 +79,23 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
      * @param client Configured CloseableHttpClient to be used
      */
     public JenkinsHttpClient(URI uri, CloseableHttpClient client) {
+        this(uri, client, getDefaultMapper());
+    }
+
+    /**
+     * Create an unauthenticated Jenkins HTTP client
+     *
+     * @param uri Location of the jenkins server (ex. http://localhost:8080)
+     * @param client Configured CloseableHttpClient to be used
+     * @param objectMapper Jackson object mapper
+     */
+    public JenkinsHttpClient(URI uri, CloseableHttpClient client, ObjectMapper objectMapper) {
         this.context = uri.getPath();
         if (!context.endsWith("/")) {
             context += "/";
         }
         this.uri = uri;
-        this.mapper = getDefaultMapper();
+        this.mapper = objectMapper;
         this.client = client;
         this.httpResponseValidator = new HttpResponseValidator();
         // this.contentExtractor = new HttpResponseContentExtractor();
@@ -106,9 +117,30 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
      * Create an unauthenticated Jenkins HTTP client
      *
      * @param uri Location of the jenkins server (ex. http://localhost:8080)
+     * @param builder Configured HttpClientBuilder to be used
+     * @param objectMapper Jackson object mapper
+     */
+    public JenkinsHttpClient(URI uri, HttpClientBuilder builder, ObjectMapper objectMapper) {
+        this(uri, builder.build(), objectMapper);
+    }
+
+    /**
+     * Create an unauthenticated Jenkins HTTP client
+     *
+     * @param uri Location of the jenkins server (ex. http://localhost:8080)
      */
     public JenkinsHttpClient(URI uri) {
         this(uri, HttpClientBuilder.create());
+    }
+
+    /**
+     * Create an unauthenticated Jenkins HTTP client
+     *
+     * @param uri Location of the jenkins server (ex. http://localhost:8080)
+     * @param objectMapper Jackson object mapper
+     */
+    public JenkinsHttpClient(URI uri, ObjectMapper objectMapper) {
+        this(uri, HttpClientBuilder.create(), objectMapper);
     }
 
     /**
@@ -126,12 +158,37 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
      * Create an authenticated Jenkins HTTP client
      *
      * @param uri Location of the jenkins server (ex. http://localhost:8080)
+     * @param username Username to use when connecting
+     * @param password Password or auth token to use when connecting
+     * @param objectMapper Jackson object mapper
+     */
+    public JenkinsHttpClient(URI uri, String username, String password, ObjectMapper objectMapper) {
+        this(uri, HttpClientBuilder.create(), username, password, objectMapper);
+    }
+
+    /**
+     * Create an authenticated Jenkins HTTP client
+     *
+     * @param uri Location of the jenkins server (ex. http://localhost:8080)
      * @param builder Configured HttpClientBuilder to be used
      * @param username Username to use when connecting
      * @param password Password or auth token to use when connecting
      */
     public JenkinsHttpClient(URI uri, HttpClientBuilder builder, String username, String password) {
-        this(uri, addAuthentication(builder, uri, username, password));
+        this(uri, builder, username, password, getDefaultMapper());
+    }
+
+    /**
+     * Create an authenticated Jenkins HTTP client
+     *
+     * @param uri Location of the jenkins server (ex. http://localhost:8080)
+     * @param builder Configured HttpClientBuilder to be used
+     * @param username Username to use when connecting
+     * @param password Password or auth token to use when connecting
+     * @param objectMapper Jackson object mapper
+     */
+    public JenkinsHttpClient(URI uri, HttpClientBuilder builder, String username, String password, ObjectMapper objectMapper) {
+        this(uri, addAuthentication(builder, uri, username, password), objectMapper);
         if (isNotBlank(username)) {
             localContext = new BasicHttpContext();
             localContext.setAttribute("preemptive-auth", new BasicScheme());
@@ -445,7 +502,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
         }
     }
 
-    
+
     /**
      * Add authentication to supplied builder.
      * @param builder the builder to configure
@@ -454,7 +511,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
      * @param password the password
      * @return the passed in builder
      */
-    protected static HttpClientBuilder addAuthentication(final HttpClientBuilder builder, 
+    protected static HttpClientBuilder addAuthentication(final HttpClientBuilder builder,
             final URI uri, final String username,
             String password) {
         if (isNotBlank(username)) {
@@ -469,7 +526,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
         return builder;
     }
 
-    
+
     /**
      * Get the local context.
      * @return context
@@ -478,7 +535,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
         return localContext;
     }
 
-    
+
     /**
      * Set the local context.
      * @param localContext the context
@@ -487,10 +544,10 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
         this.localContext = localContext;
     }
 
-    
-    
-    
-    
+
+
+
+
     private <T extends BaseModel> T objectFromResponse(Class<T> cls, HttpResponse response) throws IOException {
         InputStream content = response.getEntity().getContent();
         byte[] bytes = IOUtils.toByteArray(content);
@@ -501,7 +558,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
         return result;
     }
 
-    private ObjectMapper getDefaultMapper() {
+    private static ObjectMapper getDefaultMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(FAIL_ON_UNKNOWN_PROPERTIES);
         return mapper;
