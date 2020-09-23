@@ -906,7 +906,62 @@ public class JenkinsServer implements Closeable {
         return this;
     }
     
-    
+    /**
+     * Rename a folder job
+     *
+     * @param oldFolderJobName existing folderJob name.
+     * @param newFolderJobName The new folderJob name.
+     * @throws IOException In case of a failure.
+     */
+    public JenkinsServer renameFolderJob(String oldFolderJobName, String newFolderJobName)
+            throws IOException {
+        return renameFolderJob(null, oldFolderJobName, newFolderJobName, false);
+    }
+	
+    /**
+     * Rename a folder job
+     *
+     * @param oldFolderJobName existing folderJob name.
+     * @param newFolderJobName The new folderJob name.
+     * @param crumbFlag <code>true</code> to add <b>crumbIssuer</b>
+     *            <code>false</code> otherwise.
+     * @throws IOException In case of a failure.
+     */
+    public JenkinsServer renameFolderJob(String oldFolderJobName, String newFolderJobName,
+            Boolean crumbFlag) throws IOException {
+        renameFolderJob(null, oldFolderJobName, newFolderJobName, crumbFlag);
+        return this;
+    }
+	
+    /**
+     * Rename a folder job
+     *
+     * @param folder {@link FolderJob}
+     * @param oldFolderJobName existing folderJob name.
+     * @param newFolderJobName The new folderJob name.
+     * @throws IOException In case of a failure.
+     */
+    public JenkinsServer renameFolderJob(FolderJob folder, String oldFolderJobName,
+            String newFolderJobName) throws IOException {
+        return renameFolderJob(folder, oldFolderJobName, newFolderJobName, false);
+    }
+
+    /**
+     * Rename a folder job
+     *
+     * @param folder {@link FolderJob}
+     * @param oldFolderJobName existing folderJob name.
+     * @param newFolderJobName The new folderJob name.
+     * @param crumbFlag <code>true</code> to add <b>crumbIssuer</b>
+     *            <code>false</code> otherwise.
+     * @throws IOException In case of a failure.
+     */
+    public JenkinsServer renameFolderJob(FolderJob folder, String oldFolderJobName,
+            String newFolderJobName, Boolean crumbFlag) throws IOException {
+        client.post(UrlUtils.toJobBaseUrl(folder, oldFolderJobName) + "/confirmRename?newName="
+                + EncodingUtils.formParameter(newFolderJobName), crumbFlag);
+        return this;
+    }
     
     /**
      * Closes underlying resources.
