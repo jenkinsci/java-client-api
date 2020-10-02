@@ -357,15 +357,7 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
         if (xml_data != null) {
             request.setEntity(new StringEntity(xml_data, ContentType.create("text/xml", "utf-8")));
         }
-        HttpResponse response = client.execute(request, localContext);
-        jenkinsVersion = ResponseUtils.getJenkinsVersion(response);
-        try {
-            httpResponseValidator.validateResponse(response);
-            return IOUtils.toString(response.getEntity().getContent());
-        } finally {
-            EntityUtils.consume(response.getEntity());
-            releaseConnection(request);
-        }
+        return getResponse(request);
     }
 
     /**
@@ -388,6 +380,10 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
         if (textData != null) {
             request.setEntity(new StringEntity(textData, contentType));
         }
+        return getResponse(request);
+    }
+
+    private String getResponse(HttpPost request) throws IOException {
         HttpResponse response = client.execute(request, localContext);
         jenkinsVersion = ResponseUtils.getJenkinsVersion(response);
         try {
