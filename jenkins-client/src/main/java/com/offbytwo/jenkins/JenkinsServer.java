@@ -261,6 +261,29 @@ public class JenkinsServer implements Closeable {
     }
 
     /**
+     * Get the xml description of an existing view
+     *
+     * @param viewName name of the view.
+     * @return the new view object
+     * @throws IOException in case of an error.
+     */
+    public String getViewXml(String viewName) throws IOException {
+        return getJobXml(null, viewName);
+    }
+
+    /**
+     * Get the xml description of an existing vie.
+     *
+     * @param viewName name of the view.
+     * @param folder   {@link FolderJob}
+     * @return the new job object
+     * @throws IOException in case of an error.
+     */
+    public String getViewXml(FolderJob folder, String viewName) throws IOException {
+        return client.get(UrlUtils.toJobBaseUrl(folder, viewName) + "/config.xml");
+    }
+
+    /**
      * Get a single Job from the server.
      * 
      * @param jobName name of the job to get details of.
