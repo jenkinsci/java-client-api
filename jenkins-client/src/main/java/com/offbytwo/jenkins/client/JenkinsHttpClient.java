@@ -463,7 +463,8 @@ public class JenkinsHttpClient implements JenkinsHttpConnection {
             UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(username, password);
             provider.setCredentials(scope, credentials);
             builder.setDefaultCredentialsProvider(provider);
-
+            builder.disableRedirectHandling();
+            
             builder.addInterceptorFirst(new PreemptiveAuth());
         }
         return builder;
