@@ -53,6 +53,9 @@ import static java.util.stream.Collectors.toMap;
  * The main starting point for interacting with a Jenkins server.
  */
 public class JenkinsServer implements Closeable {
+    
+    private static final String DEFAULT_VIEW_NAME = "all";
+
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     /**
@@ -120,6 +123,27 @@ public class JenkinsServer implements Closeable {
         return jv;
     }
 
+    /**
+     * Get the HTTP client.
+     * @return client
+     */
+    public JenkinsHttpConnection getClient() {
+        return client;
+    }
+    
+    /**
+     * @return the base base URL for this server; null if the URL can not be
+     *         determined.
+     */
+    public String getUrl() {
+        try {
+            return getView(DEFAULT_VIEW_NAME).getUrl();
+        } catch (IOException e) {
+            // is that what we want? Or should we just throw the IOException?
+            return null;
+        }
+    }
+    
     /**
      * Get a list of all the defined jobs on the server (at the summary level)
      *
