@@ -52,7 +52,7 @@
 
     <!-- Version of Jenkins to use for Integration Tests -->
     <jenkins-version>1.644</jenkins-version>
-    <junit.version>4.12</junit.version>
+    <junit.version>4.13.1</junit.version>
     <mockito-core.version>3.0.0</mockito-core.version>
     <commons-io.version>2.4</commons-io.version>
     <xstream.version>1.4.7-jenkins-1</xstream.version>
