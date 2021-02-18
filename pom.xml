@@ -61,7 +61,7 @@
     <httpclient.version>4.5.8</httpclient.version>
     <httpcore.version>4.4.11</httpcore.version>
     <httpmime.version>4.5.8</httpmime.version>
-    <jackson-databind.version>2.10.3</jackson-databind.version>
+    <jackson-databind.version>2.12.1</jackson-databind.version>
   </properties>
 
   <licenses>
