@@ -8,6 +8,7 @@ import org.junit.Test;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 import static org.junit.Assert.assertTrue;
 
