@@ -23,10 +23,6 @@
       <artifactId>jenkins-client</artifactId>
       <version>${project.version}</version>
       <exclusions>
-        <exclusion>
-          <groupId>net.sf.json-lib</groupId>	
-          <artifactId>json-lib</artifactId>	
-        </exclusion>
         <exclusion>		
           <groupId>com.fasterxml.jackson.core</groupId>	
           <artifactId>jackson-core</artifactId>
