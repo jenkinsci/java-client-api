@@ -113,6 +113,11 @@
       <groupId>xerces</groupId>
       <artifactId>xmlParserAPIs</artifactId>
     </dependency>
+      <dependency>
+          <groupId>jakarta.xml.bind</groupId>
+          <artifactId>jakarta.xml.bind-api</artifactId>
+          <version>2.3.3</version>
+      </dependency>
   </dependencies>
 
   <build>
