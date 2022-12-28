@@ -63,7 +63,7 @@ public class Build extends BaseModel {
     }
 
     public Build(Build from) {
-        this(from.getNumber(), from.getUrl());
+        this(from.getNumber(), from.getQueueId(), from.getUrl());
     }
 
     public Build(int number, String url) {
